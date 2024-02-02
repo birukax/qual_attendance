@@ -45,7 +45,11 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django.contrib.postgres",
     "attendance.apps.AttendanceConfig",
+    'device.apps.DeviceConfig',
+    'employee.apps.EmployeeConfig',
+    'shift.apps.ShiftConfig',
     "compressor",
+    "django_filters",
 ]
 
 MIDDLEWARE = [
@@ -63,7 +67,7 @@ ROOT_URLCONF = "qual.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / "attendance/templates"],
+        "DIRS": [BASE_DIR / "qual/templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -129,7 +133,7 @@ USE_TZ = False
 
 # env\qual\Lib\site-packages\django\contrib\admin\static\admin\
 
-STATIC_URL = "/qual/attendance/static/"
+STATIC_URL =  "static/"
 
 DEVICE_CONN_TIMEOUT = "5"
 
@@ -138,9 +142,10 @@ DEVICE_CONN_TIMEOUT = "5"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-COMPRESS_ROOT = BASE_DIR / "attendance/static"
+COMPRESS_ROOT = BASE_DIR / "qual/static/"
 COMPRESS_ENABLED = True
 STATICFILES_FINDERS = ("compressor.finders.CompressorFinder",)
 
 
-# npx tailwindcss -i ./qual/attendance/static/src/input.css -o ./qual/attendance/static/src/output.css --watch
+# npx tailwindcss -i ./qual/qual/static/src/input.css -o ./qual/qual/static/src/output.css --watch
+# c:\Users\biruk\Documents\projects\educa\env\educa\Scripts\python.exe -m pip install -U djlint
