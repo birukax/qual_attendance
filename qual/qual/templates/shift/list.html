@@ -1,0 +1,38 @@
+
+{% extends "_base.html" %}
+{% block content %}
+    <div class="relative mx-6 mt-20 overflow-x-auto shadow-md sm:rounded-lg">
+    {% include "shift/create.html" %}
+       
+        <table class="w-full text-base text-left text-gray-800 rtl:text-right ">
+            <thead class="text-xs uppercase bg-gray-50 ">
+                <tr>
+                    <th scope="col" class="px-6 py-3">Shift name</th>
+                    <th scope="col" class="px-6 py-3">Continous</th>
+                    <th scope="col" class="px-6 py-3">Saturday half</th>
+                    <th scope="col" class="px-6 py-3">Patterns</th>
+                    <th scope="col" class="px-6 py-3 text-right">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for shift in page %}
+                    <tr class="bg-white border-b hover:bg-gray-50">
+                        <th scope="row"
+                            class="px-6 py-4 font-semibold text-gray-900 whitespace-nowrap dark:text-white">
+                            {{ shift.name }}
+                        </th>
+                        <td class="px-6 py-4">{{ shift.continous }}</td>
+                        <td class="px-6 py-4">{{ shift.saturday_half }}</td>
+                        <td class="px-6 py-4">{{ shift.patterns.count }}</td>
+                        <td class="px-2 py-4 text-right md:px-6">
+                            <a href="{{ shift.get_absolute_url }}"
+                               class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Detail</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% include "pagination.html" %}
+
+    </div>
+{% endblock content %}

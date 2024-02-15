@@ -1,19 +1,28 @@
 import pyodbc
-import datetime
 from datetime import date, datetime, timedelta, time
 from django.db import models
 from django.urls import reverse
 import shift.models
 
 class Employee(models.Model):
+    
+    STATUS_CHOICES = [
+        ("active", "Active"),
+        ("inactive", "Inactive"),
+        ("terminated", "Terminated"),
+    ]
+    
     employee_id = models.CharField(unique=True)
-    name = models.CharField(
-        max_length=150,
-    )
+    name = models.CharField(max_length=150)
     pattern = models.ForeignKey(shift.models.Pattern, on_delete=models.CASCADE, related_name='employees', null=True, blank=True)
     shift = models.ForeignKey(
-        shift.models.Shift, on_delete=models.CASCADE, related_name="employees", null=True
+        shift.models.Shift, 
+        on_delete=models.CASCADE, 
+        related_name="employees", 
+        null=True
     )
+    employment_date = models.DateField(null=True)
+    status = models.CharField(max_length=50, choices=STATUS_CHOICES) 
     last_updated = models.DateField(default=datetime(2024,1,1))
     def __str__(self):
         return self.name
@@ -30,7 +39,7 @@ class Employee(models.Model):
             print("successful")
         cursor = conn.cursor()
         employee = cursor.execute(
-            "select [No_] as no, [First Name] as fname, [Middle Name] as mname, [Last Name] as lname from [dbo].[QuaLabels Manufacturers$Employee] ORDER BY no"
+            "select [No_] as no, [First Name] as fname, [Middle Name] as mname, [Last Name] as lname, [Employment Date] as employment_date, [Status] as status from [dbo].[QuaLabels Manufacturers$Employee] ORDER BY no"
         )
         emp = cursor.fetchall()
 
@@ -39,13 +48,23 @@ class Employee(models.Model):
             mname = e.mname.replace(" ", "")
             lname = e.lname.replace(" ", "")
             name = f"{fname} {mname} {lname}"
+            employment_date = e.employment_date
+            status = e.status
+            if status == 0:
+                status = "active"
+            elif status == 1:
+                status = "inactive"
+            elif status == 2:
+                status = "terminated"
             try:
-                Employee.objects.update_or_create(
+                emp, created = Employee.objects.update_or_create(
                     employee_id=e.no,
                     name=name,
+                    employment_date=employment_date,
+                    status=status,
+                    defaults={"employee_id":e.no},
                 )
             except:
                 pass
-            # employee.save()
 
         conn.close()

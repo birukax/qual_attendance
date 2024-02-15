@@ -1,0 +1,60 @@
+{% extends "_base.html" %}
+{% block content %}
+    <div class="relative mt-4 ml-8 lg:rounded-lg lg:ml-24">
+        {% include "leave/create.html" %}
+       <div class="w-full mx-2 bg-white">
+        <table class="overflow-x-auto text-sm text-left text-black shadow-md rtl:text-right">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                <tr>
+                    <th scope="col" class="px-3 py-3 md:px-6">
+                        Employee
+                    </th>
+                    <th scope="col" class="px-3 py-3 md:px-6">
+                        Leave Type
+                    </th>
+                    <th scope="col" class="px-3 py-3 md:px-6">
+                        Start Date
+                    </th>
+                    <th scope="col" class="px-3 py-3 md:px-6">
+                        End Date
+                    </th>
+                    <th scope="col" class="px-3 py-3 md:px-6">
+                        Half day
+                    </th>
+                    <th scope="col" class="px-3 py-3 md:px-6">
+                        Actions
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for leave in page %}
+                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                        <td class="px-2 py-4 md:px-6">
+                            {{ leave.employee.name }}
+                        </td>
+                        <th scope="row"
+                            class="px-2 py-4 font-medium text-gray-900 md:px-6 whitespace-nowrap dark:text-white">
+                            {{ leave.leave_type }}
+                        </th>
+                        <td class="px-2 py-4 md:px-6">
+                            {{ leave.start_date }}
+                        </td>
+                        <td class="px-2 py-4 md:px-6">
+                            {{ leave.end_date }}
+                        </td>
+                        <td class="px-2 py-4 md:px-6">
+                            {{ leave.is_half_day }}
+                        </td>
+                        <td class="px-2 py-4 text-right md:px-6">
+                            <a href="{{ leave.get_absolute_url }}"
+                               class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Detail</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% include "pagination.html" %}
+
+       </div>
+    </div>
+{% endblock content %}

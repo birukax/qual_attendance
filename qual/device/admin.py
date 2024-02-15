@@ -6,3 +6,5 @@ from .models import Device
 class DeviceAdmin(admin.ModelAdmin):
     list_display = ['name', 'slug', 'ip', 'port']
     prepopulated_fields = {'slug': ('name',)}
+    list_per_page = 15
+    

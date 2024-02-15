@@ -19,7 +19,7 @@ def devices(request):
     create_device_form = CreateDeviceForm()
     return render(
         request,
-        "device/device_list.html",
+        "device/list.html",
         {"devices": devices, "form": create_device_form},
     )
 
@@ -47,4 +47,4 @@ def device_detail(request, id):
     page = paginated.get_page(page_number)
     device_connected.disconnect()
     
-    return render(request, "device/device_detail.html", {"device": device, 'device_time': device_time, 'page':page})
+    return render(request, "device/detail.html", {"device": device, 'device_time': device_time, 'page':page})

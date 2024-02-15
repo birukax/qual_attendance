@@ -1,0 +1,102 @@
+{% extends "_base.html" %}
+{% block content %}
+    
+    <div class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+        
+        <div class="flex items-center justify-between">
+            <svg class="w-12 h-12 mb-3 text-slate-950"
+             aria-hidden="true"
+             xmlns="http://www.w3.org/2000/svg"
+             fill="currentColor"
+             viewBox="0 0 14 18">
+            <path d="M7 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9Zm2 1H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Z" />
+        </svg>
+        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+            {{ leave_type.name }}
+        </h5>
+            </div>
+        <div class="flex-row font-normal text-gray-900 ">
+           
+            <div class="flex justify-between mb-2">
+                <span class="mr-2">Max days:</span>
+                <p class="font-bold">
+                {{ leave_type.maximum_days }}
+                    
+                </p>
+            </div>
+             
+            <div class="flex justify-between mb-2">
+                <span class="mr-2">Paid:</span>
+                <p class="font-bold">
+                {{ leave_type.paid }}
+                    
+                </p>
+            </div>
+             
+            <div class="flex justify-between mb-2">
+                <span class="mr-2">Leaves:</span>
+                <p class="font-bold">
+                {{ leave_type.leaves.count }}
+                    
+                </p>
+            </div>
+            
+            <div class="flex justify-between">
+
+                {% include "leave/leave_type/edit.html" %}
+
+            </div>
+        </div>
+    </div>
+    <div class="relative shadow-md sm:rounded-lg">
+        <table class="overflow-x-auto text-sm text-left text-gray-500 w-fit rtl:text-right dark:text-gray-400">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr>
+                    <th scope="col" class="px-4 py-3">
+                        Employee
+                    </th>
+                    <th scope="col" class="px-4 py-3">
+                        Leave name
+                    </th>
+                    <th scope="col" class="px-4 py-3">
+                        Start date
+                    </th>
+                    <th scope="col" class="px-4 py-3">
+                        End date
+                    </th>
+                    <th scope="col" class="px-4 py-3">
+                        Half day
+                    </th>
+                    <th scope="col" class="px-4 py-3">
+                        Action
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for leave in page %}
+                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                        <td class="px-4 py-4">
+                            {{ leave.employee.name }}
+                        </td>
+                        <td class="px-4 py-4">
+                            {{ leave.leave_type.name }}
+                        </td>
+                        <td class="px-4 py-4">
+                            {{ leave.start_date }}
+                        </td>
+                        <td class="px-4 py-4">
+                            {{ leave.end_date }}
+                        </td>
+                        <td class="px-4 py-4">
+                            {{ leave.is_half_day }}
+                        </td>
+                        <td class="px-4 py-4">
+                            {{ leave.device.name }}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% include "pagination.html" %}
+    </div>
+{% endblock content %}

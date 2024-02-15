@@ -19,6 +19,7 @@ from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
 from django.contrib.auth import views as auth_views
+from django.urls import re_path
 
 urlpatterns = [
     path('accounts/login/', auth_views.LoginView.as_view(),name='login'),
@@ -28,6 +29,9 @@ urlpatterns = [
     path("devices/", include("device.urls")),
     path("shifts/", include("shift.urls")),
     path("employees/", include("employee.urls")),
+    path("leaves/", include("leave.urls")),
+    re_path(r'session_security/', include('session_security.urls')),
 ]
-
-urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

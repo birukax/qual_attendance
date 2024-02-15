@@ -8,27 +8,32 @@ from django.utils.text import slugify
 from django.contrib.postgres.search import SearchVector
 import threading
 from attendance.models import Attendance
+from .filters import *
 
 
 
 
 @login_required
 def employees(request):
+    
+    
     employees = (
         Employee.objects.all()
         .select_related()
-        .order_by("employee_id")
         .order_by("-employee_id")
     )
+    employee_filter = EmployeeFilter(request.GET, queryset=employees)
+    emps = employee_filter.qs
 
-    paginated = Paginator(employees, 15)
+    paginated = Paginator(emps, 10)
     page_number = request.GET.get("page")
 
     page = paginated.get_page(page_number)
+    context = {"employees": employees, "page": page, "employee_filter":employee_filter}
     return render(
         request,
-        "employee/employee_list.html",
-        {"employees": employees, "page": page},
+        "employee/list.html",
+        context,
     )
 
 @login_required
@@ -48,5 +53,5 @@ def employee_detail(request, id):
     page_number = request.GET.get("page")
     page = paginated.get_page(page_number)
     return render(
-        request, "employee/employee_detail.html", {"employee": employee, "page": page, 'change_shift_form':change_shift_form, 'change_pattern_form':change_pattern_form, 'sync_employee_attendance_form':sync_employee_attendance_form}
+        request, "employee/detail.html", {"employee": employee, "page": page, 'change_shift_form':change_shift_form, 'change_pattern_form':change_pattern_form, 'sync_employee_attendance_form':sync_employee_attendance_form}
     )

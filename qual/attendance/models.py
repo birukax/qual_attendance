@@ -1,35 +1,19 @@
-import pyodbc
 import threading
 import pandas
 import datetime
-from ast import pattern
-from enum import unique
-from tabnanny import check
-from tracemalloc import start
+from threading import Thread
 from asyncio.windows_events import NULL
-from email.policy import default
-from datetime import date, datetime, timedelta, time
-from dateutil import parser
+from datetime import date, datetime, timedelta
 from django.db import models
-from django.forms import CharField
-from django.db.models import Q
 from django.urls import reverse
-from django.utils.text import slugify
-from django.utils.timesince import timesince
-from functools import reduce
-from itertools import count
-from operator import truediv
-from tkinter import CASCADE
-from regex import D
 from zk import ZK
 from device.models import Device
 from employee.models import Employee
-from shift.models import Shift
 from shift.models import Pattern
 import device.models
 import employee.models
 import shift.models
-
+import leave.models
 
 class RawAttendance(models.Model):
     uid = models.CharField()
@@ -43,14 +27,34 @@ class RawAttendance(models.Model):
     time = models.TimeField(null=True)
     status = models.CharField(null=True)
     punch = models.CharField()
-    
 
     class Meta:
         get_latest_by = ["-date", "-time"]
-        
 
     def sync_raw_attendance(self):
         devices = Device.objects.all()
+        def sync(attendance, device):
+            # for attenda\nce in attendances[count_attendance:]:
+            # # print(attendance.user)
+            emp_id = str(attendance.user_id).rjust(4, "0")
+            try:
+                employee = Employee.objects.get(employee_id=emp_id)
+            except:
+                pass
+            try:
+                date, time = str(attendance.timestamp).split()
+                att, created = RawAttendance.objects.get_or_create(
+                    uid=attendance.uid,
+                    device=device,
+                    employee=employee,
+                    date=date,
+                    time=time,
+                    status=attendance.status,
+                    punch=attendance.punch,
+                )
+            except:
+                pass
+        
         for device in devices:
             # if device == Device.objects.get(slug="production"):
             #     encoding = "gbk"
@@ -69,46 +73,23 @@ class RawAttendance(models.Model):
             print("Device connected..")
             count_attendance = RawAttendance.objects.filter(device=device).count()
             attendances = device_connected.get_attendance()
-
-            # for attendance in attendances[count_attendance:]:
             for attendance in attendances[count_attendance:]:
-                # print(attendance.user)
-                emp_id = str(attendance.user_id).rjust(4, "0")
-                try:
-                    employee = Employee.objects.get(employee_id=emp_id)
-                except:
-                    pass
-                try:
-                    date, time = str(attendance.timestamp).split()
-
-                    att, created = RawAttendance.objects.get_or_create(
-                        uid=attendance.uid,
-                        device=device,
-                        employee=employee,
-                        date=date,
-                        time=time,
-                        status=attendance.status,
-                        punch=attendance.punch,
-                    )
-                except:
-                    pass
-
+                sync(attendance, device)
             print("Sync successful..")
 
             device_connected.enable_device()
             device_connected.disconnect()
         
-
-
 class Attendance(models.Model):
     # attendance_id = models.ForeignKey(RawAttendance, on_delete=models.CASCADE)
     employee = models.ForeignKey(
         employee.models.Employee, on_delete=models.CASCADE, related_name="attendances"
     )
     device = models.ForeignKey(
-        device.models.Device, on_delete=models.CASCADE, related_name="attendances"
+        device.models.Device, on_delete=models.CASCADE, related_name="attendances", null=True
     )
     current_pattern = models.ForeignKey(Pattern, on_delete=models.CASCADE, null=True)
+    leave = models.ForeignKey(leave.models.LeaveType, on_delete=models.CASCADE, null=True)
     check_in_date = models.DateField()
     check_out_date = models.DateField(null=True)
     check_in_time = models.TimeField()
@@ -117,31 +98,32 @@ class Attendance(models.Model):
     def get_absolute_url(self):
         return reverse("attendance:attendance_detail", args={self.id})
 
-    def sync_attendance(self, id, end_date=date.today()):
+    def sync_attendance(self, id=NULL, end_date=date.today()):
         if id:
             employees = Employee.objects.filter(id=id)
             
         else:
-            employees = Employee.objects.all()
+            employees = Employee.objects.filter(status="Active")
             
         for employee in employees:
+            
             if employee.shift and employee.pattern:
+                date_range = pandas.date_range(start=employee.last_updated, end=end_date)     
+                del_emp_data=Attendance.objects.filter(employee=employee, check_in_date__range=(employee.last_updated, end_date))
+                del_emp_data.delete()
                 if employee.shift.continous == False:
-                    date_range = pandas.date_range(start=employee.last_updated, end=end_date)
                     for date in date_range.date:
                         attendance = RawAttendance.objects.filter(
                             date=date, employee=employee
                         ).order_by("time")
                         if date.isoweekday() == 1 and date != employee.last_updated:
-                            print(date.isoweekday())
                             employee.pattern = employee.pattern.next
                             employee.save()
-                            print(employee.pattern)
+                            
                         if date.isoweekday() == 6 and employee.shift.saturday_half:
-                            print(date.isoweekday())
                             employee.pattern = employee.pattern.next
                             employee.save()
-                            print(employee.pattern)
+                            
                         if attendance:
                             attendance_first = datetime.combine(
                                 attendance.first().date, attendance.first().time
@@ -263,5 +245,7 @@ class Attendance(models.Model):
                                 employee.save()
             else:
                 pass
+            employee.last_updated = end_date
+            employee.save()
     
                             

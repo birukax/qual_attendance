@@ -1,0 +1,32 @@
+{% extends "_base.html" %}
+{% block content %}
+    <div class="relative mx-6 overflow-x-auto shadow-md sm:rounded-lg">
+        {% include "device/create.html" %}
+        <table class="w-full text-left text-gray-900 text-md rtl:text-right ">
+            <thead class="text-sm text-gray-900 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-900">
+                <tr>
+                    <th scope="col" class="px-2 py-4">Device name</th>
+                    <th scope="col" class="px-2 py-4">ID</th>
+                    <th scope="col" class="px-2 py-4">Attendances</th>
+                    <th scope="col" class="px-2 py-4">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for device in devices %}
+                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                        <th scope="row"
+                            class="px-2 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            {{ device.name }}
+                        </th>
+                        <td class="px-2 py-4">{{ device.id }}</td>
+                        <td class="px-2 py-4">{{ device.attendances.count }}</td>
+                        <td class="px-2 py-4 ">
+                            <a href="{{ device.get_absolute_url }}"
+                               class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Detail</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock content %}

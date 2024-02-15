@@ -1,24 +1,12 @@
-from ast import And
-from asyncio.windows_events import NULL
-from traceback import format_list
-from tracemalloc import start
-from turtle import back
-from django import forms
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
-from zk import ZK
 from django.http import HttpResponse
 from openpyxl import Workbook
-from .models import Device, Employee, RawAttendance, Attendance, Shift, Pattern
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.views.generic import ListView
-import datetime
-from datetime import time, date
+from .models import *
+from django.core.paginator import Paginator
 from .forms import AttendanceDownloadForm, SyncEmployeeAttendanceForm
 from .filters import AttendanceDownloadFilter, AttendanceFilter
 from device.forms import CreateDeviceForm
-from django.utils.text import slugify
-from django.contrib.postgres.search import SearchVector
 import threading
 
 @login_required
@@ -44,7 +32,7 @@ def attendance_list(request):
     attendance_download_filter = AttendanceDownloadFilter(request.GET, queryset=Attendance.objects.all())
     attendance_filter = AttendanceFilter(request.GET, queryset=attendances)
     attendances = attendance_filter.qs
-    paginated = Paginator(attendances, 15)
+    paginated = Paginator(attendances, 10)
     page_number = request.GET.get("page")
     page = paginated.get_page(page_number)
     
@@ -57,7 +45,7 @@ def attendance_list(request):
 
     return render(
         request,
-        "attendance/attendance_list.html", context,
+        "attendance/list.html", context,
     )
 
 @login_required
@@ -76,7 +64,7 @@ def sync_employee_attendance(request, id):
         if attendance_form.is_valid():
             end_date = attendance_form.cleaned_data['end_date']
             attendance_object.sync_attendance(id=id,end_date=end_date)
-            return redirect("employee:employee_detail", id=id, )
+            return redirect("employee:employee_detail", id=id )
 
 @login_required
 def download_attendance(request):
@@ -88,14 +76,29 @@ def download_attendance(request):
     ws = wb.active
     ws.title = "Attendance"
 
-    headers = ["employee", "device", "check in date", "check in time", "check out date", "check out time"]
+    headers = ["employee", "device", "current pattern", "leave type", "check in date", "check in time", "check out date", "check out time"]
     ws.append(headers)
 
     for attendance in attendances.order_by("-check_in_date"):
+        
+        if attendance.device: 
+            device = attendance.device.name 
+        else:
+            device = ""
+        if attendance.current_pattern:
+            current_pattern = attendance.current_pattern.name
+        else:
+            current_pattern = ""
+        if attendance.leave:
+            leave = attendance.leave.name
+        else:
+            leave = ""
         ws.append(
             [
                 attendance.employee.name,
-                attendance.device.name,
+                device,
+                current_pattern,
+                leave,
                 attendance.check_in_date,
                 attendance.check_in_time,
                 attendance.check_out_date,
@@ -109,14 +112,16 @@ def download_attendance(request):
 def sync_attendance(request):
     attendance_object = RawAttendance()
     attendance_object.sync_raw_attendance()
-    # attendance = Attendance()
-    # attendance.sync_a()
 
     return redirect("attendance:attendances")
 
 @login_required
-def raw_attendance(request):
-    attendances = RawAttendance.objects.all().order_by("-date", "-time")[:1000]
+def raw_attendance_list(request):
+    # attendances = RawAttendance.objects.all().order_by("-date", "-time")[:1000]
+    attendances = RawAttendance.objects.filter(date__gte=datetime(2024,1,1)).order_by("-date", "-time")
+    paginated = Paginator(attendances, 15)
+    page_number = request.GET.get("page")
+    page = paginated.get_page(page_number)
     return render(
-        request, "raw_attendance/raw_attendance.html", {"attendances": attendances}
+        request, "raw_attendance/list.html", {"page": page,}
     ) 

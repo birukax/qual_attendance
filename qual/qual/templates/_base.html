@@ -15,6 +15,7 @@
     </head>
     <body class="flex ">
         <div class="container">
+            {% include "session_security/all.html" %}
             <div class="flex">
                 {% if request.user.is_authenticated %}
             <div>

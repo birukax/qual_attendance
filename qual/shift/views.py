@@ -31,7 +31,7 @@ def shifts(request):
     
     page = paginated.get_page(page_number)
     return render(
-        request, "shift/shift_list.html", {"create_shift_form":create_shift_form,"shifts":shifts ,"page":page}   
+        request, "shift/list.html", {"create_shift_form":create_shift_form,"shifts":shifts ,"page":page}   
     )
 
 @login_required
@@ -74,7 +74,7 @@ def shift_detail(request, id):
         "edit_shift_form":edit_shift_form 
         }
     return render(
-        request, "shift/shift_detail.html", context
+        request, "shift/detail.html", context
     )
 
 @login_required
@@ -113,7 +113,7 @@ def edit_pattern(request, id):
             return redirect("shift:shift_detail", id=pattern.shift.id)
     else:
         form = EditPatternForm(instance=pattern)
-    return render(request, "shift/pattern/edit_pattern.html", {"pattern":pattern,"form": form})
+    return render(request, "shift/pattern/edit.html", {"pattern":pattern,"form": form})
 
 @login_required
 def edit_shift(request, id):

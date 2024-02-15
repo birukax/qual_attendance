@@ -4,7 +4,7 @@ from email.policy import default
 from urllib import request
 from colorama import init
 from django import forms
-from .models import Device, RawAttendance, Attendance, Shift, Employee, Pattern
+from .models import *
 from django.utils.text import slugify
 import datetime
 
@@ -30,21 +30,3 @@ class AttendanceDownloadForm(forms.Form):
 class SyncEmployeeAttendanceForm(forms.Form):
     
     end_date = forms.DateField(initial=datetime.date.today())
-    
-    
-    
-    
-# class ChangeEmployeePatternForm(forms.ModelForm):
-#     class Meta:
-#         model = Employee()
-#         fields = ['pattern',]
-        
-#     def __init__(self, *args, **kwargs):
-#         super(ChangeEmployeePatternForm, self).__init__(*args, **kwargs)
-#         if self.instance.shift:
-#             self.fields['pattern'].queryset = Pattern.objects.filter(shift__id=self.instance.shift.id)
-#             if self.instance.pattern:
-#                 self.fields['pattern'].initial = Pattern.objects.get(id=self.instance.pattern.id)
-    
-#     pattern = forms.ModelChoiceField(Pattern.objects.all())
-    

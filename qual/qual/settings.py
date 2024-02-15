@@ -37,6 +37,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     # "django_admin_tailwind",
+    
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -48,7 +49,9 @@ INSTALLED_APPS = [
     'device.apps.DeviceConfig',
     'employee.apps.EmployeeConfig',
     'shift.apps.ShiftConfig',
+    'leave.apps.LeaveConfig',
     "compressor",
+    "session_security",
     "django_filters",
 ]
 
@@ -60,6 +63,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "session_security.middleware.SessionSecurityMiddleware",
 ]
 
 ROOT_URLCONF = "qual.urls"
@@ -134,8 +138,11 @@ USE_TZ = False
 # env\qual\Lib\site-packages\django\contrib\admin\static\admin\
 
 STATIC_URL =  "static/"
-
+STATIC_ROOT = BASE_DIR / "qual/static/"
 DEVICE_CONN_TIMEOUT = "5"
+
+MEDIA_URL = "media/"
+MEDIA_ROOT = BASE_DIR / "qual/media/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
@@ -144,7 +151,15 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 COMPRESS_ROOT = BASE_DIR / "qual/static/"
 COMPRESS_ENABLED = True
-STATICFILES_FINDERS = ("compressor.finders.CompressorFinder",)
+STATICFILES_FINDERS = (
+                "compressor.finders.CompressorFinder",
+                "django.contrib.staticfiles.finders.FileSystemFinder",
+                "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+                       )
+
+SESSION_SECURITY_WARN_AFTER = 59 * 60
+SESSION_SECURITY_EXPIRE_AFTER = 60 * 60
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 
 # npx tailwindcss -i ./qual/qual/static/src/input.css -o ./qual/qual/static/src/output.css --watch

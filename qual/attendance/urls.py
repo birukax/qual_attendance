@@ -1,6 +1,5 @@
 from django.urls import path, include
 from . import views
-from django.contrib.auth import views as auth_views
 
 app_name = "attendance"
 
@@ -15,6 +14,6 @@ urlpatterns = [
         views.get_latest_attendance,
         name="get_latest_attendance",
     ),
-    path("raw_attendance", views.raw_attendance, name="raw_attendance"),
+    path("raw_attendance_list", views.raw_attendance_list, name="raw_attendance"),
     path("download_attendance", views.download_attendance, name="download_attendance"),
 ]
