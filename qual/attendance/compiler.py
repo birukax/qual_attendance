@@ -1,0 +1,264 @@
+from .models import *
+from datetime import date
+from leave.models import *
+
+def create_attendance(**kwargs):
+    
+    try:        
+        try:
+            if kwargs['status']:
+                status = kwargs['status']
+        except:
+            status = 'Checked In'
+        
+        try:
+            emp = kwargs['employee']
+            
+            if kwargs['check_in_time']:
+                inn = datetime.combine(
+                                    kwargs['check_in_date'], kwargs['check_in_time']
+                                )
+                expected = datetime.combine(
+                                    kwargs['check_in_date'], emp.pattern.start_time
+                                    )
+                early_expected = expected - timedelta(minutes=emp.pattern.tolerance)
+                late_expected = expected + timedelta(minutes=emp.pattern.tolerance)
+                if inn < early_expected:
+                    check_in_type = 'Early'
+                elif inn > late_expected:
+                    check_in_type = 'Late'
+                else:
+                    check_in_type = 'On Time'
+        except:
+            check_in_type = 'No Data'
+        
+        try:
+            emp = kwargs['employee']
+            if kwargs['check_out_time']:
+                outt = datetime.combine(
+                                    kwargs['check_out_date'], kwargs['check_out_time']
+                )
+                expected = datetime.combine(
+                                    kwargs['check_out_date'], emp.pattern.end_time
+                )
+                early_expected = expected - timedelta(minutes=emp.pattern.tolerance)
+                late_expected = expected + timedelta(minutes=emp.pattern.tolerance)
+                if outt < early_expected:
+                    check_out_type = 'Early'
+                elif outt > late_expected:
+                    check_out_type = 'Late'
+                else:
+                    check_out_type = "On Time"
+        except:
+            check_out_type = 'No Data'
+            
+        try:
+            if kwargs['check_in_date'] and kwargs['check_out_date']:
+                c_in = datetime.combine(
+                                    kwargs['check_in_date'], kwargs['check_in_time']
+                                )
+                c_out = datetime.combine(
+                                    kwargs['check_out_date'], kwargs['check_out_time']
+                                )
+                worked_hours = c_out - c_in
+        except:
+            worked_hours = None
+        a, created = Attendance.objects.filter(check_in_date=kwargs['check_in_date'], employee= kwargs['employee']).get_or_create(
+                                    kwargs,
+                                    worked_hours = worked_hours,
+                                    check_in_type = check_in_type,
+                                    check_out_type = check_out_type,
+                                    status = status,
+                                )
+        
+    except Exception as e:
+        print(e)
+        
+def compile( date):
+    employees = Employee.objects.filter(status="active").order_by('name')
+    for employee in employees:
+        if employee.shift and employee.pattern:
+                
+            del_emp_data=Attendance.objects.filter(employee=employee, check_in_date =date)
+            if del_emp_data:
+                del_emp_data.delete()
+            if employee.shift.continous == False:
+                attendance = RawAttendance.objects.filter(
+                    date=date, employee=employee
+                ).order_by("time")
+                if date.isoweekday() == 7:
+                    create_attendance(
+                        employee=employee,
+                        current_pattern = employee.pattern,
+                        check_in_date=date,
+                        status = 'Day Off'
+                    )               
+                elif attendance:
+                    attendance_first = datetime.combine(
+                        attendance.first().date, attendance.first().time
+                    )
+                    attendance_last = datetime.combine(
+                        attendance.last().date, attendance.last().time
+                    )
+                    check_out = RawAttendance.objects.filter(employee=employee, date=date + timedelta(days=1)).order_by('time')
+                    
+                    if attendance.count() == 1 or (
+                        attendance.count() >= 2
+                        and attendance_last - attendance_first < timedelta(hours=1)
+                    ):
+                        if employee.pattern.day_span == 2 and check_out:
+                            
+                            create_attendance(
+                                employee=employee,
+                                device=attendance.first().device,
+                                current_pattern = employee.pattern,
+                                check_in_date=date,
+                                check_in_time=attendance.first().time,
+                                check_out_date=check_out.first().date,
+                                check_out_time=check_out.first().time,
+                            )
+
+                        else:
+                            create_attendance(
+                                employee=employee,
+                                device=attendance.first().device,
+                                current_pattern = employee.pattern,
+                                check_in_date=date,
+                                check_in_time=attendance.first().time,
+                            )
+                    elif attendance.count() >= 2 and attendance_last - attendance_first > timedelta(hours=1):
+                        if employee.pattern.day_span == 1:
+                            create_attendance(
+                                employee=employee,
+                                device=attendance.first().device,
+                                current_pattern = employee.pattern,
+                                check_in_date=date,
+                                check_in_time=attendance.first().time,
+                                check_out_date=attendance.last().date,
+                                check_out_time=attendance.last().time,
+                            )
+                        elif employee.pattern.day_span == 2 and check_out:
+                            create_attendance(
+                                employee=employee,
+                                device=attendance.first().device,
+                                current_pattern = employee.pattern,
+                                check_in_date=date,
+                                check_in_time=attendance.last().time,
+                                check_out_date=check_out.first().date,
+                                check_out_time=check_out.first().time,
+                            )
+                else:
+                    create_attendance(
+                        employee=employee,
+                        current_pattern = employee.pattern,
+                        check_in_date=date,
+                        status = 'Absent'
+                    )
+            elif employee.shift.continous == True:
+                attendance = RawAttendance.objects.filter(
+                        date=date, employee=employee
+                    ).order_by('time')
+                if employee.pattern.day_span == 0:
+                    create_attendance(
+                        employee=employee,
+                        current_pattern = employee.pattern,
+                        check_in_date=date,
+                        status = 'Day Off'
+                    )
+                elif attendance:
+                    attendance_first = datetime.combine(
+                        attendance.first().date, attendance.first().time
+                    )
+                    attendance_last = datetime.combine(
+                            attendance.last().date, attendance.last().time
+                        )
+                    next_day = date + timedelta(days=1)
+                    check_out = RawAttendance.objects.filter(employee=employee, date=next_day).order_by('time')
+                    
+                    if (attendance.count() == 1 or (attendance.count() >= 2 and attendance_last - attendance_first < timedelta(hours=1))):
+                        if check_out:
+                            create_attendance(
+                                employee=employee,
+                                device=attendance.first().device,
+                                current_pattern = employee.pattern,
+                                check_in_date=date,
+                                check_in_time=attendance.first().time,
+                                check_out_date=check_out.first().date,
+                                check_out_time=check_out.first().time,
+                            )
+                        else:
+                            create_attendance(
+                            employee=employee,
+                            device=attendance.first().device,
+                            current_pattern = employee.pattern,
+                            check_in_date=date,
+                            check_in_time=attendance.first().time,
+                        )
+                    elif attendance.count() >= 2 and ( attendance_last - attendance_first > timedelta(hours=1)):
+                        if employee.pattern.day_span == 2 and check_out:
+                            create_attendance(
+                                employee=employee,
+                                device=attendance.first().device,
+                                current_pattern = employee.pattern,
+                                check_in_date=date,
+                                check_in_time=attendance.first().time,
+                                check_out_date=check_out.first().date,
+                                check_out_time=check_out.first().time,
+                            )
+                        elif employee.pattern.day_span == 1:
+                            create_attendance(
+                                employee=employee,
+                                device=attendance.first().device,
+                                current_pattern = employee.pattern,
+                                check_in_date=date,
+                                check_in_time=attendance.first().time,
+                                check_out_date=attendance.last().date,
+                                check_out_time=attendance.last().time,
+                            )
+                else:
+                    create_attendance(
+                        employee=employee,
+                        current_pattern = employee.pattern,
+                        check_in_date=date,
+                        status = 'Absent'
+                    )
+        else:
+            pass
+        
+
+def save_data(date):
+    attendances = Attendance.objects.filter(approved=False)
+    rec, created = DailyRecord.objects.update_or_create(
+        date=date,
+        attendances= attendances.count(),
+        late_check_in= attendances.filter(check_in_type='Late').count(),
+        late_check_out= attendances.filter(check_out_type='Late').count(),
+        early_check_in= attendances.filter(check_in_type='Early').count(),
+        early_check_out= attendances.filter(check_out_type='Early').count(),
+        absent= attendances.filter(status='Absent').count(),
+        day_off= attendances.filter(status='Day off').count(),
+        leave = attendances.filter(status='Leave').count(),
+    )
+    for attendance in attendances:
+        attendance.approved = True
+        attendance.save()
+        emp = Employee.objects.get(id=attendance.employee.id)
+        emp.last_updated = attendance.check_in_date
+        emp.save()
+        if emp.pattern.day_span == 0:
+            emp.pattern = emp.pattern.next
+            emp.save()
+        elif emp.shift.continous:
+            emp.pattern = emp.pattern.next
+            emp.save()
+        elif attendance.check_in_date.isoweekday() == 5 and emp.shift.saturday_half:
+            emp.pattern = emp.pattern.next
+            emp.save()
+        elif attendance.check_in_date.isoweekday() == 6 and emp.shift.continous == False:
+            emp.pattern = emp.pattern.next
+            emp.save()
+        emp_leave = Leave.objects.filter(employee=emp, active=True)
+        if emp_leave:
+            if emp_leave.first().end_date < attendance.check_in_date:
+                emp_leave.update(active=False)        
+        

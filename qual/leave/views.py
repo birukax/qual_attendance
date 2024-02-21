@@ -7,6 +7,7 @@ from django.core.paginator import Paginator
 from attendance.models import Attendance
 import datetime
 from django.http import HttpResponse
+from django.contrib.auth.decorators import permission_required
 
 @login_required
 def leave_list(request):
@@ -26,17 +27,7 @@ def create_leave(request):
     form = CreateLeaveForm(request.POST, request.FILES)
     if form.is_valid():
         form.save()
-        employee = form.cleaned_data["employee"]
-        start_date = form.cleaned_data["start_date"]
-        end_date = form.cleaned_data["end_date"]
-        leave_type = form.cleaned_data["leave_type"]
-        created, att = Attendance.objects.get_or_create(
-            employee=employee,leave=leave_type, 
-            check_in_date=start_date, 
-            check_out_date=end_date, 
-            check_in_time=datetime.time(00,00,00), 
-            check_out_time=datetime.time(00,00,00)
-            )
+        
     return redirect('leave:leaves')
 
 def edit_leave(request, id):
@@ -49,6 +40,15 @@ def leave_type_list(request):
     page_number = request.GET.get('page')
     page = paginated.get_page(page_number)
     return render(request, 'leave/leave_type/list.html', {'page': page, 'create_leave_type_form':create_leave_type_form})
+
+
+@permission_required('leave.can_approve_leave')
+def approve_leave(request, id):
+    leave = Leave.objects.get(id=id)
+    leave.approved = True
+    leave.active = True
+    leave.save()
+    return redirect('leave:leave_detail', id=id)
 
 def leave_type_detail(request, id):
     leave_type = LeaveType.objects.get(id=id)

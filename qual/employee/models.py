@@ -7,9 +7,9 @@ import shift.models
 class Employee(models.Model):
     
     STATUS_CHOICES = [
-        ("active", "Active"),
-        ("inactive", "Inactive"),
-        ("terminated", "Terminated"),
+        ("Active", "Active"),
+        ("Inactive", "Inactive"),
+        ("Terminated", "Terminated"),
     ]
     
     employee_id = models.CharField(unique=True)
@@ -22,7 +22,7 @@ class Employee(models.Model):
         null=True
     )
     employment_date = models.DateField(null=True)
-    status = models.CharField(max_length=50, choices=STATUS_CHOICES) 
+    status = models.CharField(max_length=50, choices=STATUS_CHOICES, default="active") 
     last_updated = models.DateField(default=datetime(2024,1,1))
     def __str__(self):
         return self.name
@@ -51,18 +51,17 @@ class Employee(models.Model):
             employment_date = e.employment_date
             status = e.status
             if status == 0:
-                status = "active"
+                status = "Active"
             elif status == 1:
-                status = "inactive"
+                status = "Inactive"
             elif status == 2:
-                status = "terminated"
+                status = "Terminated"
             try:
-                emp, created = Employee.objects.update_or_create(
+                emp, created = Employee.objects.filter(employee_id=e.no).update_or_create(
                     employee_id=e.no,
                     name=name,
                     employment_date=employment_date,
                     status=status,
-                    defaults={"employee_id":e.no},
                 )
             except:
                 pass

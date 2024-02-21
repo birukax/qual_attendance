@@ -13,7 +13,7 @@
             <link rel="stylesheet" href="{% static 'src/output.css' %}" />
         {% endcompress %}
     </head>
-    <body class="flex ">
+    <body class="flex bg-isabelline-500">
         <div class="container">
             {% include "session_security/all.html" %}
             <div class="flex">
@@ -21,7 +21,7 @@
             <div>
                 {% include "sidebar.html" %}
             </div>
-                    <div class="flex items-end justify-between p-4 mx-auto bg-white">
+                    <div class="flex items-end justify-between p-4 mx-auto ">
                         <div class="flex items-center space-x-6 rtl:space-x-reverse">
                             <p class="text-lg font-semibold first-letter:uppercase">{{ request.user.username }}</p>
                             <form method="post" action="{% url 'logout' %}">

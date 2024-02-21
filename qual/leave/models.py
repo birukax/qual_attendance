@@ -19,6 +19,7 @@ class LeaveType(models.Model):
     
 
 class Leave(models.Model):
+        
     employee = models.ForeignKey(
         employee.models.Employee, on_delete=models.CASCADE, related_name="leaves"
     )
@@ -26,8 +27,13 @@ class Leave(models.Model):
     start_date = models.DateField(default=date.today)
     end_date = models.DateField(default=date.today)
     leave_type = models.ForeignKey(LeaveType, on_delete=models.CASCADE)
+    active = models.BooleanField(default=False)
+    approved = models.BooleanField(default=False)
     reason = models.TextField(null=True, max_length=250)
     evidence = models.FileField(null=True, blank=True, upload_to="leave_evidence/")
+    
+    class Meta:
+        permissions = [("can_approve_leave", "Can Approve Leave")]
     
     def get_absolute_url(self):
         return reverse("leave:leave_detail", args={self.id})

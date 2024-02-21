@@ -17,7 +17,7 @@
     <aside id="logo-sidebar"
            class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full lg:translate-x-0"
            aria-label="Sidebar">
-        <div class="h-full px-3 py-4 overflow-y-auto bg-slate-100">
+        <div class="h-full px-3 py-4 overflow-y-auto bg-primary-50">
             {% load static %}
             <a href="{% url 'attendance:dashboard' %}"
                class="flex items-center ps-2.5 mb-5">
@@ -53,6 +53,19 @@
                             <path d="M14 2a3.963 3.963 0 0 0-1.4.267 6.439 6.439 0 0 1-1.331 6.638A4 4 0 1 0 14 2Zm1 9h-1.264A6.957 6.957 0 0 1 15 15v2a2.97 2.97 0 0 1-.184 1H19a1 1 0 0 0 1-1v-1a5.006 5.006 0 0 0-5-5ZM6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Z" />
                         </svg>
                         <span class="flex-1 ms-3 whitespace-nowrap">Employees</span>
+                    </a>
+                </li>
+                <li>
+                    <a href=" {% url 'attendance:compile_view' %}"
+                       class="flex items-center p-2 rounded-l text-slate-900 hover:text-slate-100 hover:bg-slate-900 group">
+                        <svg class="flex-shrink-0 w-5 h-5 transition duration-75 text-slate-900 group-hover:text-slate-100"
+                             aria-hidden="true"
+                             xmlns="http://www.w3.org/2000/svg"
+                             fill="currentColor"
+                             viewBox="0 0 20 18">
+                            <path d="M14 2a3.963 3.963 0 0 0-1.4.267 6.439 6.439 0 0 1-1.331 6.638A4 4 0 1 0 14 2Zm1 9h-1.264A6.957 6.957 0 0 1 15 15v2a2.97 2.97 0 0 1-.184 1H19a1 1 0 0 0 1-1v-1a5.006 5.006 0 0 0-5-5ZM6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Z" />
+                        </svg>
+                        <span class="flex-1 ms-3 whitespace-nowrap">Compile</span>
                     </a>
                 </li>
                 <li>
@@ -109,8 +122,8 @@
                 </li>
                 <li>
                     <a href="{% url 'shift:shifts' %}"
-                       class="flex items-center p-2 rounded-lg text-slate-100 hover:text-slate-900 hover:bg-slate-100 group">
-                        <svg class="flex-shrink-0 w-5 h-5 transition duration-75 text-slate-100 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white"
+                       class="flex items-center p-2 rounded-lg text-slate-900 hover:text-slate-100 hover:bg-slate-900 group">
+                        <svg class="flex-shrink-0 w-5 h-5 transition duration-75 text-slate-900 group-hover:text-slate-100 "
                              aria-hidden="true"
                              xmlns="http://www.w3.org/2000/svg"
                              fill="currentColor"
@@ -124,8 +137,8 @@
                 </li>
                 <li>
                     <a href="{% url 'attendance:raw_attendance' %}"
-                       class="flex items-center p-2 rounded-lg text-slate-100 hover:text-slate-900 hover:bg-slate-100 group">
-                        <svg class="flex-shrink-0 w-5 h-5 transition duration-75 text-slate-100 dark:text-slate-400 group-hover:text-slate-900 dark:group-hover:text-white"
+                       class="flex items-center p-2 rounded-lg text-slate-900 hover:text-slate-100 hover:bg-slate-900 group">
+                        <svg class="flex-shrink-0 w-5 h-5 transition duration-75 text-slate-900 group-hover:text-slate-100"
                              aria-hidden="true"
                              xmlns="http://www.w3.org/2000/svg"
                              fill="currentColor"

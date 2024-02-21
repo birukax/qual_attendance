@@ -1,0 +1,114 @@
+{% extends "_base.html" %}
+
+{% block content %}
+
+<div class="w-fit px-5 py-2 divide-y-2 divide-slate-900 relative ml-4 overflow-x-auto shadow-md  bg-white">
+    <div class="flex items-stretch justify-around mb-4 py-4">
+        <div class=" px-2">
+            <h2 class="mb-2 text-lg font-semibold text-gray-900 uppercase">Check list: </h2>
+            <ul class="max-w-md space-y-1 text-gray-900 list-inside">
+                <li class="flex items-center">
+                    {% if no_shift == 0 %}
+                    <svg class="w-3.5 h-3.5 me-2 text-green-500 dark:text-green-400 flex-shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z"/>
+                     </svg>
+                     {% else %}
+                     <svg class="w-3.5 h-3.5 me-2 text-gray-500 dark:text-gray-400 flex-shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z"/>
+                     </svg>
+                     {% endif %}
+                     <h2 class="font-semibold">
+                    There are currently {{ no_shift }} employees without a shift.
+                    </h2>
+                </li>
+                <li class="flex items-center">
+                    {% if no_pattern == 0 %}
+                    <svg class="w-3.5 h-3.5 me-2 text-green-500 dark:text-green-400 flex-shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z"/>
+                     </svg>
+                     {% else %}
+                     <svg class="w-3.5 h-3.5 me-2 text-gray-500 dark:text-gray-400 flex-shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z"/>
+                     </svg>
+                     {% endif %}
+                     <h2 class="font-semibold">
+                    There are currently {{ no_pattern }} employees without a pattern.
+                     </h2>
+                     </li>
+                <li class="flex items-center">
+                    <svg class="w-3.5 h-3.5 me-2 text-green-500 dark:text-green-400 flex-shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z"/>
+                     </svg>
+                    Last compiled on {{ daily_records.date }}
+                </li>
+            </ul>
+            </div>
+        <div class=" flex-row items-stretch">
+            <div class="mb-4 ">
+                <a href="{% url 'attendance:compile_attendance' %}"
+                class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-green-700 rounded-lg hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+                    Compile attendance
+                    <svg class="w-4 h-4 ml-2 -mr-1"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd">
+                    </path>
+                    </svg>
+                </a>
+            </div>
+            <div>
+                <a href="{% url 'attendance:save_compiled_data' %}"
+                class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-green-700 rounded-lg hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+                    Save data
+                    <svg class="w-4 h-4 ml-2 -mr-1"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd">
+                    </path>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </div>
+    <table class=" text-left text-gray-900 ">
+        <thead class=" text-gray-900 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-900">
+            <tr>
+                <th scope="col" class="px-1 py-2">Employee</th>
+                <th scope="col" class="px-1 py-2">Check in</th>
+                <th scope="col" class="px-1 py-2">Check out</th>
+                <th scope="col" class="px-1 py-2">Status</th>
+                <th scope="col" class="px-1 py-2">Worked hours</th>
+                <th scope="col" class="px-1 py-2">
+                    Check in &
+                    <br>
+                    Check out type
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for a in attendances %}
+                <tr class="bg-white border-b hover:bg-gray-50">
+                    <th scope="row"
+                        class="px-1 py-1 font-semibold text-gray-900 whitespace-nowrap dark:text-white">
+                        {{ a.employee.name }}
+                        <br>
+                        <span class="font-light">{{ a.current_pattern }}</span>
+                    </th>
+                    <td class="px-2 py-2 whitespace-nowrap divide-y">{{ a.check_in_date }} <br >{{ a.check_in_time }} </td>
+                    <td class="px-2 py-2 divide-y whitespace-nowrap">{{ a.check_out_date }} <br >{{ a.check_out_time }} </td>
+                    <td class="px-2 py-2 whitespace-nowrap">{{ a.status }}</td>
+                    <td class="px-2 py-2">{{ a.worked_hours }}</td>
+                    <td class="px-2 py-2">
+                        {{ a.check_in_type }}
+                        <br>
+                        {{ a.check_out_type }}
+                    </td>
+                    
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock content %}

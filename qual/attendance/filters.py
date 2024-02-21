@@ -1,5 +1,5 @@
 import django_filters
-from .models import Attendance
+from .models import *
 from employee.models import Employee
 from device.models import Device
 from shift.models import Pattern
@@ -8,20 +8,33 @@ from leave.models import LeaveType
 class AttendanceDownloadFilter(django_filters.FilterSet):
     class Meta:
         model = Attendance
-        fields = ['employee', 'device', 'leave', 'current_pattern', 'check_in_date' ]
-    
-    employee = django_filters.ModelChoiceFilter(queryset=Employee.objects.all().order_by('name'))
-    device = django_filters.ModelChoiceFilter(queryset=Device.objects.all().order_by('name'))
-    current_pattern = django_filters.ModelChoiceFilter(queryset=Pattern.objects.all().order_by('name'))
+        fields = {'employee__name': ['icontains'], 
+                #   'device__name': ['icontains'], 
+                  'current_pattern__name': ['icontains'],  
+                  'status': ['exact'], 
+                  'check_in_type': ['exact'], 
+                  'check_out_type': ['exact'], }
+    status = django_filters.ChoiceFilter(choices=Attendance.CHOICES)
     check_in_date = django_filters.DateFromToRangeFilter(widget=django_filters.widgets.RangeWidget(attrs={'type': 'date'}))
 
 class AttendanceFilter(django_filters.FilterSet):
     class Meta:
         model = Attendance
-        fields = ['employee', 'device', 'leave', 'current_pattern', 'check_in_date' ]
+        fields = {
+            'employee__name': ['icontains'],
+            'device': ['exact'],
+            'current_pattern': ['exact'],
+            'check_in_date': ['exact'],
+            'status': ['exact'],
+            'check_in_type': ['exact'],
+            'check_out_type': ['exact'],
+        }
 
-    employee = django_filters.ModelChoiceFilter(queryset=Employee.objects.all().order_by('name'))
-    device = django_filters.ModelChoiceFilter(queryset=Device.objects.all().order_by('name'))
-    current_pattern = django_filters.ModelChoiceFilter(queryset=Pattern.objects.all().order_by('name'))
-    leave = django_filters.ModelChoiceFilter(queryset=LeaveType.objects.all().order_by('name'))
-    check_in_date = django_filters.DateFromToRangeFilter(widget=django_filters.widgets.RangeWidget(attrs={'type': 'date'}))
+class RawAttendanceFilter(django_filters.FilterSet):
+    class Meta:
+        model = RawAttendance
+        fields = {
+            'employee__name': ['icontains'],
+            'device': ['exact'],
+            'date': ['exact'],
+        }
