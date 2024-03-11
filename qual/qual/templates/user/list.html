@@ -1,0 +1,49 @@
+{% extends "_base.html" %}
+{% block content %}
+  <div class=" w-fit ml-4 overflow-x-auto shadow-md sm:rounded-lg">
+    <a href="{% url 'account:create_user' %}"
+       class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-green-700 rounded-lg hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+      Create user
+      <svg class="w-4 h-4 ml-2 -mr-1"
+           fill="currentColor"
+           viewBox="0 0 20 20"
+           xmlns="http://www.w3.org/2000/svg">
+        <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd">
+        </path>
+      </svg>
+    </a>
+    <table class="text-left rtl:text-right text-gray-900 divide-y">
+      <thead class="text-gray-900 font-semibold uppercase bg-white">
+        <tr>
+          <th scope="col" class="px-3 py-4">Username</th>
+          <th scope="col" class="px-3 py-4">Email</th>
+          <th scope="col" class="px-3 py-4">Full name</th>
+          <th scope="col" class="px-3 py-4">Active</th>
+          <th scope="col" class="px-3 py-4">Role</th>
+          <th scope="col" class="px-3 py-4">Manages</th>
+          <th scope="col" class="px-3 py-4">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for user in page %}
+          <tr class="bg-white border-b">
+            <th scope="row"
+                class="px-4 py-2 font-semibold text-gray-900 whitespace-nowrap dark:text-white">
+              {{ user.username }}
+            </th>
+            <td class="px-4 py-2">{{ user.email }}</td>
+            <td class="px-4 py-2 whitespace-nowrap">{{ user.first_name }} {{ user.last_name }}</td>
+            <td class="px-4 py-2">{{ user.is_active }}</td>
+            <td class="px-4 py-2">{{ user.profile.role }}</td>
+            <td class="px-4 py-2">{{ user.profile.manages.count }}</td>
+            <td class="px-4 py-2">
+              <a href="{{ user.profile.get_absolute_url }}"
+                 class="font-medium text-blue-900 dark:text-blue-500 hover:underline">Detail</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% include "pagination.html" %}
+  </div>
+{% endblock content %}

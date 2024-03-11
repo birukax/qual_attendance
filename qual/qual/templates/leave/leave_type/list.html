@@ -1,48 +1,37 @@
-{% extends "_base.html" %}
-{% block content %}
-    <div class="relative mt-4 ml-8 lg:rounded-lg lg:ml-24">
-        {% include "leave/leave_type/create.html" %}
-       <div class="w-full mx-2 bg-white">
-        <table class="overflow-x-auto text-sm text-left text-black shadow-md rtl:text-right">
-            <thead class="text-xs text-gray-700 uppercase bg-gray-50">
-                <tr>
-                    <th scope="col" class="px-3 py-3 md:px-6">
-                        Name
-                    </th>
-                    <th scope="col" class="px-3 py-3 md:px-6">
-                        Maximum days
-                    </th>
-                    <th scope="col" class="px-3 py-3 md:px-6">
-                        Paid
-                    </th>
-                    <th scope="col" class="px-3 py-3 md:px-6">
-                        Actions
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for leave_type in page %}
-                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                        <td class="px-2 py-4 md:px-6">
-                            {{ leave_type.name }}
-                        </td>
-                        
-                        <td class="px-2 py-4 md:px-6">
-                            {{ leave_type.maximum_days }}
-                        </td>
-                        <td class="px-2 py-4 md:px-6">
-                            {{ leave_type.paid }}
-                        </td>
-                        <td class="px-2 py-4 text-right md:px-6">
-                            <a href="{{ leave_type.get_absolute_url }}"
-                               class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Detail</a>
-                        </td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        {% include "pagination.html" %}
+{% extends "_base.html" %} {% block content %}
+<div class="w-fit bg-white mx-4 px-4 divide-y divide-black">
+  <div class="p-4">{% include "leave/leave_type/create.html" %}</div>
+  <div class="w-full mx-2 bg-white divide-y-2">
+    <table class="overflow-x-auto text-left text-black">
+      <thead class="text-gray-700 uppercase bg-gray-50">
+        <tr>
+          <th scope="col" class="px-3 py-3">Name</th>
+          <th scope="col" class="px-3 py-3">Maximum days</th>
+          <th scope="col" class="px-3 py-3">Paid</th>
+          <th scope="col" class="px-3 py-3">Leaves</th>
+          <th scope="col" class="px-3 py-3">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for leave_type in page %}
+        <tr class="bg-white text-slate-900 hover:bg-gray-50 font-semibold">
+          <td class="px-2 py-4">{{ leave_type.name }}</td>
 
-       </div>
-    </div>
+          <td class="px-2 py-4">{{ leave_type.maximum_days }}</td>
+          <td class="px-2 py-4">{{ leave_type.paid }}</td>
+          <td class="px-2 py-4">{{ leave_type.leaves.count }}</td>
+          <td class="px-2 py-4 text-right">
+            <a
+              href="{{ leave_type.get_absolute_url }}"
+              class="text-blue-600 dark:text-blue-500 hover:underline"
+              >Detail</a
+            >
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% include "pagination.html" %}
+  </div>
+</div>
 {% endblock content %}

@@ -12,7 +12,6 @@ from django.contrib.postgres.search import SearchVector
 import threading
 
 
-
 @login_required
 def devices(request):
     devices = Device.objects.all()
@@ -22,6 +21,7 @@ def devices(request):
         "device/list.html",
         {"devices": devices, "form": create_device_form},
     )
+
 
 @login_required
 def create_device(request):
@@ -35,10 +35,18 @@ def create_device(request):
 
     return redirect("device:devices")
 
+
 @login_required
 def device_detail(request, id):
     device = get_object_or_404(Device, id=id)
-    device_connected = ZK(ip=device.ip, port=device.port, timeout=50)
+    device_connected = ZK(
+        ip=device.ip,
+        port=device.port,
+        timeout=50,
+        # force_udp=True,
+        # ommit_ping=True,
+        # verbose=True,
+    )
     device_connected.connect()
     device_time = device_connected.get_time()
     device_users = device_connected.get_users()
@@ -46,5 +54,9 @@ def device_detail(request, id):
     page_number = request.GET.get("page")
     page = paginated.get_page(page_number)
     device_connected.disconnect()
-    
-    return render(request, "device/detail.html", {"device": device, 'device_time': device_time, 'page':page})
+
+    return render(
+        request,
+        "device/detail.html",
+        {"device": device, "device_time": device_time, "page": page},
+    )

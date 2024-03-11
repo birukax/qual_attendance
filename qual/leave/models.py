@@ -3,6 +3,7 @@ from django.urls import reverse
 import employee.models
 from datetime import date
 
+
 # Create your models here.
 class LeaveType(models.Model):
     name = models.CharField(max_length=100)
@@ -13,27 +14,31 @@ class LeaveType(models.Model):
 
     def __str__(self):
         return self.name
-    
+
     def get_absolute_url(self):
         return reverse("leave:leave_type_detail", args={self.id})
-    
+
 
 class Leave(models.Model):
-        
+
     employee = models.ForeignKey(
         employee.models.Employee, on_delete=models.CASCADE, related_name="leaves"
     )
     is_half_day = models.BooleanField(default=False)
     start_date = models.DateField(default=date.today)
     end_date = models.DateField(default=date.today)
-    leave_type = models.ForeignKey(LeaveType, on_delete=models.CASCADE)
+    leave_type = models.ForeignKey(
+        LeaveType,
+        on_delete=models.CASCADE,
+        related_name="leaves",
+    )
     active = models.BooleanField(default=False)
     approved = models.BooleanField(default=False)
     reason = models.TextField(null=True, max_length=250)
     evidence = models.FileField(null=True, blank=True, upload_to="leave_evidence/")
-    
+
     class Meta:
         permissions = [("can_approve_leave", "Can Approve Leave")]
-    
+
     def get_absolute_url(self):
         return reverse("leave:leave_detail", args={self.id})

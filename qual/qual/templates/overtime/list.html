@@ -1,0 +1,50 @@
+{% extends "_base.html" %} {% block content %}
+<div class="w-fit bg-white mx-4 px-4">
+  <div class="p-3">{% include "overtime/create.html" %}</div>
+
+  <div>
+    <table class="overflow-x-auto text-left text-black">
+      <thead class="text-gray-800 whitespace-nowrap uppercase bg-gray-50">
+        <tr>
+          <th scope="col" class="px-1 py-2">Employee</th>
+          <th scope="col" class="px-1 py-2">Type</th>
+          <th scope="col" class="px-1 py-2">Start Date</th>
+          <th scope="col" class="px-1 py-2">End Date</th>
+          <th scope="col" class="px-1 py-2">Start time</th>
+          <th scope="col" class="px-1 py-2">End time</th>
+          <th scope="col" class="px-1 py-2">Approved</th>
+          <th scope="col" class="px-1 py-2">Actions</th>
+        </tr>
+      </thead>
+      <tbody class="whitespace-nowrap">
+        {% for overtime in page %}
+        <tr class="bg-white border-b hover:bg-gray-50">
+          <td class="px-2 py-4 whitespace-nowrap">
+            {{ overtime.employee.name }}
+          </td>
+          <th
+            scope="row"
+            class="px-2 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+          >
+            {{ overtime.overtime_type }}
+          </th>
+          <td class="px-2 py-4 whitespace-nowrap">{{ overtime.start_date }}</td>
+          <td class="px-2 py-4 whitespace-nowrap">{{ overtime.end_date }}</td>
+          <td class="px-2 py-4">{{ overtime.start_time_expected }}</td>
+          <td class="px-2 py-4">{{ overtime.end_time_expected }}</td>
+          <td class="px-2 py-4">{{ overtime.approved }}</td>
+          <td class="px-2 py-4 text-right">
+            <a
+              href="{{ overtime.get_absolute_url }}"
+              class="font-medium text-blue-800 dark:text-blue-500 hover:underline"
+              >Detail</a
+            >
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% include "pagination.html" %}
+  </div>
+</div>
+{% endblock content %}

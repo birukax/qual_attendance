@@ -1,10 +1,9 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
-from .models import Shift, Pattern
+from .models import *
 from django.core.paginator import Paginator
-from .forms import CreateShiftForm,EditShiftForm ,CreatePatternForm,EditPatternForm ,ChangeEmployeeShiftForm, ChangeEmployeePatternForm
+from .forms import *
 from employee.models import Employee
-
 
 
 @login_required
@@ -22,29 +21,33 @@ def create_shift(request):
             )
             return redirect("shift:shifts")
 
+
 @login_required
 def shifts(request):
     create_shift_form = CreateShiftForm(data=request.GET)
-    shifts = Shift.objects.all()
+    shifts = Shift.objects.all().order_by("-name")
     paginated = Paginator(shifts, 15)
     page_number = request.GET.get("page")
-    
+
     page = paginated.get_page(page_number)
-    return render(
-        request, "shift/list.html", {"create_shift_form":create_shift_form,"shifts":shifts ,"page":page}   
-    )
+    context = {"create_shift_form": create_shift_form, "page": page}
+    return render(request, "shift/list.html", context)
+
 
 @login_required
 def shift_detail(request, id):
     shift = get_object_or_404(Shift, id=id)
     patterns = Pattern.objects.filter(shift=shift)
-    create_pattern_form = CreatePatternForm(data=request.GET, shift=shift,)
+    create_pattern_form = CreatePatternForm(
+        data=request.GET,
+        shift=shift,
+    )
     edit_shift_form = EditShiftForm(instance=shift)
     employees = Employee.objects.filter(shift=shift)
     paginated = Paginator(employees, 15)
     page_number = request.GET.get("page")
     page = paginated.get_page(page_number)
-    
+
     if request.method == "POST":
         form = CreatePatternForm(data=request.POST, shift=shift)
         if form.is_valid():
@@ -65,35 +68,36 @@ def shift_detail(request, id):
                 next=next,
             )
             return redirect("shift:shift_detail", id=pattern.shift.id)
-        
+
     context = {
-        "shift": shift, 
-        "page": page, 
-        "patterns":patterns , 
-        "create_pattern_form":create_pattern_form, 
-        "edit_shift_form":edit_shift_form 
-        }
-    return render(
-        request, "shift/detail.html", context
-    )
+        "shift": shift,
+        "page": page,
+        "patterns": patterns,
+        "create_pattern_form": create_pattern_form,
+        "edit_shift_form": edit_shift_form,
+    }
+    return render(request, "shift/detail.html", context)
+
 
 @login_required
-def change_shift(request, id ):
+def change_shift(request, id):
     if request.method == "POST":
         employee = Employee.objects.get(id=id)
         shift_form = ChangeEmployeeShiftForm(request.POST, instance=employee)
         if shift_form.is_valid():
             shift_form.save()
             return redirect("employee:employee_detail", id=id)
-        
+
+
 @login_required
-def change_pattern(request, id ):
+def change_pattern(request, id):
     if request.method == "POST":
         employee = Employee.objects.get(id=id)
         pattern_form = ChangeEmployeePatternForm(request.POST, instance=employee)
         if pattern_form.is_valid():
             pattern_form.save()
             return redirect("employee:employee_detail", id=id)
+
 
 @login_required
 def edit_pattern(request, id):
@@ -109,11 +113,14 @@ def edit_pattern(request, id):
             pattern.tolerance = form.cleaned_data["tolerance"]
             pattern.next = form.cleaned_data["next"]
             pattern.save()
-            
+
             return redirect("shift:shift_detail", id=pattern.shift.id)
     else:
         form = EditPatternForm(instance=pattern)
-    return render(request, "shift/pattern/edit.html", {"pattern":pattern,"form": form})
+    return render(
+        request, "shift/pattern/edit.html", {"pattern": pattern, "form": form}
+    )
+
 
 @login_required
 def edit_shift(request, id):

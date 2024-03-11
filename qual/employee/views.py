@@ -11,30 +11,24 @@ from attendance.models import Attendance
 from .filters import *
 
 
-
-
 @login_required
 def employees(request):
-    
-    
-    employees = (
-        Employee.objects.all()
-        .select_related()
-        .order_by("-employee_id")
-    )
+
+    employees = Employee.objects.all().select_related().order_by("-employee_id")
     employee_filter = EmployeeFilter(request.GET, queryset=employees)
     emps = employee_filter.qs
 
-    paginated = Paginator(emps, 10)
+    paginated = Paginator(emps, 15)
     page_number = request.GET.get("page")
 
     page = paginated.get_page(page_number)
-    context = {"employees": employees, "page": page, "employee_filter":employee_filter}
+    context = {"employees": employees, "page": page, "employee_filter": employee_filter}
     return render(
         request,
         "employee/list.html",
         context,
     )
+
 
 @login_required
 def sync_employee(request):
@@ -42,16 +36,51 @@ def sync_employee(request):
     employee_object.sync_employee()
     return redirect("employee:employees")
 
+
 @login_required
 def employee_detail(request, id):
     employee = get_object_or_404(Employee, id=id)
-    attendances = Attendance.objects.filter(employee=employee).order_by('-check_in_date')
+    attendances = Attendance.objects.filter(employee=employee).order_by(
+        "-check_in_date"
+    )
     paginated = Paginator(attendances, 15)
-    change_shift_form = ChangeEmployeeShiftForm(instance=employee, )
-    change_pattern_form = ChangeEmployeePatternForm(instance=employee,)
+    change_shift_form = ChangeEmployeeShiftForm(
+        instance=employee,
+    )
+    change_pattern_form = ChangeEmployeePatternForm(
+        instance=employee,
+    )
     sync_employee_attendance_form = SyncEmployeeAttendanceForm()
     page_number = request.GET.get("page")
     page = paginated.get_page(page_number)
     return render(
-        request, "employee/detail.html", {"employee": employee, "page": page, 'change_shift_form':change_shift_form, 'change_pattern_form':change_pattern_form, 'sync_employee_attendance_form':sync_employee_attendance_form}
+        request,
+        "employee/detail.html",
+        {
+            "employee": employee,
+            "page": page,
+            "change_shift_form": change_shift_form,
+            "change_pattern_form": change_pattern_form,
+            "sync_employee_attendance_form": sync_employee_attendance_form,
+        },
     )
+
+
+@login_required
+def sync_department(request):
+    department_object = Department()
+    department_object.sync_department()
+    return redirect("employee:employees")
+
+
+@login_required
+def departments(request):
+
+    departments = Department.objects.all().order_by("code")
+
+    paginated = Paginator(departments, 15)
+    page_number = request.GET.get("page")
+
+    page = paginated.get_page(page_number)
+    context = {"departments": departments, "page": page}
+    return render(request, "department/list.html", context)

@@ -1,0 +1,161 @@
+{% extends "_base.html" %}
+{% block content %}
+  <div class="w-full max-w-xl mx-auto bg-white shadow sm:p-8">
+    <div class="flex justify-between">
+      <div class="flex items-center justify-between mb-4">
+        <h5 class="text-2xl underline font-extrabold leading-none text-gray-900">Overtime detail</h5>
+      </div>
+      <div>
+        {% if perms.leave.can_approve_leave and overtime.approved == False %}
+          <a href="{% url 'overtime:approve_overtime' overtime.id %}"
+             class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-green-700 rounded-lg hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">
+            Approve
+            <svg class="w-4 h-4 ml-2 -mr-1"
+                 fill="currentColor"
+                 viewBox="0 0 20 20"
+                 xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd">
+              </path>
+            </svg>
+          </a>
+        {% endif %}
+      </div>
+    </div>
+    <div class="justify-around">
+      <div class="flex items-center justify-between">
+        <svg class="w-12 h-12 mb-3 text-slate-950"
+             aria-hidden="true"
+             xmlns="http://www.w3.org/2000/svg"
+             fill="currentColor"
+             viewBox="0 0 14 18">
+          <path d="M7 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9Zm2 1H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Z" />
+        </svg>
+        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{ overtime.employee.name }}</h5>
+      </div>
+      <div class="flex-row font-normal text-gray-900">
+        <div class="flex justify-between mb-2">
+          <span class="mr-2">Employee ID:</span>
+          <p class="font-bold">{{ overtime.employee.employee_id }}</p>
+        </div>
+        <div class="flex justify-between mb-2">
+          <span class="mr-2">Shift:</span>
+          <p class="font-bold">{{ overtime.employee.shift }}</p>
+        </div>
+        <div class="flex justify-between mb-2">
+          <span class="mr-2">Pattern:</span>
+          <p class="font-bold uppercase">{{ overtime.employee.pattern }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="flow-root">
+      <ul role="list" class="divide-y divide-gray-200 dark:divide-gray-700">
+        <li class="py-3">
+          <div class="flex items-center">
+            <div class="flex-1 min-w-0 ms-4">
+              <p class="text-sm font-medium text-gray-900 truncate dark:text-white">Overtime type</p>
+            </div>
+            <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+              {{ overtime.overtime_type }}
+            </div>
+          </div>
+        </li>
+        <li class="py-3">
+          <div class="flex items-center">
+            <div class="flex-1 min-w-0 ms-4">
+              <p class="text-sm font-medium text-gray-900 truncate dark:text-white">Approved</p>
+            </div>
+            <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+              {{ overtime.approved }}
+            </div>
+          </div>
+        </li>
+        <li class="py-3">
+          <div class="flex items-center">
+            <div class="flex-1 min-w-0 ms-4">
+              <p class="text-sm font-medium text-gray-900 truncate dark:text-white">Start date</p>
+            </div>
+            <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+              {{ overtime.start_date }}
+            </div>
+          </div>
+        </li>
+        <li class="py-3">
+          <div class="flex items-center">
+            <div class="flex-1 min-w-0 ms-4">
+              <p class="text-sm font-medium text-gray-900 truncate dark:text-white">End date</p>
+            </div>
+            <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+              {{ overtime.end_date }}
+            </div>
+          </div>
+        </li>
+        <li class="py-3">
+          <div class="flex items-center">
+            <div class="flex-1 min-w-0 ms-4">
+              <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                Expected
+                <br />
+                Start time
+              </p>
+            </div>
+            <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+              {{ overtime.start_time_expected }}
+            </div>
+          </div>
+        </li>
+        <li class="py-3">
+          <div class="flex items-center">
+            <div class="flex-1 min-w-0 ms-4">
+              <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                Expected
+                <br />
+                End time
+              </p>
+            </div>
+            <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+              {{ overtime.end_time_expected }}
+            </div>
+          </div>
+        </li>
+        <li class="py-3">
+          <div class="flex items-center">
+            <div class="flex-1 min-w-0 ms-4">
+              <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                Actual
+                <br />
+                Start time
+              </p>
+            </div>
+            <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+              {{ overtime.start_time_actual }}
+            </div>
+          </div>
+        </li>
+        <li class="py-3">
+          <div class="flex items-center">
+            <div class="flex-1 min-w-0 ms-4">
+              <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                Actual
+                <br />
+                End time
+              </p>
+            </div>
+            <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+              {{ overtime.end_time_actual }}
+            </div>
+          </div>
+        </li>
+        <li class="pt-3 pb-0 sm:pt-4">
+          <div class="flex-col items-center">
+            <div class="flex-1 min-w-0 ms-4">
+              <p class="mb-2 text-base font-bold text-gray-900 truncate dark:text-white">Reason</p>
+            </div>
+            <div class="inline-flex items-center ml-4 text-base font-semibold text-gray-900 dark:text-white">
+              {{ overtime.reason }}
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+{% endblock content %}

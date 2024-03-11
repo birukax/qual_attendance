@@ -10,8 +10,13 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
+# from __future__ import absolute_import
+
 import os
 from pathlib import Path
+
+# from .celery import app as celery_app
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,19 +30,18 @@ LOGIN_REDIRECT_URL = "/"
 SECRET_KEY = "django-insecure-(4x*c^lqncc)!e4vp4qb6x06y7ojqh@z*dhxc)l45mf8o%!jqb"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 # LOGIN_REDIRECT_URL = "attendance"
 # LOGIN_URL = "login"
 # LOGOUT_URL = "logout"
+DEBUG = True
+ADMIN = [("admin", "admin@email.com")]
 
 
 # Application definition
 
 INSTALLED_APPS = [
     # "django_admin_tailwind",
-    
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -45,14 +49,19 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.postgres",
-    "attendance.apps.AttendanceConfig",
-    'device.apps.DeviceConfig',
-    'employee.apps.EmployeeConfig',
-    'shift.apps.ShiftConfig',
-    'leave.apps.LeaveConfig',
-    "compressor",
     "session_security",
+    "attendance.apps.AttendanceConfig",
+    "account.apps.AccountConfig",
+    "device.apps.DeviceConfig",
+    "employee.apps.EmployeeConfig",
+    "shift.apps.ShiftConfig",
+    "leave.apps.LeaveConfig",
+    "holiday.apps.HolidayConfig",
+    "overtime.apps.OvertimeConfig",
+    "compressor",
     "django_filters",
+    "celery",
+    # "channels",
 ]
 
 MIDDLEWARE = [
@@ -85,17 +94,18 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "qual.wsgi.application"
-
+ASGI_APPLICATION = "qual.asgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
+        "HOST": "host.docker.internal",
         "NAME": "qual",
         "USER": "admin",
         "PASSWORD": "password",
+        "PORT": 5432,
     }
 }
 
@@ -137,7 +147,7 @@ USE_TZ = False
 
 # env\qual\Lib\site-packages\django\contrib\admin\static\admin\
 
-STATIC_URL =  "static/"
+STATIC_URL = "static/"
 STATIC_ROOT = BASE_DIR / "qual/static/"
 DEVICE_CONN_TIMEOUT = "5"
 
@@ -152,15 +162,38 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 COMPRESS_ROOT = BASE_DIR / "qual/static/"
 COMPRESS_ENABLED = True
 STATICFILES_FINDERS = (
-                "compressor.finders.CompressorFinder",
-                "django.contrib.staticfiles.finders.FileSystemFinder",
-                "django.contrib.staticfiles.finders.AppDirectoriesFinder",
-                       )
+    "compressor.finders.CompressorFinder",
+    "django.contrib.staticfiles.finders.FileSystemFinder",
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+)
 
 SESSION_SECURITY_WARN_AFTER = 59 * 60
 SESSION_SECURITY_EXPIRE_AFTER = 60 * 60
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+SECURE_SSL_REDIRECT = True
+
+
+BROKER_URL = "redis://redis:6379"
+RESULT_BACKEND = "redis://redis:6379"
+
+# REDIS_HOST = "redis"
+# REDIS_URL = "redis://redis:6379/0"
+# REDIS_PORT = 6379
+
+
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.postgresql",
+#         "HOST": "localhost",
+#         "NAME": "qual",
+#         "USER": "admin",
+#         "PASSWORD": "password",
+#         "PORT": 5432,
+#     }
+# }
 
 # npx tailwindcss -i ./qual/qual/static/src/input.css -o ./qual/qual/static/src/output.css --watch
 # c:\Users\biruk\Documents\projects\educa\env\educa\Scripts\python.exe -m pip install -U djlint
