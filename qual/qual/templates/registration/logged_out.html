@@ -1,10 +1,8 @@
 {% extends "_base.html" %}
-
 {% block content %}
-<div clas="text-dark font-bg">
-
-  <p>Logged out!</p>
-  <a href="{% url 'login' %}">Click here to login again.</a>
-
-</div>
+  <div class=" p-16 rounded-lg font-bold bg-white text-dark mx-auto w-fit">
+    <p>Logged out!</p>
+    <a href="{% url 'login' %}"
+       class="text-xl font-bold text-slate-900 hover:underline">Click here to login again.</a>
+  </div>
 {% endblock content %}

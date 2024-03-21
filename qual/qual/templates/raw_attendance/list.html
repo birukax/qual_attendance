@@ -1,57 +1,44 @@
-{% extends "_base.html" %} {% block content %}
-<div>
-  <a
-    href="{% url 'attendance:get_raw_data' %}"
-    class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-green-700 rounded-lg hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
-  >
-    Get raw data
-    <svg
-      class="w-4 h-4 ml-2 -mr-1"
-      fill="currentColor"
-      viewBox="0 0 20 20"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        fill-rule="evenodd"
-        d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-        clip-rule="evenodd"
-      ></path>
-    </svg>
-  </a>
-  {% include "raw_attendance/filter.html" %}
-</div>
-<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-  <table class="text-left rtl:text-right text-gray-900">
-    <thead class="text-gray-900 font-semibold uppercase bg-white">
-      <tr>
-        <th scope="col" class="px-4 py-3">ID</th>
-        <th scope="col" class="px-4 py-3">Employee name</th>
-        <th scope="col" class="px-4 py-3">date</th>
-        <th scope="col" class="px-4 py-3">time</th>
-        <th scope="col" class="px-4 py-3">Device</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for attendance in page %}
-      <tr class="bg-white border-b">
-        <td class="px-4 py-4">{{ attendance.employee.employee_id }}</td>
-        <th
-          scope="row"
-          class="px-4 py-4 font-semibold text-gray-900 whitespace-nowrap dark:text-white"
-        >
-          {{ attendance.employee.name }}
-        </th>
-        <td class="px-4 py-4">{{ attendance.date }}</td>
-        <td class="px-4 py-4">{{ attendance.time }}</td>
-        {% comment %}
+{% extends "_base.html" %}
+{% block content %}
+  <div class="flex-col gap-4 p-6 bg-white rounded-lg w-fit">
+    <div class="flex items-center justify-between my-4">
+      <a href="{% url 'attendance:get_raw_data' %}"
+         class="inline-flex items-center px-5 py-2 text-sm font-medium text-center text-white bg-slate-700 rounded-lg hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-slate-300 ">
+        Get raw data
+        
+      </a>
+      {% include "raw_attendance/filter.html" %}
+    </div>
+    <div class="relative overflow-x-auto shadow-lg w-fit">
+      <table class="text-left rtl:text-right text-slate-900">
+        <thead class="font-semibold uppercase text-slate-900 ">
+          <tr>
+            <th scope="col" class="px-4 py-3">ID</th>
+            <th scope="col" class="px-4 py-3">Employee name</th>
+            <th scope="col" class="px-4 py-3">date</th>
+            <th scope="col" class="px-4 py-3">time</th>
+            <th scope="col" class="px-4 py-3">Device</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for attendance in page %}
+            <tr class="bg-white border-b">
+              <td class="px-4 py-4">{{ attendance.employee.employee_id }}</td>
+              <th scope="row"
+                  class="px-4 py-4 font-semibold text-slate-900 whitespace-nowrap dark:text-white">
+                {{ attendance.employee.name }}
+              </th>
+              <td class="px-4 py-4 whitespace-nowrap">{{ attendance.date }}</td>
+              <td class="px-4 py-4 whitespace-nowrap">{{ attendance.time }}</td>
+              {% comment %}
         <td class="px-4 py-4">{{ attendance.status }}</td>
-        {% endcomment %}
-        <td class="px-4 py-4">{{ attendance.device.name }}</td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-
-  {% include "pagination.html" %}
-</div>
+              {% endcomment %}
+              <td class="px-4 py-4">{{ attendance.device.name }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% include "pagination.html" %}
+    </div>
+  </div>
 {% endblock content %}

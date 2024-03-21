@@ -4,9 +4,9 @@
           data-drawer-toggle="logo-sidebar"
           aria-controls="logo-sidebar"
           type="button"
-          class="inline-flex items-center p-2 mt-2 text-sm rounded-lg ms-3 text-slate-500 lg:hidden hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-slate-200">
+          class="inline-flex items-center p-2 mt-2 text-sm rounded-lg ms-3 text-slate-800 xl:hidden hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-slate-200">
     <span class="sr-only">Open sidebar</span>
-    <svg class="w-6 h-6 text-slate-800 dark:text-white"
+    <svg class="w-6 h-6 text-slate-800"
          aria-hidden="true"
          xmlns="http://www.w3.org/2000/svg"
          fill="none"
@@ -15,24 +15,51 @@
     </svg>
   </button>
   <aside id="logo-sidebar"
-         class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full lg:translate-x-0"
+         class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full xl:translate-x-0"
          aria-label="Sidebar">
-    <div class="h-full px-3 py-4 overflow-y-auto bg-primary-50">
+    <div class="h-full px-3 py-2 overflow-y-auto bg-slate-200">
       {% load static %}
-      {% comment %} <a href="{% url 'attendance:dashboard' %}" class="flex items-center ps-2.5 mb-5">
-        <img src="{% static 'images/logo.png' %}" alt="Logo" height="" width="" class="w-48 h-36" />
-      </a> {% endcomment %}
+      {% comment %}
+    <a href="{% url 'attendance:dashboard' %}" class="flex items-center ps-2.5 mb-5">
+      <img src="{% static 'images/logo.png' %}" alt="Logo" height="" width="" class="w-48 h-36" />
+    </a>
+      {% endcomment %}
+      <ul class="flex items-center justify-between py-2 mx-2 my-2 mb-6 space-y-3 font-semibold border-b border-slate-900">
+        <li>
+          <span class="ms-3">
+            <p class="text-lg font-bold text-slate-900 first-letter:uppercase">{{ request.user.username }}</p>
+          </span>
+        </li>
+        <li>
+          <form method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit"
+                    class="inline-flex items-center justify-center w-full px-4 py-2 mb-2 text-white bg-slate-600 rounded-md hover:bg-slate-800 sm:w-auto sm:mb-0"
+                    data-primary="slate-700"
+                    data-rounded="rounded-2xl"
+                    data-primary-reset="{}">
+              Logout
+              <svg class="w-4 h-4 ms-2 rtl:rotate-180"
+                   aria-hidden="true"
+                   xmlns="http://www.w3.org/2000/svg"
+                   fill="none"
+                   viewBox="0 0 14 10">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9" />
+              </svg>
+            </button>
+          </form>
+        </li>
+      </ul>
       <ul class="space-y-2 font-semibold">
         <li>
           <a href="{% url 'attendance:dashboard' %}"
              class="flex items-center p-2 rounded-lg text-slate-900 hover:bg-slate-900 hover:text-slate-100 group">
-            <svg class="w-5 h-5 transition duration-75 text-slate-900 group-hover:text-slate-100"
+            <svg class="flex-shrink-0 w-5 h-5 transition duration-75 text-slate-900 group-hover:text-slate-100"
                  aria-hidden="true"
                  xmlns="http://www.w3.org/2000/svg"
                  fill="currentColor"
-                 viewBox="0 0 22 21">
-              <path d="M16.975 11H10V4.025a1 1 0 0 0-1.066-.998 8.5 8.5 0 1 0 9.039 9.039.999.999 0 0 0-1-1.066h.002Z" />
-              <path d="M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z" />
+                 viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M11.3 3.3a1 1 0 0 1 1.4 0l6 6 2 2a1 1 0 0 1-1.4 1.4l-.3-.3V19a2 2 0 0 1-2 2h-3a1 1 0 0 1-1-1v-3h-2v3c0 .6-.4 1-1 1H7a2 2 0 0 1-2-2v-6.6l-.3.3a1 1 0 0 1-1.4-1.4l2-2 6-6Z" clip-rule="evenodd" />
             </svg>
             <span class="ms-3">Dashboard</span>
           </a>
@@ -45,9 +72,8 @@
                    aria-hidden="true"
                    xmlns="http://www.w3.org/2000/svg"
                    fill="currentColor"
-                   viewBox="0 0 22 21">
-                <path d="M16.975 11H10V4.025a1 1 0 0 0-1.066-.998 8.5 8.5 0 1 0 9.039 9.039.999.999 0 0 0-1-1.066h.002Z" />
-                <path d="M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z" />
+                   viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M5 5c.6 0 1-.4 1-1a1 1 0 1 1 2 0c0 .6.4 1 1 1h1c.6 0 1-.4 1-1a1 1 0 1 1 2 0c0 .6.4 1 1 1h1c.6 0 1-.4 1-1a1 1 0 1 1 2 0c0 .6.4 1 1 1a2 2 0 0 1 2 2v1c0 .6-.4 1-1 1H4a1 1 0 0 1-1-1V7c0-1.1.9-2 2-2ZM3 19v-7c0-.6.4-1 1-1h16c.6 0 1 .4 1 1v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Zm6-6c0-.6-.4-1-1-1a1 1 0 1 0 0 2c.6 0 1-.4 1-1Zm2 0a1 1 0 1 1 2 0c0 .6-.4 1-1 1a1 1 0 0 1-1-1Zm6 0c0-.6-.4-1-1-1a1 1 0 1 0 0 2c.6 0 1-.4 1-1ZM7 17a1 1 0 1 1 2 0c0 .6-.4 1-1 1a1 1 0 0 1-1-1Zm6 0c0-.6-.4-1-1-1a1 1 0 1 0 0 2c.6 0 1-.4 1-1Zm2 0a1 1 0 1 1 2 0c0 .6-.4 1-1 1a1 1 0 0 1-1-1Z" clip-rule="evenodd" />
               </svg>
               <span class="ms-3">Leaves</span>
             </a>
@@ -59,9 +85,8 @@
                    aria-hidden="true"
                    xmlns="http://www.w3.org/2000/svg"
                    fill="currentColor"
-                   viewBox="0 0 22 21">
-                <path d="M16.975 11H10V4.025a1 1 0 0 0-1.066-.998 8.5 8.5 0 1 0 9.039 9.039.999.999 0 0 0-1-1.066h.002Z" />
-                <path d="M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z" />
+                   viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M18 5h1a2 2 0 0 1 2 2v2H3V7c0-1 .9-2 2-2h1V4a1 1 0 1 1 2 0v1h3V4a1 1 0 1 1 2 0v1h3V4a1 1 0 1 1 2 0v1ZM3 11v8c0 1.2.9 2 2 2h14a2 2 0 0 0 2-2v-8H3Zm8 7a1 1 0 1 0 2 0v-1h1a1 1 0 1 0 0-2h-1v-1a1 1 0 1 0-2 0v1h-1a1 1 0 1 0 0 2h1v1Z" clip-rule="evenodd" />
               </svg>
               <span class="ms-3">Overtimes</span>
             </a>
@@ -70,70 +95,140 @@
         {% if not request.user.profile.role == "USER" %}
           <li>
             <a href=" {% url 'employee:employees' %}"
-               class="flex items-center p-2 rounded-l text-slate-900 hover:text-slate-100 hover:bg-slate-900 group">
-              <svg class="flex-shrink-0 w-5 h-5 transition duration-75 text-slate-900 group-hover:text-slate-100"
-                   aria-hidden="true"
-                   xmlns="http://www.w3.org/2000/svg"
-                   fill="currentColor"
-                   viewBox="0 0 20 18">
-                <path d="M14 2a3.963 3.963 0 0 0-1.4.267 6.439 6.439 0 0 1-1.331 6.638A4 4 0 1 0 14 2Zm1 9h-1.264A6.957 6.957 0 0 1 15 15v2a2.97 2.97 0 0 1-.184 1H19a1 1 0 0 0 1-1v-1a5.006 5.006 0 0 0-5-5ZM6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Z" />
-              </svg>
-              <span class="flex-1 ms-3 whitespace-nowrap">Employees</span>
-            </a>
-          </li>
-          <li>
-            <a href="{% url 'attendance:attendances' %}"
                class="flex items-center p-2 rounded-lg text-slate-900 hover:text-slate-100 hover:bg-slate-900 group">
               <svg class="flex-shrink-0 w-5 h-5 transition duration-75 text-slate-900 group-hover:text-slate-100"
                    aria-hidden="true"
                    xmlns="http://www.w3.org/2000/svg"
-                   fill="none"
-                   viewBox="0 0 17 10">
-                <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M6 1h10M6 5h10M6 9h10M1.49 1h.01m-.01 4h.01m-.01 4h.01" />
+                   fill="currentColor"
+                   viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M12 6a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Zm-1.5 8a4 4 0 0 0-4 4c0 1.1.9 2 2 2h7a2 2 0 0 0 2-2 4 4 0 0 0-4-4h-3Zm6.8-3.1a5.5 5.5 0 0 0-2.8-6.3c.6-.4 1.3-.6 2-.6a3.5 3.5 0 0 1 .8 6.9Zm2.2 7.1h.5a2 2 0 0 0 2-2 4 4 0 0 0-4-4h-1.1l-.5.8c1.9 1 3.1 3 3.1 5.2ZM4 7.5a3.5 3.5 0 0 1 5.5-2.9A5.5 5.5 0 0 0 6.7 11 3.5 3.5 0 0 1 4 7.5ZM7.1 12H6a4 4 0 0 0-4 4c0 1.1.9 2 2 2h.5a6 6 0 0 1 3-5.2l-.4-.8Z" clip-rule="evenodd" />
               </svg>
-              <span class="flex-1 ms-3 whitespace-nowrap">Attendance</span>
+              <span class="flex-1 ms-3 whitespace-nowrap">Employees</span>
             </a>
           </li>
+          {% if request.user.profile.role == "Manager" %}
+            <li>
+              <a href="{% url 'attendance:attendances' %}"
+                 class="flex items-center p-2 rounded-lg text-slate-900 hover:text-slate-100 hover:bg-slate-900 group">
+                <svg class="flex-shrink-0 w-5 h-5 transition duration-75 text-slate-900 group-hover:text-slate-100"
+                     aria-hidden="true"
+                     xmlns="http://www.w3.org/2000/svg"
+                     fill="currentColor"
+                     viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M8 3c0-.6.4-1 1-1h6c.6 0 1 .4 1 1h2a2 2 0 0 1 2 2v15a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5c0-1.1.9-2 2-2h2Zm6 1h-4v2H9a1 1 0 0 0 0 2h6a1 1 0 1 0 0-2h-1V4Zm-6 8c0-.6.4-1 1-1h6a1 1 0 1 1 0 2H9a1 1 0 0 1-1-1Zm1 3a1 1 0 1 0 0 2h6a1 1 0 1 0 0-2H9Z" clip-rule="evenodd" />
+                </svg>
+                <span class="flex-1 ms-3 whitespace-nowrap">Attendance</span>
+              </a>
+            </li>
+          {% endif %}
         {% endif %}
         {% if request.user.profile.role == "HR" or request.user.profile.role == "ADMIN" %}
           <li>
-            <a href=" {% url 'account:users' %}"
-               class="flex items-center p-2 rounded-l text-slate-900 hover:text-slate-100 hover:bg-slate-900 group">
-              <svg class="flex-shrink-0 w-5 h-5 transition duration-75 text-slate-900 group-hover:text-slate-100"
-                   aria-hidden="true"
-                   xmlns="http://www.w3.org/2000/svg"
-                   fill="currentColor"
-                   viewBox="0 0 20 18">
-                <path d="M14 2a3.963 3.963 0 0 0-1.4.267 6.439 6.439 0 0 1-1.331 6.638A4 4 0 1 0 14 2Zm1 9h-1.264A6.957 6.957 0 0 1 15 15v2a2.97 2.97 0 0 1-.184 1H19a1 1 0 0 0 1-1v-1a5.006 5.006 0 0 0-5-5ZM6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Z" />
-              </svg>
-              <span class="flex-1 ms-3 whitespace-nowrap">Manage User</span>
-            </a>
+            <div>
+              <button type="button"
+                      class="flex items-center w-full p-2 rounded-lg text-slate-900 hover:text-slate-100 hover:bg-slate-900 group"
+                      aria-controls="dropdown-pages-3"
+                      data-collapse-toggle="dropdown-pages-3">
+                <svg class="flex-shrink-0 w-5 h-5 transition duration-75 text-slate-900 group-hover:text-slate-100"
+                     aria-hidden="true"
+                     xmlns="http://www.w3.org/2000/svg"
+                     fill="currentColor"
+                     viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M8 3c0-.6.4-1 1-1h6c.6 0 1 .4 1 1h2a2 2 0 0 1 2 2v15a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5c0-1.1.9-2 2-2h2Zm6 1h-4v2H9a1 1 0 0 0 0 2h6a1 1 0 1 0 0-2h-1V4Zm-6 8c0-.6.4-1 1-1h6a1 1 0 1 1 0 2H9a1 1 0 0 1-1-1Zm1 3a1 1 0 1 0 0 2h6a1 1 0 1 0 0-2H9Z" clip-rule="evenodd" />
+                </svg>
+                <span class="flex-1 ml-3 text-left whitespace-nowrap">Attendance</span>
+                <svg aria-hidden="true"
+                     class="w-6 h-6"
+                     fill="currentColor"
+                     viewBox="0 0 20 20"
+                     xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd">
+                  </path>
+                </svg>
+              </button>
+              <ul id="dropdown-pages-3"
+                  class="hidden py-2 divide-y-2 divide-slate-900 gap-y-2">
+                <li>
+                  <a href="{% url 'attendance:attendances' %}"
+                     class="flex items-center p-2 my-1 rounded-lg text-slate-900 hover:text-slate-100 hover:bg-slate-900 group">
+                    <span class="flex-1 ms-3 whitespace-nowrap">Attendance</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="{% url 'attendance:raw_attendance' %}"
+                     class="flex items-center p-2 my-1 rounded-lg text-slate-900 hover:text-slate-100 hover:bg-slate-900 group">
+                    <span class="flex-1 ms-3 whitespace-nowrap">Raw data</span>
+                  </a>
+                </li>
+                <li>
+                  <a href=" {% url 'attendance:compile_view' %}"
+                     class="flex items-center p-2 my-1 rounded-lg text-slate-900 hover:text-slate-100 hover:bg-slate-900 group">
+                    <span class="flex-1 ms-3 whitespace-nowrap">Compile</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
           </li>
-          <li>
-            <a href=" {% url 'attendance:compile_view' %}"
-               class="flex items-center p-2 rounded-l text-slate-900 hover:text-slate-100 hover:bg-slate-900 group">
-              <svg class="flex-shrink-0 w-5 h-5 transition duration-75 text-slate-900 group-hover:text-slate-100"
-                   aria-hidden="true"
-                   xmlns="http://www.w3.org/2000/svg"
-                   fill="currentColor"
-                   viewBox="0 0 20 18">
-                <path d="M14 2a3.963 3.963 0 0 0-1.4.267 6.439 6.439 0 0 1-1.331 6.638A4 4 0 1 0 14 2Zm1 9h-1.264A6.957 6.957 0 0 1 15 15v2a2.97 2.97 0 0 1-.184 1H19a1 1 0 0 0 1-1v-1a5.006 5.006 0 0 0-5-5ZM6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Z" />
-              </svg>
-              <span class="flex-1 ms-3 whitespace-nowrap">Compile</span>
-            </a>
-          </li>
+          {% if perms.can_approve %}
+            <li>
+              <div>
+                <button type="button"
+                        class="flex items-center w-full p-2 rounded-lg text-slate-900 hover:text-slate-100 hover:bg-slate-900 group"
+                        aria-controls="dropdown-pages3"
+                        data-collapse-toggle="dropdown-pages3">
+                  <svg class="w-5 h-5 transition duration-75 text-slate-900 group-hover:text-slate-100"
+                       aria-hidden="true"
+                       xmlns="http://www.w3.org/2000/svg"
+                       width="24"
+                       height="24"
+                       fill="currentColor"
+                       viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M18 14a1 1 0 1 0-2 0v2h-2a1 1 0 1 0 0 2h2v2a1 1 0 1 0 2 0v-2h2a1 1 0 1 0 0-2h-2v-2Z" clip-rule="evenodd" />
+                    <path fill-rule="evenodd" d="M15.026 21.534A9.994 9.994 0 0 1 12 22C6.477 22 2 17.523 2 12S6.477 2 12 2c2.51 0 4.802.924 6.558 2.45l-7.635 7.636L7.707 8.87a1 1 0 0 0-1.414 1.414l3.923 3.923a1 1 0 0 0 1.414 0l8.3-8.3A9.956 9.956 0 0 1 22 12a9.994 9.994 0 0 1-.466 3.026A2.49 2.49 0 0 0 20 14.5h-.5V14a2.5 2.5 0 0 0-5 0v.5H14a2.5 2.5 0 0 0 0 5h.5v.5c0 .578.196 1.11.526 1.534Z" clip-rule="evenodd" />
+                  </svg>
+                  <span class="flex-1 ml-3 text-left whitespace-nowrap">Approval</span>
+                  <svg aria-hidden="true"
+                       class="w-6 h-6"
+                       fill="currentColor"
+                       viewBox="0 0 20 20"
+                       xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                  </svg>
+                </button>
+                <ul id="dropdown-pages3"
+                    class="hidden py-2 divide-y-2 divide-slate-900 gap-y-2">
+                  <li>
+                    <a href="{% url 'approval:attendance_approval' %}"
+                       class="flex items-center w-full p-2 my-1 rounded-lg text-slate-900 hover:text-slate-100 hover:bg-slate-900">Attendance</a>
+                  </li>
+                  <li>
+                    <a href="{% url 'approval:leave_approval' %}"
+                       class="flex items-center w-full p-2 my-1 rounded-lg text-slate-900 hover:text-slate-100 hover:bg-slate-900">Leave</a>
+                  </li>
+                  <li>
+                    <a href="{% url 'approval:overtime_approval' %}"
+                       class="flex items-center w-full p-2 my-1 rounded-lg text-slate-900 hover:text-slate-100 hover:bg-slate-900">Overtime</a>
+                  </li>
+                  <li>
+                    <a href="{% url 'approval:holiday_approval' %}"
+                       class="flex items-center w-full p-2 my-1 rounded-lg text-slate-900 hover:text-slate-100 hover:bg-slate-900">Holiday</a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+          {% endif %}
           <li>
             <div>
               <button type="button"
                       class="flex items-center w-full p-2 rounded-lg text-slate-900 hover:text-slate-100 hover:bg-slate-900 group"
                       aria-controls="dropdown-pages"
                       data-collapse-toggle="dropdown-pages">
-                <svg class="flex-shrink-0 w-5 h-5 transition duration-75 text-slate-900 dark:text-slate-900 group-hover:text-slate-100"
+                <svg class="w-5 h-5 transition duration-75 text-slate-900 group-hover:text-slate-100"
                      aria-hidden="true"
                      xmlns="http://www.w3.org/2000/svg"
-                     fill="none"
-                     viewBox="0 0 18 16">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 8h11m0 0L8 4m4 4-4 4m4-11h3a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-3" />
+                     fill="currentColor"
+                     viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M5 5c.6 0 1-.4 1-1a1 1 0 1 1 2 0c0 .6.4 1 1 1h1c.6 0 1-.4 1-1a1 1 0 1 1 2 0c0 .6.4 1 1 1h1c.6 0 1-.4 1-1a1 1 0 1 1 2 0c0 .6.4 1 1 1a2 2 0 0 1 2 2v1c0 .6-.4 1-1 1H4a1 1 0 0 1-1-1V7c0-1.1.9-2 2-2ZM3 19v-7c0-.6.4-1 1-1h16c.6 0 1 .4 1 1v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Zm6-6c0-.6-.4-1-1-1a1 1 0 1 0 0 2c.6 0 1-.4 1-1Zm2 0a1 1 0 1 1 2 0c0 .6-.4 1-1 1a1 1 0 0 1-1-1Zm6 0c0-.6-.4-1-1-1a1 1 0 1 0 0 2c.6 0 1-.4 1-1ZM7 17a1 1 0 1 1 2 0c0 .6-.4 1-1 1a1 1 0 0 1-1-1Zm6 0c0-.6-.4-1-1-1a1 1 0 1 0 0 2c.6 0 1-.4 1-1Zm2 0a1 1 0 1 1 2 0c0 .6-.4 1-1 1a1 1 0 0 1-1-1Z" clip-rule="evenodd" />
                 </svg>
                 <span class="flex-1 ml-3 text-left whitespace-nowrap">Leave</span>
                 <svg aria-hidden="true"
@@ -149,7 +244,11 @@
                   class="hidden py-2 divide-y-2 divide-slate-900 gap-y-2">
                 <li>
                   <a href="{% url 'leave:leaves' %}"
-                     class="flex items-center w-full p-2 mb-2 rounded-lg text-slate-900 hover:text-slate-100 hover:bg-slate-900">Leaves</a>
+                     class="flex items-center w-full p-2 my-1 rounded-lg text-slate-900 hover:text-slate-100 hover:bg-slate-900">Leaves</a>
+                </li>
+                <li>
+                  <a href="{% url 'leave:annual_leaves' %}"
+                     class="flex items-center w-full p-2 my-1 rounded-lg text-slate-900 hover:text-slate-100 hover:bg-slate-900">Annual leaves</a>
                 </li>
                 <li>
                   <a href="{% url 'leave:leave_types' %}"
@@ -164,14 +263,14 @@
                       class="flex items-center w-full p-2 rounded-lg text-slate-900 hover:text-slate-100 hover:bg-slate-900 group"
                       aria-controls="dropdown-pages1"
                       data-collapse-toggle="dropdown-pages1">
-                <svg class="flex-shrink-0 w-5 h-5 transition duration-75 text-slate-900 dark:text-slate-900 group-hover:text-slate-100"
+                <svg class="flex-shrink-0 w-5 h-5 transition duration-75 text-slate-900 group-hover:text-slate-100"
                      aria-hidden="true"
                      xmlns="http://www.w3.org/2000/svg"
-                     fill="none"
-                     viewBox="0 0 18 16">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 8h11m0 0L8 4m4 4-4 4m4-11h3a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-3" />
+                     fill="currentColor"
+                     viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M18 5h1a2 2 0 0 1 2 2v2H3V7c0-1 .9-2 2-2h1V4a1 1 0 1 1 2 0v1h3V4a1 1 0 1 1 2 0v1h3V4a1 1 0 1 1 2 0v1ZM3 11v8c0 1.2.9 2 2 2h14a2 2 0 0 0 2-2v-8H3Zm8 7a1 1 0 1 0 2 0v-1h1a1 1 0 1 0 0-2h-1v-1a1 1 0 1 0-2 0v1h-1a1 1 0 1 0 0 2h1v1Z" clip-rule="evenodd" />
                 </svg>
-                <span class="flex-1 ml-3 text-left whitespace-nowrap">Overtimes</span>
+                <span class="flex-1 ml-3 text-left whitespace-nowrap">Overtime</span>
                 <svg aria-hidden="true"
                      class="w-6 h-6"
                      fill="currentColor"
@@ -202,9 +301,7 @@
                    xmlns="http://www.w3.org/2000/svg"
                    fill="currentColor"
                    viewBox="0 0 20 20">
-                <path d="M5 5V.13a2.96 2.96 0 0 0-1.293.749L.879 3.707A2.96 2.96 0 0 0 .13 5H5Z" />
-                <path d="M6.737 11.061a2.961 2.961 0 0 1 .81-1.515l6.117-6.116A4.839 4.839 0 0 1 16 2.141V2a1.97 1.97 0 0 0-1.933-2H7v5a2 2 0 0 1-2 2H0v11a1.969 1.969 0 0 0 1.933 2h12.134A1.97 1.97 0 0 0 16 18v-3.093l-1.546 1.546c-.413.413-.94.695-1.513.81l-3.4.679a2.947 2.947 0 0 1-1.85-.227 2.96 2.96 0 0 1-1.635-3.257l.681-3.397Z" />
-                <path d="M8.961 16a.93.93 0 0 0 .189-.019l3.4-.679a.961.961 0 0 0 .49-.263l6.118-6.117a2.884 2.884 0 0 0-4.079-4.078l-6.117 6.117a.96.96 0 0 0-.263.491l-.679 3.4A.961.961 0 0 0 8.961 16Zm7.477-9.8a.958.958 0 0 1 .68-.281.961.961 0 0 1 .682 1.644l-.315.315-1.36-1.36.313-.318Zm-5.911 5.911 4.236-4.236 1.359 1.359-4.236 4.237-1.7.339.341-1.699Z" />
+                <path fill-rule="evenodd" d="M4.9 3C3.9 3 3 3.8 3 4.9V9c0 1 .8 1.9 1.9 1.9H9c1 0 1.9-.8 1.9-1.9V5c0-1-.8-1.9-1.9-1.9H5Zm10 0c-1 0-1.9.8-1.9 1.9V9c0 1 .8 1.9 1.9 1.9H19c1 0 1.9-.8 1.9-1.9V5c0-1-.8-1.9-1.9-1.9h-4Zm-10 10c-1 0-1.9.8-1.9 1.9V19c0 1 .8 1.9 1.9 1.9H9c1 0 1.9-.8 1.9-1.9v-4c0-1-.8-1.9-1.9-1.9H5Zm10 0c-1 0-1.9.8-1.9 1.9V19c0 1 .8 1.9 1.9 1.9H19c1 0 1.9-.8 1.9-1.9v-4c0-1-.8-1.9-1.9-1.9h-4Z" clip-rule="evenodd" />
               </svg>
               <span class="flex-1 ms-3 whitespace-nowrap">Department</span>
             </a>
@@ -217,11 +314,9 @@
                    xmlns="http://www.w3.org/2000/svg"
                    fill="currentColor"
                    viewBox="0 0 20 20">
-                <path d="M5 5V.13a2.96 2.96 0 0 0-1.293.749L.879 3.707A2.96 2.96 0 0 0 .13 5H5Z" />
-                <path d="M6.737 11.061a2.961 2.961 0 0 1 .81-1.515l6.117-6.116A4.839 4.839 0 0 1 16 2.141V2a1.97 1.97 0 0 0-1.933-2H7v5a2 2 0 0 1-2 2H0v11a1.969 1.969 0 0 0 1.933 2h12.134A1.97 1.97 0 0 0 16 18v-3.093l-1.546 1.546c-.413.413-.94.695-1.513.81l-3.4.679a2.947 2.947 0 0 1-1.85-.227 2.96 2.96 0 0 1-1.635-3.257l.681-3.397Z" />
-                <path d="M8.961 16a.93.93 0 0 0 .189-.019l3.4-.679a.961.961 0 0 0 .49-.263l6.118-6.117a2.884 2.884 0 0 0-4.079-4.078l-6.117 6.117a.96.96 0 0 0-.263.491l-.679 3.4A.961.961 0 0 0 8.961 16Zm7.477-9.8a.958.958 0 0 1 .68-.281.961.961 0 0 1 .682 1.644l-.315.315-1.36-1.36.313-.318Zm-5.911 5.911 4.236-4.236 1.359 1.359-4.236 4.237-1.7.339.341-1.699Z" />
+                <path fill-rule="evenodd" d="M2 6c0-1.1.9-2 2-2h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6Zm2 8v-2h7v2H4Zm0 2v2h7v-2H4Zm9 2h7v-2h-7v2Zm7-4v-2h-7v2h7Z" clip-rule="evenodd" />
               </svg>
-              <span class="flex-1 ms-3 whitespace-nowrap">Shift</span>
+              <span class="flex-1 ms-3 whitespace-nowrap">Shifts</span>
             </a>
           </li>
           <li>
@@ -232,26 +327,9 @@
                    xmlns="http://www.w3.org/2000/svg"
                    fill="currentColor"
                    viewBox="0 0 20 20">
-                <path d="M5 5V.13a2.96 2.96 0 0 0-1.293.749L.879 3.707A2.96 2.96 0 0 0 .13 5H5Z" />
-                <path d="M6.737 11.061a2.961 2.961 0 0 1 .81-1.515l6.117-6.116A4.839 4.839 0 0 1 16 2.141V2a1.97 1.97 0 0 0-1.933-2H7v5a2 2 0 0 1-2 2H0v11a1.969 1.969 0 0 0 1.933 2h12.134A1.97 1.97 0 0 0 16 18v-3.093l-1.546 1.546c-.413.413-.94.695-1.513.81l-3.4.679a2.947 2.947 0 0 1-1.85-.227 2.96 2.96 0 0 1-1.635-3.257l.681-3.397Z" />
-                <path d="M8.961 16a.93.93 0 0 0 .189-.019l3.4-.679a.961.961 0 0 0 .49-.263l6.118-6.117a2.884 2.884 0 0 0-4.079-4.078l-6.117 6.117a.96.96 0 0 0-.263.491l-.679 3.4A.961.961 0 0 0 8.961 16Zm7.477-9.8a.958.958 0 0 1 .68-.281.961.961 0 0 1 .682 1.644l-.315.315-1.36-1.36.313-.318Zm-5.911 5.911 4.236-4.236 1.359 1.359-4.236 4.237-1.7.339.341-1.699Z" />
+                <path d="M20 7h-.7a3.4 3.4 0 0 0-.7-4c-.6-.6-1.5-1-2.4-1-1.8 0-3.3 1.2-4.4 2.5C10.4 2.8 9 2 7.5 2a3.5 3.5 0 0 0-3.1 5H4a2 2 0 0 0-2 2v2a1 1 0 0 0 1 1h18a1 1 0 0 0 1-1V9a2 2 0 0 0-2-2ZM10 7H7.6a1.5 1.5 0 0 1 0-3c.9 0 2 .8 3 2.1l-.4.9Zm6.2 0h-3.8c1-1.4 2.4-3 3.8-3a1.5 1.5 0 0 1 0 3ZM13 14h-2v8h2v-8Zm-4 0H4v6a2 2 0 0 0 2 2h3v-8Zm6 0v8h3a2 2 0 0 0 2-2v-6h-5Z" />
               </svg>
-              <span class="flex-1 ms-3 whitespace-nowrap">Holiday</span>
-            </a>
-          </li>
-          <li>
-            <a href="{% url 'attendance:raw_attendance' %}"
-               class="flex items-center p-2 rounded-lg text-slate-900 hover:text-slate-100 hover:bg-slate-900 group">
-              <svg class="flex-shrink-0 w-5 h-5 transition duration-75 text-slate-900 group-hover:text-slate-100"
-                   aria-hidden="true"
-                   xmlns="http://www.w3.org/2000/svg"
-                   fill="currentColor"
-                   viewBox="0 0 20 20">
-                <path d="M5 5V.13a2.96 2.96 0 0 0-1.293.749L.879 3.707A2.96 2.96 0 0 0 .13 5H5Z" />
-                <path d="M6.737 11.061a2.961 2.961 0 0 1 .81-1.515l6.117-6.116A4.839 4.839 0 0 1 16 2.141V2a1.97 1.97 0 0 0-1.933-2H7v5a2 2 0 0 1-2 2H0v11a1.969 1.969 0 0 0 1.933 2h12.134A1.97 1.97 0 0 0 16 18v-3.093l-1.546 1.546c-.413.413-.94.695-1.513.81l-3.4.679a2.947 2.947 0 0 1-1.85-.227 2.96 2.96 0 0 1-1.635-3.257l.681-3.397Z" />
-                <path d="M8.961 16a.93.93 0 0 0 .189-.019l3.4-.679a.961.961 0 0 0 .49-.263l6.118-6.117a2.884 2.884 0 0 0-4.079-4.078l-6.117 6.117a.96.96 0 0 0-.263.491l-.679 3.4A.961.961 0 0 0 8.961 16Zm7.477-9.8a.958.958 0 0 1 .68-.281.961.961 0 0 1 .682 1.644l-.315.315-1.36-1.36.313-.318Zm-5.911 5.911 4.236-4.236 1.359 1.359-4.236 4.237-1.7.339.341-1.699Z" />
-              </svg>
-              <span class="flex-1 ms-3 whitespace-nowrap">Raw data</span>
+              <span class="flex-1 ms-3 whitespace-nowrap">Holidays</span>
             </a>
           </li>
         {% endif %}
@@ -269,17 +347,29 @@
               <span class="flex-1 ms-3 whitespace-nowrap">Devices</span>
             </a>
           </li>
+          <li>
+            <a href=" {% url 'account:users' %}"
+               class="flex items-center p-2 rounded-lg text-slate-900 hover:text-slate-100 hover:bg-slate-900 group">
+              <svg class="flex-shrink-0 w-5 h-5 transition duration-75 text-slate-900 group-hover:text-slate-100"
+                   aria-hidden="true"
+                   xmlns="http://www.w3.org/2000/svg"
+                   fill="currentColor"
+                   viewBox="0 0 20 20">
+                <path d="M14 2a3.963 3.963 0 0 0-1.4.267 6.439 6.439 0 0 1-1.331 6.638A4 4 0 1 0 14 2Zm1 9h-1.264A6.957 6.957 0 0 1 15 15v2a2.97 2.97 0 0 1-.184 1H19a1 1 0 0 0 1-1v-1a5.006 5.006 0 0 0-5-5ZM6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Z" />
+              </svg>
+              <span class="flex-1 ms-3 whitespace-nowrap">Manage Users</span>
+            </a>
+          </li>
         {% endif %}
         <li>
-          <a href="{% url 'account:profile_detail' request.user.id %}"
+          <a href="{% url 'account:profile_detail' request.user.profile.id %}"
              class="flex items-center p-2 rounded-lg text-slate-900 hover:bg-slate-900 hover:text-slate-100 group">
             <svg class="w-5 h-5 transition duration-75 text-slate-900 group-hover:text-slate-100"
                  aria-hidden="true"
                  xmlns="http://www.w3.org/2000/svg"
                  fill="currentColor"
-                 viewBox="0 0 22 21">
-              <path d="M16.975 11H10V4.025a1 1 0 0 0-1.066-.998 8.5 8.5 0 1 0 9.039 9.039.999.999 0 0 0-1-1.066h.002Z" />
-              <path d="M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z" />
+                 viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M4 4a2 2 0 0 0-2 2v12c0 1.1.9 2 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2H4Zm10 5c0-.6.4-1 1-1h3a1 1 0 1 1 0 2h-3a1 1 0 0 1-1-1Zm0 3c0-.6.4-1 1-1h3a1 1 0 1 1 0 2h-3a1 1 0 0 1-1-1Zm0 3c0-.6.4-1 1-1h3a1 1 0 1 1 0 2h-3a1 1 0 0 1-1-1Zm-8-5a3 3 0 1 1 6 0 3 3 0 0 1-6 0Zm2 4a3 3 0 0 0-3 2v.2c0 .1-.1.2 0 .2v.2c.3.2.6.4.9.4h6c.3 0 .6-.2.8-.4l.2-.2v-.2l-.1-.1A3 3 0 0 0 10 14H7.9Z" clip-rule="evenodd" />
             </svg>
             <span class="ms-3">Profile</span>
           </a>

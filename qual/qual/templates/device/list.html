@@ -1,6 +1,6 @@
 {% extends "_base.html" %} {% block content %}
 <div
-  class="bg-white mx-auto overflow-x-auto shadow-md px-4 divide-black divide-y-2"
+  class="bg-white mx-auto overflow-x-auto shadow-md px-4  w-fit rounded-lg"
 >
   {% include "device/create.html" %}
 
@@ -9,29 +9,29 @@
       class="w-full text-base font-semibold text-left text-gray-500 rtl:text-right"
     >
       <thead
-        class="text-base uppercase text-slate-900 bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+        class="text-base uppercase text-slate-900 bg-gray-50 "
       >
         <tr>
-          <th scope="col" class="px-4 py-3">ID</th>
-          <th scope="col" class="px-4 py-3">Device name</th>
-          <th scope="col" class="px-4 py-3">Device IP</th>
-          <th scope="col" class="px-4 py-3">Device Port</th>
-          <th scope="col" class="px-4 py-3">Attendances</th>
-          <th scope="col" class="px-4 py-3">Actions</th>
+          <th scope="col" class="p-3">ID</th>
+          <th scope="col" class="p-3">Device name</th>
+          <th scope="col" class="p-3">Device IP</th>
+          <th scope="col" class="p-3">Device Port</th>
+          <th scope="col" class="p-3">Attendances</th>
+          <th scope="col" class="p-3">Actions</th>
         </tr>
       </thead>
       <tbody>
         {% for d in devices %}
         <tr class="bg-white border-b text-slate-900 hover:bg-gray-50">
-          <td class="px-4 py-3 whitespace-nowrap">{{ d.id }}</td>
-          <td class="px-4 py-3">{{ d.name }}</td>
-          <td class="px-4 py-3">{{ d.ip }}</td>
-          <td class="px-4 py-3">{{ d.port }}</td>
-          <td class="px-4 py-3">{{ d.raw_attendances.count }}</td>
-          <td class="px-4 py-3">
+          <td class="p-3 whitespace-nowrap">{{ d.id }}</td>
+          <td class="p-3">{{ d.name }}</td>
+          <td class="p-3">{{ d.ip }}</td>
+          <td class="p-3">{{ d.port }}</td>
+          <td class="p-3">{{ d.raw_attendances.count }}</td>
+          <td class="p-3 text-right">
             <a
               href="{{ d.get_absolute_url }}"
-              class="font-medium text-blue-800 hover:underline"
+              class="font-semibold text-slate-800 hover:font-extrabold"
               >Detail</a
             >
           </td>

@@ -1,23 +1,17 @@
 {% extends "_base.html" %}
 {% block content %}
-  <div class="w-full max-w-xl mx-auto bg-white shadow sm:p-8">
-    <div>
+  <div class="w-fit p-8 bg-white shadow  ">
+    <div class="flex items-center justify-between gap-36">
       {% include "user/profile/edit.html" %}
       <a href="{% url 'password_change' %}"
-         class="inline-flex items-center px-3 py-2 mb-4 text-sm font-medium text-center text-white rounded-lg bg-cyan-700 hover:bg-cyan-800 focus:ring-4 focus:outline-none focus:ring-cyan-300">
+         class="inline-flex items-center px-5 py-2 text-sm font-medium text-center text-white rounded-lg bg-slate-700 hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-slate-300">
         Change password
-        <svg class="w-4 h-4 ml-2 -mr-1"
-             fill="currentColor"
-             viewBox="0 0 20 20"
-             xmlns="http://www.w3.org/2000/svg">
-          <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd">
-          </path>
-        </svg>
+        
       </a>
     </div>
-    <div class="justify-around">
-      <div class="flex justify-between items-center my-2">
-        <h5 class="text-2xl uppercase  font-extrabold leading-none text-gray-900">{{ user.user.username }}</h5>
+    <div class="justify-between gap-36">
+      <div class="flex items-center justify-between my-2">
+        <h5 class="text-2xl font-extrabold leading-none text-gray-900 uppercase">{{ user.user.username }}</h5>
         <svg class="w-12 h-12 mb-3 text-slate-950"
              aria-hidden="true"
              xmlns="http://www.w3.org/2000/svg"
@@ -30,12 +24,22 @@
     <div class="flow-root">
       <ul role="list" class="divide-y divide-gray-200 dark:divide-gray-700">
         <div class="flex-1 min-w-0 ms-4">
-          <p class="mb-2 my-2 text-xl font-bold text-gray-900  text-left">User info</p>
+          <p class="my-2 mb-2 text-xl font-bold text-left text-gray-900">User info</p>
         </div>
         <li class="py-3">
           <div class="flex items-center">
             <div class="flex-1 min-w-0 ms-4">
-              <p class=" font-medium text-gray-900 truncate dark:text-white">Email</p>
+              <p class="font-medium text-gray-900 truncate dark:text-white">Employee</p>
+            </div>
+            <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+              {{ user.employee.name }}
+            </div>
+          </div>
+        </li>
+        <li class="py-3">
+          <div class="flex items-center">
+            <div class="flex-1 min-w-0 ms-4">
+              <p class="font-medium text-gray-900 truncate dark:text-white">Email</p>
             </div>
             <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">{{ user.user.email }}</div>
           </div>
@@ -43,7 +47,7 @@
         <li class="py-3">
           <div class="flex items-center">
             <div class="flex-1 min-w-0 ms-4">
-              <p class=" font-medium text-gray-900 truncate dark:text-white">First name</p>
+              <p class="font-medium text-gray-900 truncate dark:text-white">First name</p>
             </div>
             <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
               {{ user.user.first_name }}
@@ -53,7 +57,7 @@
         <li class="py-3">
           <div class="flex items-center">
             <div class="flex-1 min-w-0 ms-4">
-              <p class=" font-medium text-gray-900 truncate dark:text-white">Last name</p>
+              <p class="font-medium text-gray-900 truncate dark:text-white">Last name</p>
             </div>
             <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
               {{ user.user.last_name }}
@@ -61,12 +65,12 @@
           </div>
         </li>
         <div class="flex-1 min-w-0 ms-4">
-          <p class="mb-2 my-2 text-xl font-bold text-gray-900  text-left">Profile info</p>
+          <p class="my-2 mb-2 text-xl font-bold text-left text-gray-900">Profile info</p>
         </div>
         <li class="py-3">
           <div class="flex items-center">
             <div class="flex-1 min-w-0 ms-4">
-              <p class=" font-medium text-gray-900 truncate dark:text-white">Role</p>
+              <p class="font-medium text-gray-900 truncate dark:text-white">Role</p>
             </div>
             <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">{{ user.role }}</div>
           </div>
@@ -76,7 +80,7 @@
             <div class="flex-1 min-w-0 ms-4">
               <p class="mb-2 text-base font-bold text-gray-900 truncate ">Manages</p>
             </div>
-            <div class="flex-col text-right  items-stretch text-base font-semibold text-gray-900 whitespace-nowrap">
+            <div class="flex-col items-stretch text-base font-semibold text-right text-gray-900 whitespace-nowrap">
               {% for manage in manages %}<p>{{ manage.name }} --</p>{% endfor %}
             </div>
           </div>

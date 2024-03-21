@@ -1,21 +1,37 @@
-<div class="flex items-center gap-4 font-semibold p-3 my-2 bg-white">
-  {% if page.has_previous %}
-  <a href="?page={{ page.previous_page_number }}" class="text-gray-700"
-    >Previous</a
-  >
-  {% endif %}
-  <a href="?page=1" class="text-gray-700">First</a>
-  <div class="flex gap-4 mx-2">
-    {% for num in page.paginator.page_range %} {% if page.number == num %}
-    <span class="font-extrabold">{{ num }}</span>
-    {% elif num > page.number|add:'-4' and num < page.number|add:'4' %}
-    <a class="text-gray-900" href="?page={{ num }}">{{ num }}</a>
-    {% endif %} {% endfor %}
-  </div>
-  <a href="?page={{ page.paginator.num_pages }}" class="text-gray-700">
-    Last
-  </a>
-  {% if page.has_next %}
-  <a href="?page={{ page.next_page_number }}" class="text-gray-700"> Next </a>
-  {% endif %}
-</div>
+<nav aria-label="Page navigation example" class="px-4 py-2">
+  <ul class="inline-flex -space-x-px  font-semibold">
+    <li>
+      <a href="?{{ request }}&page=1"
+         class="flex items-center justify-center px-3 h-8 leading-tight text-slate-900 bg-white border border-slate-300 rounded-e-lg hover:bg-slate-800 hover:text-slate-50 ">First</a>
+    </li>
+    <li>
+      {% if page.has_previous %}
+        <a href="?{{ request }}&page={{ page.previous_page_number }}"
+           class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-slate-900 bg-white border border-e-0 border-slate-300 rounded-s-lg hover:bg-slate-800 hover:text-slate-50 ">Previous</a>
+      {% endif %}
+    </li>
+    <li class="flex">
+      {% for num in page.paginator.page_range %}
+        {% if page.number == num %}
+          <p aria-current="page"
+             class="flex items-center justify-center px-3 h-8 text-slate-50 border border-slate-300 bg-slate-900 hover:bg-slate-800 hover:text-slate-50 ">
+            {{ num }}
+          </p>
+        {% elif num > page.number|add:'-4' and num < page.number|add:'4' %}
+          <a class="flex items-center justify-center px-3 h-8 leading-tight text-slate-900 bg-white border border-slate-300 hover:bg-slate-800 hover:text-slate-50 "
+             href="?{{ request }}&page={{ num }}">{{ num }}</a>
+        {% endif %}
+      {% endfor %}
+    </li>
+    <li>
+      {% if page.has_next %}
+        <a href="?{{ request }}&page={{ page.next_page_number }}"
+           class="flex items-center justify-center px-3 h-8 leading-tight text-slate-900 bg-white border border-slate-300 rounded-e-lg hover:bg-slate-800 hover:text-slate-50 ">Next</a>
+      {% endif %}
+    </li>
+    <li>
+      <a href="?{{ request }}&page={{ page.paginator.num_pages }}"
+         class="flex items-center justify-center px-3 h-8 leading-tight text-slate-900 bg-white border border-slate-300 rounded-e-lg hover:bg-slate-800 hover:text-slate-50 ">Last</a>
+    </li>
+  </ul>
+</nav>

@@ -1,114 +1,87 @@
-{% extends "_base.html" %} {% block content %}
-
-<div class="w-fit mx-4 px-4">
-  <div class="mb-2 p-4 bg-white border border-gray-200 rounded-lg shadow">
-    <div class="flex items-center justify-between">
-      <svg
-        class="w-12 h-12 mb-3 text-slate-950"
-        aria-hidden="true"
-        xmlns="http://www.w3.org/2000/svg"
-        fill="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          fill-rule="evenodd"
-          d="M18 5h1a2 2 0 0 1 2 2v2H3V7c0-1 .9-2 2-2h1V4a1 1 0 1 1 2 0v1h3V4a1 1 0 1 1 2 0v1h3V4a1 1 0 1 1 2 0v1ZM3 11v8c0 1.2.9 2 2 2h14a2 2 0 0 0 2-2v-8H3Zm8 7a1 1 0 1 0 2 0v-1h1a1 1 0 1 0 0-2h-1v-1a1 1 0 1 0-2 0v1h-1a1 1 0 1 0 0 2h1v1Z"
-          clip-rule="evenodd"
-        />
-      </svg>
-
-      <h5 class="mb-2 text-2xl font-bold uppercase text-gray-900">
-        {{ overtime_type.name }}
-      </h5>
-    </div>
-    <div class="flex-row font-normal text-gray-900">
-      <div class="flex justify-between mb-2">
-        <span class="mr-2 uppercase font-semibold">rate:</span>
-        <p class="font-bold">{{ overtime_type.rate }}</p>
-      </div>
-
-      <div class="flex justify-between mb-2">
-        <span class="mr-2 uppercase font-semibold">Day span:</span>
-        <p class="font-bold">{{ overtime_type.day_span }}</p>
-      </div>
-
-      <div class="flex justify-between mb-2">
-        <span class="mr-2 uppercase font-semibold">Overtimes:</span>
-        <p class="font-bold">{{ overtime_type.overtimes.count }}</p>
-      </div>
-      <div class="flex justify-between mb-2">
-        <span class="mr-1 uppercase font-semibold">Description:</span>
-        <p class="font-bold text-right">{{ overtime_type.description }}</p>
-      </div>
-      <div class="flex justify-between">
+{% extends "_base.html" %}
+{% block content %}
+  <div class="px-4 mx-4 w-fit">
+    <div class="p-4 mb-2 bg-white border border-slate-200 rounded-lg shadow">
+      <div class="flex justify-between mb-1 items-center">
+        <a href="{% url 'overtime:overtime_types' %}" class="mx-2">
+          <svg class="w-6 h-6 text-slate-800 dark:text-white"
+               aria-hidden="true"
+               xmlns="http://www.w3.org/2000/svg"
+               width="24"
+               height="24"
+               fill="none"
+               viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 19-7-7 7-7" />
+          </svg>
+        </a>
         {% include "overtime/overtime_type/edit.html" %}
       </div>
+      <div class="flex items-center justify-between">
+        <h5 class="mb-2 text-2xl font-bold text-slate-900 uppercase">{{ overtime_type.name }}</h5>
+        <svg class="w-12 h-12 mb-3 text-slate-950"
+             aria-hidden="true"
+             xmlns="http://www.w3.org/2000/svg"
+             fill="currentColor"
+             viewBox="0 0 24 24">
+          <path fill-rule="evenodd" d="M18 5h1a2 2 0 0 1 2 2v2H3V7c0-1 .9-2 2-2h1V4a1 1 0 1 1 2 0v1h3V4a1 1 0 1 1 2 0v1h3V4a1 1 0 1 1 2 0v1ZM3 11v8c0 1.2.9 2 2 2h14a2 2 0 0 0 2-2v-8H3Zm8 7a1 1 0 1 0 2 0v-1h1a1 1 0 1 0 0-2h-1v-1a1 1 0 1 0-2 0v1h-1a1 1 0 1 0 0 2h1v1Z" clip-rule="evenodd" />
+        </svg>
+      </div>
+      <div class="flex-row font-normal text-slate-900">
+        <div class="flex justify-between mb-2">
+          <span class="mr-2 font-semibold uppercase">rate:</span>
+          <p class="font-bold">{{ overtime_type.rate }}</p>
+        </div>
+        <div class="flex justify-between mb-2">
+          <span class="mr-2 font-semibold uppercase">Day span:</span>
+          <p class="font-bold">{{ overtime_type.day_span }}</p>
+        </div>
+        <div class="flex justify-between mb-2">
+          <span class="mr-2 font-semibold uppercase">Overtimes:</span>
+          <p class="font-bold">{{ overtime_type.overtimes.count }}</p>
+        </div>
+        <div class="flex justify-between mb-2">
+          <span class="mr-1 font-semibold uppercase">Description:</span>
+          <p class="font-bold text-right">{{ overtime_type.description }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="relative bg-white">
+      <table class="overflow-x-auto text-left text-slate-950 w-fit">
+        <thead class="text-slate-800 uppercase bg-slate-50">
+          <tr>
+            <th scope="col" class="px-2 py-2 text-sm whitespace-nowrap">Employee</th>
+            <th scope="col" class="px-2 py-2 text-sm whitespace-nowrap">approved</th>
+            <th scope="col" class="px-2 py-2 text-sm whitespace-nowrap">Start date</th>
+            <th scope="col" class="px-2 py-2 text-sm whitespace-nowrap">End date</th>
+            <th scope="col" class="px-1 py-1 text-sm whitespace-nowrap">Start time</th>
+            <th scope="col" class="px-1 py-1 text-sm whitespace-nowrap">End time</th>
+            <th scope="col" class="px-1 py-1 text-sm whitespace-nowrap">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for overtime in page %}
+            <tr class="bg-white border-b hover:bg-slate-50">
+              <td class="px-2 py-2 font-semibold whitespace-nowrap">{{ overtime.employee.name }}</td>
+              <td class="px-2 py-2 whitespace-nowrap">{{ overtime.approved }}</td>
+              <td class="px-2 py-2 whitespace-nowrap">{{ overtime.start_date }}</td>
+              <td class="px-2 py-2 whitespace-nowrap">{{ overtime.end_date }}</td>
+              <td class="px-2 py-2 whitespace-nowrap">{{ overtime.start_time_expected }}</td>
+              <td class="px-2 py-2 whitespace-nowrap">{{ overtime.end_time_expected }}</td>
+              <td class="px-2 py-2 whitespace-nowrap">
+                <a href="{{ overtime.get_absolute_url }}"
+                   class="font-semibold text-slate-900  hover:font-extrabold">Detail</a>
+              </td>
+            </tr>
+          {% empty %}
+            <tr>
+              <td>
+                <p class="ml-5 font-semibold whitespace-nowrap">No data.</p>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% include "pagination.html" %}
     </div>
   </div>
-  <div class="relative bg-white">
-    <table class="overflow-x-auto text-left text-gray-950 w-fit">
-      <thead class="text-gray-800 uppercase bg-gray-50">
-        <tr>
-          <th scope="col" class="px-2 text-sm py-2 whitespace-nowrap">
-            Employee
-          </th>
-          <th scope="col" class="px-2 text-sm py-2 whitespace-nowrap">
-            approved
-          </th>
-          <th scope="col" class="px-2 text-sm py-2 whitespace-nowrap">
-            Start date
-          </th>
-          <th scope="col" class="px-2 text-sm py-2 whitespace-nowrap">
-            End date
-          </th>
-
-          <th scope="col" class="px-1 text-sm py-1 whitespace-nowrap">
-            Start time
-          </th>
-          <th scope="col" class="px-1 text-sm py-1 whitespace-nowrap">
-            End time
-          </th>
-          <th scope="col" class="px-1 text-sm py-1 whitespace-nowrap">
-            Action
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for overtime in page %}
-        <tr class="bg-white border-b hover:bg-gray-50">
-          <td class="px-2 py-2 whitespace-nowrap font-semibold">
-            {{ overtime.employee.name }}
-          </td>
-
-          <td class="px-2 py-2 whitespace-nowrap">{{ overtime.approved }}</td>
-
-          <td class="px-2 py-2 whitespace-nowrap">{{ overtime.start_date }}</td>
-          <td class="px-2 py-2 whitespace-nowrap">{{ overtime.end_date }}</td>
-          <td class="px-2 py-2 whitespace-nowrap">
-            {{ overtime.start_time_expected }}
-          </td>
-          <td class="px-2 py-2 whitespace-nowrap">
-            {{ overtime.end_time_expected }}
-          </td>
-
-          <td class="px-2 py-2 whitespace-nowrap">
-            <a
-              href="{{ overtime.get_absolute_url }}"
-              class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-              >Detail</a
-            >
-          </td>
-        </tr>
-        {% empty %}
-        <tr>
-          <td>
-            <p class="font-semibold ml-5 whitespace-nowrap">No data.</p>
-          </td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-    {% if page.count > 0 %} {% include "pagination.html" %} {% endif %}
-  </div>
-</div>
 {% endblock content %}

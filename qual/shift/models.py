@@ -1,6 +1,7 @@
 from django.db import models
 from django.urls import reverse
 from django.utils.text import slugify
+import datetime
 
 
 class Shift(models.Model):
@@ -8,6 +9,15 @@ class Shift(models.Model):
     slug = models.SlugField(unique=True)
     continous = models.BooleanField(default=False)
     saturday_half = models.BooleanField(default=False)
+
+    current_pattern = models.ForeignKey(
+        "shift.Pattern",
+        on_delete=models.CASCADE,
+        null=True,
+        related_name="current_shift",
+        blank=True,
+    )
+    last_updated = models.DateField(default=datetime.datetime(2024, 1, 1))
 
     def __str__(self):
         return self.name

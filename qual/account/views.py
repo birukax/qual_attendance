@@ -33,13 +33,13 @@ def create_user(request):
 def edit_user(request, id):
     if request.method == "POST":
         form = EditUserForm(request.POST)
-        user = get_object_or_404(User, id=id)
+        user = get_object_or_404(Profile, id=id)
 
         if form.is_valid():
-            user.email = form.cleaned_data["email"]
-            user.first_name = form.cleaned_data["first_name"]
-            user.last_name = form.cleaned_data["last_name"]
-            user.is_active = form.cleaned_data["is_active"]
+            user.user.email = form.cleaned_data["email"]
+            user.user.first_name = form.cleaned_data["first_name"]
+            user.user.last_name = form.cleaned_data["last_name"]
+            user.user.is_active = form.cleaned_data["is_active"]
             user.save()
         return redirect("account:user_detail", id=id)
 
@@ -84,7 +84,7 @@ def edit(request, id):
             user.first_name = form.cleaned_data["first_name"]
             user.last_name = form.cleaned_data["last_name"]
             user.save()
-        return redirect("account:profile_detail", id=id)
+        return redirect("account:profile_detail", id=user.profile.id)
 
 
 @login_required

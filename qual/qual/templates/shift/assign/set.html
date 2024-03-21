@@ -1,0 +1,66 @@
+{% extends "_base.html" %}
+{% block content %}
+    <div class="relative p-4 bg-white w-fit">
+        <!-- Modal content -->
+        <div class="relative bg-white rounded-lg shadow dark:bg-slate-700">
+            <form method="post" action="{% url 'shift:assign_employees' %}">
+                {% csrf_token %}
+                <div class="flex items-center justify-between gap-2 p-2 border-t border-slate-200 rounded-b md:p-5">
+                    <div class="flex justify-between gap-4 p-4 md:p-5">
+                        <h1>
+                            Selected
+                            <span class="font-bold">{{ employees.count }}</span>
+                            employees.
+                        </h1>
+                    </div>
+                    <div class="flex-col justify-between p-4 space-y-4 font-bold md:p-5">{{ select_shift_form.as_p }}</div>
+                    <div class="flex justify-between gap-4 p-4 font-bold md:p-5">
+                        <button type="submit"
+                                value='Change'
+                                class="px-5 py-2 text-sm font-medium text-center text-white bg-slate-700 rounded-lg hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-slate-300 ">
+                            Assign
+                        </button>
+                        <a href="{% url 'shift:select_employees' %}"
+                           class="px-5 py-2 text-sm font-medium text-center  bg-slate-100 rounded-lg hover:bg-slate-300 focus:ring-4 focus:outline-none focus:ring-slate-300 ">Cancel</a>
+                    </div>
+                </div>
+            </div>
+            <table class="overflow-x-auto text-base text-left text-slate-900 ">
+                <thead class="uppercase text-slate-900 bg-slate-50">
+                    <tr>
+                        <th scope="col" class="px-2 py-2 whitespace-nowrap">ID</th>
+                        <th scope="col" class="px-2 py-2">Full name</th>
+                        <th scope="col" class="px-2 py-2">Department</th>
+                        <th scope="col" class="px-2 py-2">
+                            Employment
+                            <br>
+                            date
+                        </th>
+                        <th scope="col" class="px-2 py-2">Status</th>
+                        <th scope="col" class="px-2 py-2">Shift</th>
+                        <th scope="col" class="px-2 py-2">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% csrf_token %}
+                    {% for employee in employees %}
+                        <tr class="border-b hover:bg-slate-50">
+                            <td class="px-2 py-2 font-semibold">{{ employee.employee_id }}</td>
+                            <th scope="row"
+                                class="px-2 py-2 font-semibold lowercase text-slate-900 first-letter:uppercase whitespace-nowrap ">
+                                {{ employee.name }}
+                            </th>
+                            <td class="px-2 py-2 ">{{ employee.department }}</td>
+                            <td class="px-2 py-2">{{ employee.employment_date }}</td>
+                            <td class="px-2 py-2">{{ employee.status }}</td>
+                            <td class="px-2 py-2 whitespace-nowrap">{{ employee.shift }}</td>
+                            <td class="px-2 py-2 text-right">
+                                <input type="checkbox" name="employees" checked  value="{{ employee.id }}">
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </form>
+    </div>
+{% endblock content %}

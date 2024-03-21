@@ -13,6 +13,17 @@ class CreateOvertimeTypeForm(forms.ModelForm):
         )
 
 
+class EditOvertimeTypeForm(forms.ModelForm):
+    class Meta:
+        model = OvertimeType
+        fields = (
+            "name",
+            "rate",
+            "day_span",
+            "description",
+        )
+
+
 class CreateOvertimeForm(forms.ModelForm):
     class Meta:
         model = Overtime

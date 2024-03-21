@@ -1,39 +1,30 @@
-{% extends "_base.html" %} {% block content %}
-<div class="bg-white mx-4 p-4 divide-y divide-black">
-  <div class="mx-4">{% include "holiday/create.html" %}</div>
-  <div>
-    <table class="w-fit text-base text-left text-gray-800">
-      <thead class="whitespace-nowrap uppercase bg-gray-50">
-        <tr>
-          <th scope="col" class="px-3 py-3">Name</th>
-          <th scope="col" class="px-3 py-3">Date</th>
-          <th scope="col" class="px-3 py-3">Approved</th>
-          <th scope="col" class="px-3 py-3 text-right">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for holiday in page %}
-        <tr class="bg-white border-b hover:bg-gray-50 whitespace-nowrap">
-          <th
-            scope="row"
-            class="px-3 py-3 font-semibold text-gray-900 whitespace-nowrap"
-          >
-            {{ holiday.name }}
-          </th>
-          <td class="px-3 py-3">{{ holiday.date }}</td>
-          <td class="px-3 py-3">{{ holiday.approved }}</td>
-          <td class="px-4 py-3 text-right">
-            <a
-              href="{{ holiday.get_absolute_url }}"
-              class="font-medium text-blue-900 dark:text-blue-500 hover:underline"
-              >Detail</a
-            >
-          </td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-    {% include "pagination.html" %}
+{% extends "_base.html" %}
+{% block content %}
+  <div class="px-8 py-4 mx-4 bg-white d w-fit rounded-lg">
+    <div class="mb-2">{% include "holiday/create.html" %}</div>
+    <div>
+      <table class="text-base text-left text-gray-800 w-fit">
+        <thead class="uppercase whitespace-nowrap bg-gray-50">
+          <tr>
+            <th scope="col" class="px-3 py-3">Name</th>
+            <th scope="col" class="px-3 py-3">Date</th>
+            <th scope="col" class="px-3 py-3">Approved</th>
+            <th scope="col" class="px-3 py-3 text-right">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for holiday in page %}
+            <tr class="bg-white border-b hover:bg-gray-50 whitespace-nowrap">
+              <th scope="row"
+                  class="px-3 py-3 font-semibold text-gray-900 whitespace-nowrap">{{ holiday.name }}</th>
+              <td class="px-3 py-3">{{ holiday.date }}</td>
+              <td class="px-3 py-3">{{ holiday.approved }}</td>
+              <td class="px-4 py-3 text-right">{% include "holiday/detail.html" %}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% include "pagination.html" %}
+    </div>
   </div>
-</div>
 {% endblock content %}

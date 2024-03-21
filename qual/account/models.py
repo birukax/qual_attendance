@@ -19,6 +19,9 @@ class Profile(models.Model):
         related_name="managers",
     )
 
+    class Meta:
+        permissions = [("can_approve", "Can Approve")]
+
     def get_absolute_url(self):
         return reverse("account:user_detail", args={self.id})
 

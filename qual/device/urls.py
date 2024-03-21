@@ -6,7 +6,8 @@ app_name = "device"
 
 urlpatterns = [
     path("devices", views.devices, name="devices"),
-    path("devices/<int:id>", views.device_detail, name="device_detail"),
     path("create_device", views.create_device, name="create_device"),
-    
+    path("devices/<int:id>", views.device_detail, name="device_detail"),
+    path("sync_users/<int:id>", views.sync_users, name="sync_users"),
+    path("add_employee/<int:id>", views.add_employee, name="add_employee"),
 ]

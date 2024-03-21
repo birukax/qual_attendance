@@ -5,13 +5,14 @@ from openpyxl import Workbook
 from .models import *
 from leave.models import *
 from django.core.paginator import Paginator
-from .forms import AttendanceDownloadForm, SyncEmployeeAttendanceForm
+from .forms import AttendanceDownloadForm
 from .filters import *
 from device.forms import CreateDeviceForm
 from .compiler import compile, save_data
 import threading
 import datetime
 from .tasks import sync_raw_attendance
+from django.db.models import Q
 
 
 @login_required
@@ -34,24 +35,31 @@ def dashboard(request):
 
 @login_required
 def compile_view(request):
-    attendances = Attendance.objects.filter(approved=False).order_by("-check_in_time")
     if DailyRecord.objects.exists():
         daily_records = DailyRecord.objects.latest("date")
     else:
         daily_records = []
     no_shift = Employee.objects.filter(shift=None, status="Active").count()
-    no_pattern = Employee.objects.filter(pattern=None, status="Active").count()
+    attendances = Attendance.objects.filter(approved=False).order_by("check_in_time")
+    compile_filter = CompileFilter(request.GET, queryset=attendances)
+
+    attendances = compile_filter.qs
+
+    paginated = Paginator(attendances, 10)
+    page_number = request.GET.get("page")
+    page = paginated.get_page(page_number)
     context = {
-        "attendances": attendances,
+        "page": page,
         "daily_records": daily_records,
         "no_shift": no_shift,
-        "no_pattern": no_pattern,
+        "compile_filter": compile_filter,
     }
     return render(request, "attendance/compile.html", context)
 
 
 @login_required
 def compile_attendance(request):
+
     daily_record = DailyRecord.objects.all()
     if daily_record:
         date = daily_record.latest("date").date + datetime.timedelta(days=1)
@@ -64,27 +72,26 @@ def compile_attendance(request):
     return redirect("attendance:compile_view")
 
 
-@login_required
-def save_compiled_attendance(request):
-    daily_record = DailyRecord.objects.all()
-    if daily_record:
-        date = daily_record.latest("date").date + datetime.timedelta(days=1)
-    else:
-        date = datetime.date.today() - datetime.timedelta(days=1)
-    save_data(date)
-    return redirect("attendance:compile_view")
+# @login_required
+# def save_compiled_attendance(request):
+
+#     return redirect("attendance:compile_view")
 
 
 @login_required
 def attendance_list(request):
-    attendances = Attendance.objects.filter(approved=True).order_by(
-        "-check_in_date", "-check_in_time"
-    )
+    # print(attendance_filter.qs)
     attendance_download_filter = AttendanceDownloadFilter(
         request.GET, queryset=Attendance.objects.all()
     )
+    attendances = Attendance.objects.filter(approved=True).order_by(
+        "-check_in_date", "-check_in_time"
+    )
+
     attendance_filter = AttendanceFilter(request.GET, queryset=attendances)
+
     attendances = attendance_filter.qs
+
     paginated = Paginator(attendances, 10)
     page_number = request.GET.get("page")
     page = paginated.get_page(page_number)
@@ -137,6 +144,10 @@ def download_attendance(request):
             device = attendance.device.name
         else:
             device = ""
+        if attendance.leave_type:
+            leave_type = attendance.leave_type.name
+        else:
+            leave_type = ""
 
         ws.append(
             [
@@ -151,7 +162,7 @@ def download_attendance(request):
                 attendance.check_in_type,
                 attendance.check_out_type,
                 attendance.status,
-                attendance.leave_type,
+                leave_type,
             ]
         )
     wb.save(response)

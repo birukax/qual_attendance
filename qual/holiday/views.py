@@ -31,12 +31,12 @@ def holidays(request):
     return render(request, "holiday/list.html", context)
 
 
-@login_required
-def holiday_detail(request, id):
-    holiday = get_object_or_404(Holiday, id=id)
+# @login_required
+# def holiday_detail(request, id):
+#     holiday = get_object_or_404(Holiday, id=id)
 
-    context = {"holiday": holiday}
-    return render(request, "holiday/detail.html", context)
+#     context = {"holiday": holiday}
+#     return render(request, "holiday/detail.html", context)
 
 
 @login_required
@@ -44,7 +44,7 @@ def approve_holiday(request, id):
     holiday = Holiday.objects.get(id=id)
     holiday.approved = True
     holiday.save()
-    return redirect("holiday:holiday_detail", id=id)
+    return redirect("holiday:holidays")
 
 
 @login_required

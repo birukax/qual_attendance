@@ -22,6 +22,5 @@ class OvertimeAdmin(admin.ModelAdmin):
         "start_time_expected",
         # "end_time_actual",
         # "end_time_actual",
-        "total_rate",
     ]
     list_per_page = 15

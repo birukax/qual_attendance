@@ -1,0 +1,35 @@
+{% extends "_base.html" %}
+{% block content %}
+  <div class="p-8 ml-4 overflow-x-auto bg-white rounded-lg shadow-md w-fit">
+    <table class="text-left text-gray-900 divide-y ">
+      <thead class="font-semibold text-gray-900 uppercase bg-white">
+        <tr>
+          <th scope="col" class="px-3 py-4">Employee</th>
+          <th scope="col" class="px-3 py-4">Type</th>
+          <th scope="col" class="px-3 py-4">Start date</th>
+          <th scope="col" class="px-3 py-4">Start time</th>
+          <th scope="col" class="px-3 py-4">End date</th>
+          <th scope="col" class="px-3 py-4">End time</th>
+          <th scope="col" class="px-3 py-4">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for ot in page %}
+          <tr class="bg-white border-b">
+            <th scope="row"
+                class="px-4 py-2 font-semibold text-gray-900 whitespace-nowrap dark:text-white">
+              {{ ot.employee.name }}
+            </th>
+            <td class="px-4 py-2">{{ ot.overtime_type }}</td>
+            <td class="px-4 py-2">{{ ot.start_date }}</td>
+            <td class="px-4 py-2">{{ ot.start_time_expected }}</td>
+            <td class="px-4 py-2">{{ ot.end_date }}</td>
+            <td class="px-4 py-2">{{ ot.end_time_expected }}</td>
+            <td class="px-4 py-2">{% include "approval/overtime_detail.html" %}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% include "pagination.html" %}
+  </div>
+{% endblock content %}

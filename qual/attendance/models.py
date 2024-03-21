@@ -16,6 +16,7 @@ from device.models import Device
 from employee.models import Employee
 import shift.models
 import leave.models
+from django.contrib.auth.models import User
 
 
 class RawAttendance(models.Model):
@@ -75,6 +76,14 @@ class Attendance(models.Model):
         LeaveType, on_delete=models.CASCADE, null=True, related_name="leave_type"
     )
     approved = models.BooleanField(default=False)
+    rejected = models.BooleanField(default=False)
+    approved_by = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+        related_name="attendance_approval",
+    )
 
     def get_absolute_url(self):
         return reverse("attendance:attendance_detail", args={self.id})

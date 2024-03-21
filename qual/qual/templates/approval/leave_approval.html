@@ -1,0 +1,33 @@
+{% extends "_base.html" %}
+{% block content %}
+  <div class="p-8 ml-4 overflow-x-auto bg-white rounded-lg shadow-md w-fit">
+    <table class="text-left text-gray-900 divide-y ">
+      <thead class="font-semibold text-gray-900 uppercase bg-white">
+        <tr>
+          <th scope="col" class="px-3 py-4">Employee</th>
+          <th scope="col" class="px-3 py-4">Leave Type</th>
+          <th scope="col" class="px-3 py-4">Start date</th>
+          <th scope="col" class="px-3 py-4">End date</th>
+          <th scope="col" class="px-3 py-4">Half day</th>
+          <th scope="col" class="px-3 py-4">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for l in page %}
+          <tr class="bg-white border-b">
+            <th scope="row"
+                class="px-4 py-2 font-semibold text-gray-900 whitespace-nowrap dark:text-white">
+              {{ l.employee.name }}
+            </th>
+            <td class="px-4 py-2">{{ l.leave_type }}</td>
+            <td class="px-4 py-2">{{ l.start_date }}</td>
+            <td class="px-4 py-2">{{ l.end_date }}</td>
+            <td class="px-4 py-2">{{ l.is_half_day }}</td>
+            <td class="px-4 py-2">{% include "approval/leave_detail.html" %}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% include "pagination.html" %}
+  </div>
+{% endblock content %}

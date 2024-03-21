@@ -2,6 +2,7 @@ from django.db import models
 from django.urls import reverse
 import employee.models
 from datetime import date
+from django.contrib.auth.models import User
 
 
 # Create your models here.
@@ -34,11 +35,16 @@ class Leave(models.Model):
     )
     active = models.BooleanField(default=False)
     approved = models.BooleanField(default=False)
+    rejected = models.BooleanField(default=False)
+    approved_by = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+        related_name="leave_approval",
+    )
     reason = models.TextField(null=True, max_length=250)
     evidence = models.FileField(null=True, blank=True, upload_to="leave_evidence/")
-
-    class Meta:
-        permissions = [("can_approve_leave", "Can Approve Leave")]
 
     def get_absolute_url(self):
         return reverse("leave:leave_detail", args={self.id})

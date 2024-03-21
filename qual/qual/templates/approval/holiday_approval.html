@@ -1,0 +1,28 @@
+{% extends "_base.html" %}
+{% block content %}
+  <div class="p-8 ml-4 overflow-x-auto bg-white rounded-lg shadow-md w-fit">
+    <table class="text-left text-gray-900 divide-y ">
+      <thead class="font-semibold text-gray-900 uppercase bg-white">
+        <tr>
+          <th scope="col" class="px-3 py-4">Name</th>
+          <th scope="col" class="px-3 py-4">Date</th>
+          <th scope="col" class="px-3 py-4">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for h in page %}
+          <tr class="bg-white border-b">
+            <td class="px-4 py-2">{{ h.name }}</td>
+            <td class="px-4 py-2">{{ h.date }}</td>
+            <td class="px-4 py-2">{% include "approval/holiday_detail.html" %}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% if not page %}
+      <p>no approval</p>
+    {% else %}
+      {% include "pagination.html" %}
+    {% endif %}
+  </div>
+{% endblock content %}

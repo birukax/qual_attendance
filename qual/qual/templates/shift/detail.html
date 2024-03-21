@@ -1,166 +1,142 @@
-{% extends "_base.html" %} {% block content %}
-<div class="bg-white mx-4 p-4 w-fit">
-  <div
-    class="p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
-  >
-    <div class="flex items-center justify-between">
-      <svg
-        class="w-12 h-12 mb-3 text-gray-900"
-        aria-hidden="true"
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-      >
-        <path
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-width="2"
-          d="M3 21h18M4 18h16M6 10v8m4-8v8m4-8v8m4-8v8M4 9.5v-1c0-.3.2-.6.5-.8l7-4.5a1 1 0 0 1 1 0l7 4.5c.3.2.5.5.5.8v1c0 .3-.2.5-.5.5h-15a.5.5 0 0 1-.5-.5Z"
-        />
+{% extends "_base.html" %}
+{% block content %}
+  <div class="p-4 mx-4 bg-white w-fit">
+    <a href="{% url 'shift:shifts' %}" class="mx-2">
+      <svg class="w-6 h-6 text-slate-800 dark:text-white"
+           aria-hidden="true"
+           xmlns="http://www.w3.org/2000/svg"
+           width="24"
+           height="24"
+           fill="none"
+           viewBox="0 0 24 24">
+        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 19-7-7 7-7" />
       </svg>
-
-      <h5
-        class="mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white"
-      >
-        {{ shift.name }}
-      </h5>
-    </div>
-    <div class="flex-row gap-3 font-normal text-gray-900">
-      <div class="flex justify-between">
-        <span class="mr-2">Employees:</span>
-        <p class="font-bold">{{ shift.employees.count }}</p>
+    </a>
+    <div class="p-6 bg-white border border-slate-200 rounded-lg shadow dark:bg-slate-800 dark:border-slate-700">
+      <div class="flex items-center justify-between">
+        <svg class="w-20 h-20 mb-3 text-slate-900"
+             aria-hidden="true"
+             xmlns="http://www.w3.org/2000/svg"
+             fill="currentColor"
+             viewBox="0 0 24 24">
+          <path fill-rule="evenodd" d="M2 6c0-1.1.9-2 2-2h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6Zm2 8v-2h7v2H4Zm0 2v2h7v-2H4Zm9 2h7v-2h-7v2Zm7-4v-2h-7v2h7Z" clip-rule="evenodd" />
+        </svg>
+        <h5 class="mb-2 text-2xl font-semibold tracking-tight text-slate-900 dark:text-white">{{ shift.name }}</h5>
+      </div>
+      <div class="flex-row gap-3 font-normal text-slate-900">
+        <div class="flex justify-between">
+          <span class="mr-2">Employees:</span>
+          <p class="font-bold">{{ shift.employees.count }}</p>
+        </div>
+        <div class="flex justify-between">
+          <span class="mr-2">Continous:</span>
+          <p class="font-bold">{{ shift.continous }}</p>
+        </div>
+        <div class="flex justify-between">
+          <span class="mr-2">Saturday Half:</span>
+          <p class="font-bold">{{ shift.saturday_half }}</p>
+        </div>
       </div>
       <div class="flex justify-between">
-        <span class="mr-2">Continous:</span>
-        <p class="font-bold">{{ shift.continous }}</p>
-      </div>
-      <div class="flex justify-between">
-        <span class="mr-2">Saturday Half:</span>
-        <p class="font-bold">{{ shift.saturday_half }}</p>
+        {% include "shift/pattern/create.html" %}
+        {% include "shift/edit.html" %}
       </div>
     </div>
-    <div class="flex justify-between">
-      {% include "shift/pattern/create.html" %} {% include "shift/edit.html" %}
+    <div class="mb-4 border-b border-slate-200 text-slate-950">
+      <ul class="flex flex-wrap -mb-px text-base font-semibold text-center"
+          id="default-tab"
+          data-tabs-toggle="#default-tab-content"
+          role="tablist">
+        <li class="me-2" role="presentation">
+          <button class="inline-block p-4 border-b-2 rounded-t-lg hover:text-slate-600 hover:border-slate-300 dark:hover:text-slate-300"
+                  id="employees-tab"
+                  data-tabs-target="#employees"
+                  type="button"
+                  role="tab"
+                  aria-controls="employees"
+                  aria-selected="false">Employees</button>
+        </li>
+        <li class="me-2" role="presentation">
+          <button class="inline-block p-4 border-b-2 rounded-t-lg"
+                  id="patterns-tab"
+                  data-tabs-target="#patterns"
+                  type="button"
+                  role="tab"
+                  aria-controls="patterns"
+                  aria-selected="false">Patterns</button>
+        </li>
+      </ul>
     </div>
-  </div>
-
-  <div class="mb-4 border-b border-gray-200">
-    <ul
-      class="flex flex-wrap -mb-px text-base font-semibold text-center"
-      id="default-tab"
-      data-tabs-toggle="#default-tab-content"
-      role="tablist"
-    >
-      <li class="me-2" role="presentation">
-        <button
-          class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
-          id="employees-tab"
-          data-tabs-target="#employees"
-          type="button"
-          role="tab"
-          aria-controls="employees"
-          aria-selected="false"
-        >
-          Employees
-        </button>
-      </li>
-      <li class="me-2" role="presentation">
-        <button
-          class="inline-block p-4 border-b-2 rounded-t-lg"
-          id="patterns-tab"
-          data-tabs-target="#patterns"
-          type="button"
-          role="tab"
-          aria-controls="patterns"
-          aria-selected="false"
-        >
-          Patterns
-        </button>
-      </li>
-    </ul>
-  </div>
-  <div id="default-tab-content">
-    <div
-      class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800"
-      id="employees"
-      role="tabpanel"
-      aria-labelledby="employees-tab"
-    >
-      <div class="relative mt-4 overflow-x-auto shadow-md sm:rounded-lg">
-        <table class="w-fit text-left text-gray-900">
-          <thead class="text-gray-700 uppercase bg-gray-50">
-            <tr>
-              <th scope="col" class="px-3 py-3">Employee name</th>
-              <th scope="col" class="px-3 py-3">Shift</th>
-              <th scope="col" class="px-3 py-3">Current pattern</th>
-              <th scope="col" class="px-3 py-3">Last updated</th>
-              <th scope="col" class="px-3 py-3">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for employee in page %}
-            <tr class="bg-white border-b hover:bg-gray-50">
-              <td class="px-3 py-3">{{ employee.name }}</td>
-              <td class="px-3 py-3">{{ employee.shift.name }}</td>
-              <td class="px-3 py-3">{{ employee.pattern }}</td>
-              <td class="px-3 py-3">{{ employee.last_updated }}</td>
-              <td class="px-3 py-3 text-right">
-                <a
-                  href="{{ employee.get_absolute_url }}"
-                  class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                  >Detail</a
-                >
-              </td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-        {% include "pagination.html" %}
+    <div id="default-tab-content">
+      <div class="hidden p-4 rounded-lg bg-slate-50 dark:bg-slate-800"
+           id="employees"
+           role="tabpanel"
+           aria-labelledby="employees-tab">
+        <div class="relative mt-4 overflow-x-auto shadow-md sm:rounded-lg">
+          <table class="text-left text-slate-900 w-fit">
+            <thead class="text-slate-900 uppercase bg-slate-50 text-sm">
+              <tr>
+                <th scope="col" class="p-2">Employee name</th>
+                <th scope="col" class="p-2">Shift</th>
+                <th scope="col" class="p-2">Current pattern</th>
+                <th scope="col" class="p-2">Last updated</th>
+                <th scope="col" class="p-2">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for employee in page %}
+                <tr class="bg-white border-b hover:bg-slate-50">
+                  <td class="p-2">{{ employee.name }}</td>
+                  <td class="p-2">{{ employee.shift.name }}</td>
+                  <td class="p-2">{{ employee.pattern }}</td>
+                  <td class="p-2">{{ employee.last_updated }}</td>
+                  <td class="p-2 text-right">
+                    <a href="{{ employee.get_absolute_url }}"
+                       class="font-semibold text-slate-900  hover:font-extrabold">Detail</a>
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+          {% include "pagination.html" %}
+        </div>
       </div>
-    </div>
-
-    <div
-      class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800"
-      id="patterns"
-      role="tabpanel"
-      aria-labelledby="patterns-tab"
-    >
-      <div class="relative mt-4 overflow-x-auto shadow-md sm:rounded-lg">
-        <table class="w-fit text-base text-left">
-          <thead class="text-gray-700 uppercase bg-gray-50 whitespace-nowrap">
-            <tr>
-              <th scope="col" class="py-2 px-2">Name</th>
-              <th scope="col" class="py-2 px-2">Day span</th>
-              <th scope="col" class="py-2 px-2">Next pattern</th>
-              <th scope="col" class="py-2 px-2">Start time</th>
-              <th scope="col" class="py-2 px-2">End time</th>
-              <th scope="col" class="py-2 px-2">Tolerance</th>
-              <th scope="col" class="py-2 px-2">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for pattern in patterns %}
-            <tr class="bg-white border-b hover:bg-gray-50">
-              <td class="px-2 py-2">{{ pattern.name }}</td>
-              <td class="px-2 py-2">{{ pattern.day_span }}</td>
-              <td class="px-2 py-2">{{ pattern.next }}</td>
-              <td class="px-2 py-2">{{ pattern.start_time }}</td>
-              <td class="px-2 py-2">{{ pattern.end_time }}</td>
-              <td class="px-2 py-2">{{ pattern.tolerance }}</td>
-              <td class="px-2 py-2">
-                <a
-                  href="{% url 'shift:edit_pattern' pattern.id %}"
-                  class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                  >edit</a
-                >
-              </td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
+      <div class="hidden p-4 rounded-lg bg-slate-50 dark:bg-slate-800"
+           id="patterns"
+           role="tabpanel"
+           aria-labelledby="patterns-tab">
+        <div class="relative mt-4 overflow-x-auto shadow-md sm:rounded-lg">
+          <table class="text-base text-left w-fit">
+            <thead class="text-slate-900 uppercase text-sm bg-slate-50 whitespace-nowrap">
+              <tr>
+                <th scope="col" class="px-2 py-2">Name</th>
+                <th scope="col" class="px-2 py-2">Day span</th>
+                <th scope="col" class="px-2 py-2">Next pattern</th>
+                <th scope="col" class="px-2 py-2">Start time</th>
+                <th scope="col" class="px-2 py-2">End time</th>
+                <th scope="col" class="px-2 py-2">Tolerance</th>
+                <th scope="col" class="px-2 py-2">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for pattern in patterns %}
+                <tr class="bg-white border-b hover:bg-slate-50">
+                  <td class="px-2 py-2">{{ pattern.name }}</td>
+                  <td class="px-2 py-2">{{ pattern.day_span }}</td>
+                  <td class="px-2 py-2">{{ pattern.next }}</td>
+                  <td class="px-2 py-2">{{ pattern.start_time }}</td>
+                  <td class="px-2 py-2">{{ pattern.end_time }}</td>
+                  <td class="px-2 py-2">{{ pattern.tolerance }}</td>
+                  <td class="px-2 py-2">
+                    <a href="{% url 'shift:edit_pattern' pattern.id %}"
+                       class="font-semibold text-slate-900  hover:font-extrabold">edit</a>
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>
-</div>
-
 {% endblock content %}

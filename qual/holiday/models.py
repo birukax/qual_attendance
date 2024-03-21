@@ -2,6 +2,7 @@ from django.db import models
 from django.urls import reverse
 from django.utils.text import slugify
 from datetime import date
+from django.contrib.auth.models import User
 
 
 class Holiday(models.Model):
@@ -9,6 +10,15 @@ class Holiday(models.Model):
     slug = models.SlugField(unique=True)
     date = models.DateField()
     approved = models.BooleanField(default=False)
+    rejected = models.BooleanField(default=False)
+    approved_by = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+        related_name="holiday_approval",
+    )
+
     description = models.TextField()
 
     def __str__(self):

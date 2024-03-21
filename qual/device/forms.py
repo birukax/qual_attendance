@@ -1,6 +1,7 @@
 from django import forms
-from .models import Device
+from .models import Device, DeviceUser
 from django.utils.text import slugify
+
 
 class CreateDeviceForm(forms.Form):
     class Meta:
@@ -17,3 +18,9 @@ class CreateDeviceForm(forms.Form):
         device.save()
 
         return device
+
+
+class AddDeviceUserForm(forms.ModelForm):
+    class Meta:
+        model = DeviceUser
+        fields = ["device"]

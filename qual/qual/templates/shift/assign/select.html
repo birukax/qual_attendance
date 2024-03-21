@@ -1,0 +1,48 @@
+{% extends "_base.html" %}
+{% block content %}
+    <div class="p-8 mx-4 bg-white rounded-lg w-fit shadow-sm">
+        <div class=" mb-3">{% include "shift/assign/filter.html" %}</div>
+        <form method="post" action="{% url 'shift:set_employees' %}">
+            <button type="submit"
+                    value='Submit'
+                    class="text-white bg-slate-700 hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-slate-300 font-medium rounded-lg text-sm px-5 py-2 text-center ">
+                Set selection
+            </button>
+            <table class="overflow-x-auto text-base text-left text-slate-900 ">
+                <thead class="uppercase text-slate-900 bg-slate-50">
+                    <tr>
+                        <th scope="col" class="px-2 py-2 whitespace-nowrap">ID</th>
+                        <th scope="col" class="px-2 py-2">Full name</th>
+                        <th scope="col" class="px-2 py-2">Department</th>
+                        <th scope="col" class="px-2 py-2">
+                            Employment
+                            <br>
+                            date
+                        </th>
+                        <th scope="col" class="px-2 py-2">Status</th>
+                        <th scope="col" class="px-2 py-2">Shift</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% csrf_token %}
+                    {% for employee in employees %}
+                        <tr class="border-b hover:bg-slate-50">
+                            <td class="px-2 py-2 font-semibold">
+                                <input type="checkbox" name="employees" value="{{ employee.id }}">
+                                {{ employee.employee_id }}</td>
+                            <th scope="row"
+                                class="px-2 py-2 font-semibold lowercase text-slate-900 first-letter:uppercase whitespace-nowrap ">
+
+                                {{ employee.name }}
+                            </th>
+                            <td class="px-2 py-2 ">{{ employee.department }}</td>
+                            <td class="px-2 py-2">{{ employee.employment_date }}</td>
+                            <td class="px-2 py-2">{{ employee.status }}</td>
+                            <td class="px-2 py-2 whitespace-nowrap">{{ employee.shift }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </form>
+    </div>
+{% endblock content %}

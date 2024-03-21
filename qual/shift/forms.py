@@ -13,7 +13,11 @@ import datetime
 class CreateShiftForm(forms.Form):
     class Meta:
         model = Shift()
-        fields = ["name", "continous", "saturday_half"]
+        fields = [
+            "name",
+            "continous",
+            "saturday_half",
+        ]
 
     name = forms.CharField()
     continous = forms.BooleanField(required=False)
@@ -28,10 +32,29 @@ class CreateShiftForm(forms.Form):
         return shift
 
 
+class SelectEmployeesForm(forms.ModelForm):
+    class Meta:
+        model = Employee
+        fields = ["employees"]
+
+    employees = forms.ModelMultipleChoiceField(
+        queryset=Employee.objects.filter(status="Active"),
+        widget=forms.CheckboxSelectMultiple,
+    )
+
+
+class SelectShiftForm(forms.Form):
+    class Meta:
+        model = Shift
+        fields = ["name"]
+
+    shift = forms.ModelChoiceField(Shift.objects.all())
+
+
 class EditShiftForm(forms.ModelForm):
     class Meta:
         model = Shift()
-        fields = ["name", "continous", "saturday_half"]
+        fields = ["name", "continous", "saturday_half", "current_pattern"]
 
     name = forms.CharField()
     continous = forms.BooleanField(required=False)
@@ -42,6 +65,12 @@ class EditShiftForm(forms.ModelForm):
         shift.slug = slugify(shift.name)
         shift.save()
         return shift
+
+    def __init__(self, *args, **kwargs):
+        super(EditShiftForm, self).__init__(*args, **kwargs)
+        self.fields["current_pattern"].queryset = Pattern.objects.filter(
+            shift__id=self.instance.id
+        )
 
 
 class CreatePatternForm(forms.Form):
@@ -82,6 +111,10 @@ class EditPatternForm(forms.ModelForm):
     tolerance = forms.IntegerField()
     day_span = forms.IntegerField()
 
+    def __init__(self, *args, **kwargs):
+        super(EditPatternForm, self).__init__(*args, **kwargs)
+        self.fields["next"].queryset = Pattern.objects.filter(shift=self.instance.shift)
+
     def save(self, force_insert=False, force_update=False, commit=True):
         pattern = super(EditPatternForm, self).save(commit=False)
         pattern.slug = slugify(pattern.name)
@@ -92,7 +125,9 @@ class EditPatternForm(forms.ModelForm):
 class ChangeEmployeeShiftForm(forms.ModelForm):
     class Meta:
         model = Employee()
-        fields = ["shift", "last_updated"]
+        fields = [
+            "shift",
+        ]
 
     def __init__(self, *args, **kwargs):
         super(ChangeEmployeeShiftForm, self).__init__(*args, **kwargs)
@@ -101,25 +136,17 @@ class ChangeEmployeeShiftForm(forms.ModelForm):
             self.fields["shift"].initial = Shift.objects.get(id=self.instance.shift.id)
 
     shift = forms.ModelChoiceField(Shift.objects.all())
-    last_updated = forms.DateField(required=False)
 
 
-class ChangeEmployeePatternForm(forms.ModelForm):
-    class Meta:
-        model = Employee()
-        fields = [
-            "pattern",
-        ]
+# class ChangePatternForm(forms.ModelForm):
+#     class Meta:
+#         model = Shift()
+#         fields = [
+#             "current_pattern",
+#         ]
 
-    def __init__(self, *args, **kwargs):
-        super(ChangeEmployeePatternForm, self).__init__(*args, **kwargs)
-        if self.instance.shift:
-            self.fields["pattern"].queryset = Pattern.objects.filter(
-                shift__id=self.instance.shift.id,
-            )
-            if self.instance.pattern:
-                self.fields["pattern"].initial = Pattern.objects.get(
-                    id=self.instance.pattern.id
-                )
-
-    pattern = forms.ModelChoiceField(Pattern.objects.all())
+#     def __init__(self, *args, **kwargs):
+#         super(ChangePatternForm, self).__init__(*args, **kwargs)
+#         self.fields["current_pattern"].queryset = Pattern.objects.filter(
+#             shift__id=self.instance.id,
+#         )

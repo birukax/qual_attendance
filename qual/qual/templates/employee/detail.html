@@ -1,112 +1,79 @@
 {% extends "_base.html" %}
 {% block content %}
-    
-    <div class="max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-        
-        <div class="flex items-center justify-between">
-            <svg class="w-12 h-12 mb-3 text-slate-950"
-             aria-hidden="true"
-             xmlns="http://www.w3.org/2000/svg"
-             fill="currentColor"
-             viewBox="0 0 14 18">
-            <path d="M7 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9Zm2 1H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Z" />
-        </svg>
-        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-            {{ employee.name }}
-        </h5>
+    <div class="w-fit bg-white">
+        <div class="p-6 bg-white border border-gray-200 rounded-lg shadow w-full">
+            <a href="{% url 'employee:employees' %}" class="mx-2">
+                <svg class="w-6 h-6 text-gray-800 dark:text-white"
+                     aria-hidden="true"
+                     xmlns="http://www.w3.org/2000/svg"
+                     width="24"
+                     height="24"
+                     fill="none"
+                     viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 19-7-7 7-7" />
+                </svg>
+            </a>
+            <div class="flex items-center justify-between">
+                <svg class="w-12 h-12 mb-3 text-slate-950"
+                     aria-hidden="true"
+                     xmlns="http://www.w3.org/2000/svg"
+                     fill="currentColor"
+                     viewBox="0 0 14 18">
+                    <path d="M7 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9Zm2 1H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Z" />
+                </svg>
+                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{ employee.name }}</h5>
             </div>
-        <div class="flex-row font-normal text-gray-900 ">
-            <div class="flex justify-between mb-2">
-                <span class="mr-2">Employee ID:</span>
-                <p class="font-bold">
-                {{ employee.employee_id }}
-                    
-                </p>
-            </div>
-            <div class="flex justify-between mb-2">
-                <span class="mr-2">Shift:</span>
-                <p class="font-bold">
-                {{ employee.shift }}
-                    
-                </p>
-            </div>
-            <div class="flex justify-between mb-2">
-                <span class="mr-2">Pattern:</span>
-                <p class="font-bold uppercase">
-                {{ employee.pattern }}
-                    
-                </p>
-            </div>
-            <div class="flex justify-between mb-2">
-                <span class="mr-2">Last updated:</span>
-                <p class="font-bold uppercase">
-                {{ employee.last_updated }}
-                    
-                </p>
-            </div>
-            <div class="flex justify-between">
-                {% include "employee/change_shift.html" %}
-                {% include "employee/change_pattern.html" %}
+            <div class="flex-row font-normal text-gray-900 ">
+                <div class="flex justify-between mb-2">
+                    <span class="mr-2">Employee ID:</span>
+                    <p class="font-bold">{{ employee.employee_id }}</p>
+                </div>
+                <div class="flex justify-between mb-2">
+                    <span class="mr-2">Shift:</span>
+                    <p class="font-bold">{{ employee.shift }}</p>
+                </div>
+                <div class="flex justify-between mb-2">
+                    <span class="mr-2">Device:</span>
+                    <div class="gap-4 font-bold text-right uppercase">
+                        {% for emp_device in employee_devices %}<p>{{ emp_device.device }}</p>{% endfor %}
+                    </div>
+                </div>
+                <div class="flex justify-between mt-4">
+                    {% include "employee/change_shift.html" %}
+                    {% if not request.user.profile.role == "MANAGER" %}
+                        {% include "employee/add_device_user.html" %}
+                    {% endif %}
+                </div>
             </div>
         </div>
-    </div>
-    <div class="relative shadow-md sm:rounded-lg">
-        <table class="overflow-x-auto text-sm text-left text-gray-500 w-fit rtl:text-right dark:text-gray-400">
-            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                <tr>
-                    <th scope="col" class="px-4 py-3">
-                        Device
-                    </th>
-                    <th scope="col" class="px-4 py-3">
-                        Check in date
-                    </th>
-                    <th scope="col" class="px-4 py-3">
-                        check in time
-                    </th>
-                    <th scope="col" class="px-4 py-3">
-                        Check out date
-                    </th>
-                    <th scope="col" class="px-4 py-3">
-                        check out time
-                    </th>
-                    <th scope="col" class="px-4 py-3">
-                        Current pattern
-                    </th>
-                    <th scope="col" class="px-4 py-3">
-                        Leave
-                    </th>
-                    
-                </tr>
-            </thead>
-            <tbody>
-                {% for attendance in page %}
-                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                        <td class="px-4 py-4">
-                            {{ attendance.device.name }}
-                        </td>
-                        <td class="px-4 py-4">
-                            {{ attendance.check_in_date }}
-                        </td>
-                        <td class="px-4 py-4">
-                            {{ attendance.check_in_time }}
-                        </td>
-                        <td class="px-4 py-4">
-                            {{ attendance.check_out_date }}
-                        </td>
-                        <td class="px-4 py-4">
-                            {{ attendance.check_out_time }}
-                        </td>
-                        <td class="px-4 py-4">
-                            {{ attendance.current_pattern }}
-                        </td>
-                        <td class="px-4 py-4">
-                            {{ attendance.leave.name }}
-                        </td>
-                      
+        <div class="relative shadow-md sm:rounded-lg">
+            <table class="overflow-x-auto text-sm text-left text-gray-500 w-fit rtl:text-right dark:text-gray-400">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <tr>
+                        <th scope="col" class="px-4 py-3">Device</th>
+                        <th scope="col" class="px-4 py-3">Check in date</th>
+                        <th scope="col" class="px-4 py-3">check in time</th>
+                        <th scope="col" class="px-4 py-3">Check out date</th>
+                        <th scope="col" class="px-4 py-3">check out time</th>
+                        <th scope="col" class="px-4 py-3">Current pattern</th>
+                        <th scope="col" class="px-4 py-3">Leave</th>
                     </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        {% include "pagination.html" %}
-</div>
+                </thead>
+                <tbody>
+                    {% for attendance in page %}
+                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                            <td class="px-4 py-4">{{ attendance.device.name }}</td>
+                            <td class="px-4 py-4">{{ attendance.check_in_date }}</td>
+                            <td class="px-4 py-4">{{ attendance.check_in_time }}</td>
+                            <td class="px-4 py-4">{{ attendance.check_out_date }}</td>
+                            <td class="px-4 py-4">{{ attendance.check_out_time }}</td>
+                            <td class="px-4 py-4">{{ attendance.current_pattern }}</td>
+                            <td class="px-4 py-4">{{ attendance.leave.name }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% include "pagination.html" %}
+        </div>
+    </div>
 {% endblock content %}

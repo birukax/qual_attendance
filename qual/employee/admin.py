@@ -10,8 +10,6 @@ class EmployeeAdmin(admin.ModelAdmin):
         "name",
         "department",
         "shift",
-        "pattern",
-        "last_updated",
         "employment_date",
         "status",
     ]
@@ -24,3 +22,10 @@ class EmployeeAdmin(admin.ModelAdmin):
 @admin.register(Department)
 class DepartmentAdmin(admin.ModelAdmin):
     list_display = ["code", "name"]
+
+
+# @admin.register(Salary)
+# class SalaryAdmin(admin.ModelAdmin):
+#     list_display = ["employee", "salary", "effective_date", "end_date"]
+#     search_fields = ["employee__name"]
+#     list_per_page = 15

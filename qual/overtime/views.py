@@ -3,12 +3,16 @@ from django.contrib.auth.decorators import login_required
 from .models import *
 from django.core.paginator import Paginator
 from .forms import *
+from .tasks import calculate_ot
 
 
 @login_required
 def create_overtime(request):
     if request.method == "POST":
-        pass
+        form = CreateOvertimeForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("overtime:overtimes")
 
 
 @login_required
@@ -16,6 +20,12 @@ def approve_overtime(request, id):
     overtime = Overtime.objects.get(id=id)
     overtime.approved = True
     overtime.save()
+    return redirect("overtime:overtime_detail", id=id)
+
+
+@login_required
+def calculate_overtime(request, id):
+    calculate_ot(id=id)
     return redirect("overtime:overtime_detail", id=id)
 
 
@@ -58,23 +68,19 @@ def create_overtime_type(request):
 
 @login_required
 def edit_overtime_type(request, id):
-    pass
-    # if request.method == "POST":
-    #     edit_ot_type_form = EditOvertimeTypeForm(request.POST, instance=overtime_type)
-    #     if edit_ot_type_form.is_valid():
-    #         edit_ot_type_form.save()
-    #         return redirect("overtime:overtime_types")
-    #     else:
-    #         return redirect("overtime:overtime_types")
-    # else:
-    #     return redirect("overtime:overtime_types")
+    overtime_type = get_object_or_404(OvertimeType, id=id)
+    if request.method == "POST":
+        edit_ot_type_form = EditOvertimeTypeForm(request.POST, instance=overtime_type)
+        if edit_ot_type_form.is_valid():
+            edit_ot_type_form.save()
+    return redirect("overtime:overtime_type_detail", id=id)
 
 
 @login_required
 def overtime_types(request):
     crate_overtime_type_form = CreateOvertimeTypeForm()
     overtime_types = OvertimeType.objects.all().order_by("name")
-    paginated = Paginator(overtime_types, 15)
+    paginated = Paginator(overtime_types, 10)
     page_number = request.GET.get("page")
 
     page = paginated.get_page(page_number)
@@ -85,10 +91,15 @@ def overtime_types(request):
 @login_required
 def overtime_type_detail(request, id):
     overtime_type = get_object_or_404(OvertimeType, id=id)
+    edit_overtime_type_form = EditOvertimeTypeForm(instance=overtime_type)
     overtimes = Overtime.objects.filter(overtime_type=overtime_type)
-    paginated = Paginator(overtimes, 15)
+    paginated = Paginator(overtimes, 10)
     page_number = request.GET.get("page")
     page = paginated.get_page(page_number)
 
-    context = {"overtime_type": overtime_type, "page": page}
+    context = {
+        "overtime_type": overtime_type,
+        "page": page,
+        "edit_ot_type_form": edit_overtime_type_form,
+    }
     return render(request, "overtime/overtime_type/detail.html", context)

@@ -4,6 +4,7 @@ from .models import *
 from django.core.paginator import Paginator
 from .forms import *
 from employee.models import Employee
+from employee.filters import EmployeeFilter
 
 
 @login_required
@@ -32,6 +33,49 @@ def shifts(request):
     page = paginated.get_page(page_number)
     context = {"create_shift_form": create_shift_form, "page": page}
     return render(request, "shift/list.html", context)
+
+
+@login_required
+def select_employees(request):
+    employees = Employee.objects.filter(status="Active").order_by("name")
+    employee_filter = EmployeeFilter(request.GET, queryset=employees)
+    employees = employee_filter.qs
+    context = {"employee_filter": employee_filter, "employees": employees}
+    return render(request, "shift/assign/select.html", context)
+
+
+@login_required
+def set_employees(request):
+    if request.method == "POST":
+
+        employees = Employee.objects.filter(id__in=request.POST.getlist("employees"))
+
+        select_shift_form = SelectShiftForm()
+        context = {
+            "employees": employees,
+            "select_shift_form": select_shift_form,
+        }
+        # shift = form.cleaned_data["shift"]
+        # for employee in employees:
+        #     employee.shift = shift
+        #     employee.save()
+        return render(request, "shift/assign/set.html", context)
+
+
+@login_required
+def assign_employees(request):
+    if request.method == "POST":
+        form = SelectShiftForm(request.POST)
+        if form.is_valid():
+            shift = form.cleaned_data["shift"]
+            employees = Employee.objects.filter(
+                id__in=request.POST.getlist("employees")
+            )
+            for employee in employees:
+                employee.shift = shift
+                employee.save()
+            return redirect("shift:shifts")
+        return render(request, "shift/assign/select.html")
 
 
 @login_required
@@ -86,16 +130,6 @@ def change_shift(request, id):
         shift_form = ChangeEmployeeShiftForm(request.POST, instance=employee)
         if shift_form.is_valid():
             shift_form.save()
-            return redirect("employee:employee_detail", id=id)
-
-
-@login_required
-def change_pattern(request, id):
-    if request.method == "POST":
-        employee = Employee.objects.get(id=id)
-        pattern_form = ChangeEmployeePatternForm(request.POST, instance=employee)
-        if pattern_form.is_valid():
-            pattern_form.save()
             return redirect("employee:employee_detail", id=id)
 
 

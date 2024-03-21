@@ -1,36 +1,36 @@
 {% extends "_base.html" %} {% block content %}
-<div class="w-fit bg-white mx-4 px-4">
-  <div class="p-3">{% include "leave/create.html" %}</div>
+<div class="w-fit bg-white mx-4 p-3 rounded-lg">
+  <div class="p-1">{% include "leave/create.html" %}</div>
 
   <div>
     <table class="overflow-x-auto text-left text-black">
       <thead class="text-gray-700 uppercase bg-gray-50">
         <tr>
-          <th scope="col" class="px-3 py-3">Employee</th>
-          <th scope="col" class="px-3 py-3">Leave Type</th>
-          <th scope="col" class="px-3 py-3">Start Date</th>
-          <th scope="col" class="px-3 py-3">End Date</th>
-          <th scope="col" class="px-3 py-3">Half day</th>
-          <th scope="col" class="px-3 py-3">Actions</th>
+          <th scope="col" class="p-2">Employee</th>
+          <th scope="col" class="p-2">Leave Type</th>
+          <th scope="col" class="p-2">Start Date</th>
+          <th scope="col" class="p-2">End Date</th>
+          <th scope="col" class="p-2">Half day</th>
+          <th scope="col" class="p-2">Actions</th>
         </tr>
       </thead>
       <tbody>
         {% for leave in page %}
         <tr class="bg-white border-b hover:bg-gray-50">
-          <td class="px-2 py-4 whitespace-nowrap">{{ leave.employee.name }}</td>
+          <td class="p-2 whitespace-nowrap">{{ leave.employee.name }}</td>
           <th
             scope="row"
-            class="px-2 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+            class="p-2 font-medium text-gray-900 whitespace-nowrap dark:text-white"
           >
             {{ leave.leave_type }}
           </th>
-          <td class="px-2 py-4 whitespace-nowrap">{{ leave.start_date }}</td>
-          <td class="px-2 py-4 whitespace-nowrap">{{ leave.end_date }}</td>
-          <td class="px-2 py-4">{{ leave.is_half_day }}</td>
-          <td class="px-2 py-4 text-right">
+          <td class="p-2 whitespace-nowrap">{{ leave.start_date }}</td>
+          <td class="p-2 whitespace-nowrap">{{ leave.end_date }}</td>
+          <td class="p-2">{{ leave.is_half_day }}</td>
+          <td class="p-2 text-right">
             <a
               href="{{ leave.get_absolute_url }}"
-              class="font-medium text-blue-800 dark:text-blue-500 hover:underline"
+              class="font-semibold text-slate-800  hover:font-extrabold"
               >Detail</a
             >
           </td>

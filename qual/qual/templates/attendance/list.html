@@ -1,61 +1,75 @@
-{% extends "_base.html" %} {% block content %}
-
-<div class="w-fit bg-white mx-4">
-  <div class="flex items-center justify-between p-4">
-    <div>{% include "attendance/download.html" %}</div>
-    <div>{% include "attendance/filter.html" %}</div>
+{% extends "_base.html" %}
+{% block content %}
+  <div class="p-4 mx-6 bg-white rounded-xl w-fit">
+    <div class="flex items-center justify-between mx-4 my-2">
+      <div>{% include "attendance/download.html" %}</div>
+      <div>{% include "attendance/filter.html" %}</div>
+    </div>
+    <div>
+      <table class="table m-2  p-2 rounded-lg overflow-x-auto text-base text-left text-slate-950 ">
+        <thead class="uppercase  items-start text-sm text-slate-900 bg-slate-50">
+          <tr>
+            <th scope="col" class="p-2">Employee</th>
+            <th scope="col" class="p-2">Status</th>
+            <th scope="col" class="p-2 text-center">
+              <p class="font-light">Checkin</p>
+              <div class="gap-2 flex w-full justify-around">
+                <p>date</p>
+                <p>time</p>
+              </div>
+            </th>
+            <th scope="col" class="p-2 text-center">
+              <p class="font-light">Checkout</p>
+              <div class="gap-2 flex  w-full justify-around">
+                <p>date</p>
+                <p>time</p>
+              </div>
+            </th>
+            <th scope="col" class="p-2">
+              Worked
+              <br>
+              hours
+            </th>
+            <th scope="col" class="p-2 whitespace-nowrap">
+              Checkin &
+              <br />
+              out type
+            </th>
+          </tr>
+        </thead>
+        <tbody class="w-fit">
+          {% for a in page %}
+            <tr class="border-b">
+              <th scope="row"
+                  class="p-2 font-semibold text-slate-900 whitespace-nowrap">
+                {{ a.employee.name }}
+                <br />
+                <span class="text-sm font-light">{{ a.current_pattern }}</span>
+              </th>
+              <td class="p-2 whitespace-nowrap font-semibold text-sm uppercase">{{ a.status }}</td>
+              <td class="p-2 ">
+                <div class="gap-2 flex justify-around whitespace-nowrap">
+                  <p class="font-light">{{ a.check_in_date }}</p>
+                  <p class="font-semibold">{{ a.check_in_time }}</p>
+                </div>
+              </td>
+              <td class="p-2 ">
+                <div class="gap-2 flex justify-around whitespace-nowrap">
+                  <p class="font-light">{{ a.check_out_date }}</p>
+                  <p class="font-semibold">{{ a.check_out_time }}</p>
+                </div>
+              </td>
+              <td class="p-2">{{ a.worked_hours }}</td>
+              <td class=" p-2">
+                {{ a.check_in_type }}
+                <br />
+                {{ a.check_out_type }}
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% include "pagination.html" %}
+    </div>
   </div>
-  <div>
-    <table
-      class="overflow-x-auto table text-base text-left text-gray-950 divide-y divide-slate-900 shadow-md"
-    >
-      <thead class="text-gray-700 uppercase bg-gray-50">
-        <tr>
-          <th scope="col" class="px-1 py-2">Employee</th>
-          <th scope="col" class="px-1 py-2">Check in</th>
-          <th scope="col" class="px-1 py-2">Check out</th>
-          <th scope="col" class="px-1 py-2">Status</th>
-          <th scope="col" class="px-1 py-2">Worked hours</th>
-          <th scope="col" class="px-1 py-2 whitespace-nowrap">
-            Check in &
-            <br />
-            Check out type
-          </th>
-        </tr>
-      </thead>
-      <tbody class="w-fit">
-        {% for a in page %}
-        <tr class="border-b">
-          <th
-            scope="row"
-            class="px-2 py-2 font-semibold text-gray-900 whitespace-nowrap"
-          >
-            {{ a.employee.name }}
-            <br />
-            <span class="font-light">{{ a.current_pattern }}</span>
-          </th>
-          <td class="px-2 py-2 divide-y whitespace-nowrap">
-            {{ a.check_in_date }} <br /><span class="font-semibold"
-              >{{ a.check_in_time }}</span
-            >
-          </td>
-          <td class="px-2 py-2 divide-y whitespace-nowrap">
-            {{ a.check_out_date }} <br /><span class="font-semibold"
-              >{{ a.check_out_time }}
-            </span>
-          </td>
-          <td class="px-2 py-2 whitespace-nowrap">{{ a.status }}</td>
-          <td class="px-2 py-2">{{ a.worked_hours }}</td>
-          <td class="px-2 py-2">
-            {{ a.check_in_type }}
-            <br />
-            {{ a.check_out_type }}
-          </td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-    {% include "pagination.html" %}
-  </div>
-</div>
 {% endblock content %}

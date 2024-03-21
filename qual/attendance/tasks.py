@@ -9,7 +9,8 @@ from zk import ZK
 
 @shared_task
 def sync_raw_attendance():
-    devices = Device.objects.all().order_by("name")
+    devices = Device.objects.all()
+    # devices = Device.objects.all().order_by("name")
 
     def sync(attendance, device):
         emp_id = str(attendance.user_id).rjust(4, "0")
@@ -37,6 +38,7 @@ def sync_raw_attendance():
             ip=device.ip,
             port=device.port,
             timeout=300,
+            # encoding=
         )
         device_connected.connect()
 
@@ -44,8 +46,9 @@ def sync_raw_attendance():
         device_connected.disable_device()
         print("Device connected..")
         count_attendance = RawAttendance.objects.filter(device=device).count()
-
+        print("Device disabled")
         attendances = device_connected.get_attendance()
+        print("syncing attendance...")
         for attendance in attendances:
             # for attendance in attendances[count_attendance:]:
             if not attendance.timestamp < datetime.datetime(2024, 1, 1):
