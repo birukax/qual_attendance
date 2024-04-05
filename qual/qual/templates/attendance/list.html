@@ -1,66 +1,58 @@
 {% extends "_base.html" %}
 {% block content %}
-  <div class="p-4 mx-6 bg-white rounded-xl w-fit">
-    <div class="flex items-center justify-between mx-4 my-2">
-      <div>{% include "attendance/download.html" %}</div>
+  <div class="p-4 mx-auto shadow-md bg-white rounded-lg w-fit">
+    <div class="flex items-center justify-between mx-4 ">
       <div>{% include "attendance/filter.html" %}</div>
+      <div>{% include "attendance/download.html" %}</div>
     </div>
     <div>
-      <table class="table m-2  p-2 rounded-lg overflow-x-auto text-base text-left text-slate-950 ">
-        <thead class="uppercase  items-start text-sm text-slate-900 bg-slate-50">
-          <tr>
+      <table class="table p-2 m-2 overflow-x-auto text-sm text-left rounded-lg text-slate-900 ">
+        <thead class="text-xs uppercase border-b border-black text-slate-900 bg-slate-50">
+          <tr class="items-stretch justify-stretch">
             <th scope="col" class="p-2">Employee</th>
             <th scope="col" class="p-2">Status</th>
-            <th scope="col" class="p-2 text-center">
-              <p class="font-light">Checkin</p>
-              <div class="gap-2 flex w-full justify-around">
-                <p>date</p>
-                <p>time</p>
+            <th scope="col" class="p-2 text-left ">
+              <div class="grid grid-cols-3">
+                <div>date</div>
+                <div class="font-light text-left">In</div>
+                <div>time</div>
               </div>
             </th>
-            <th scope="col" class="p-2 text-center">
-              <p class="font-light">Checkout</p>
-              <div class="gap-2 flex  w-full justify-around">
-                <p>date</p>
-                <p>time</p>
+            <th scope="col" class="p-2 text-left">
+              <div class="grid grid-cols-3">
+                <div>date</div>
+                <div class="font-light text-left">Out</div>
+                <div>time</div>
               </div>
             </th>
-            <th scope="col" class="p-2">
-              Worked
-              <br>
-              hours
-            </th>
-            <th scope="col" class="p-2 whitespace-nowrap">
-              Checkin &
-              <br />
-              out type
-            </th>
+            <th scope="col" class="p-2">Total</th>
+            <th scope="col" class="p-2 whitespace-nowrap">Type</th>
           </tr>
         </thead>
         <tbody class="w-fit">
           {% for a in page %}
-            <tr class="border-b">
+            <tr class="border-b ">
               <th scope="row"
                   class="p-2 font-semibold text-slate-900 whitespace-nowrap">
                 {{ a.employee.name }}
                 <br />
                 <span class="text-sm font-light">{{ a.current_pattern }}</span>
               </th>
-              <td class="p-2 whitespace-nowrap font-semibold text-sm uppercase">{{ a.status }}</td>
-              <td class="p-2 ">
-                <div class="gap-2 flex justify-around whitespace-nowrap">
-                  <p class="font-light">{{ a.check_in_date }}</p>
-                  <p class="font-semibold">{{ a.check_in_time }}</p>
+              <td class="p-2 text-xs font-semibold uppercase whitespace-nowrap">{{ a.status }}</td>
+              <td class="items-center p-1 text-center">
+                <div class="grid items-start grid-cols-2 gap-2">
+                  <div>{{ a.check_in_date }}</div>
+                  <div class="font-semibold">{{ a.check_in_time }}</div>
                 </div>
               </td>
-              <td class="p-2 ">
-                <div class="gap-2 flex justify-around whitespace-nowrap">
-                  <p class="font-light">{{ a.check_out_date }}</p>
-                  <p class="font-semibold">{{ a.check_out_time }}</p>
+              <td class="items-center p-1 text-center">
+                <div class="grid grid-cols-2 gap-2">
+                  <div>{{ a.check_out_date }}</div>
+                  <div class="font-semibold">{{ a.check_out_time }}</div>
                 </div>
               </td>
               <td class="p-2">{{ a.worked_hours }}</td>
-              <td class=" p-2">
+              <td class="p-2 ">
                 {{ a.check_in_type }}
                 <br />
                 {{ a.check_out_type }}

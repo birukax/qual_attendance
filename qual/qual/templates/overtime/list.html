@@ -1,18 +1,31 @@
 {% extends "_base.html" %}
 {% block content %}
-  <div class="w-fit bg-white mx-4 px-4">
-    <div class="p-3">{% include "overtime/create.html" %}</div>
+  <div class="p-4 mx-4 bg-white rounded-lg shadow-md w-fit">
+    <div class="flex items-center justify-between">
+      {% include "overtime/create.html" %}
+      <a href="{% url 'overtime:post_overtime' %}"
+         class="inline-flex items-center px-4 py-2 text-sm text-center text-white rounded-lg bg-slate-800 hover:bg-slate-700 focus:ring-4 focus:outline-none focus:ring-slate-300">
+        Post
+        <svg class="w-4 h-4 ml-2 -mr-1"
+             fill="currentColor"
+             viewBox="0 0 20 20"
+             xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd">
+          </path>
+        </svg>
+      </a>
+    </div>
     <div>
-      <table class="overflow-x-auto text-left text-black">
-        <thead class="text-gray-800 whitespace-nowrap uppercase bg-gray-50">
+      <table class="overflow-x-auto text-sm text-left text-black">
+        <thead class="text-xs text-gray-800 uppercase whitespace-nowrap bg-gray-50">
           <tr>
             <th scope="col" class="px-1 py-2">Employee</th>
-            <th scope="col" class="px-1 py-2">Type</th>
             <th scope="col" class="px-1 py-2">Start Date</th>
             <th scope="col" class="px-1 py-2">Start time</th>
             <th scope="col" class="px-1 py-2">End Date</th>
             <th scope="col" class="px-1 py-2">End time</th>
             <th scope="col" class="px-1 py-2">Approved</th>
+            <th scope="col" class="px-1 py-2">Paid</th>
             <th scope="col" class="px-1 py-2">Actions</th>
           </tr>
         </thead>
@@ -20,18 +33,15 @@
           {% for overtime in page %}
             <tr class="bg-white border-b hover:bg-gray-50">
               <td class="px-2 py-4 whitespace-nowrap">{{ overtime.employee.name }}</td>
-              <th scope="row"
-                  class="px-2 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                {{ overtime.overtime_type }}
-              </th>
               <td class="px-2 py-4 whitespace-nowrap">{{ overtime.start_date }}</td>
               <td class="px-2 py-4 whitespace-nowrap">{{ overtime.end_date }}</td>
               <td class="px-2 py-4">{{ overtime.start_time_expected }}</td>
               <td class="px-2 py-4">{{ overtime.end_time_expected }}</td>
               <td class="px-2 py-4">{{ overtime.approved }}</td>
+              <td class="px-2 py-4">{{ overtime.paid }}</td>
               <td class="px-2 py-4 text-right">
                 <a href="{{ overtime.get_absolute_url }}"
-                   class="font-semibold text-slate-900  hover:font-extrabold">Detail</a>
+                   class="font-semibold text-slate-900 hover:underline">Detail</a>
               </td>
             </tr>
           {% endfor %}

@@ -1,0 +1,48 @@
+{% extends "_base.html" %}
+{% block content %}
+    <div class="p-4 shadow-md rounded-lg mx-auto w-fit bg-white">
+        <div class="gap-4 flex">
+            <p class="text-xl font-semibold text-slate-700 ml-3 my-2">{{ employee.employee_id }}</p>
+            <p class="text-xl font-semibold text-slate-700 ml-3 my-2">{{ employee.name }}</p>
+        </div>
+        <table class="overflow-x-auto text-sm text-left w-fit">
+            <thead class="text-xs uppercase border-b border-black bg-gray-50">
+                <tr>
+                    <th scope="col" class="p-2">Leave type</th>
+                    <th scope="col" class="p-2">Status</th>
+                    <th scope="col" class="p-2">Start date</th>
+                    <th scope="col" class="p-2">End date</th>
+                    <th scope="col" class="p-2">Active</th>
+                    <th scope="col" class="p-2">Half day</th>
+                    <th scope="col" class="p-2">Approved by</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for leave in page %}
+                    <tr class="bg-white border-b hover:bg-gray-50 ">
+                        <td class="p-2">{{ leave.leave_type }}</td>
+                        <td class="p-2">
+                            {% if leave.approved == True %}
+                                Approved
+                            {% elif leave.approved == False and leave.rejected == False %}
+                                Pending
+                            {% else %}
+                                Rejected
+                            {% endif %}
+                        </td>
+                        <td class="p-2">{{ leave.start_date }}</td>
+                        <td class="p-2">{{ leave.end_date }}</td>
+                        <td class="p-2">{{ leave.active }}</td>
+                        <td class="p-2">{{ leave.is_half_day }}</td>
+                        <td class="p-2">{{ leave.approved_by.first_name }} {{ leave.approved_by.last_name }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% if page %}
+            {% include "pagination.html" %}
+        {% else %}
+            <p class="p-2 ml-2 text-lg">No leave record.</p>
+        {% endif %}
+    </div>
+{% endblock content %}

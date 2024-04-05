@@ -1,6 +1,6 @@
 {% extends "_base.html" %}
 {% block content %}
-  <div class="px-4 mx-4 w-fit">
+  <div class="px-4 mx-auto w-fit ">
     <div class="p-4 mb-2 bg-white border border-slate-200 rounded-lg shadow">
       <div class="flex justify-between mb-1 items-center">
         <a href="{% url 'overtime:overtime_types' %}" class="mx-2">
@@ -17,7 +17,7 @@
         {% include "overtime/overtime_type/edit.html" %}
       </div>
       <div class="flex items-center justify-between">
-        <h5 class="mb-2 text-2xl font-bold text-slate-900 uppercase">{{ overtime_type.name }}</h5>
+        <h5 class="mb-2 text-xl font-semibold text-slate-900 uppercase">{{ overtime_type.name }}</h5>
         <svg class="w-12 h-12 mb-3 text-slate-950"
              aria-hidden="true"
              xmlns="http://www.w3.org/2000/svg"
@@ -28,48 +28,52 @@
       </div>
       <div class="flex-row font-normal text-slate-900">
         <div class="flex justify-between mb-2">
-          <span class="mr-2 font-semibold uppercase">rate:</span>
-          <p class="font-bold">{{ overtime_type.rate }}</p>
+          <span class="mr-2 text-sm uppercase">Pay Item Code:</span>
+          <p class="font-semibold">{{ overtime_type.pay_item_code }}</p>
         </div>
         <div class="flex justify-between mb-2">
-          <span class="mr-2 font-semibold uppercase">Day span:</span>
-          <p class="font-bold">{{ overtime_type.day_span }}</p>
+          <span class="mr-2 text-sm uppercase">Day span:</span>
+          <p class="font-semibold">{{ overtime_type.day_span }}</p>
         </div>
         <div class="flex justify-between mb-2">
-          <span class="mr-2 font-semibold uppercase">Overtimes:</span>
-          <p class="font-bold">{{ overtime_type.overtimes.count }}</p>
+          <span class="mr-1 text-sm uppercase">Start Time:</span>
+          <p class="font-semibold text-right">{{ overtime_type.start_time }}</p>
         </div>
         <div class="flex justify-between mb-2">
-          <span class="mr-1 font-semibold uppercase">Description:</span>
-          <p class="font-bold text-right">{{ overtime_type.description }}</p>
+          <span class="mr-1 text-sm uppercase">End Time:</span>
+          <p class="font-semibold text-right">{{ overtime_type.end_time }}</p>
+        </div>
+        <div class="flex mb-2 justify-between text-right">
+          <span class="mr-1 text-sm uppercase">Days:</span>
+          <div class="gap-2 grid grid-cols-3">
+            {% for day in days %}<p class=" text-center">{{ day.name }}</p>{% endfor %}
+          </div>
         </div>
       </div>
     </div>
     <div class="relative bg-white">
-      <table class="overflow-x-auto text-left text-slate-950 w-fit">
-        <thead class="text-slate-800 uppercase bg-slate-50">
+      <table class="overflow-x-auto text-sm text-left text-slate-950 w-fit">
+        <thead class="text-slate-900 uppercase bg-slate-50 text-xs">
           <tr>
             <th scope="col" class="px-2 py-2 text-sm whitespace-nowrap">Employee</th>
-            <th scope="col" class="px-2 py-2 text-sm whitespace-nowrap">approved</th>
-            <th scope="col" class="px-2 py-2 text-sm whitespace-nowrap">Start date</th>
-            <th scope="col" class="px-2 py-2 text-sm whitespace-nowrap">End date</th>
+            <th scope="col" class="px-2 py-2 text-sm whitespace-nowrap">Date</th>
             <th scope="col" class="px-1 py-1 text-sm whitespace-nowrap">Start time</th>
             <th scope="col" class="px-1 py-1 text-sm whitespace-nowrap">End time</th>
-            <th scope="col" class="px-1 py-1 text-sm whitespace-nowrap">Action</th>
+            <th scope="col" class="px-1 py-1 text-sm whitespace-nowrap">Units</th>
+            <th scope="col" class="px-2 py-2 text-sm whitespace-nowrap text-right">Action</th>
           </tr>
         </thead>
         <tbody>
-          {% for overtime in page %}
+          {% for ot in page %}
             <tr class="bg-white border-b hover:bg-slate-50">
-              <td class="px-2 py-2 font-semibold whitespace-nowrap">{{ overtime.employee.name }}</td>
-              <td class="px-2 py-2 whitespace-nowrap">{{ overtime.approved }}</td>
-              <td class="px-2 py-2 whitespace-nowrap">{{ overtime.start_date }}</td>
-              <td class="px-2 py-2 whitespace-nowrap">{{ overtime.end_date }}</td>
-              <td class="px-2 py-2 whitespace-nowrap">{{ overtime.start_time_expected }}</td>
-              <td class="px-2 py-2 whitespace-nowrap">{{ overtime.end_time_expected }}</td>
-              <td class="px-2 py-2 whitespace-nowrap">
-                <a href="{{ overtime.get_absolute_url }}"
-                   class="font-semibold text-slate-900  hover:font-extrabold">Detail</a>
+              <td class="px-2 py-2 font-semibold whitespace-nowrap">{{ ot.employee.name }}</td>
+              <td class="px-2 py-2 whitespace-nowrap">{{ ot.date }}</td>
+              <td class="px-2 py-2 whitespace-nowrap">{{ ot.start_time }}</td>
+              <td class="px-2 py-2 whitespace-nowrap">{{ ot.end_time }}</td>
+              <td class="px-2 py-2 whitespace-nowrap">{{ ot.units_worked }}</td>
+              <td class="px-2 py-2 whitespace-nowrap text-right">
+                <a href="{{ ot.overtime.get_absolute_url }}"
+                   class="font-semibold text-slate-900  hover:underline">Detail</a>
               </td>
             </tr>
           {% empty %}

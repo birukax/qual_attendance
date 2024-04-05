@@ -7,9 +7,11 @@ class CreateOvertimeTypeForm(forms.ModelForm):
         model = OvertimeType
         fields = (
             "name",
-            "rate",
             "day_span",
-            "description",
+            "days",
+            "start_time",
+            "end_time",
+            "pay_item_code",
         )
 
 
@@ -18,9 +20,9 @@ class EditOvertimeTypeForm(forms.ModelForm):
         model = OvertimeType
         fields = (
             "name",
-            "rate",
             "day_span",
-            "description",
+            "start_time",
+            "end_time",
         )
 
 
@@ -29,7 +31,6 @@ class CreateOvertimeForm(forms.ModelForm):
         model = Overtime
         fields = (
             "employee",
-            "overtime_type",
             "start_date",
             "end_date",
             "start_time_expected",

@@ -11,7 +11,12 @@ urlpatterns = [
     path("set_employees", views.set_employees, name="set_employees"),
     path("assign_employees", views.assign_employees, name="assign_employees"),
     path("shifts/<int:id>", views.shift_detail, name="shift_detail"),
+    path(
+        "shifts/<int:id>/shift_employees", views.shift_employees, name="shift_employees"
+    ),
+    path("shifts/<int:id>/shift_patterns", views.shift_patterns, name="shift_patterns"),
     path("create_shift", views.create_shift, name="create_shift"),
+    path("create_pattern/<int:id>", views.create_pattern, name="create_pattern"),
     path("edit_pattern/<int:id>", views.edit_pattern, name="edit_pattern"),
     path("edit_shift/<int:id>", views.edit_shift, name="edit_shift"),
 ]

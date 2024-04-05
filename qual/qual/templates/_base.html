@@ -4,8 +4,8 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8" />
-        <meta name="description" content="Free Web tutorials" />
-        <meta name="keywords" content="HTML, CSS, JavaScript" />
+        <meta name="description" content="Qualabels Attendance" />
+        <meta name="keywords" content="qualabels, attendance" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Qualabels Attendance</title>
@@ -13,17 +13,20 @@
             <link rel="stylesheet" href="{% static 'src/output.css' %}" />
         {% endcompress %}
     </head>
-    <body class=" w-full bg-isabelline-500">
-        <div class="w-full xl:flex  xl:justify-around">
-            {% include "session_security/all.html" %}
-            {% if request.user.is_authenticated %}
-                <div class="left-0 ">{% include "sidebar.html" %}</div>
-            {% endif %}
-            <div class=" mt-8 md:mx-6">
-                {% block content %}
-                {% endblock content %}
+    <body class="w-full bg-isabelline-500">
+        {% with request.user.profile.role as user_role %}
+            <div class="w-full ">
+                {% include "session_security/all.html" %}
+                {% if request.user.is_authenticated %}
+                    <div class="left-0">{% include "sidebar.html" %}</div>
+                {% endif %}
+                {% include 'navbar.html' %}
+                <div class="w-fit mx-auto ">
+                    {% block content %}
+                    {% endblock content %}
+                </div>
             </div>
-        </div>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.js"></script>
+        {% endwith %}
     </body>
 </html>

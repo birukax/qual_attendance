@@ -1,22 +1,21 @@
 {% extends "_base.html" %}
 {% block content %}
-  <div class="w-fit p-8 bg-white shadow  ">
-    <div class="flex items-center justify-between gap-36">
+  <div class="w-fit p-4 rounded-lg  bg-white shadow-md  mx-auto">
+    <div class="flex my-4 items-center justify-between gap-36">
       {% include "user/profile/edit.html" %}
       <a href="{% url 'password_change' %}"
-         class="inline-flex items-center px-5 py-2 text-sm font-medium text-center text-white rounded-lg bg-slate-700 hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-slate-300">
+         class="inline-flex items-center px-4 py-2 text-sm  text-center text-white rounded-lg bg-slate-800 hover:bg-slate-700 focus:ring-4 focus:outline-none focus:ring-slate-300">
         Change password
-        
       </a>
     </div>
     <div class="justify-between gap-36">
       <div class="flex items-center justify-between my-2">
-        <h5 class="text-2xl font-extrabold leading-none text-gray-900 uppercase">{{ user.user.username }}</h5>
-        <svg class="w-12 h-12 mb-3 text-slate-950"
+        <h5 class="text-xl font-bold leading-none text-gray-900 uppercase">{{ user.user.username }}</h5>
+        <svg class="w-12 h-12 text-slate-800"
              aria-hidden="true"
              xmlns="http://www.w3.org/2000/svg"
              fill="currentColor"
-             viewBox="0 0 14 18">
+             viewBox="0 0 20 20">
           <path d="M7 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9Zm2 1H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Z" />
         </svg>
       </div>
@@ -24,7 +23,7 @@
     <div class="flow-root">
       <ul role="list" class="divide-y divide-gray-200 dark:divide-gray-700">
         <div class="flex-1 min-w-0 ms-4">
-          <p class="my-2 mb-2 text-xl font-bold text-left text-gray-900">User info</p>
+          <p class=" mb-2 text-xl font-semibold text-left text-gray-900">User info</p>
         </div>
         <li class="py-3">
           <div class="flex items-center">
@@ -65,14 +64,14 @@
           </div>
         </li>
         <div class="flex-1 min-w-0 ms-4">
-          <p class="my-2 mb-2 text-xl font-bold text-left text-gray-900">Profile info</p>
+          <p class=" mb-2 text-xl font-semibold text-left text-gray-900">Profile info</p>
         </div>
         <li class="py-3">
           <div class="flex items-center">
             <div class="flex-1 min-w-0 ms-4">
               <p class="font-medium text-gray-900 truncate dark:text-white">Role</p>
             </div>
-            <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">{{ user.role }}</div>
+            <div class="inline-flex items-center font-semibold text-gray-900 dark:text-white">{{ user.role }}</div>
           </div>
         </li>
         <li class="pt-3 pb-0 sm:pt-4">

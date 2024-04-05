@@ -54,7 +54,7 @@ def compile_view(request):
         "no_shift": no_shift,
         "compile_filter": compile_filter,
     }
-    return render(request, "attendance/compile.html", context)
+    return render(request, "attendance/compile/list.html", context)
 
 
 @login_required
@@ -188,4 +188,4 @@ def raw_attendance_list(request):
     page = paginated.get_page(page_number)
 
     context = {"raw_attendance_filter": attendance_filter, "page": page}
-    return render(request, "raw_attendance/list.html", context)
+    return render(request, "attendance/raw_attendance/list.html", context)

@@ -1,76 +1,67 @@
 {% extends "_base.html" %}
 {% block content %}
   <div class="gap-6 mx-4 divide-black xl:flex w-fit dividey-2 ">
-    <div class="p-6 bg-white rounded-lg shadow xl:h-fit">
-      <a href="{% url 'device:devices' %}" class="mx-2">
-        <svg class="w-6 h-6 text-gray-800 dark:text-white"
-             aria-hidden="true"
-             xmlns="http://www.w3.org/2000/svg"
-             width="24"
-             height="24"
-             fill="none"
-             viewBox="0 0 24 24">
-          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 19-7-7 7-7" />
-        </svg>
-      </a>
-      <div class="flex items-center justify-between">
-        <svg class="w-12 h-12 mb-3 text-gray-900"
+    <div class="p-6 bg-white rounded-lg shadow gap-4">
+      <div class="flex items-center justify-between gap-64 mb-4">
+        <h5 class="mb-2 text-2xl font-semibold tracking-tight text-slate-900 dark:text-white">{{ device.name }}</h5>
+        <svg class="w-12 h-12 text-slate-900"
              aria-hidden="true"
              xmlns="http://www.w3.org/2000/svg"
              fill="currentColor"
              viewBox="0 0 20 20">
           <path d="M20 9V2a2 2 0 0 0-2-2H2a2 2 0 0 0-2 2v7h20ZM0 11v2a2 2 0 0 0 2 2h7v3H6a1 1 0 0 0 0 2h8a1 1 0 0 0 0-2h-3v-3h7a2 2 0 0 0 2-2v-2H0Z" />
         </svg>
-        <h5 class="mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">{{ device.name }}</h5>
       </div>
-      <div class="flex-row gap-3 font-normal text-gray-900">
-        <div class="flex justify-between">
-          <span class="mr-2">Raw Attendance:</span>
-          <p class="font-bold text-right">{{ device.raw_attendances.count }}</p>
-        </div>
+      <div class="flex-row gap-3 font-normal text-slate-900 mb-2">
         <div class="flex justify-between">
           <span class="mr-2">IP:</span>
-          <p class="font-bold text-right">{{ device.ip }}</p>
+          <p class="font-semibold text-right">{{ device.ip }}</p>
         </div>
         <div class="flex justify-between">
           <span class="mr-2">PORT:</span>
-          <p class="font-bold text-right">{{ device.port }}</p>
+          <p class="font-semibold text-right">{{ device.port }}</p>
         </div>
         <div class="flex justify-between">
-          <span class="mr-2">Device Time:</span>
-          <p class="font-bold text-right">{{ device_time }}</p>
+          <span class="mr-2">Device time:</span>
+          <p class="font-semibold text-right">{{ device_time }}</p>
+        </div>
+        <div class="flex justify-between">
+          <span class="mr-2">Version:</span>
+          <p class="font-semibold text-right">{{ device_version }}</p>
+        </div>
+        <div class="flex justify-between">
+          <span class="mr-2">Mac:</span>
+          <p class="font-semibold text-right">{{ device_mac }}</p>
+        </div>
+        <div class="flex justify-between">
+          <span class="mr-2">Serial number:</span>
+          <p class="font-semibold text-right">{{ device_serialnumber }}</p>
         </div>
         <div class="flex justify-between mt-4">
           <a href="{% url 'device:sync_users' device.id %}"
              class="inline-flex items-center px-5 py-2 text-sm font-medium text-center text-white rounded-lg bg-slate-700 hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-slate-300">
             Sync users
-           
+          </a>
+          <a href="{% url 'device:sync_time' device.id %}"
+             class="inline-flex items-center px-5 py-2 text-sm font-medium text-center text-white rounded-lg bg-slate-700 hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-slate-300">
+            Sync time
           </a>
         </div>
       </div>
-    </div>
-    <div class="relative overflow-x-auto rounded-lg shadow-md w-fit">
-      <table class="w-full text-base font-semibold text-left text-gray-500 rtl:text-right">
-        <thead class="text-base uppercase text-slate-900 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-          <tr>
-            <th scope="col" class="px-4 py-3">Employee ID</th>
-            <th scope="col" class="px-4 py-3">Employee name</th>
-            <th scope="col" class="px-4 py-3">Privilege</th>
-            <th scope="col" class="px-4 py-3">Uid</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for user in page %}
-            <tr class="bg-white border-b text-slate-900 hover:bg-gray-50">
-              <td class="px-4 py-3">{{ user.user_id }}</td>
-              <td class="px-4 py-3 whitespace-nowrap">{{ user.name }}</td>
-              <td class="px-4 py-3">{{ user.privilege }}</td>
-              <td class="px-4 py-3">{{ user.uid }}</td>
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-      {% include "pagination.html" %}
+      <div class="grid max-w-screen-xl grid-cols-2  gap-12 p-4 mx-auto text-slate-900 justify-between">
+        <div class="flex flex-col items-center justify-center">
+          <dt class="mb-2 text-3xl font-semibold">{{ users.count }}</dt>
+          <dd class="text-slate-700">
+            Users
+          </dd>
+        </div>
+        <div class="flex flex-col items-center justify-center">
+          <dt class="mb-2 text-3xl font-semibold">{{ attendances.count }}</dt>
+          <dd class="text-slate-700">
+            Attendances
+          </dd>
+        </div>
+      </div>
     </div>
   </div>
 {% endblock content %}

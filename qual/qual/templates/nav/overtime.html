@@ -1,0 +1,15 @@
+<li>
+    <a href="{% url 'overtime:overtimes' %}"
+       class="block py-2 px-3 md:p-0  {% if request.resolver_match.url_name == 'overtimes' %} text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:dark:text-blue-500 {% else %} text-slate-900 rounded hover:bg-slate-100 md:hover:bg-transparent md:hover:text-blue-700 {% endif %}"
+       aria-current="page">Overtime</a>
+</li>
+{% if user_role == "ADMIN" or user_role == "HR" %}
+    <li>
+        <a href="{% url 'overtime:ots' %}"
+           class="block py-2 px-3 md:p-0  {% if request.resolver_match.url_name == 'ots' %} text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:dark:text-blue-500 {% else %} text-slate-900 rounded hover:bg-slate-100 md:hover:bg-transparent md:hover:text-blue-700 {% endif %}">Ot</a>
+    </li>
+    <li>
+        <a href="{% url 'overtime:overtime_types' %}"
+           class="block py-2 px-3 md:p-0  {% if request.resolver_match.url_name == 'overtime_types' %} text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:dark:text-blue-500 {% else %} text-slate-900 rounded hover:bg-slate-100 md:hover:bg-transparent md:hover:text-blue-700 {% endif %}">Overtime type</a>
+    </li>
+{% endif %}

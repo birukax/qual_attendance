@@ -1,91 +1,95 @@
 {% extends "_base.html" %}
 {% block content %}
   <div class="w-full max-w-xl mx-auto bg-white shadow sm:p-8">
-    <a href="{% url 'account:users' %}" class="mx-2">
-      <svg class="w-6 h-6 text-slate-800 dark:text-white"
-           aria-hidden="true"
-           xmlns="http://www.w3.org/2000/svg"
-           width="24"
-           height="24"
-           fill="none"
-           viewBox="0 0 24 24">
-        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 19-7-7 7-7" />
-      </svg>
-    </a>
-    <div>{% include "user/edit.html" %}</div>
-    <div class="justify-around">
-      <div class="flex items-center justify-between my-2">
-        <h5 class="text-2xl font-extrabold leading-none text-slate-900 uppercase">{{ user.user.username }}</h5>
-        <svg class="w-12 h-12 mb-3 text-slate-950"
+    <div class="justify-between">
+      <div class="flex items-center justify-between mb-1">
+        <div class="flex gap-2">
+          <a href="{% url 'account:users' %}">
+            <svg class="w-6 h-6 text-slate-800 dark:text-white"
+                 aria-hidden="true"
+                 xmlns="http://www.w3.org/2000/svg"
+                 width="24"
+                 height="24"
+                 fill="none"
+                 viewBox="0 0 24 24">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 19-7-7 7-7" />
+            </svg>
+          </a>
+          <h5 class="text-2xl font-semibold leading-none text-slate-900 uppercase">User detail</h5>
+        </div>
+        <svg class="w-12 h-12 text-slate-800"
              aria-hidden="true"
              xmlns="http://www.w3.org/2000/svg"
              fill="currentColor"
-             viewBox="0 0 14 18">
+             viewBox="0 0 20 20">
           <path d="M7 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9Zm2 1H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Z" />
         </svg>
       </div>
     </div>
+    <div>{% include "user/edit.html" %}</div>
     <div class="flow-root">
       <ul role="list" class="divide-y divide-slate-200 dark:divide-slate-700">
         <div class="flex-1 min-w-0 ms-4">
-          <p class="my-2 mb-2 text-xl font-bold text-left text-slate-900">User info</p>
+          <p class="my-2 mb-2 text-xl font-semibold text-left text-slate-900">User info</p>
         </div>
-        <li class="py-3">
-          <div class="flex items-center">
+        <li class="py-2">
+          <div class="flex text-sm items-center">
             <div class="flex-1 min-w-0 ms-4">
-              <p class="font-medium text-slate-900 truncate dark:text-white">Employee</p>
+              <p class="font-medium text-slate-900 truncate dark:text-white">Username</p>
             </div>
-            <div class="inline-flex items-center text-base font-semibold text-slate-900 dark:text-white">
-              {{ user.employee.name }}
-            </div>
+            <div class="inline-flex items-center  font-semibold text-slate-900 dark:text-white">{{ user.user.username }}</div>
           </div>
         </li>
-        <li class="py-3">
-          <div class="flex items-center">
-            <div class="flex-1 min-w-0 ms-4">
-              <p class="font-medium text-slate-900 truncate dark:text-white">Email</p>
-            </div>
-            <div class="inline-flex items-center text-base font-semibold text-slate-900 dark:text-white">{{ user.user.email }}</div>
-          </div>
-        </li>
-        <li class="py-3">
-          <div class="flex items-center">
+        <li class="py-2">
+          <div class="flex text-sm items-center">
             <div class="flex-1 min-w-0 ms-4">
               <p class="font-medium text-slate-900 truncate dark:text-white">First name</p>
             </div>
-            <div class="inline-flex items-center text-base font-semibold text-slate-900 dark:text-white">
-              {{ user.user.first_name }}
-            </div>
+            <div class="inline-flex items-center  font-semibold text-slate-900 dark:text-white">{{ user.user.first_name }}</div>
           </div>
         </li>
-        <li class="py-3">
-          <div class="flex items-center">
+        <li class="py-2">
+          <div class="flex text-sm items-center">
             <div class="flex-1 min-w-0 ms-4">
               <p class="font-medium text-slate-900 truncate dark:text-white">Last name</p>
             </div>
-            <div class="inline-flex items-center text-base font-semibold text-slate-900 dark:text-white">
-              {{ user.user.last_name }}
+            <div class="inline-flex items-center  font-semibold text-slate-900 dark:text-white">{{ user.user.last_name }}</div>
+          </div>
+        </li>
+        <li class="py-2">
+          <div class="flex text-sm items-center">
+            <div class="flex-1 min-w-0 ms-4">
+              <p class="font-medium text-slate-900 truncate dark:text-white">Employee</p>
             </div>
+            <div class="inline-flex items-center  font-semibold text-slate-900 dark:text-white">{{ user.employee.name }}</div>
+          </div>
+        </li>
+        <li class="py-2">
+          <div class="flex text-sm items-center">
+            <div class="flex-1 min-w-0 ms-4">
+              <p class="font-medium text-slate-900 truncate dark:text-white">Email</p>
+            </div>
+            <div class="inline-flex items-center  font-semibold text-slate-900 dark:text-white">{{ user.user.email }}</div>
           </div>
         </li>
         <div class="flex-1 min-w-0 ms-4">
-          <p class="my-2 mb-2 text-xl font-bold text-left text-slate-900">Profile info</p>
+          <p class="my-2 mb-2 text-xl font-semibold text-left text-slate-900">Profile info</p>
         </div>
-        <li class="py-3">
-          <div class="flex items-center">
+        <li class="py-2">
+          <div class="flex text-sm items-center">
             <div class="flex-1 min-w-0 ms-4">
               <p class="font-medium text-slate-900 truncate dark:text-white">Role</p>
             </div>
-            <div class="inline-flex items-center text-base font-semibold text-slate-900 dark:text-white">{{ user.role }}</div>
+            <div class="inline-flex items-center  font-semibold text-slate-900 dark:text-white">{{ user.role }}</div>
           </div>
         </li>
         <li class="pt-3 pb-0 sm:pt-4">
           <div class="flex ">
             <div class="flex-1 min-w-0 ms-4">
-              <p class="mb-2 text-base font-bold text-slate-900 truncate ">Manages</p>
+              <p class="mb-2  font-semibold text-slate-900 truncate ">Manages</p>
             </div>
-            <div class="flex-col items-stretch text-base font-semibold text-right text-slate-900 whitespace-nowrap">
-              {% for manage in manages %}<p>{{ manage.name }} --</p>{% endfor %}
+            <div class="flex-col items-stretch  font-semibold text-right text-slate-900 whitespace-nowrap">
+              {% for manage in manages %}<p class="text-sm">{{ manage.name }} --</p>{% endfor %}
             </div>
           </div>
         </li>

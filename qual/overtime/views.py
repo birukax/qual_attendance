@@ -1,9 +1,13 @@
+from datetime import datetime
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
+import requests
+from requests_ntlm import HttpNtlmAuth
 from .models import *
 from django.core.paginator import Paginator
 from .forms import *
-from .tasks import calculate_ot
+from .tasks import calculate_ot, post_ot
+from urllib.parse import quote
 
 
 @login_required
@@ -15,18 +19,25 @@ def create_overtime(request):
             return redirect("overtime:overtimes")
 
 
-@login_required
-def approve_overtime(request, id):
-    overtime = Overtime.objects.get(id=id)
-    overtime.approved = True
-    overtime.save()
-    return redirect("overtime:overtime_detail", id=id)
+# @login_required
+# def approve_overtime(request, id):
+#     overtime = Overtime.objects.get(id=id)
+#     overtime.approved = True
+#     overtime.save()
+#     return redirect("overtime:overtime_detail", id=id)
 
 
 @login_required
 def calculate_overtime(request, id):
     calculate_ot(id=id)
     return redirect("overtime:overtime_detail", id=id)
+
+
+@login_required
+def post_overtime(request):
+    post_ot()
+
+    return redirect("overtime:overtimes")
 
 
 @login_required
@@ -92,7 +103,8 @@ def overtime_types(request):
 def overtime_type_detail(request, id):
     overtime_type = get_object_or_404(OvertimeType, id=id)
     edit_overtime_type_form = EditOvertimeTypeForm(instance=overtime_type)
-    overtimes = Overtime.objects.filter(overtime_type=overtime_type)
+    overtimes = Ot.objects.filter(overtime_type=overtime_type)
+    days = overtime_type.days.all()
     paginated = Paginator(overtimes, 10)
     page_number = request.GET.get("page")
     page = paginated.get_page(page_number)
@@ -101,5 +113,16 @@ def overtime_type_detail(request, id):
         "overtime_type": overtime_type,
         "page": page,
         "edit_ot_type_form": edit_overtime_type_form,
+        "days": days,
     }
     return render(request, "overtime/overtime_type/detail.html", context)
+
+
+@login_required
+def ots(request):
+    ots = Ot.objects.all().order_by("-date")
+    paginated = Paginator(ots, 10)
+    page_number = request.GET.get("page")
+    page = paginated.get_page(page_number)
+    context = {"page": page}
+    return render(request, "overtime/ot/list.html", context)

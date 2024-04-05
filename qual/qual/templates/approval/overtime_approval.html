@@ -1,35 +1,37 @@
 {% extends "_base.html" %}
 {% block content %}
-  <div class="p-8 ml-4 overflow-x-auto bg-white rounded-lg shadow-md w-fit">
-    <table class="text-left text-gray-900 divide-y ">
-      <thead class="font-semibold text-gray-900 uppercase bg-white">
+  <div class="p-4 mt-4 ml-4 overflow-x-auto bg-white rounded-lg shadow-md w-fit">
+    <table class="text-sm text-left text-slate-900">
+      <thead class="text-xs font-semibold text-gray-900 uppercase bg-white">
         <tr>
-          <th scope="col" class="px-3 py-4">Employee</th>
-          <th scope="col" class="px-3 py-4">Type</th>
-          <th scope="col" class="px-3 py-4">Start date</th>
-          <th scope="col" class="px-3 py-4">Start time</th>
-          <th scope="col" class="px-3 py-4">End date</th>
-          <th scope="col" class="px-3 py-4">End time</th>
-          <th scope="col" class="px-3 py-4">Actions</th>
+          <th scope="col" class="p-2">Employee</th>
+          <th scope="col" class="p-2">Type</th>
+          <th scope="col" class="p-2">Start date</th>
+          <th scope="col" class="p-2">Start time</th>
+          <th scope="col" class="p-2">End date</th>
+          <th scope="col" class="p-2">End time</th>
+          <th scope="col" class="p-2">Actions</th>
         </tr>
       </thead>
       <tbody>
         {% for ot in page %}
           <tr class="bg-white border-b">
             <th scope="row"
-                class="px-4 py-2 font-semibold text-gray-900 whitespace-nowrap dark:text-white">
-              {{ ot.employee.name }}
-            </th>
-            <td class="px-4 py-2">{{ ot.overtime_type }}</td>
-            <td class="px-4 py-2">{{ ot.start_date }}</td>
-            <td class="px-4 py-2">{{ ot.start_time_expected }}</td>
-            <td class="px-4 py-2">{{ ot.end_date }}</td>
-            <td class="px-4 py-2">{{ ot.end_time_expected }}</td>
-            <td class="px-4 py-2">{% include "approval/overtime_detail.html" %}</td>
+                class="p-2 font-semibold text-gray-900 whitespace-nowrap dark:text-white">{{ ot.employee.name }}</th>
+            <td class="p-2">{{ ot.overtime_type }}</td>
+            <td class="p-2">{{ ot.start_date }}</td>
+            <td class="p-2">{{ ot.start_time_expected }}</td>
+            <td class="p-2">{{ ot.end_date }}</td>
+            <td class="p-2">{{ ot.end_time_expected }}</td>
+            <td class="items-center p-2">{% include "approval/overtime_detail.html" %}</td>
           </tr>
         {% endfor %}
       </tbody>
     </table>
-    {% include "pagination.html" %}
+    {% if page %}
+      {% include "pagination.html" %}
+    {% else %}
+      <p class="ml-4 text-lg">There is nothing to approve.</p>
+    {% endif %}
   </div>
 {% endblock content %}

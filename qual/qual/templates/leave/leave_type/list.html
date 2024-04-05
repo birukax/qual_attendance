@@ -1,34 +1,38 @@
 {% extends "_base.html" %}
 {% block content %}
-  <div class="w-fit bg-white mx-4 px-4 divide-y divide-black rounded-lg">
-    <div class="p-4">{% include "leave/leave_type/create.html" %}</div>
-    <div class="w-full mx-2 bg-white divide-y-2">
-      <table class="overflow-x-auto text-left text-black">
-        <thead class="text-slate-900 uppercase bg-slate-50">
+  <div class="p-4 mx-auto bg-white divide-y rounded-lg shadow-md w-fit ">
+    <div class="ml-2 mb-2">{% include "leave/leave_type/create.html" %}</div>
+    <div class="w-full bg-white divide-y-2">
+      <table class="overflow-x-auto text-left text-black text-sm">
+        <thead class="uppercase text-slate-900 bg-slate-50 text-xs">
           <tr>
-            <th scope="col" class="px-3 py-3">Name</th>
-            <th scope="col" class="px-3 py-3">Max</th>
-            <th scope="col" class="px-3 py-3">Paid</th>
-            <th scope="col" class="px-3 py-3">Leaves</th>
-            <th scope="col" class="px-3 py-3">Actions</th>
+            <th scope="col" class="p-3">Name</th>
+            <th scope="col" class="p-3">Max</th>
+            <th scope="col" class="p-3">Paid</th>
+            <th scope="col" class="p-3">Leaves</th>
+            <th scope="col" class="p-3">Actions</th>
           </tr>
         </thead>
         <tbody>
           {% for leave_type in page %}
-            <tr class="bg-white text-slate-900 hover:bg-slate-50 font-semibold">
-              <td class="px-2 py-4">{{ leave_type.name }}</td>
-              <td class="px-2 py-4">{{ leave_type.maximum_days }}</td>
-              <td class="px-2 py-4">{{ leave_type.paid }}</td>
-              <td class="px-2 py-4">{{ leave_type.leaves.count }}</td>
-              <td class="px-2 py-4 text-right">
+            <tr class="bg-white text-slate-900 hover:bg-slate-50">
+              <td class="p-3">{{ leave_type.name }}</td>
+              <td class="p-3">{{ leave_type.maximum_days }}</td>
+              <td class="p-3">{{ leave_type.paid }}</td>
+              <td class="p-3">{{ leave_type.leaves.count }}</td>
+              <td class="p-3 text-right">
                 <a href="{{ leave_type.get_absolute_url }}"
-                   class="text-slate-900 font-semibold   hover:font-extrabold">Detail</a>
+                   class="font-semibold text-slate-900 hover:underline">Detail</a>
               </td>
             </tr>
           {% endfor %}
         </tbody>
       </table>
-      {% include "pagination.html" %}
+      {% if page %}
+        {% include "pagination.html" %}
+      {% else %}
+        <p class="ml-3 ">Empty.</p>
+      {% endif %}
     </div>
   </div>
 {% endblock content %}

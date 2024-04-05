@@ -16,6 +16,10 @@ class EmployeeAdmin(admin.ModelAdmin):
     search_fields = [
         "name",
     ]
+    list_filter = [
+        "department",
+        "shift",
+    ]
     list_per_page = 15
 
 

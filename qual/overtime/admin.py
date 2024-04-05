@@ -4,8 +4,13 @@ from .models import *
 
 @admin.register(OvertimeType)
 class OvertimeTypeAdmin(admin.ModelAdmin):
-    list_display = ["name", "rate", "slug", "day_span"]
-    prepopulated_fields = {"slug": ("name",)}
+    list_display = [
+        "name",
+        "day_span",
+        "pay_item_code",
+        "start_time",
+        "end_time",
+    ]
     list_per_page = 15
 
 
@@ -13,14 +18,32 @@ class OvertimeTypeAdmin(admin.ModelAdmin):
 class OvertimeAdmin(admin.ModelAdmin):
     list_display = [
         "employee",
-        "overtime_type",
         "start_date",
         "end_date",
-        "worked_hours",
         "approved",
+        "worked_hours",
         "start_time_expected",
         "start_time_expected",
-        # "end_time_actual",
-        # "end_time_actual",
+        "end_time_actual",
+        "end_time_actual",
     ]
     list_per_page = 15
+
+
+@admin.register(Ot)
+class OtAdmin(admin.ModelAdmin):
+    list_display = [
+        "employee",
+        "date",
+        "units_worked",
+        "start_time",
+        "end_time",
+    ]
+
+
+@admin.register(Day)
+class Day(admin.ModelAdmin):
+    list_display = [
+        "no",
+        "name",
+    ]

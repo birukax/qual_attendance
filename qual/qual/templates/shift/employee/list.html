@@ -1,0 +1,44 @@
+{% extends "_base.html" %}
+{% block content %}
+    <div class="p-4 shadow-md rounded-lg mx-auto w-fit bg-white">
+        <div class="gap-4 items-center flex">
+            <a href="{% url 'shift:select_employees' %}"
+               class="inline-flex items-center px-4 py-2 text-sm text-center text-white rounded-lg bg-slate-800 hover:bg-slate-700 focus:ring-4 focus:outline-none focus:ring-slate-300">
+                Assign
+            </a>
+            <p class="text-xl font-semibold text-slate-800 ml-3 my-2">{{ shift.name }}</p>
+        </div>
+        <table class="overflow-x-auto text-sm text-left w-fit">
+            <thead class="text-xs uppercase border-b border-black bg-gray-50">
+                <tr>
+                    <th scope="col" class="p-2">Id</th>
+                    <th scope="col" class="p-2">Name</th>
+                    <th scope="col" class="p-2">Status</th>
+                    <th scope="col" class="p-2">Department</th>
+                    <th scope="col" class="p-2">Attendances</th>
+                    <th scope="col" class="p-2">Detail</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for employee in page %}
+                    <tr class="bg-white border-b hover:bg-gray-50 ">
+                        <td class="p-2">{{ employee.employee_id }}</td>
+                        <td class="p-2">{{ employee.name }}</td>
+                        <td class="p-2">{{ employee.status }}</td>
+                        <td class="p-2">{{ employee.department.name }}</td>
+                        <td class="p-2">{{ employee.attendances.count }}</td>
+                        <td class="p-2">
+                            <a href="{{ employee.get_absolute_url }}"
+                               class="font-semibold text-slate-900  hover:underline">Detail</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% if page %}
+            {% include "pagination.html" %}
+        {% else %}
+            <p class="p-2 ml-2 text-lg">No employee record.</p>
+        {% endif %}
+    </div>
+{% endblock content %}

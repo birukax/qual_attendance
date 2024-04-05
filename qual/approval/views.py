@@ -12,6 +12,39 @@ import datetime
 
 @login_required
 @permission_required("account.can_approve")
+def approval(request):
+    attendances = Attendance.objects.filter(approved=False, rejected=False)
+    approved_attendances = Attendance.objects.filter(approved=True)
+    rejected_attendances = Attendance.objects.filter(rejected=True)
+    leaves = Leave.objects.filter(approved=False, rejected=False)
+    approved_leaves = Leave.objects.filter(approved=True)
+    rejected_leaves = Leave.objects.filter(rejected=True)
+    holidays = Holiday.objects.filter(approved=False, rejected=False)
+    approved_holidays = Holiday.objects.filter(approved=True)
+    rejected_holidays = Holiday.objects.filter(rejected=True)
+    overtimes = Overtime.objects.filter(approved=False, rejected=False)
+    approved_overtimes = Overtime.objects.filter(approved=True)
+    rejected_overtimes = Overtime.objects.filter(rejected=True)
+
+    context = {
+        "attendances": attendances,
+        "approved_attendances": approved_attendances,
+        "rejected_attendances": rejected_attendances,
+        "leaves": leaves,
+        "approved_leaves": approved_leaves,
+        "rejected_leaves": rejected_leaves,
+        "holidays": holidays,
+        "approved_holidays": approved_holidays,
+        "rejected_holidays": rejected_holidays,
+        "overtimes": overtimes,
+        "approved_overtimes": approved_overtimes,
+        "rejected_overtimes": rejected_overtimes,
+    }
+    return render(request, "approval/list.html", context)
+
+
+@login_required
+@permission_required("account.can_approve")
 def attendance_approval(request):
     attendances = Attendance.objects.filter(approved=False, rejected=False)
     paginated = Paginator(attendances, 10)

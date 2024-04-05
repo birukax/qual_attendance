@@ -1,6 +1,6 @@
 {% extends "_base.html" %}
 {% block content %}
-  <div class="p-8 ml-4 overflow-x-auto bg-white rounded-lg shadow-md w-fit">
+  <div class="p-4 ml-4 overflow-x-auto bg-white rounded-lg shadow-md w-fit">
     <table class="text-left text-gray-900 divide-y ">
       <thead class="font-semibold text-gray-900 uppercase bg-white">
         <tr>
@@ -19,10 +19,10 @@
         {% endfor %}
       </tbody>
     </table>
-    {% if not page %}
-      <p>no approval</p>
-    {% else %}
+    {% if page %}
       {% include "pagination.html" %}
+    {% else %}
+      <p class="ml-4 text-lg">There is nothing to approve.</p>
     {% endif %}
   </div>
 {% endblock content %}

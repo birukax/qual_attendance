@@ -1,73 +1,73 @@
 {% extends "_base.html" %}
 {% block content %}
-  <div class="px-4 mx-4 w-fit">
-    <div class="p-4 mb-2 bg-white border border-slate-200 rounded-lg shadow">
-      <div class="flex justify-between mx-2 items-center">
-        <a href="{% url 'leave:leave_types' %}" class="mx-2">
-          <svg class="w-6 h-6 text-slate-800 dark:text-white"
-               aria-hidden="true"
-               xmlns="http://www.w3.org/2000/svg"
-               width="24"
-               height="24"
-               fill="none"
-               viewBox="0 0 24 24">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 19-7-7 7-7" />
-          </svg>
-        </a>
-        {% include "leave/leave_type/edit.html" %}
-      </div>
-      <div class="flex items-center justify-between">
-        <h5 class="mb-2 text-2xl font-bold text-slate-900 uppercase">{{ leave_type.name }}</h5>
-        <svg class="w-12 h-12 mb-3 text-slate-950"
+  <div class=" w-fit">
+    <div class="p-4 bg-white border rounded-t-lg shadow border-slate-200">
+      <div class="flex items-center justify-between mb-2">
+        <div class="flex items-center gap-2">
+          <a href="{% url 'leave:leave_types' %}" class="">
+            <svg class="w-6 h-6 text-slate-800 dark:text-white"
+                 aria-hidden="true"
+                 xmlns="http://www.w3.org/2000/svg"
+                 width="24"
+                 height="24"
+                 fill="none"
+                 viewBox="0 0 24 24">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 19-7-7 7-7" />
+            </svg>
+          </a>
+          <h5 class="mb-2 text-xl font-bold uppercase text-slate-900">{{ leave_type.name }}</h5>
+        </div>
+        <svg class="w-12 h-12 transition duration-75 text-slate-900 "
              aria-hidden="true"
              xmlns="http://www.w3.org/2000/svg"
-             fill="none"
-             viewBox="0 0 24 24">
-          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12H4m12 0-4 4m4-4-4-4m3-4h2a3 3 0 0 1 3 3v10a3 3 0 0 1-3 3h-2" />
+             fill="currentColor"
+             viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M5 5c.6 0 1-.4 1-1a1 1 0 1 1 2 0c0 .6.4 1 1 1h1c.6 0 1-.4 1-1a1 1 0 1 1 2 0c0 .6.4 1 1 1h1c.6 0 1-.4 1-1a1 1 0 1 1 2 0c0 .6.4 1 1 1a2 2 0 0 1 2 2v1c0 .6-.4 1-1 1H4a1 1 0 0 1-1-1V7c0-1.1.9-2 2-2ZM3 19v-7c0-.6.4-1 1-1h16c.6 0 1 .4 1 1v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Zm6-6c0-.6-.4-1-1-1a1 1 0 1 0 0 2c.6 0 1-.4 1-1Zm2 0a1 1 0 1 1 2 0c0 .6-.4 1-1 1a1 1 0 0 1-1-1Zm6 0c0-.6-.4-1-1-1a1 1 0 1 0 0 2c.6 0 1-.4 1-1ZM7 17a1 1 0 1 1 2 0c0 .6-.4 1-1 1a1 1 0 0 1-1-1Zm6 0c0-.6-.4-1-1-1a1 1 0 1 0 0 2c.6 0 1-.4 1-1Zm2 0a1 1 0 1 1 2 0c0 .6-.4 1-1 1a1 1 0 0 1-1-1Z" clip-rule="evenodd" />
         </svg>
       </div>
-      <div class="flex-row font-normal text-slate-900">
+      <div class="flex-col mt-1 text-slate-900">
         <div class="flex justify-between mb-2">
-          <span class="mr-2 font-semibold uppercase">Maximum days:</span>
-          <p class="font-bold">{{ leave_type.maximum_days }}</p>
+          <span class="mr-2 text-sm uppercase">Maximum days:</span>
+          <p class="font-semibold">{{ leave_type.maximum_days }}</p>
         </div>
         <div class="flex justify-between mb-2">
-          <span class="mr-2 font-semibold uppercase">Paid:</span>
-          <p class="font-bold">{{ leave_type.paid }}</p>
+          <span class="mr-2 text-sm uppercase">Paid:</span>
+          <p class="font-semibold">{{ leave_type.paid }}</p>
         </div>
         <div class="flex justify-between mb-2">
-          <span class="mr-2 font-semibold uppercase">Leaves:</span>
-          <p class="font-bold">{{ leave_type.leaves.count }}</p>
+          <span class="mr-2 text-sm uppercase">Leaves:</span>
+          <p class="font-semibold">{{ leave_type.leaves.count }}</p>
         </div>
         <div class="flex justify-between mb-2">
-          <span class="mr-2 font-semibold uppercase">Description:</span>
-          <p class="font-bold">{{ leave_type.description }}</p>
+          <span class="mr-2 text-sm uppercase">Description:</span>
+          <p class="font-semibold">{{ leave_type.description }}</p>
         </div>
       </div>
+      {% include "leave/leave_type/edit.html" %}
     </div>
     <div class="relative bg-white">
-      <table class="overflow-x-auto text-left text-slate-950 w-fit">
-        <thead class="text-slate-900 uppercase bg-slate-50 ">
+      <table class="overflow-x-auto text-sm text-left text-slate-950 w-fit">
+        <thead class="text-xs uppercase text-slate-900 bg-slate-50">
           <tr>
             <th scope="col" class="px-2 py-3 whitespace-nowrap">Employee</th>
-            <th scope="col" class="px-2 py-3 whitespace-nowrap">Leave name</th>
             <th scope="col" class="px-2 py-3 whitespace-nowrap">Start date</th>
             <th scope="col" class="px-2 py-3 whitespace-nowrap">End date</th>
+            <th scope="col" class="px-2 py-3 whitespace-nowrap">Approved</th>
             <th scope="col" class="px-2 py-3 whitespace-nowrap">Half day</th>
             <th scope="col" class="px-2 py-3 whitespace-nowrap">Action</th>
           </tr>
         </thead>
         <tbody>
           {% for leave in page %}
-            <tr class="bg-white border-b dark:bg-slate-800 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-600">
+            <tr class="bg-white border-b hover:bg-slate-50 ">
               <td class="px-3 py-3 whitespace-nowrap">{{ leave.employee.name }}</td>
-              <td class="px-3 py-3 whitespace-nowrap">{{ leave.leave_type.name }}</td>
               <td class="px-3 py-3 whitespace-nowrap">{{ leave.start_date }}</td>
               <td class="px-3 py-3 whitespace-nowrap">{{ leave.end_date }}</td>
+              <td class="px-3 py-3 whitespace-nowrap">{{ leave.approved }}</td>
               <td class="px-3 py-3 whitespace-nowrap">{{ leave.is_half_day }}</td>
-              <td class="px-3 py-3 whitespace-nowrap">
+              <td class="inline-block px-3 py-3 whitespace-nowrap">
                 <a href="{{ leave.get_absolute_url }}"
-                   class="font-semibold text-slate-900  hover:font-extrabold">Detail</a>
+                   class="font-semibold text-slate-900 hover:underline">Detail</a>
               </td>
             </tr>
           {% endfor %}

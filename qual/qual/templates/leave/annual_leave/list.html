@@ -1,51 +1,43 @@
-{% extends "_base.html" %} {% block content %}
-<div class="w-fit bg-white mx-4 px-4">
-  <div class="p-3 flex justify-between my-3">
-    {% include "leave/create.html" %}
-
-    <a href="{% url 'leave:calculate_leave_balance' %}"
-    class="inline-flex items-center px-4 py-2 text-sm  text-center text-white bg-slate-700 rounded-lg hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-slate-300 ">
-    Calculate
-    
-</a>
-</div>
-  <div>
-    <table class="overflow-x-auto text-left text-black">
-      <thead class="text-slate-900 uppercase bg-slate-50 text-sm">
-        <tr>
-          <th scope="col" class="px-1 py-2">ID</th>
-          <th scope="col" class="px-1 py-2">Employee</th>
-          <th scope="col" class="px-1 py-2">Employment date</th>
-          <th scope="col" class="px-1 py-2">Leave balance</th>
-          <th scope="col" class="px-1 py-2">Leave taken</th>
-          <th scope="col" class="px-1 py-2">Leave difference</th>
-          <th scope="col" class="px-1 py-2">Leave remaining</th>
-          <!-- <th scope="col" class="px-1 py-2">Actions</th> -->
-        </tr>
-      </thead>
-      <tbody>
-        {% for e in page %}
-        <tr class="bg-white border-b hover:bg-slate-50">
-          <td class="px-2 py-4 whitespace-nowrap">{{ e.employee_id }}</td>
-          <td class="px-2 py-4 whitespace-nowrap">{{ e.name }}</td>
-          
-          <td class="px-2 py-4 whitespace-nowrap">{{ e.employment_date }}</td>
-          <td class="px-2 py-4 whitespace-nowrap">{{ e.annual_leave_balance }}</td>
-          <td class="px-2 py-4 whitespace-nowrap">{{ e.annual_leave_taken }}</td>
-          <td class="px-2 py-4 whitespace-nowrap">{{ e.annual_leave_difference }}</td>
-          <td class="px-2 py-4">{{ e.annual_leave_remaining }}</td>
-          <!-- <td class="px-2 py-4 text-right">
-            <a
-              href="{{ e.get_absolute_url }}"
-              class="font-medium text-blue-800 dark:text-blue-500 hover:underline"
-              >Detail</a
-            >
+{% extends "_base.html" %}
+{% block content %}
+  <div class="p-4 mx-4 bg-white rounded-lg shadow-md w-fit">
+    <div class="flex items-center mb-2 ml-4">
+      <a href="{% url 'leave:calculate_leave_balance' %}"
+         class="inline-flex items-center px-4 py-2 text-sm text-center text-white rounded-lg bg-slate-700 hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-slate-300 ">
+        Calculate
+      </a>
+    </div>
+    <div>
+      <table class="overflow-x-auto text-sm text-left ">
+        <thead class="text-xs uppercase text-slate-900 bg-slate-50">
+          <tr>
+            <th scope="col" class="p-2">ID</th>
+            <th scope="col" class="p-2">Employee</th>
+            <th scope="col" class="p-2">Start</th>
+            <th scope="col" class="p-2">balance</th>
+            <th scope="col" class="p-2">taken</th>
+            <th scope="col" class="p-2">difference</th>
+            <th scope="col" class="p-2">remaining</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for e in page %}
+            <tr class="bg-white border-b hover:bg-slate-50">
+              <td class="p-2 whitespace-nowrap">{{ e.employee_id }}</td>
+              <td class="p-2 whitespace-nowrap">{{ e.name }}</td>
+              <td class="p-2 whitespace-nowrap">{{ e.employment_date }}</td>
+              <td class="p-2 whitespace-nowrap">{{ e.annual_leave_balance }}</td>
+              <td class="p-2 whitespace-nowrap">{{ e.annual_leave_taken }}</td>
+              <td class="p-2 whitespace-nowrap">{{ e.annual_leave_difference }}</td>
+              <td class="p-2">{{ e.annual_leave_remaining }}</td>
+              <!-- <td class="px-2 py-4 text-right">
+            <a href="{{ e.get_absolute_url }}" class="font-medium text-blue-800 dark:text-blue-500 hover:underline">Detail</a>
           </td> -->
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-    {% include "pagination.html" %}
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% include "pagination.html" %}
+    </div>
   </div>
-</div>
 {% endblock content %}

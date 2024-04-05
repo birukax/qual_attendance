@@ -1,0 +1,24 @@
+<li>
+    <a href="{% url 'employee:employees' %}"
+       class="block py-2 px-3 md:p-0  {% if request.resolver_match.url_name == 'employees' %} text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:dark:text-blue-500 {% else %} text-slate-900 rounded hover:bg-slate-100 md:hover:bg-transparent md:hover:text-blue-700 {% endif %}">Employees</a>
+</li>
+<li>
+    <a href="{% url 'employee:employee_detail' employee.id %}"
+       class="block py-2 px-3 md:p-0  {% if request.resolver_match.url_name == 'employee_detail' %} text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:dark:text-blue-500 {% else %} text-slate-900 rounded hover:bg-slate-100 md:hover:bg-transparent md:hover:text-blue-700 {% endif %}"
+       aria-current="page">Detail</a>
+</li>
+<li>
+    <a href="{% url 'employee:employee_attendances' employee.id %}"
+       class="block py-2 px-3 md:p-0  {% if request.resolver_match.url_name == 'employee_attendances' %} text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:dark:text-blue-500 {% else %} text-slate-900 rounded hover:bg-slate-100 md:hover:bg-transparent md:hover:text-blue-700 {% endif %}"
+       aria-current="page">Attendances</a>
+</li>
+<li>
+    <a href="{% url 'employee:employee_leaves' employee.id %}"
+       class="block py-2 px-3 md:p-0  {% if request.resolver_match.url_name == 'employee_leaves' %} text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:dark:text-blue-500 {% else %} text-slate-900 rounded hover:bg-slate-100 md:hover:bg-transparent md:hover:text-blue-700 {% endif %}"
+       aria-current="page">Leaves</a>
+</li>
+<li>
+    <a href="{% url 'employee:employee_overtimes' employee.id %}"
+       class="block py-2 px-3 md:p-0  {% if request.resolver_match.url_name == 'employee_overtimes' %} text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:dark:text-blue-500 {% else %} text-slate-900 rounded hover:bg-slate-100 md:hover:bg-transparent md:hover:text-blue-700 {% endif %}"
+       aria-current="page">Overtimes</a>
+</li>

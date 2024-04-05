@@ -1,25 +1,25 @@
 {% extends "_base.html" %}
 {% block content %}
-  <div class="w-full max-w-xl mx-auto bg-white shadow sm:p-8">
-    <a href="{% url 'overtime:overtimes' %}" class="mx-2">
-      <svg class="w-6 h-6 text-slate-800 "
-           aria-hidden="true"
-           xmlns="http://www.w3.org/2000/svg"
-           width="24"
-           height="24"
-           fill="none"
-           viewBox="0 0 24 24">
-        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 19-7-7 7-7" />
-      </svg>
-    </a>
-    <div class="flex justify-between ">
-      <div class="flex items-center justify-between mb-4">
-        <h5 class="text-2xl font-extrabold leading-none text-slate-900">Overtime detail</h5>
+  <div class="w-fit mx-auto bg-white shadow p-4">
+    <div class="flex justify-between items-center mb-3">
+      <div class="flex items-center justify-between">
+        <a href="{% url 'overtime:overtimes' %}" class="mr-2">
+          <svg class="w-6 h-6 text-slate-800 "
+               aria-hidden="true"
+               xmlns="http://www.w3.org/2000/svg"
+               width="24"
+               height="24"
+               fill="none"
+               viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 19-7-7 7-7" />
+          </svg>
+        </a>
+        <h5 class="text-2xl font-bold leading-none text-slate-900">Overtime detail</h5>
       </div>
       <div>
         {% if overtime.approved == True %}
           <a href="{% url 'overtime:calculate_overtime' overtime.id %}"
-             class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-slate-700 rounded-lg hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-slate-300 dark:bg-slate-600 dark:hover:bg-slate-700 dark:focus:ring-slate-800">
+             class="inline-flex items-center px-4 py-2 text-sm  text-center text-white bg-slate-800 rounded-lg hover:bg-slate-700 focus:ring-4 focus:outline-none focus:ring-slate-300 ">
             Calculate
             <svg class="w-4 h-4 ml-2 -mr-1"
                  fill="currentColor"
@@ -41,16 +41,16 @@
              viewBox="0 0 14 18">
           <path d="M7 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9Zm2 1H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Z" />
         </svg>
-        <h5 class="mb-2 text-2xl font-bold tracking-tight text-slate-900 ">{{ overtime.employee.name }}</h5>
+        <h5 class="mb-2 text-xl font-semibold tracking-tight text-slate-900 ">{{ overtime.employee.name }}</h5>
       </div>
       <div class="flex-row font-normal text-slate-900">
         <div class="flex justify-between mb-2">
-          <span class="mr-2">Employee ID:</span>
-          <p class="font-bold">{{ overtime.employee.employee_id }}</p>
+          <span class="mr-2 uppercase text-sm">Employee ID:</span>
+          <p>{{ overtime.employee.employee_id }}</p>
         </div>
         <div class="flex justify-between mb-2">
-          <span class="mr-2">Shift:</span>
-          <p class="font-bold">{{ overtime.employee.shift }}</p>
+          <span class="mr-2 uppercase text-sm">Shift:</span>
+          <p>{{ overtime.employee.shift }}</p>
         </div>
       </div>
     </div>
@@ -59,23 +59,17 @@
         <li class="py-2">
           <div class="flex items-center">
             <div class="flex-1 min-w-0 ms-4">
-              <p class="text-sm font-medium text-slate-900 truncate ">Overtime type</p>
-            </div>
-            <div class="inline-flex items-center text-base font-semibold text-slate-900 ">{{ overtime.overtime_type }}</div>
-          </div>
-        </li>
-        <li class="py-2">
-          <div class="flex items-center">
-            <div class="flex-1 min-w-0 ms-4">
               <p class="text-sm font-medium text-slate-900 truncate ">Status</p>
             </div>
-            <div class="inline-flex items-center text-base font-semibold text-slate-900 ">{% if overtime.approved == True %}
-              Approved
-            {% elif overtime.rejected == True %}
-              Rejected
-            {% else %}
-              Pending
-            {% endif %}</div>
+            <div class="inline-flex items-center text-base font-semibold text-slate-900 ">
+              {% if overtime.approved == True %}
+                Approved
+              {% elif overtime.rejected == True %}
+                Rejected
+              {% else %}
+                Pending
+              {% endif %}
+            </div>
           </div>
         </li>
         <li class="py-2">

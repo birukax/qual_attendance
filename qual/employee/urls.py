@@ -7,7 +7,16 @@ urlpatterns = [
     path("employees", views.employees, name="employees"),
     path("departments", views.departments, name="departments"),
     path("sync_employee", views.sync_employee, name="sync_employee"),
-    # path("update_salary", views.update_salary, name="update_salary"),
-    # path("sync_department", views.sync_department, name="sync_department"),
     path("employees/<int:id>", views.employee_detail, name="employee_detail"),
+    path(
+        "employees/<int:id>/attendances",
+        views.employee_attendances,
+        name="employee_attendances",
+    ),
+    path("employees/<int:id>/leaves", views.employee_leaves, name="employee_leaves"),
+    path(
+        "employees/<int:id>/overtimes",
+        views.employee_overtimes,
+        name="employee_overtimes",
+    ),
 ]

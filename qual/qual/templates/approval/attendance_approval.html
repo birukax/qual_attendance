@@ -1,43 +1,47 @@
 {% extends "_base.html" %}
 {% block content %}
-  <div class="p-8 ml-4 overflow-x-auto bg-white rounded-lg shadow-md w-fit">
+  <div class="p-4 ml-4 overflow-x-auto bg-white rounded-lg shadow-md w-fit">
     <a href="{% url 'approval:approve_attendance' %}"
-       class="inline-flex  items-center px-3 py-2 text-sm font-medium text-center text-white bg-slate-700 rounded-lg hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-slate-300 dark:bg-slate-600 dark:hover:bg-slate-700 dark:focus:ring-slate-800">
+       class="inline-flex items-center px-4 py-2 mb-3 text-sm text-center text-white rounded-lg bg-slate-800 hover:bg-slate-700 focus:ring-4 focus:outline-none focus:ring-slate-300 ">
       Approve
-      
-      <svg class="w-4 h-4 ml-1 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 20 20">
-        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 11.917 9.724 16.5 19 7.5"/>
+      <svg class="w-4 h-4 ml-1 text-white"
+           aria-hidden="true"
+           xmlns="http://www.w3.org/2000/svg"
+           width="20"
+           height="20"
+           fill="none"
+           viewBox="0 0 20 20">
+        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 11.917 9.724 16.5 19 7.5" />
       </svg>
-      
     </a>
-    {% comment %} <a href="{% url 'approval:reject_attendance' %}" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-cyan-700 rounded-lg hover:bg-cyan-800 focus:ring-4 focus:outline-none focus:ring-cyanbg-cyan-300 dark:bg-cyan-600 dark:hover:bg-cyan-700 dark:focus:ring-cyanbg-cyan-800">
+    {% comment %} <a href="{% url 'approval:reject_attendance' %}" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-cyan-700 hover:bg-cyan-800 focus:ring-4 focus:outline-none focus:ring-cyanbg-cyan-300 dark:bg-cyan-600 dark:hover:bg-cyan-700 dark:focus:ring-cyanbg-cyan-800">
       Reject
       <svg class="w-4 h-4 ml-2 -mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
         <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd">
         </path>
       </svg>
     </a> {% endcomment %}
-    <table class="text-left text-gray-900 divide-y ">
-      <thead class="font-semibold text-gray-900 uppercase bg-white">
+    <table class="text-sm text-left w-fit ">
+      <thead class="text-xs font-semibold uppercase bg-white">
         <tr>
           <th scope="col" class="p-2">Employee</th>
           <th scope="col" class="p-2">Status</th>
-          <th scope="col" class="p-2 text-center"><p class="font-light">Checkin</p> <div class="gap-2 flex w-full justify-around">
-            <p>date</p> <p>time</p>
-          </div></th>
-          <th scope="col" class="p-2 text-center"><p class="font-light">Checkout</p> <div class="gap-2 flex  w-full justify-around">
-            <p>date</p> <p>time</p>
-          </div></th>
-          <th scope="col" class="p-2">
-            Worked
-            <br>
-            hours
+          <th scope="col" class="p-2 text-left ">
+            <div class="grid grid-cols-3">
+              <div>date</div>
+              <div class="font-light text-left">In</div>
+              <div>time</div>
+            </div>
           </th>
-          <th scope="col" class="p-2 whitespace-nowrap">
-            Checkin &
-            <br>
-            out type
+          <th scope="col" class="p-2 text-left">
+            <div class="grid grid-cols-3">
+              <div>date</div>
+              <div class="font-light text-left">Out</div>
+              <div>time</div>
+            </div>
           </th>
+          <th scope="col" class="p-2">Total</th>
+          <th scope="col" class="p-2 whitespace-nowrap">Type</th>
         </tr>
       </thead>
       <tbody>
@@ -49,9 +53,19 @@
               <br>
               <span class="text-sm font-normal">{{ a.current_pattern }}</span>
             </th>
-            <td class="p-1 whitespace-nowrap ">{{ a.status }}</td>
-            <td class="p-2 "><div class="gap-2 flex justify-around whitespace-nowrap"> <p class="font-light">{{ a.check_in_date }}</p> <p class="font-semibold">{{ a.check_in_time }}</p></div></td>
-              <td class="p-2 "><div class="gap-2 flex justify-around whitespace-nowrap"> <p class="font-light">{{ a.check_out_date }}</p> <p class="font-semibold">{{ a.check_out_time }}</p></div></td>
+            <td class="p-2 text-xs font-semibold uppercase whitespace-nowrap">{{ a.status }}</td>
+            <td class="items-center p-1 text-center">
+              <div class="grid items-start grid-cols-2 gap-2">
+                <div>{{ a.check_in_date }}</div>
+                <div class="font-semibold">{{ a.check_in_time }}</div>
+              </div>
+            </td>
+            <td class="items-center p-1 text-center">
+              <div class="grid grid-cols-2 gap-2">
+                <div>{{ a.check_out_date }}</div>
+                <div class="font-semibold">{{ a.check_out_time }}</div>
+              </div>
+            </td>
             <td class="p-1">{{ a.worked_hours }}</td>
             <td class="p-1">
               {{ a.check_in_type }}
@@ -62,6 +76,10 @@
         {% endfor %}
       </tbody>
     </table>
-    {% include "pagination.html" %}
+    {% if page %}
+      {% include "pagination.html" %}
+    {% else %}
+      <p class="ml-4 text-lg">There is nothing to approve.</p>
+    {% endif %}
   </div>
 {% endblock content %}

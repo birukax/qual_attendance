@@ -37,7 +37,12 @@ def shifts(request):
 
 @login_required
 def select_employees(request):
-    employees = Employee.objects.filter(status="Active").order_by("name")
+    if request.user.profile.role == "MANAGER":
+        employees = Employee.objects.filter(
+            status="Active", department__in=request.user.profile.manages.all()
+        ).order_by("name")
+    else:
+        employees = Employee.objects.filter(status="Active").order_by("name")
     employee_filter = EmployeeFilter(request.GET, queryset=employees)
     employees = employee_filter.qs
     context = {"employee_filter": employee_filter, "employees": employees}
@@ -74,24 +79,33 @@ def assign_employees(request):
             for employee in employees:
                 employee.shift = shift
                 employee.save()
-            return redirect("shift:shifts")
+            if request.user.profile.role == ("Admin" | "HR"):
+                return redirect("shift:shifts")
+            else:
+                return redirect("employee:employees")
         return render(request, "shift/assign/select.html")
 
 
 @login_required
 def shift_detail(request, id):
     shift = get_object_or_404(Shift, id=id)
-    patterns = Pattern.objects.filter(shift=shift)
-    create_pattern_form = CreatePatternForm(
-        data=request.GET,
-        shift=shift,
-    )
     edit_shift_form = EditShiftForm(instance=shift)
     employees = Employee.objects.filter(shift=shift)
-    paginated = Paginator(employees, 15)
+    paginated = Paginator(employees, 10)
     page_number = request.GET.get("page")
     page = paginated.get_page(page_number)
 
+    context = {
+        "shift": shift,
+        "page": page,
+        "edit_shift_form": edit_shift_form,
+    }
+    return render(request, "shift/detail.html", context)
+
+
+@login_required
+def create_pattern(request, id):
+    shift = get_object_or_404(Shift, id=id)
     if request.method == "POST":
         form = CreatePatternForm(data=request.POST, shift=shift)
         if form.is_valid():
@@ -111,16 +125,42 @@ def shift_detail(request, id):
                 tolerance=tolerance,
                 next=next,
             )
-            return redirect("shift:shift_detail", id=pattern.shift.id)
+        return redirect("shift:shift_patterns", id=shift.id)
 
+
+@login_required
+def shift_employees(request, id):
+    shift = get_object_or_404(Shift, id=id)
+    employees = Employee.objects.filter(shift=shift)
+    # employee_filter = EmployeeFilter(request.GET, queryset=employees)
+    # employees = employee_filter.qs
+    paginated = Paginator(employees, 10)
+    page_number = request.GET.get("page")
+    page = paginated.get_page(page_number)
     context = {
-        "shift": shift,
         "page": page,
-        "patterns": patterns,
-        "create_pattern_form": create_pattern_form,
-        "edit_shift_form": edit_shift_form,
+        "shift": shift,
     }
-    return render(request, "shift/detail.html", context)
+    return render(request, "shift/employee/list.html", context)
+
+
+@login_required
+def shift_patterns(request, id):
+    shift = get_object_or_404(Shift, id=id)
+    patterns = Pattern.objects.filter(shift=shift)
+    create_pattern_form = CreatePatternForm(
+        data=request.GET,
+        shift=shift,
+    )
+    paginated = Paginator(patterns, 10)
+    page_number = request.GET.get("page")
+    page = paginated.get_page(page_number)
+    context = {
+        "page": page,
+        "shift": shift,
+        "create_pattern_form": create_pattern_form,
+    }
+    return render(request, "shift/pattern/list.html", context)
 
 
 @login_required
@@ -148,7 +188,7 @@ def edit_pattern(request, id):
             pattern.next = form.cleaned_data["next"]
             pattern.save()
 
-            return redirect("shift:shift_detail", id=pattern.shift.id)
+            return redirect("shift:shift_patterns", id=pattern.shift.id)
     else:
         form = EditPatternForm(instance=pattern)
     return render(

@@ -4,7 +4,7 @@ from . import views
 app_name = "approval"
 urlpatterns = [
     # path("", views.index, name="index"),
-    # path("approval/", views.approval, name="approval"),
+    path("approval/", views.approval, name="approval"),
     path("attendance_approval", views.attendance_approval, name="attendance_approval"),
     path("approve_attendance", views.approve_attendance, name="approve_attendance"),
     path("reject_attendance", views.reject_attendance, name="reject_attendance"),

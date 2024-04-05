@@ -1,10 +1,10 @@
 {% extends "_base.html" %}
 {% block content %}
-  <div class="w-fit bg-white shadow sm:p-8 ">
+  <div class="p-4 bg-white rounded-lg shadow-md w-fit">
     <div class="flex justify-between">
       <div>
         <a href="{% url 'leave:leaves' %}" class="mx-2">
-          <svg class="w-6 h-6 text-slate-800 dark:text-white"
+          <svg class="w-6 h-6 text-slate-800 "
                aria-hidden="true"
                xmlns="http://www.w3.org/2000/svg"
                width="24"
@@ -16,14 +16,14 @@
         </a>
       </div>
       <div class="flex items-center justify-between mb-1">
-        <h5 class="text-2xl font-extrabold leading-none text-slate-900 underline">Leave detail</h5>
+        <h5 class="text-2xl font-extrabold leading-none underline text-slate-900">Leave detail</h5>
         {% if leave.evidence %}
           <a href="#"
              class="text-sm font-medium text-blue-600 hover:underline dark:text-blue-500">Download Evidence</a>
         {% endif %}
       </div>
     </div>
-    <div class="justify-between">
+    <div class="justify-between mb-1">
       <div class="flex items-center justify-between gap-24">
         <svg class="w-12 h-12 mb-1 text-slate-950"
              aria-hidden="true"
@@ -32,35 +32,35 @@
              viewBox="0 0 14 18">
           <path d="M7 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9Zm2 1H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Z" />
         </svg>
-        <h5 class="mb-1 text-2xl font-bold tracking-tight text-slate-900 dark:text-white">{{ leave.employee.name }}</h5>
+        <h5 class="mb-1 text-2xl font-semibold tracking-tight text-slate-900 dark:text-white">{{ leave.employee.name }}</h5>
       </div>
       <div class="flex-row font-normal text-slate-900">
         <div class="flex justify-between mb-1">
-          <span class="mr-2">Employee ID:</span>
-          <p class="font-bold">{{ leave.employee.employee_id }}</p>
+          <span class="mr-2 uppercase ">Employee ID:</span>
+          <p class="font-semibold">{{ leave.employee.employee_id }}</p>
         </div>
         <div class="flex justify-between mb-1">
-          <span class="mr-2">Shift:</span>
-          <p class="font-bold">{{ leave.employee.shift }}</p>
+          <span class="mr-2 uppercase ">Shift:</span>
+          <p class="font-semibold">{{ leave.employee.shift }}</p>
         </div>
       </div>
     </div>
     <div class="flow-root">
-      <ul role="list" class="divide-y divide-slate-200 dark:divide-slate-700">
-        <li class="py-3 sm:py-4">
+      <ul role="list" class="divide-y divide-slate-200 ">
+        <li class="py-2 ">
           <div class="flex items-center">
             <div class="flex-1 min-w-0 ms-4">
-              <p class="text-sm font-medium text-slate-900 truncate dark:text-white">Leave type</p>
+              <p class="text-sm font-medium truncate text-slate-900 dark:text-white">Leave type</p>
             </div>
             <div class="inline-flex items-center text-base font-semibold text-slate-900 dark:text-white">
               {{ leave.leave_type }}
             </div>
           </div>
         </li>
-        <li class="py-3 sm:py-4">
+        <li class="py-2 ">
           <div class="flex items-center">
             <div class="flex-1 min-w-0 ms-4">
-              <p class="text-sm font-medium text-slate-900 truncate dark:text-white">Status</p>
+              <p class="text-sm font-medium truncate text-slate-900 dark:text-white">Status</p>
             </div>
             <div class="inline-flex items-center text-base font-semibold text-slate-900 dark:text-white">
               {% if leave.approved == True %}
@@ -73,46 +73,46 @@
             </div>
           </div>
         </li>
-        <li class="py-3 sm:py-4">
+        <li class="py-2 ">
           <div class="flex items-center">
             <div class="flex-1 min-w-0 ms-4">
-              <p class="text-sm font-medium text-slate-900 truncate dark:text-white">Active</p>
+              <p class="text-sm font-medium truncate text-slate-900 dark:text-white">Active</p>
             </div>
             <div class="inline-flex items-center text-base font-semibold text-slate-900 dark:text-white">{{ leave.active }}</div>
           </div>
         </li>
-        <li class="py-3 sm:py-4">
+        <li class="py-2 ">
           <div class="flex items-center">
             <div class="flex-1 min-w-0 ms-4">
-              <p class="text-sm font-medium text-slate-900 truncate dark:text-white">Half day</p>
+              <p class="text-sm font-medium truncate text-slate-900 dark:text-white">Half day</p>
             </div>
             <div class="inline-flex items-center text-base font-semibold text-slate-900 dark:text-white">
               {{ leave.is_half_day }}
             </div>
           </div>
         </li>
-        <li class="py-3 sm:py-4">
+        <li class="py-2 ">
           <div class="flex items-center">
             <div class="flex-1 min-w-0 ms-4">
-              <p class="text-sm font-medium text-slate-900 truncate dark:text-white">Start date</p>
+              <p class="text-sm font-medium truncate text-slate-900 dark:text-white">Start date</p>
             </div>
             <div class="inline-flex items-center text-base font-semibold text-slate-900 dark:text-white">
               {{ leave.start_date }}
             </div>
           </div>
         </li>
-        <li class="py-3 sm:py-4">
+        <li class="py-2 ">
           <div class="flex items-center">
             <div class="flex-1 min-w-0 ms-4">
-              <p class="text-sm font-medium text-slate-900 truncate dark:text-white">End date</p>
+              <p class="text-sm font-medium truncate text-slate-900 dark:text-white">End date</p>
             </div>
             <div class="inline-flex items-center text-base font-semibold text-slate-900 dark:text-white">{{ leave.end_date }}</div>
           </div>
         </li>
-        <li class="py-3 sm:py-4">
+        <li class="py-2 ">
           <div class="flex items-center">
             <div class="flex-1 min-w-0 ms-4">
-              <p class="text-sm font-medium text-slate-900 truncate dark:text-white">Have Evidence</p>
+              <p class="text-sm font-medium truncate text-slate-900 dark:text-white">Have Evidence</p>
             </div>
             <div class="inline-flex items-center text-base font-semibold text-slate-900 dark:text-white">
               {% if leave.evidence %}
@@ -126,7 +126,7 @@
         <li class="pt-3 pb-0 sm:pt-4">
           <div class="flex-col items-center">
             <div class="flex-1 min-w-0 ms-4">
-              <p class="mb-1 text-base font-bold text-slate-900 truncate dark:text-white">Reason</p>
+              <p class="mb-1 text-base font-bold truncate text-slate-900 dark:text-white">Reason</p>
             </div>
             <div class="inline-flex items-center ml-4 text-base font-semibold text-slate-900 dark:text-white">
               {{ leave.reason }}

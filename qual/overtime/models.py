@@ -5,11 +5,40 @@ import employee.models as employee
 from django.contrib.auth.models import User
 
 
+class Day(models.Model):
+    DAYS = (
+        ("Monday", "Monday"),
+        ("Tuesday", "Tuesday"),
+        ("Wednesday", "Wednesday"),
+        ("Thursday", "Thursday"),
+        ("Friday", "Friday"),
+        ("Saturday", "Saturday"),
+        ("Sunday", "Sunday"),
+    )
+    no = models.IntegerField(unique=True)
+    name = models.CharField(max_length=100, choices=DAYS)
+
+    def __str__(self):
+        return self.name
+
+    # def get_absolute_url(self):
+    #     return reverse("overtime:days_detail", args={self.id})
+
+
 class OvertimeType(models.Model):
+    CHOICES = (
+        ("OTE", "OTE"),
+        ("OTN", "OTN"),
+        ("OTH", "OTH"),
+        ("OTW", "OTW"),
+    )
+    days = models.ManyToManyField(Day, related_name="overtime_types")
     name = models.CharField(max_length=100)
-    slug = models.SlugField(unique=True)
-    rate = models.FloatField()
-    description = models.TextField()
+    pay_item_code = models.CharField(
+        max_length=100, choices=CHOICES, null=True, blank=True
+    )
+    start_time = models.TimeField(null=True, blank=True)
+    end_time = models.TimeField(null=True, blank=True)
     day_span = models.IntegerField(default=1)
 
     def __str__(self):
@@ -18,18 +47,10 @@ class OvertimeType(models.Model):
     def get_absolute_url(self):
         return reverse("overtime:overtime_type_detail", args={self.id})
 
-    def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(self.name)
-        super().save(*args, **kwargs)
-
 
 class Overtime(models.Model):
     employee = models.ForeignKey(
         employee.Employee, on_delete=models.CASCADE, related_name="overtimes"
-    )
-    overtime_type = models.ForeignKey(
-        OvertimeType, on_delete=models.CASCADE, related_name="overtimes"
     )
     reason = models.TextField()
     start_date = models.DateField()
@@ -41,6 +62,7 @@ class Overtime(models.Model):
     worked_hours = models.DurationField(null=True, blank=True)
     approved = models.BooleanField(default=False)
     rejected = models.BooleanField(default=False)
+    paid = models.BooleanField(default=False)
     approved_by = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
@@ -53,3 +75,23 @@ class Overtime(models.Model):
 
     def get_absolute_url(self):
         return reverse("overtime:overtime_detail", args={self.id})
+
+
+class Ot(models.Model):
+
+    employee = models.ForeignKey(
+        employee.Employee, on_delete=models.CASCADE, related_name="ots"
+    )
+    overtime_type = models.ForeignKey(
+        OvertimeType, on_delete=models.CASCADE, null=True, blank=True, related_name="ots"
+    )
+    overtime = models.ForeignKey(
+        Overtime, null=True, blank=True, on_delete=models.CASCADE, related_name="ots"
+    )
+    date = models.DateField()
+    start_time = models.TimeField()
+    end_time = models.TimeField()
+    units_worked = models.FloatField()
+
+    # def __str__(self):
+    #     return self.name

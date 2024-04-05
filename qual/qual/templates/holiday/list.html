@@ -1,15 +1,15 @@
 {% extends "_base.html" %}
 {% block content %}
-  <div class="px-8 py-4 mx-4 bg-white d w-fit rounded-lg">
+  <div class="p-4 mx-auto bg-white d w-fit rounded-lg">
     <div class="mb-2">{% include "holiday/create.html" %}</div>
     <div>
-      <table class="text-base text-left text-gray-800 w-fit">
+      <table class="text-sm text-left text-gray-800 w-fit">
         <thead class="uppercase whitespace-nowrap bg-gray-50">
           <tr>
             <th scope="col" class="px-3 py-3">Name</th>
             <th scope="col" class="px-3 py-3">Date</th>
             <th scope="col" class="px-3 py-3">Approved</th>
-            <th scope="col" class="px-3 py-3 text-right">Actions</th>
+            <th scope="col" class="px-3 py-3 ">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -19,7 +19,7 @@
                   class="px-3 py-3 font-semibold text-gray-900 whitespace-nowrap">{{ holiday.name }}</th>
               <td class="px-3 py-3">{{ holiday.date }}</td>
               <td class="px-3 py-3">{{ holiday.approved }}</td>
-              <td class="px-4 py-3 text-right">{% include "holiday/detail.html" %}</td>
+              <td class="px-4 py-3 items-center">{% include "holiday/detail.html" %}</td>
             </tr>
           {% endfor %}
         </tbody>

@@ -41,6 +41,8 @@ def calculate_annual_leaves():
             for year in range(years):
                 balance = 16
                 add = int((year - 1) / 2)
+                if add > 14:
+                    add = 14
                 total = total + balance + add
             # print(total)
             y = decimal_years

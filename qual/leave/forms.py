@@ -8,12 +8,12 @@ class CreateLeaveForm(forms.ModelForm):
     class Meta:
         model = Leave
         fields = (
-            "employee",
             "leave_type",
+            "employee",
             "start_date",
             "end_date",
             "is_half_day",
-            "evidence",
+            # "evidence",
             "reason",
         )
 
@@ -21,7 +21,7 @@ class CreateLeaveForm(forms.ModelForm):
         super(CreateLeaveForm, self).__init__(*args, **kwargs)
         self.fields["employee"].queryset = Employee.objects.all().order_by("name")
         self.fields["leave_type"].queryset = LeaveType.objects.all()
-        self.fields["evidence"].required = False
+        # self.fields["evidence"].required = False
 
 
 class CreateLeaveTypeForm(forms.ModelForm):

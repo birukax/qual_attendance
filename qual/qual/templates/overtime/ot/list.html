@@ -1,0 +1,40 @@
+{% extends "_base.html" %}
+{% block content %}
+    <div class="p-4 shadow-md rounded-lg mx-auto w-fit bg-white">
+        <!-- <div class="gap-4 flex">
+            <p class="text-xl font-semibold text-slate-700 ml-3 my-2">{{ employee.employee_id }}</p>
+            <p class="text-xl font-semibold text-slate-700 ml-3 my-2">{{ employee.name }}</p>
+        </div> -->
+        <table class="overflow-x-auto text-sm text-left w-fit">
+            <thead class="text-xs uppercase border-b border-black bg-gray-50">
+                <tr>
+                    <th scope="col" class="p-2">Employee</th>
+                    <th scope="col" class="p-2">Ot type</th>
+                    <th scope="col" class="p-2">PIC</th>
+                    <th scope="col" class="p-2">Date</th>
+                    <th scope="col" class="p-2">Start time</th>
+                    <th scope="col" class="p-2">End time</th>
+                    <th scope="col" class="p-2">Units</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for ot in page %}
+                    <tr class="bg-white border-b hover:bg-gray-50 ">
+                        <td class="p-2">{{ ot.employee.name }}</td>
+                        <td class="p-2">{{ ot.overtime_type }}</td>
+                        <td class="p-2">{{ ot.overtime_type.pay_item_code }}</td>
+                        <td class="p-2">{{ ot.date }}</td>
+                        <td class="p-2">{{ ot.start_time }}</td>
+                        <td class="p-2">{{ ot.end_time }}</td>
+                        <td class="p-2">{{ ot.units_worked }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% if page %}
+            {% include "pagination.html" %}
+        {% else %}
+            <p class="p-2 ml-2 text-lg">No ot record.</p>
+        {% endif %}
+    </div>
+{% endblock content %}

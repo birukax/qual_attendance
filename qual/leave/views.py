@@ -1,10 +1,14 @@
+from tracemalloc import start
+from django.forms import ValidationError
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from numpy import maximum
 from .models import *
 from .forms import *
 from django.core.paginator import Paginator
 from django.http import HttpResponse
 from .calculate import calculate_annual_leaves
+from django.contrib import messages
 
 # from django.contrib.auth.decorators import permission_required
 
@@ -12,7 +16,6 @@ from .calculate import calculate_annual_leaves
 @login_required
 def leave_list(request):
     leaves = Leave.objects.all().order_by("-start_date")
-    create_leave_form = CreateLeaveForm()
     paginated = Paginator(leaves, 10)
     page_number = request.GET.get("page")
 
@@ -20,7 +23,9 @@ def leave_list(request):
     return render(
         request,
         "leave/list.html",
-        {"page": page, "create_leave_form": create_leave_form},
+        {
+            "page": page,
+        },
     )
 
 
@@ -50,11 +55,43 @@ def leave_detail(request, id):
 
 @login_required
 def create_leave(request):
-    form = CreateLeaveForm(request.POST, request.FILES)
-    if form.is_valid():
-        form.save()
+    if request.method == "POST":
+        form = CreateLeaveForm(request.POST)
+        if form.is_valid():
+            context = {"form": form}
+            employee = form.cleaned_data["employee"]
+            leave_type = form.cleaned_data["leave_type"]
+            start_date = form.cleaned_data["start_date"]
+            end_date = form.cleaned_data["end_date"]
+            total_days = form.cleaned_data["end_date"] - form.cleaned_data["start_date"]
+            active_leave = employee.leaves.filter(active=True)
+            if active_leave:
+                messages.error(request, "Employee has an active leave.")
+                return render(request, "leave/create.html", context)
+            if start_date > end_date:
+                messages.error(request, "Start Date cannot be greater than End Date.")
+                return render(request, "leave/create.html", context)
+            if leave_type.name == "Annual":
+                employee_balance = employee.annual_leave_balance
+                total_days = total_days.days + 1
+                if employee_balance - total_days < 0:
+                    messages.error(request, "Insufficient Leave Balance.")
+                    return render(request, "leave/create.html", context)
+            else:
+                maximum_days = leave_type.maximum_days
+                if total_days.days > maximum_days:
+                    messages.error(request, "Maximum Days exceeded.")
+                    return render(request, "leave/create.html", context)
+            form.save()
+            return redirect("leave:leaves")
+        else:
 
-    return redirect("leave:leaves")
+            messages.error(request, form.errors)
+        # return redirect("leave:leaves")
+
+    form = CreateLeaveForm()
+    return render(request, "leave/create.html", {"form": form})
+    # return redirect("leave:create_leave")
 
 
 @login_required

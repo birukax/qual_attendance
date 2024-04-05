@@ -1,0 +1,54 @@
+{% extends "_base.html" %}
+{% block content %}
+    <div class="p-4 shadow-md rounded-lg mx-auto w-fit bg-white">
+        <div class="gap-4 flex">
+            <p class="text-xl font-semibold text-slate-700 ml-3 my-2">{{ employee.employee_id }}</p>
+            <p class="text-xl font-semibold text-slate-700 ml-3 my-2">{{ employee.name }}</p>
+        </div>
+        <table class="overflow-x-auto text-sm text-left w-fit">
+            <thead class="text-xs uppercase border-b border-black bg-gray-50">
+                <tr>
+                    <th scope="col" class="p-2">Status</th>
+                    <th scope="col" class="p-2">Start date</th>
+                    <th scope="col" class="p-2">End date</th>
+                    <!-- <th scope="col" class="p-2">Start time exp.</th>
+                    <th scope="col" class="p-2">End time exp.</th> -->
+                    <th scope="col" class="p-2">Start time</th>
+                    <th scope="col" class="p-2">End time</th>
+                    <th scope="col" class="p-2">Paid</th>
+                    <th scope="col" class="p-2">Total</th>
+                    <th scope="col" class="p-2">Approved by</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for overtime in page %}
+                    <tr class="bg-white border-b hover:bg-gray-50 ">
+                        <td class="p-2">
+                            {% if overtime.approved == True %}
+                                Approved
+                            {% elif overtime.approved == False and overtime.rejected == False %}
+                                Pending
+                            {% else %}
+                                Rejected
+                            {% endif %}
+                        </td>
+                        <td class="p-2">{{ overtime.start_date }}</td>
+                        <td class="p-2">{{ overtime.end_date }}</td>
+                        <!-- <td class="p-2">{{ overtime.start_time_expected }}</td>
+                        <td class="p-2">{{ overtime.end_time_expected }}</td> -->
+                        <td class="p-2">{{ overtime.start_time_actual }}</td>
+                        <td class="p-2">{{ overtime.end_time_actual }}</td>
+                        <td class="p-2">{{ overtime.worked_hours }}</td>
+                        <td class="p-2">{{ overtime.paid }}</td>
+                        <td class="p-2">{{ overtime.approved_by.first_name }} {{ overtime.approved_by.last_name }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% if page %}
+            {% include "pagination.html" %}
+        {% else %}
+            <p class="p-2 ml-2 text-lg">No overtime record.</p>
+        {% endif %}
+    </div>
+{% endblock content %}

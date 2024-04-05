@@ -1,7 +1,7 @@
 <!-- Modal toggle -->
 <button data-modal-target="overtime-detail-{{ ot.id }}"
         data-modal-toggle="overtime-detail-{{ ot.id }}"
-        class="block px-3 py-1 text-sm text-center text-white bg-slate-700 rounded-full hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-slate-300 "
+        class="block px-3 py-1 text-sm text-center text-white rounded-lg bg-slate-700 hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-slate-300 "
         type="button">Detail</button>
 <!-- Main modal -->
 <div id="overtime-detail-{{ ot.id }}"
@@ -12,8 +12,8 @@
     <!-- Modal content -->
     <div class="relative bg-white rounded-lg shadow dark:bg-slate-700">
       <!-- Modal header -->
-      <div class="flex items-center justify-between p-4 border-b rounded-t md:p-5 dark:border-slate-600">
-        <h3 class="text-xl font-semibold text-slate-900 ">Holiday detail</h3>
+      <div class="flex items-center justify-between p-4 border-b rounded-t">
+        <h3 class="text-xl font-semibold text-slate-900 ">Overtime detail</h3>
         <button type="button"
                 class="inline-flex items-center justify-center w-8 h-8 text-sm bg-transparent rounded-lg text-slate-400 hover:bg-slate-200 hover:text-slate-900 ms-auto dark:hover:bg-slate-600 dark:hover:text-white"
                 data-modal-hide="overtime-detail-{{ ot.id }}">
@@ -28,10 +28,10 @@
         </button>
       </div>
       <!-- Modal body -->
-      <div class="w-full p-8 bg-white rounded-lg shadow gap-y-4">
+      <div class="w-full p-4 bg-white rounded-lg shadow ">
         <div class="flex gap-4">
           <a href="{% url 'approval:approve_overtime' ot.id %}"
-             class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-slate-700 rounded-lg hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-slate-300 dark:bg-slate-600 dark:hover:bg-slate-700 dark:focus:ring-slate-800">
+             class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-slate-700 hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-slate-300 dark:bg-slate-600 dark:hover:bg-slate-700 dark:focus:ring-slate-800">
             Approve
             <svg class="w-4 h-4 ml-1 text-white"
                  aria-hidden="true"
@@ -44,7 +44,7 @@
             </svg>
           </a>
           <a href="{% url 'approval:reject_overtime' ot.id %}"
-             class="inline-flex items-center px-3 py-2 text-sm font-medium text-center  bg-slate-200 rounded-lg hover:bg-slate-300 focus:ring-4 focus:outline-none focus:ring-slate-300 ">
+             class="inline-flex items-center px-3 py-2 text-sm font-medium text-center rounded-lg bg-slate-200 hover:bg-slate-300 focus:ring-4 focus:outline-none focus:ring-slate-300 ">
             Reject
             <svg class="w-4 h-4 ml-1"
                  aria-hidden="true"
@@ -62,19 +62,11 @@
             <li class="py-3">
               <div class="flex items-center">
                 <div class="flex-1 min-w-0 ms-4">
-                  <p class="text-sm font-medium text-gray-900 truncate dark:text-white">Overtime type</p>
+                  <p class="text-sm font-medium text-gray-900 truncate dark:text-white">Employee</p>
                 </div>
                 <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                  {{ ot.overtime_type }}
+                  {{ ot.employee.name }}
                 </div>
-              </div>
-            </li>
-            <li class="py-3">
-              <div class="flex items-center">
-                <div class="flex-1 min-w-0 ms-4">
-                  <p class="text-sm font-medium text-gray-900 truncate dark:text-white">Approved</p>
-                </div>
-                <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">{{ ot.approved }}</div>
               </div>
             </li>
             <li class="py-3">
@@ -147,22 +139,6 @@
                 <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
                   {{ ot.end_time_actual }}
                 </div>
-              </div>
-            </li>
-            <li class="py-3">
-              <div class="flex items-center">
-                <div class="flex-1 min-w-0 ms-4">
-                  <p class="text-sm font-medium text-gray-900 truncate dark:text-white">Total rate</p>
-                </div>
-                <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">{{ ot.total_rate }}</div>
-              </div>
-            </li>
-            <li class="py-3">
-              <div class="flex items-center">
-                <div class="flex-1 min-w-0 ms-4">
-                  <p class="text-sm font-medium text-gray-900 truncate dark:text-white">Total amount</p>
-                </div>
-                <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">{{ ot.total_amount }}</div>
               </div>
             </li>
             <li class="pt-3 pb-0 sm:pt-4">
