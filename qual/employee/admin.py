@@ -19,6 +19,7 @@ class EmployeeAdmin(admin.ModelAdmin):
     list_filter = [
         "department",
         "shift",
+        "status",
     ]
     list_per_page = 15
 

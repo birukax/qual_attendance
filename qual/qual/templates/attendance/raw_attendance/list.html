@@ -1,16 +1,16 @@
 {% extends "_base.html" %}
 {% block content %}
-  <div class="flex-col gap-4 p-6 bg-white rounded-lg w-fit ">
-    <div class="flex items-center justify-between mx-2 mb-3">
+  <div class="  px-6 py-4 bg-white rounded-lg w-full overflow-x-auto">
+    <div class="flex items-center justify-between mx-2 mb-2">
       {% include "attendance/raw_attendance/filter.html" %}
       <a href="{% url 'attendance:get_raw_data' %}"
-         class="inline-flex items-center px-4 py-2 text-sm text-center text-white rounded-lg bg-slate-800 hover:bg-slate-700 focus:ring-4 focus:outline-none focus:ring-slate-300 ">
+         class="inline-flex items-center px-4 py-2 text-sm text-center text-white rounded-lg bg-slate-700 hover:bg-slate-600 focus:ring-4 focus:outline-none focus:ring-slate-300 ">
         Get raw data
       </a>
     </div>
-    <div class="relative overflow-x-auto w-fit">
-      <table class="text-sm text-left text-slate-900">
-        <thead class="text-xs font-semibold uppercase text-slate-900 ">
+    <div>
+      <table class="text-sm text-left text-slate-900 table-auto w-full">
+        <thead class="text-xs font-semibold uppercase text-slate-900 bg-slate-100">
           <tr>
             <th scope="col" class="p-3">ID</th>
             <th scope="col" class="p-3">Employee name</th>
@@ -24,9 +24,7 @@
             <tr class="bg-white border-b">
               <td class="p-3">{{ attendance.employee.employee_id }}</td>
               <th scope="row"
-                  class="p-3 font-semibold text-slate-900 whitespace-nowrap dark:text-white">
-                {{ attendance.employee.name }}
-              </th>
+                  class="p-3 font-semibold text-slate-900 whitespace-nowrap ">{{ attendance.employee.name }}</th>
               <td class="p-3 whitespace-nowrap">{{ attendance.date }}</td>
               <td class="p-3 whitespace-nowrap">{{ attendance.time }}</td>
               {% comment %}

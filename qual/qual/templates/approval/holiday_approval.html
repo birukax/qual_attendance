@@ -1,20 +1,20 @@
 {% extends "_base.html" %}
 {% block content %}
-  <div class="p-4 ml-4 overflow-x-auto bg-white rounded-lg shadow-md w-fit">
-    <table class="text-left text-gray-900 divide-y ">
-      <thead class="font-semibold text-gray-900 uppercase bg-white">
+  <div class="p-4  bg-white rounded-lg shadow-md w-full overflow-x-auto">
+    <table class="text-left text-slate-900 table-auto w-full ">
+      <thead class="font-semibold text-slate-900 uppercase bg-slate-100">
         <tr>
-          <th scope="col" class="px-3 py-4">Name</th>
-          <th scope="col" class="px-3 py-4">Date</th>
-          <th scope="col" class="px-3 py-4">Actions</th>
+          <th scope="col" class="p-3">Name</th>
+          <th scope="col" class="p-3">Date</th>
+          <th scope="col" class="p-3 text-right">Actions</th>
         </tr>
       </thead>
       <tbody>
         {% for h in page %}
           <tr class="bg-white border-b">
-            <td class="px-4 py-2">{{ h.name }}</td>
-            <td class="px-4 py-2">{{ h.date }}</td>
-            <td class="px-4 py-2">{% include "approval/holiday_detail.html" %}</td>
+            <td class="p-3">{{ h.name }}</td>
+            <td class="p-3">{{ h.date }}</td>
+            <td class="p-3">{% include "approval/holiday_detail.html" %}</td>
           </tr>
         {% endfor %}
       </tbody>
@@ -22,7 +22,7 @@
     {% if page %}
       {% include "pagination.html" %}
     {% else %}
-      <p class="ml-4 text-lg">There is nothing to approve.</p>
+      <p class="ml-4 ">There is nothing to approve.</p>
     {% endif %}
   </div>
 {% endblock content %}

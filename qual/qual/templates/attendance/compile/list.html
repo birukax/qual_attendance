@@ -1,9 +1,38 @@
 {% extends "_base.html" %}
 {% block content %}
-  <div class="relative p-4 overflow-x-auto bg-white rounded-lg shadow-md w-fit">
-    <div class="flex items-center justify-between mx-2 mb-2">
-      <div class="px-2 text-sm">
-        <h2 class="mb-2 font-semibold uppercase text-slate-900">Check list:</h2>
+  <div class="relative p-4 overflow-x-auto bg-white rounded-lg shadow-md w-full">
+    <div class="flex items-center justify-between mx-2 mb-2 gap-4">
+      <div class="px-2 text-sm space-y-2">
+        {% if page %}
+          <div class="flex gap-6">
+            <a href="{% url 'approval:approve_attendance' %}"
+               class="inline-flex items-center px-4 py-2 text-sm text-center text-white rounded-lg bg-slate-700 hover:bg-slate-600 focus:ring-4 focus:outline-none focus:ring-slate-300 ">
+              Save
+              <svg class="w-4 h-4 ml-1 text-white"
+                   aria-hidden="true"
+                   xmlns="http://www.w3.org/2000/svg"
+                   width="20"
+                   height="20"
+                   fill="none"
+                   viewBox="0 0 20 20">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 11.917 9.724 16.5 19 7.5" />
+              </svg>
+            </a>
+            <a href="{% url 'attendance:delete_compiled_attendance' %}"
+               class="inline-flex items-center px-4 py-2 text-sm text-center text-white rounded-lg bg-slate-700 hover:bg-slate-600 focus:ring-4 focus:outline-none focus:ring-slate-300 ">
+              Delete
+              <svg class="w-4 h-4 ml-1 text-white"
+                   aria-hidden="true"
+                   xmlns="http://www.w3.org/2000/svg"
+                   width="20"
+                   height="20"
+                   fill="none"
+                   viewBox="0 0 20 20">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6" />
+              </svg>
+            </a>
+          </div>
+        {% endif %}
         <ul class="max-w-md space-y-1 list-inside text-slate-900">
           <li class="flex items-center">
             {% if no_shift == 0 %}
@@ -37,12 +66,12 @@
           </li>
         </ul>
       </div>
-      <div class="grid grid-cols-1 gap-2 ">
+      <div class="grid grid-cols-1 gap-2 items-stretch">
         <div>
           <form method="post" action="{% url 'attendance:compile_attendance' %}">
             {% csrf_token %}
             <a href="{% url 'attendance:compile_attendance' %}"
-               class="inline-flex items-center px-4 py-2 text-sm text-center text-white rounded-lg bg-slate-800 hover:bg-slate-600 focus:ring-4 focus:outline-none focus:ring-slate-300 ">
+               class="inline-flex items-center px-4 py-2 text-sm text-center text-white rounded-lg bg-slate-700 hover:bg-slate-600 focus:ring-4 focus:outline-none focus:ring-slate-300 ">
               Compile
             </a>
             {{ compile_date }}
@@ -51,25 +80,15 @@
         <div>{% include "attendance/compile/filter.html" %}</div>
       </div>
     </div>
-    <table class="text-sm text-left text-slate-900">
-      <thead class="text-xs uppercase text-slate-900 bg-slate-50">
+    <table class="text-sm text-left text-slate-900 w-full table-auto">
+      <thead class="text-xs uppercase text-slate-900 bg-slate-100">
         <tr>
           <th scope="col" class="p-2">Employee</th>
           <th scope="col" class="p-2">Status</th>
-          <th scope="col" class="p-2 text-left ">
-            <div class="grid grid-cols-3">
-              <div>date</div>
-              <div class="font-light text-left">In</div>
-              <div>time</div>
-            </div>
-          </th>
-          <th scope="col" class="p-2 text-left">
-            <div class="grid grid-cols-3">
-              <div>date</div>
-              <div class="font-light text-left">Out</div>
-              <div>time</div>
-            </div>
-          </th>
+          <th scope="col" class="p-2">In date</th>
+          <th scope="col" class="p-2">In time</th>
+          <th scope="col" class="p-2">Out date</th>
+          <th scope="col" class="p-2">Out time</th>
           <th scope="col" class="p-2">Total</th>
           <th scope="col" class="p-2 whitespace-nowrap">Type</th>
         </tr>
@@ -78,24 +97,16 @@
         {% for a in page %}
           <tr class="bg-white border-b hover:bg-slate-50">
             <th scope="row"
-                class="p-1 font-semibold text-slate-900 whitespace-nowrap dark:text-white">
+                class="p-1 font-semibold text-slate-900 whitespace-nowrap lowercase first-letter:uppercase">
               {{ a.employee.name }}
               <br />
               <span class="font-normal ">{{ a.current_pattern }}</span>
             </th>
             <td class="p-1 text-xs font-semibold uppercase whitespace-nowrap">{{ a.status }}</td>
-            <td class="items-center p-1 text-center">
-              <div class="grid items-start grid-cols-2 gap-2">
-                <div>{{ a.check_in_date }}</div>
-                <div class="font-semibold">{{ a.check_in_time }}</div>
-              </div>
-            </td>
-            <td class="items-center p-1 text-center">
-              <div class="grid grid-cols-2 gap-2">
-                <div>{{ a.check_out_date }}</div>
-                <div class="font-semibold">{{ a.check_out_time }}</div>
-              </div>
-            </td>
+            <td class="p-2 text-xs font-semibold uppercase whitespace-nowrap">{{ a.check_in_date }}</td>
+            <td class="p-2 text-xs font-semibold uppercase whitespace-nowrap">{{ a.check_in_time }}</td>
+            <td class="p-2 text-xs font-semibold uppercase whitespace-nowrap">{{ a.check_out_date }}</td>
+            <td class="p-2 text-xs font-semibold uppercase whitespace-nowrap">{{ a.check_out_time }}</td>
             <td class="p-1">{{ a.worked_hours }}</td>
             <td class="p-1">
               {{ a.check_in_type }}
@@ -106,6 +117,10 @@
         {% endfor %}
       </tbody>
     </table>
-    {% include "pagination.html" %}
+    {% if page %}
+      {% include "pagination.html" %}
+    {% else %}
+      <p class="p-2 ml-2 ">No compiled record.</p>
+    {% endif %}
   </div>
 {% endblock content %}

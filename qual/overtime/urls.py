@@ -5,11 +5,12 @@ app_name = "overtime"
 
 urlpatterns = [
     path("overtimes", views.overtimes, name="overtimes"),
+    path("download_overtime", views.download_overtime, name="download_overtime"),
     path("overtime_detail/<int:id>", views.overtime_detail, name="overtime_detail"),
     path(
-        "calculate_overtime/<int:id>",
-        views.calculate_overtime,
-        name="calculate_overtime",
+        "calculate_ots",
+        views.calculate_ots,
+        name="calculate_ots",
     ),
     path("post_overtime", views.post_overtime, name="post_overtime"),
     path("overtime_types", views.overtime_types, name="overtime_types"),

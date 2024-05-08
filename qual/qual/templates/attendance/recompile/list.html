@@ -1,0 +1,143 @@
+{% extends "_base.html" %}
+{% block content %}
+    <div class="relative px-8 py-4 bg-white w-fit rounded-lg shadow-md">
+        <form method="post" action="{% url 'attendance:recompile' %}">
+            <div class="relative my-3">
+                {% csrf_token %}
+                {% if employees %}
+                    <div class="justify-around grid grid-cols-2">
+                        <h1>
+                            Selected
+                            <span class="text-sm">{{ employees.count }}</span>
+                            employees.
+                        </h1>
+                        <div class="flex justify-end gap-4">
+                            <button type="submit"
+                                    value='Change'
+                                    class="px-4 py-2 text-sm font-medium text-center text-white bg-slate-700 rounded-lg hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-slate-300 ">
+                                Recompile
+                            </button>
+                            <a href="{% url 'attendance:cancel_recompile' %}"
+                               class="px-4 py-2 text-sm text-center  bg-slate-200 rounded-lg hover:bg-slate-300 focus:ring-4 focus:outline-none focus:ring-slate-300 ">Cancel</a>
+                        </div>
+                    </div>
+                    {{ recompile_form.media }}
+                    <div class="flex justify-between mt-4">
+                        {% for field in recompile_form %}
+                            <div class="grid grid-cols-1 gap-2">
+                                {{ field }}
+                                {{ field.label_tag }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% elif attendances %}
+                    <button type="submit"
+                            value='Change'
+                            class="px-4 py-2 text-sm font-medium text-center text-white bg-slate-700 rounded-lg hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-slate-300 ">
+                        Recompile
+                    </button>
+                    <a href="{% url 'attendance:save_recompile' %}"
+                       class="px-4 py-2 text-sm text-center  bg-slate-800 rounded-lg hover:bg-slate-700 focus:ring-4 focus:outline-none focus:ring-slate-300 ">Save</a>
+                    <a href="{% url 'attendance:cancel_recompile' %}"
+                       class="px-4 py-2 text-sm text-center  bg-slate-200 rounded-lg hover:bg-slate-300 focus:ring-4 focus:outline-none focus:ring-slate-300 ">Cancel</a>
+                {% else %}
+                    <a href="{% url 'attendance:select_for_recompile' %}"
+                       class="px-4 py-2 text-sm text-center text-white bg-slate-800 rounded-lg hover:bg-slate-600 focus:ring-4 focus:outline-none focus:ring-slate-300 ">Select Employees</a>
+                {% endif %}
+            </div>
+            {% if attendances %}
+                <table class="text-sm text-left text-slate-900">
+                    <thead class="text-xs uppercase text-slate-900 bg-slate-50">
+                        <tr>
+                            <th scope="col" class="p-2">Employee</th>
+                            <th scope="col" class="p-2">Status</th>
+                            <th scope="col" class="p-2 text-left ">
+                                <div class="grid grid-cols-3">
+                                    <div>date</div>
+                                    <div class="font-light text-left">In</div>
+                                    <div>time</div>
+                                </div>
+                            </th>
+                            <th scope="col" class="p-2 text-left">
+                                <div class="grid grid-cols-3">
+                                    <div>date</div>
+                                    <div class="font-light text-left">Out</div>
+                                    <div>time</div>
+                                </div>
+                            </th>
+                            <th scope="col" class="p-2">Total</th>
+                            <th scope="col" class="p-2 whitespace-nowrap">Type</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for a in page %}
+                            <tr class="bg-white border-b hover:bg-slate-50">
+                                <th scope="row"
+                                    class="p-1 font-semibold text-slate-900 whitespace-nowrap dark:text-white">
+                                    {{ a.employee.name }}
+                                    <br />
+                                    <span class="font-normal ">{{ a.current_pattern }}</span>
+                                </th>
+                                <td class="p-1 text-xs font-semibold uppercase whitespace-nowrap">{{ a.status }}</td>
+                                <td class="items-center p-1 text-center">
+                                    <div class="grid items-start grid-cols-2 gap-2">
+                                        <div>{{ a.check_in_date }}</div>
+                                        <div class="font-semibold">{{ a.check_in_time }}</div>
+                                    </div>
+                                </td>
+                                <td class="items-center p-1 text-center">
+                                    <div class="grid grid-cols-2 gap-2">
+                                        <div>{{ a.check_out_date }}</div>
+                                        <div class="font-semibold">{{ a.check_out_time }}</div>
+                                    </div>
+                                </td>
+                                <td class="p-1">{{ a.worked_hours }}</td>
+                                <td class="p-1">
+                                    {{ a.check_in_type }}
+                                    <br />
+                                    {{ a.check_out_type }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% include "pagination.html" %}
+            {% elif employees %}
+                <table class="overflow-x-auto text-sm text-left text-slate-900 w-fit mx-auto">
+                    <thead class="uppercase text-slate-900 bg-slate-50 text-xs">
+                        <tr>
+                            <th scope="col" class="px-2 py-2 whitespace-nowrap">ID</th>
+                            <th scope="col" class="px-2 py-2">Full name</th>
+                            <th scope="col" class="px-2 py-2">Department</th>
+                            <th scope="col" class="px-2 py-2">Date</th>
+                            <th scope="col" class="px-2 py-2">Status</th>
+                            <th scope="col" class="px-2 py-2">Shift</th>
+                            <th scope="col" class="px-2 py-2">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% csrf_token %}
+                        {% for employee in employees %}
+                            <tr class="border-b hover:bg-slate-50">
+                                <td class="px-2 py-2 font-semibold">{{ employee.employee_id }}</td>
+                                <th scope="row"
+                                    class="px-2 py-2 font-semibold lowercase text-slate-900 first-letter:uppercase whitespace-nowrap ">
+                                    {{ employee.name }}
+                                </th>
+                                <td class="px-2 py-2 ">{{ employee.department }}</td>
+                                <td class="px-2 py-2">{{ employee.employment_date }}</td>
+                                <td class="px-2 py-2">{{ employee.status }}</td>
+                                <td class="px-2 py-2 whitespace-nowrap">{{ employee.shift }}</td>
+                                <td class="px-2 py-2 text-right">
+                                    <input type="checkbox" name="employees" checked  value="{{ employee.id }}">
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p class="ml-4 my-4">Select employees to recompile.</p>
+            {% endif %}
+        </form>
+    </div>
+{% endblock content %}

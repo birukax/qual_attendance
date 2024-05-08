@@ -13,7 +13,6 @@ class ShiftAdmin(admin.ModelAdmin):
 class PatternAdmin(admin.ModelAdmin):
     list_display = [
         "name",
-        "slug",
         "day_span",
         "shift",
         "next",
@@ -21,5 +20,4 @@ class PatternAdmin(admin.ModelAdmin):
         "end_time",
         "tolerance",
     ]
-    prepopulated_fields = {"slug": ("name",)}
     list_per_page = 15

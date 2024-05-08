@@ -1,45 +1,40 @@
 {% extends "_base.html" %}
 {% block content %}
-  <div class="p-4 mx-4 bg-white rounded-lg shadow-md w-fit">
-    <div class="flex items-center justify-between">
-      {% include "overtime/create.html" %}
-      <a href="{% url 'overtime:post_overtime' %}"
-         class="inline-flex items-center px-4 py-2 text-sm text-center text-white rounded-lg bg-slate-800 hover:bg-slate-700 focus:ring-4 focus:outline-none focus:ring-slate-300">
-        Post
-        <svg class="w-4 h-4 ml-2 -mr-1"
-             fill="currentColor"
-             viewBox="0 0 20 20"
-             xmlns="http://www.w3.org/2000/svg">
-          <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd">
-          </path>
-        </svg>
+  <div class="py-4 px-6  bg-white rounded-lg shadow-md w-full overflow-x-auto">
+    <div class="flex items-center justify-between mb-2">
+      <a href="{% url 'overtime:create_overtime' %}"
+         class="inline-flex items-center px-4 py-2 text-sm text-center text-white rounded-lg bg-slate-700 hover:bg-slate-600 focus:ring-4 focus:outline-none focus:ring-slate-300">
+        Create
       </a>
+      {% include "overtime/download.html" %}
     </div>
     <div>
-      <table class="overflow-x-auto text-sm text-left text-black">
-        <thead class="text-xs text-gray-800 uppercase whitespace-nowrap bg-gray-50">
+      <table class=" text-sm text-left text-slate-900 table-auto w-full">
+        <thead class="text-xs text-slate-800 uppercase whitespace-nowrap bg-slate-100">
           <tr>
-            <th scope="col" class="px-1 py-2">Employee</th>
-            <th scope="col" class="px-1 py-2">Start Date</th>
-            <th scope="col" class="px-1 py-2">Start time</th>
-            <th scope="col" class="px-1 py-2">End Date</th>
-            <th scope="col" class="px-1 py-2">End time</th>
-            <th scope="col" class="px-1 py-2">Approved</th>
-            <th scope="col" class="px-1 py-2">Paid</th>
-            <th scope="col" class="px-1 py-2">Actions</th>
+            <th scope="col" class="px-2 py-3">Employee</th>
+            <th scope="col" class="px-2 py-3">Start Date</th>
+            <th scope="col" class="px-2 py-3">End Date</th>
+            <th scope="col" class="px-2 py-3">Start time</th>
+            <th scope="col" class="px-2 py-3">End time</th>
+            <th scope="col" class="px-2 py-3">Worked hours</th>
+            <th scope="col" class="px-2 py-3">Approved</th>
+            <th scope="col" class="px-2 py-3">Paid</th>
+            <th scope="col" class="px-2 py-3 text-right">Actions</th>
           </tr>
         </thead>
         <tbody class="whitespace-nowrap">
           {% for overtime in page %}
-            <tr class="bg-white border-b hover:bg-gray-50">
-              <td class="px-2 py-4 whitespace-nowrap">{{ overtime.employee.name }}</td>
-              <td class="px-2 py-4 whitespace-nowrap">{{ overtime.start_date }}</td>
-              <td class="px-2 py-4 whitespace-nowrap">{{ overtime.end_date }}</td>
-              <td class="px-2 py-4">{{ overtime.start_time_expected }}</td>
-              <td class="px-2 py-4">{{ overtime.end_time_expected }}</td>
-              <td class="px-2 py-4">{{ overtime.approved }}</td>
-              <td class="px-2 py-4">{{ overtime.paid }}</td>
-              <td class="px-2 py-4 text-right">
+            <tr class="bg-white border-b hover:bg-slate-50">
+              <td class="px-2 py-3 whitespace-nowrap">{{ overtime.employee.name }}</td>
+              <td class="px-2 py-3 whitespace-nowrap">{{ overtime.start_date }}</td>
+              <td class="px-2 py-3 whitespace-nowrap">{{ overtime.end_date }}</td>
+              <td class="px-2 py-3">{{ overtime.start_time }}</td>
+              <td class="px-2 py-3">{{ overtime.end_time }}</td>
+              <td class="px-2 py-3">{{ overtime.worked_hours }}</td>
+              <td class="px-2 py-3">{{ overtime.approved }}</td>
+              <td class="px-2 py-3">{{ overtime.paid }}</td>
+              <td class="px-2 py-3 text-right">
                 <a href="{{ overtime.get_absolute_url }}"
                    class="font-semibold text-slate-900 hover:underline">Detail</a>
               </td>

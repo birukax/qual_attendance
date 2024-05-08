@@ -1,30 +1,28 @@
-# from asyncio.windows_events import NULL
-from dataclasses import fields
-from email.policy import default
-from urllib import request
-from colorama import init
 from django import forms
 from .models import *
 from employee.models import Employee
 from django.utils.text import slugify
-import datetime
+
+from django_flatpickr.widgets import (
+    DatePickerInput,
+    TimePickerInput,
+    DateTimePickerInput,
+)
+from django_flatpickr.schemas import FlatpickrOptions
 
 
-class CreateShiftForm(forms.Form):
+class CreateShiftForm(forms.ModelForm):
     class Meta:
-        model = Shift()
-        fields = [
+        model = Shift
+        fields = (
             "name",
-            "continous",
+            "device",
             "saturday_half",
-        ]
-
-    name = forms.CharField()
-    continous = forms.BooleanField(required=False)
-    saturday_half = forms.BooleanField(required=False)
+            "continous",
+        )
 
     def save(self, force_insert=False, force_update=False, commit=True):
-        shift = Shift()
+        shift = Shift
         shift.slug = slugify(shift.name)
 
         shift.save()
@@ -53,12 +51,14 @@ class SelectShiftForm(forms.Form):
 
 class EditShiftForm(forms.ModelForm):
     class Meta:
-        model = Shift()
-        fields = ["name", "continous", "saturday_half", "current_pattern"]
-
-    name = forms.CharField()
-    continous = forms.BooleanField(required=False)
-    saturday_half = forms.BooleanField(required=False)
+        model = Shift
+        fields = (
+            "name",
+            "device",
+            "continous",
+            "current_pattern",
+            "saturday_half",
+        )
 
     def save(self, force_insert=False, force_update=False, commit=True):
         shift = super(EditShiftForm, self).save(commit=False)
@@ -73,26 +73,28 @@ class EditShiftForm(forms.ModelForm):
         )
 
 
-class CreatePatternForm(forms.Form):
+class CreatePatternForm(forms.ModelForm):
     class Meta:
-        model = Pattern()
-        fields = ["name", "day_span", "tolerance", "start_time", "end_time"]
-
-    name = forms.CharField()
-    day_span = forms.IntegerField()
-    tolerance = forms.IntegerField()
-    next = forms.ModelChoiceField(
-        Pattern.objects.all(), required=False, empty_label=None, label="Next Pattern"
-    )
-    start_time = forms.TimeField()
-    end_time = forms.TimeField()
+        model = Pattern
+        fields = (
+            "name",
+            "next",
+            "start_time",
+            "end_time",
+            "tolerance",
+            "day_span",
+        )
+        widgets = {
+            "start_time": TimePickerInput(options=FlatpickrOptions()),
+            "end_time": TimePickerInput(options=FlatpickrOptions()),
+        }
 
     def __init__(self, shift, *args, **kwargs):
         super(CreatePatternForm, self).__init__(*args, **kwargs)
         self.fields["next"].queryset = Pattern.objects.filter(shift=shift)
 
     def save(self, force_insert=False, force_update=False, commit=True):
-        pattern = Pattern()
+        pattern = Pattern
         pattern.slug = slugify(pattern.name)
         pattern.save()
         return pattern
@@ -100,16 +102,19 @@ class CreatePatternForm(forms.Form):
 
 class EditPatternForm(forms.ModelForm):
     class Meta:
-        model = Pattern()
-        fields = ["name", "day_span", "tolerance", "start_time", "end_time"]
-
-    next = forms.ModelChoiceField(
-        Pattern.objects.all(), required=False, empty_label=None, label="Next Pattern"
-    )
-    start_time = forms.TimeField()
-    end_time = forms.TimeField()
-    tolerance = forms.IntegerField()
-    day_span = forms.IntegerField()
+        model = Pattern
+        fields = (
+            "name",
+            "next",
+            "day_span",
+            "tolerance",
+            "start_time",
+            "end_time",
+        )
+        widgets = {
+            "start_time": TimePickerInput(options=FlatpickrOptions()),
+            "end_time": TimePickerInput(options=FlatpickrOptions()),
+        }
 
     def __init__(self, *args, **kwargs):
         super(EditPatternForm, self).__init__(*args, **kwargs)
@@ -120,22 +125,6 @@ class EditPatternForm(forms.ModelForm):
         pattern.slug = slugify(pattern.name)
         pattern.save()
         return pattern
-
-
-class ChangeEmployeeShiftForm(forms.ModelForm):
-    class Meta:
-        model = Employee()
-        fields = [
-            "shift",
-        ]
-
-    def __init__(self, *args, **kwargs):
-        super(ChangeEmployeeShiftForm, self).__init__(*args, **kwargs)
-        self.fields["shift"].queryset = Shift.objects.all()
-        if self.instance.shift:
-            self.fields["shift"].initial = Shift.objects.get(id=self.instance.shift.id)
-
-    shift = forms.ModelChoiceField(Shift.objects.all())
 
 
 # class ChangePatternForm(forms.ModelForm):

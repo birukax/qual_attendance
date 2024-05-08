@@ -8,9 +8,12 @@ from .forms import CreateDeviceForm, AddDeviceUserForm
 from django.utils.text import slugify
 from .tasks import add_user, get_users
 from datetime import datetime
+from django.contrib.auth.decorators import user_passes_test
+import pytz
 
 
 @login_required
+@user_passes_test(lambda u: u.profile.role == "ADMIN")
 def devices(request):
     devices = Device.objects.all()
     create_device_form = CreateDeviceForm()
@@ -22,6 +25,7 @@ def devices(request):
 
 
 @login_required
+@user_passes_test(lambda u: u.profile.role == "ADMIN")
 def create_device(request):
     if request.method == "POST":
         form = CreateDeviceForm(data=request.POST)
@@ -35,6 +39,7 @@ def create_device(request):
 
 
 @login_required
+@user_passes_test(lambda u: u.profile.role == "ADMIN")
 def device_detail(request, id):
     device = get_object_or_404(Device, id=id)
     device_connected = ZK(
@@ -45,36 +50,41 @@ def device_detail(request, id):
         # ommit_ping=True,
         # verbose=True,
     )
-    device_connected.connect()
-    device_time = device_connected.get_time()
-    device_serialnumber = device_connected.get_serialnumber()
-    device_mac = device_connected.get_mac()
-    device_version = device_connected.get_firmware_version()
-    device_connected.disconnect()
-    users = DeviceUser.objects.filter(device=device)
-    attendances = RawAttendance.objects.filter(device=device)
-    context = {
-        "device": device,
-        "users": users,
-        "attendances": attendances,
-        "device_time": device_time,
-        "device_serialnumber": device_serialnumber,
-        "device_mac": device_mac,
-        "device_version": device_version,
-    }
-    return render(
-        request,
-        "device/detail.html",
-        context,
-    )
+    try:
+        device_connected.connect()
+        device_time = device_connected.get_time()
+        device_serialnumber = device_connected.get_serialnumber()
+        device_mac = device_connected.get_mac()
+        device_version = device_connected.get_firmware_version()
+        device_connected.disconnect()
+        users = DeviceUser.objects.filter(device=device)
+        attendances = RawAttendance.objects.filter(device=device)
+        context = {
+            "device": device,
+            "users": users,
+            "attendances": attendances,
+            "device_time": device_time,
+            "device_serialnumber": device_serialnumber,
+            "device_mac": device_mac,
+            "device_version": device_version,
+        }
+        return render(
+            request,
+            "device/detail.html",
+            context,
+        )
+    except Exception as e:
+        print(e)
+        return redirect("device:devices")
 
 
 @login_required
+@user_passes_test(lambda u: u.profile.role == "ADMIN")
 def device_users(request, id):
     device = get_object_or_404(Device, id=id)
     users = DeviceUser.objects.filter(device=device).order_by("name")
     attendances = RawAttendance.objects.filter(device=device)
-    paginated = Paginator(users, 10)
+    paginated = Paginator(users, 30)
     page_number = request.GET.get("page")
     page = paginated.get_page(page_number)
     context = {
@@ -88,6 +98,7 @@ def device_users(request, id):
 
 
 @login_required
+@user_passes_test(lambda u: u.profile.role == "ADMIN" or u.profile.role == "HR")
 def add_employee(request, id):
     if request.method == "POST":
         form = AddDeviceUserForm(data=request.POST)
@@ -105,12 +116,14 @@ def add_employee(request, id):
 
 
 @login_required
+@user_passes_test(lambda u: u.profile.role == "ADMIN")
 def sync_users(request, id):
     get_users.delay(id)
     return redirect("device:device_detail", id=id)
 
 
 @login_required
+@user_passes_test(lambda u: u.profile.role == "ADMIN")
 def sync_time(request, id):
     device = get_object_or_404(Device, id=id)
     device_connected = ZK(
@@ -121,7 +134,8 @@ def sync_time(request, id):
         # ommit_ping=True,
         # verbose=True,
     )
-    time = datetime.now()
+    time = datetime.now(pytz.timezone("Etc/GMT-3"))
+    # print(pytz.all_timezones)
     print(time)
     try:
         device_connected.connect()

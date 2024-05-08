@@ -25,14 +25,14 @@ class Leave(models.Model):
     employee = models.ForeignKey(
         employee.models.Employee, on_delete=models.CASCADE, related_name="leaves"
     )
-    is_half_day = models.BooleanField(default=False)
-    start_date = models.DateField(default=date.today)
-    end_date = models.DateField(default=date.today)
     leave_type = models.ForeignKey(
         LeaveType,
         on_delete=models.CASCADE,
         related_name="leaves",
     )
+    start_date = models.DateField()
+    end_date = models.DateField()
+    is_half_day = models.BooleanField(default=False)
     active = models.BooleanField(default=False)
     approved = models.BooleanField(default=False)
     rejected = models.BooleanField(default=False)
@@ -44,7 +44,7 @@ class Leave(models.Model):
         related_name="leave_approval",
     )
     reason = models.TextField(null=True, max_length=250)
-    evidence = models.FileField(null=True, blank=True, upload_to="leave_evidence/")
+    # evidence = models.FileField(null=True, blank=True, upload_to="leave_evidence/")
 
     def get_absolute_url(self):
         return reverse("leave:leave_detail", args={self.id})

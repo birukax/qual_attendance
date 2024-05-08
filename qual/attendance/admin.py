@@ -19,8 +19,11 @@ class AttendanceAdmin(admin.ModelAdmin):
         "check_out_type",
         "status",
         "approved",
+        "deleted",
+        "recompiled",
     ]
     list_per_page = 15
+    list_filter = ["status", "approved", "recompiled", "deleted"]
 
 
 @admin.register(RawAttendance)

@@ -1,27 +1,31 @@
 {% extends "_base.html" %}
 {% block content %}
-  <div class="p-4 mx-4 bg-white divide-y divide-black w-fit rounded-lg">
-    <div class="flex items-center justify-between m-2">{% include "shift/create.html" %}</div>
+  <div class="py-4 px-6  bg-white w-slate rounded-lg overflow-x-auto">
+    {% if user_role == "ADMIN" or user_role == 'HR' %}
+      <div class="mb-1">{% include "shift/create.html" %}</div>
+    {% endif %}
     <div>
-      <table class="text-sm text-left text-slate-900 w-fit ">
-        <thead class="uppercase whitespace-nowrap bg-gray-50 text-xs">
+      <table class="text-sm text-left text-slate-900 w-full table-auto ">
+        <thead class="uppercase whitespace-nowrap bg-slate-100 text-xs">
           <tr>
-            <th scope="col" class="px-2 py-3">Shift name</th>
-            <th scope="col" class="px-2 py-3">Continous</th>
-            <th scope="col" class="px-2 py-3">Saturday half</th>
-            <th scope="col" class="px-2 py-3">Patterns</th>
-            <th scope="col" class="px-2 py-3 text-right">Actions</th>
+            <th scope="col" class="p-3">Shift name</th>
+            <th scope="col" class="p-3">Continous</th>
+            <th scope="col" class="p-3">Device</th>
+            <th scope="col" class="p-3">Saturday half</th>
+            <th scope="col" class="p-3">Patterns</th>
+            <th scope="col" class="p-3 text-right">Actions</th>
           </tr>
         </thead>
         <tbody>
           {% for shift in page %}
-            <tr class="bg-white border-b hover:bg-gray-50 whitespace-nowrap">
+            <tr class="bg-white border-b hover:bg-slate-50 whitespace-nowrap">
               <th scope="row"
-                  class="px-2 py-3 font-semibold text-gray-900 whitespace-nowrap">{{ shift.name }}</th>
-              <td class="px-2 py-3">{{ shift.continous }}</td>
-              <td class="px-2 py-3">{{ shift.saturday_half }}</td>
-              <td class="px-2 py-3">{{ shift.patterns.count }}</td>
-              <td class="px-2 py-3 text-right">
+                  class="p-3 font-semibold text-slate-900 whitespace-nowrap">{{ shift.name }}</th>
+              <td class="p-3">{{ shift.continous }}</td>
+              <td class="p-3">{{ shift.device }}</td>
+              <td class="p-3">{{ shift.saturday_half }}</td>
+              <td class="p-3">{{ shift.patterns.count }}</td>
+              <td class="p-3 text-right">
                 <a href="{{ shift.get_absolute_url }}"
                    class="font-semibold text-slate-900  hover:underline">Detail</a>
               </td>

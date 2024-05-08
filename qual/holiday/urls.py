@@ -10,5 +10,4 @@ urlpatterns = [
         name="holidays",
     ),
     path("create_holiday", views.create_holiday, name="create_holiday"),
-    path("approve_holiday/<int:id>", views.approve_holiday, name="approve_holiday"),
 ]

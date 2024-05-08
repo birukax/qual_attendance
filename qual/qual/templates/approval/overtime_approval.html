@@ -1,8 +1,8 @@
 {% extends "_base.html" %}
 {% block content %}
-  <div class="p-4 mt-4 ml-4 overflow-x-auto bg-white rounded-lg shadow-md w-fit">
-    <table class="text-sm text-left text-slate-900">
-      <thead class="text-xs font-semibold text-gray-900 uppercase bg-white">
+  <div class="py-4 px-6  bg-white rounded-lg shadow-md w-full overflow-x-auto">
+    <table class="text-sm text-left text-slate-900 table-auto w-full">
+      <thead class="text-xs font-semibold text-slate-900 uppercase bg-slate-100">
         <tr>
           <th scope="col" class="p-2">Employee</th>
           <th scope="col" class="p-2">Type</th>
@@ -10,14 +10,14 @@
           <th scope="col" class="p-2">Start time</th>
           <th scope="col" class="p-2">End date</th>
           <th scope="col" class="p-2">End time</th>
-          <th scope="col" class="p-2">Actions</th>
+          <th scope="col" class="p-2 text-right">Actions</th>
         </tr>
       </thead>
       <tbody>
         {% for ot in page %}
           <tr class="bg-white border-b">
             <th scope="row"
-                class="p-2 font-semibold text-gray-900 whitespace-nowrap dark:text-white">{{ ot.employee.name }}</th>
+                class="p-2 font-semibold text-slate-900 whitespace-nowrap dark:text-white">{{ ot.employee.name }}</th>
             <td class="p-2">{{ ot.overtime_type }}</td>
             <td class="p-2">{{ ot.start_date }}</td>
             <td class="p-2">{{ ot.start_time_expected }}</td>
@@ -31,7 +31,7 @@
     {% if page %}
       {% include "pagination.html" %}
     {% else %}
-      <p class="ml-4 text-lg">There is nothing to approve.</p>
+      <p class="ml-4">There is nothing to approve.</p>
     {% endif %}
   </div>
 {% endblock content %}

@@ -1,9 +1,12 @@
+from django.forms import DateInput
 import django_filters
-from .models import *
-from employee.models import Employee
-from device.models import Device
-from shift.models import Pattern
-from leave.models import LeaveType
+import django_filters.widgets
+from .models import Attendance, RawAttendance
+from django_select2 import forms as s2forms
+
+
+class EmployeeWidget(s2forms.ModelSelect2Widget):
+    search_fields = ["name__icontains", "employee_id__icontains"]
 
 
 class AttendanceDownloadFilter(django_filters.FilterSet):
@@ -11,14 +14,18 @@ class AttendanceDownloadFilter(django_filters.FilterSet):
         model = Attendance
         fields = {
             "employee__name": ["icontains"],
-            #   'device__name': ['icontains'],
-            "current_pattern__name": ["icontains"],
+            "device": ["exact"],
+            "current_pattern__shift": ["exact"],
             "status": ["exact"],
             "check_in_type": ["exact"],
             "check_out_type": ["exact"],
         }
 
-    status = django_filters.ChoiceFilter(choices=Attendance.CHOICES)
+    check_in_date = django_filters.DateFromToRangeFilter(
+        widget=django_filters.widgets.RangeWidget(attrs={"type": "date"})
+    )
+
+    # status = django_filters.ChoiceFilter(choices=Attendance.CHOICES)
 
 
 class AttendanceFilter(django_filters.FilterSet):
@@ -28,7 +35,6 @@ class AttendanceFilter(django_filters.FilterSet):
             "employee__name": ["icontains"],
             "device": ["exact"],
             "current_pattern": ["exact"],
-            # "check_in_date": ["exact"],
             "status": ["exact"],
             "check_in_type": ["exact"],
             "check_out_type": ["exact"],
@@ -46,7 +52,6 @@ class CompileFilter(django_filters.FilterSet):
             "employee__name": ["icontains"],
             "device": ["exact"],
             "current_pattern": ["exact"],
-            # "check_in_date": ["exact"],
             "status": ["exact"],
             "check_in_type": ["exact"],
             "check_out_type": ["exact"],
@@ -61,3 +66,7 @@ class RawAttendanceFilter(django_filters.FilterSet):
             "device": ["exact"],
             "date": ["exact"],
         }
+
+    date = django_filters.DateFromToRangeFilter(
+        widget=django_filters.widgets.RangeWidget(attrs={"type": "date"})
+    )

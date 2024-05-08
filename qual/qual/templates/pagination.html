@@ -2,23 +2,23 @@
   <ul class="inline-flex -space-x-px font-semibold">
     <li>
       <a href="?{{ request }}&page=1"
-         class="flex items-center justify-center h-6 px-3 leading-tight bg-white border rounded-l-lg text-slate-900 border-slate-300 hover:bg-slate-800 hover:text-slate-50 ">First</a>
+         class="flex items-center justify-center h-6 px-3 leading-tight bg-white border rounded-l-lg text-slate-800 border-slate-300 hover:bg-slate-700 hover:text-slate-50 ">First</a>
     </li>
     <li>
       {% if page.has_previous %}
         <a href="?{{ request }}&page={{ page.previous_page_number }}"
-           class="flex items-center justify-center h-6 px-3 leading-tight bg-white border ms-0 text-slate-900 border-e-0 border-slate-300 hover:bg-slate-800 hover:text-slate-50 ">Previous</a>
+           class="flex items-center justify-center h-6 px-3 leading-tight bg-white border ms-0 text-slate-800 border-e-0 border-slate-300 hover:bg-slate-700 hover:text-slate-50 ">Previous</a>
       {% endif %}
     </li>
     <li class="flex">
       {% for num in page.paginator.page_range %}
         {% if page.number == num %}
           <p aria-current="page"
-             class="flex items-center justify-center h-6 px-3 border text-slate-50 border-slate-300 bg-slate-900 hover:bg-slate-800 hover:text-slate-50 ">
+             class="flex items-center justify-center h-6 px-3 border text-slate-50 border-slate-300 bg-slate-700 hover:bg-slate-700 hover:text-slate-50 ">
             {{ num }}
           </p>
         {% elif num > page.number|add:'-4' and num < page.number|add:'4' %}
-          <a class="flex items-center justify-center h-6 px-3 leading-tight bg-white border text-slate-900 border-slate-300 hover:bg-slate-800 hover:text-slate-50 "
+          <a class="flex items-center justify-center h-6 px-3 leading-tight bg-white border text-slate-800 border-slate-300 hover:bg-slate-700 hover:text-slate-50 "
              href="?{{ request }}&page={{ num }}">{{ num }}</a>
         {% endif %}
       {% endfor %}
@@ -26,12 +26,12 @@
     <li>
       {% if page.has_next %}
         <a href="?{{ request }}&page={{ page.next_page_number }}"
-           class="flex items-center justify-center h-6 px-3 leading-tight bg-white border text-slate-900 border-slate-300 hover:bg-slate-800 hover:text-slate-50 ">Next</a>
+           class="flex items-center justify-center h-6 px-3 leading-tight bg-white border text-slate-800 border-slate-300 hover:bg-slate-700 hover:text-slate-50 ">Next</a>
       {% endif %}
     </li>
     <li>
       <a href="?{{ request }}&page={{ page.paginator.num_pages }}"
-         class="flex items-center justify-center h-6 px-3 leading-tight bg-white border text-slate-900 border-slate-300 rounded-e-lg hover:bg-slate-800 hover:text-slate-50 ">Last</a>
+         class="flex items-center justify-center h-6 px-3 leading-tight bg-white border text-slate-800 border-slate-300 rounded-e-lg hover:bg-slate-700 hover:text-slate-50 ">Last</a>
     </li>
   </ul>
 </nav>

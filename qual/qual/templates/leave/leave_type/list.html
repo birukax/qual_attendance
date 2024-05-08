@@ -1,16 +1,16 @@
 {% extends "_base.html" %}
 {% block content %}
-  <div class="p-4 mx-auto bg-white divide-y rounded-lg shadow-md w-fit ">
+  <div class="py-4 px-6 bg-white  rounded-lg shadow-md w-full ">
     <div class="ml-2 mb-2">{% include "leave/leave_type/create.html" %}</div>
-    <div class="w-full bg-white divide-y-2">
-      <table class="overflow-x-auto text-left text-black text-sm">
-        <thead class="uppercase text-slate-900 bg-slate-50 text-xs">
+    <div>
+      <table class="overflow-x-auto text-left text-slate-900 table-auto w-full text-sm">
+        <thead class="uppercase  bg-slate-100 text-xs">
           <tr>
             <th scope="col" class="p-3">Name</th>
             <th scope="col" class="p-3">Max</th>
             <th scope="col" class="p-3">Paid</th>
             <th scope="col" class="p-3">Leaves</th>
-            <th scope="col" class="p-3">Actions</th>
+            <th scope="col" class="p-3 text-right">Actions</th>
           </tr>
         </thead>
         <tbody>

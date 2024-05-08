@@ -21,11 +21,9 @@ class OvertimeAdmin(admin.ModelAdmin):
         "start_date",
         "end_date",
         "approved",
-        "worked_hours",
-        "start_time_expected",
-        "start_time_expected",
-        "end_time_actual",
-        "end_time_actual",
+        "start_time",
+        "end_time",
+        "paid",
     ]
     list_per_page = 15
 
@@ -34,10 +32,11 @@ class OvertimeAdmin(admin.ModelAdmin):
 class OtAdmin(admin.ModelAdmin):
     list_display = [
         "employee",
-        "date",
-        "units_worked",
+        "start_date",
+        "end_date",
         "start_time",
         "end_time",
+        "units_worked",
     ]
 
 

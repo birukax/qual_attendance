@@ -1,15 +1,17 @@
 {% extends "_base.html" %}
 {% block content %}
-  <div class="p-4 mx-4 bg-white rounded-lg shadow-md w-fit">
-    <div class="flex items-center mb-2 ml-4">
+  <div class="py-4 px-6 bg-white rounded-lg shadow-md w-full overflow-x-auto">
+    <div class="flex items-center mb-2  gap-6">
       <a href="{% url 'leave:calculate_leave_balance' %}"
-         class="inline-flex items-center px-4 py-2 text-sm text-center text-white rounded-lg bg-slate-700 hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-slate-300 ">
+         class="inline-flex items-center px-4 py-2 text-sm text-center text-white rounded-lg bg-slate-700 hover:bg-slate-600 focus:ring-4 focus:outline-none focus:ring-slate-300 ">
         Calculate
       </a>
+      {% include 'leave/annual_leave/filter.html' %}
+      {% include 'leave/annual_leave/download.html' %}
     </div>
     <div>
-      <table class="overflow-x-auto text-sm text-left ">
-        <thead class="text-xs uppercase text-slate-900 bg-slate-50">
+      <table class="table-auto w-full text-sm text-left ">
+        <thead class="text-xs uppercase text-slate-900 bg-slate-100">
           <tr>
             <th scope="col" class="p-2">ID</th>
             <th scope="col" class="p-2">Employee</th>
@@ -24,7 +26,7 @@
           {% for e in page %}
             <tr class="bg-white border-b hover:bg-slate-50">
               <td class="p-2 whitespace-nowrap">{{ e.employee_id }}</td>
-              <td class="p-2 whitespace-nowrap">{{ e.name }}</td>
+              <td class="p-2 whitespace-nowrap lowercase first-letter:capitalize">{{ e.name }}</td>
               <td class="p-2 whitespace-nowrap">{{ e.employment_date }}</td>
               <td class="p-2 whitespace-nowrap">{{ e.annual_leave_balance }}</td>
               <td class="p-2 whitespace-nowrap">{{ e.annual_leave_taken }}</td>

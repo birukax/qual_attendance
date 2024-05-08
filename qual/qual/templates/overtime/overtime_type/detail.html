@@ -1,9 +1,9 @@
 {% extends "_base.html" %}
 {% block content %}
-  <div class="px-4 mx-auto w-fit ">
-    <div class="p-4 mb-2 bg-white border border-slate-200 rounded-lg shadow">
-      <div class="flex justify-between mb-1 items-center">
-        <a href="{% url 'overtime:overtime_types' %}" class="mx-2">
+  <div class="px-4  bg-white w-full rounded-lg shadow ">
+    <div class="p-4  bg-white ">
+      <div class="flex items-center gap-2 justify-between">
+        <a href="{% url 'overtime:overtime_types' %}" class="">
           <svg class="w-6 h-6 text-slate-800 dark:text-white"
                aria-hidden="true"
                xmlns="http://www.w3.org/2000/svg"
@@ -14,11 +14,11 @@
             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 19-7-7 7-7" />
           </svg>
         </a>
-        {% include "overtime/overtime_type/edit.html" %}
+        <h5 class="text-xl font-semibold text-slate-900 ">Overtime type detail</h5>
       </div>
-      <div class="flex items-center justify-between">
-        <h5 class="mb-2 text-xl font-semibold text-slate-900 uppercase">{{ overtime_type.name }}</h5>
-        <svg class="w-12 h-12 mb-3 text-slate-950"
+      <div class="flex justify-between mt-2 items-center">
+        <h5 class="text-xl font-semibold text-slate-900 uppercase">{{ overtime_type.name }}</h5>
+        <svg class="w-12 h-12  text-slate-700"
              aria-hidden="true"
              xmlns="http://www.w3.org/2000/svg"
              fill="currentColor"
@@ -26,7 +26,7 @@
           <path fill-rule="evenodd" d="M18 5h1a2 2 0 0 1 2 2v2H3V7c0-1 .9-2 2-2h1V4a1 1 0 1 1 2 0v1h3V4a1 1 0 1 1 2 0v1h3V4a1 1 0 1 1 2 0v1ZM3 11v8c0 1.2.9 2 2 2h14a2 2 0 0 0 2-2v-8H3Zm8 7a1 1 0 1 0 2 0v-1h1a1 1 0 1 0 0-2h-1v-1a1 1 0 1 0-2 0v1h-1a1 1 0 1 0 0 2h1v1Z" clip-rule="evenodd" />
         </svg>
       </div>
-      <div class="flex-row font-normal text-slate-900">
+      <div class="flex-row font-normal text-slate-900 mx-2">
         <div class="flex justify-between mb-2">
           <span class="mr-2 text-sm uppercase">Pay Item Code:</span>
           <p class="font-semibold">{{ overtime_type.pay_item_code }}</p>
@@ -45,19 +45,21 @@
         </div>
         <div class="flex mb-2 justify-between text-right">
           <span class="mr-1 text-sm uppercase">Days:</span>
-          <div class="gap-2 grid grid-cols-3">
+          <div class="gap-2 grid grid-cols-3 sm:grid-cols-4">
             {% for day in days %}<p class=" text-center">{{ day.name }}</p>{% endfor %}
           </div>
         </div>
+        {% include "overtime/overtime_type/edit.html" %}
       </div>
     </div>
-    <div class="relative bg-white">
-      <table class="overflow-x-auto text-sm text-left text-slate-950 w-fit">
-        <thead class="text-slate-900 uppercase bg-slate-50 text-xs">
+    <div class="overflow-x-auto">
+      <table class="overflow-x-auto text-sm text-left text-slate-900 table-auto w-full">
+        <thead class="text-slate-900 uppercase bg-slate-100 text-xs">
           <tr>
             <th scope="col" class="px-2 py-2 text-sm whitespace-nowrap">Employee</th>
-            <th scope="col" class="px-2 py-2 text-sm whitespace-nowrap">Date</th>
+            <th scope="col" class="px-2 py-2 text-sm whitespace-nowrap">Start date</th>
             <th scope="col" class="px-1 py-1 text-sm whitespace-nowrap">Start time</th>
+            <th scope="col" class="px-2 py-2 text-sm whitespace-nowrap">End date</th>
             <th scope="col" class="px-1 py-1 text-sm whitespace-nowrap">End time</th>
             <th scope="col" class="px-1 py-1 text-sm whitespace-nowrap">Units</th>
             <th scope="col" class="px-2 py-2 text-sm whitespace-nowrap text-right">Action</th>
@@ -67,8 +69,9 @@
           {% for ot in page %}
             <tr class="bg-white border-b hover:bg-slate-50">
               <td class="px-2 py-2 font-semibold whitespace-nowrap">{{ ot.employee.name }}</td>
-              <td class="px-2 py-2 whitespace-nowrap">{{ ot.date }}</td>
+              <td class="px-2 py-2 whitespace-nowrap">{{ ot.start_date }}</td>
               <td class="px-2 py-2 whitespace-nowrap">{{ ot.start_time }}</td>
+              <td class="px-2 py-2 whitespace-nowrap">{{ ot.end_date }}</td>
               <td class="px-2 py-2 whitespace-nowrap">{{ ot.end_time }}</td>
               <td class="px-2 py-2 whitespace-nowrap">{{ ot.units_worked }}</td>
               <td class="px-2 py-2 whitespace-nowrap text-right">

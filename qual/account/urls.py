@@ -10,7 +10,8 @@ urlpatterns = [
     path("user/create", views.create_user, name="create_user"),
     path("user/edit/<int:id>/", views.edit_user, name="edit_user"),
     path("profile/edit/<int:id>/", views.edit_profile, name="edit_profile"),
-    path("profile/<int:id>/", views.profile_detail, name="profile_detail"),
+    path("profile/", views.profile_detail, name="profile_detail"),
     path("user/<int:id>/", views.user_detail, name="user_detail"),
     path("edit/<int:id>", views.edit, name="edit"),
+    path("select_device", views.select_device, name="select_device"),
 ]

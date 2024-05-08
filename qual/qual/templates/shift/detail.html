@@ -1,8 +1,8 @@
 {% extends "_base.html" %}
 {% block content %}
-  <div class="mx-auto w-fit p-6 bg-white shadow-md rounded-lg">
+  <div class=" w-full p-8 bg-white shadow-md rounded-lg">
     <div>
-      <div class="flex items-center justify-between gap-64">
+      <div class="flex items-center justify-between ">
         <div class=" flex items-center">
           <h5 class=" text-2xl font-semibold  text-slate-900 ">{{ shift.name }}</h5>
         </div>
@@ -24,18 +24,20 @@
           <p class="font-semibold">{{ shift.saturday_half }}</p>
         </div>
       </div>
-      <div class="flex justify-end items-center">{% include "shift/edit.html" %}</div>
     </div>
-    <div class="grid max-w-screen-xl grid-cols-2  gap-12 p-4 mx-auto text-slate-900 justify-between">
+    <div class="grid w-full grid-cols-3   p-4  text-slate-900 justify-between">
+      {% if user_role == "ADMIN" or user_role == 'HR' %}
+        <div class="flex items-center">{% include "shift/edit.html" %}</div>
+      {% endif %}
       <div class="flex flex-col items-center justify-center">
         <dt class="mb-2 text-3xl font-extrabold">{{ shift.patterns.count }}</dt>
-        <dd class="text-slate-600">
+        <dd class="text-slate-700">
           Patterns
         </dd>
       </div>
       <div class="flex flex-col items-center justify-center">
         <dt class="mb-2 text-3xl font-extrabold">{{ shift.employees.count }}</dt>
-        <dd class="text-slate-600">
+        <dd class="text-slate-700">
           Employees
         </dd>
       </div>

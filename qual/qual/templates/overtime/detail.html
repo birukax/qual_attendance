@@ -1,47 +1,30 @@
 {% extends "_base.html" %}
 {% block content %}
-  <div class="w-fit mx-auto bg-white shadow p-4">
+  <div class="w-full bg-white shadow py-4 px-8">
     <div class="flex justify-between items-center mb-3">
-      <div class="flex items-center justify-between">
-        <a href="{% url 'overtime:overtimes' %}" class="mr-2">
-          <svg class="w-6 h-6 text-slate-800 "
-               aria-hidden="true"
-               xmlns="http://www.w3.org/2000/svg"
-               width="24"
-               height="24"
-               fill="none"
-               viewBox="0 0 24 24">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 19-7-7 7-7" />
-          </svg>
-        </a>
-        <h5 class="text-2xl font-bold leading-none text-slate-900">Overtime detail</h5>
-      </div>
-      <div>
-        {% if overtime.approved == True %}
-          <a href="{% url 'overtime:calculate_overtime' overtime.id %}"
-             class="inline-flex items-center px-4 py-2 text-sm  text-center text-white bg-slate-800 rounded-lg hover:bg-slate-700 focus:ring-4 focus:outline-none focus:ring-slate-300 ">
-            Calculate
-            <svg class="w-4 h-4 ml-2 -mr-1"
-                 fill="currentColor"
-                 viewBox="0 0 20 20"
-                 xmlns="http://www.w3.org/2000/svg">
-              <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd">
-              </path>
-            </svg>
-          </a>
-        {% endif %}
-      </div>
+      <a href="{% url 'overtime:overtimes' %}" class="">
+        <svg class="w-6 h-6 text-slate-800 "
+             aria-hidden="true"
+             xmlns="http://www.w3.org/2000/svg"
+             width="24"
+             height="24"
+             fill="none"
+             viewBox="0 0 24 24">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 19-7-7 7-7" />
+        </svg>
+      </a>
+      <h5 class="text-2xl font-bold leading-none text-slate-800">Overtime detail</h5>
     </div>
     <div class="justify-between ">
       <div class="flex items-center justify-between gap-36">
-        <svg class="w-12 h-12 mb-3 text-slate-950"
+        <svg class="w-12 h-12 mb-3 text-slate-800"
              aria-hidden="true"
              xmlns="http://www.w3.org/2000/svg"
              fill="currentColor"
              viewBox="0 0 14 18">
           <path d="M7 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9Zm2 1H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Z" />
         </svg>
-        <h5 class="mb-2 text-xl font-semibold tracking-tight text-slate-900 ">{{ overtime.employee.name }}</h5>
+        <h5 class="mb-2 text-xl font-semibold tracking-tight text-slate-800 ">{{ overtime.employee.name }}</h5>
       </div>
       <div class="flex-row font-normal text-slate-900">
         <div class="flex justify-between mb-2">
@@ -55,7 +38,7 @@
       </div>
     </div>
     <div class="flow-root">
-      <ul role="list" class="divide-y divide-slate-200 dark:divide-slate-700">
+      <ul role="list" class="divide-y divide-slate-200 space-y-2">
         <li class="py-2">
           <div class="flex items-center">
             <div class="flex-1 min-w-0 ms-4">
@@ -91,49 +74,17 @@
         <li class="py-2">
           <div class="flex items-center">
             <div class="flex-1 min-w-0 ms-4">
-              <p class="text-sm font-medium text-slate-900 truncate ">
-                Expected
-                <br />
-                Start time
-              </p>
+              <p class="text-sm font-medium text-slate-900 truncate ">Start time</p>
             </div>
-            <div class="inline-flex items-center text-base font-semibold text-slate-900 ">{{ overtime.start_time_expected }}</div>
+            <div class="inline-flex items-center text-base font-semibold text-slate-900 ">{{ overtime.start_time }}</div>
           </div>
         </li>
         <li class="py-2">
           <div class="flex items-center">
             <div class="flex-1 min-w-0 ms-4">
-              <p class="text-sm font-medium text-slate-900 truncate ">
-                Expected
-                <br />
-                End time
-              </p>
+              <p class="text-sm font-medium text-slate-900 truncate ">End time</p>
             </div>
-            <div class="inline-flex items-center text-base font-semibold text-slate-900 ">{{ overtime.end_time_expected }}</div>
-          </div>
-        </li>
-        <li class="py-2">
-          <div class="flex items-center">
-            <div class="flex-1 min-w-0 ms-4">
-              <p class="text-sm font-medium text-slate-900 truncate ">
-                Actual
-                <br />
-                Start time
-              </p>
-            </div>
-            <div class="inline-flex items-center text-base font-semibold text-slate-900 ">{{ overtime.start_time_actual }}</div>
-          </div>
-        </li>
-        <li class="py-2">
-          <div class="flex items-center">
-            <div class="flex-1 min-w-0 ms-4">
-              <p class="text-sm font-medium text-slate-900 truncate ">
-                Actual
-                <br />
-                End time
-              </p>
-            </div>
-            <div class="inline-flex items-center text-base font-semibold text-slate-900 ">{{ overtime.end_time_actual }}</div>
+            <div class="inline-flex items-center text-base font-semibold text-slate-900 ">{{ overtime.end_time }}</div>
           </div>
         </li>
         <li class="py-2">

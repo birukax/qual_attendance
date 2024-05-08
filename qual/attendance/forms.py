@@ -1,26 +1,21 @@
 # from asyncio.windows_events import NULL
-from dataclasses import fields
-from email.policy import default
-from urllib import request
-from colorama import init
 from django import forms
-from .models import *
-from django.utils.text import slugify
-import datetime
+from .models import Attendance
+from employee.models import Employee
+from device.models import Device
+from shift.models import Pattern
+from django_flatpickr.widgets import (
+    DatePickerInput,
+    TimePickerInput,
+    DateTimePickerInput,
+)
+from django_flatpickr.schemas import FlatpickrOptions
 
 
-class AttendanceDownloadForm(forms.Form):
+class AttendanceDownloadForm(forms.ModelForm):
     class Meta:
         model = Attendance()
         fields = ["employee", "device", "current_pattern"]
-
-    def __init__(self, *args, **kwargs):
-        super(AttendanceDownloadForm, self).__init__(*args, **kwargs)
-        self.fields["employee"].initial = Employee.objects.all()
-        self.fields["device"].initial = Device.objects.all()
-        self.fields["current_pattern"].initial = Pattern.objects.all()
-        self.fields["start_date"].initial = datetime.date.today()
-        self.fields["end_date"].initial = datetime.date.today()
 
     employee = forms.ModelChoiceField(Employee.objects.all(), required=False)
     device = forms.ModelChoiceField(Device.objects.all(), required=False)
@@ -29,7 +24,15 @@ class AttendanceDownloadForm(forms.Form):
     end_date = forms.DateField()
 
 
-# class CompileDateForm(forms.Form):
-#     date = forms.DateField(
-#         initial=datetime.date.today() - datetime.timedelta(days=1),
-#     )
+class RecompileForm(forms.Form):
+
+    pattern = forms.ModelChoiceField(Pattern.objects.all(), required=False)
+    date = forms.DateField(widget=DatePickerInput(options=FlatpickrOptions()))
+
+
+class EmployeesForm(forms.ModelForm):
+    class Meta:
+        model = Employee
+        fields = ["id", "selected"]
+
+    selected = forms.BooleanField(required=False)

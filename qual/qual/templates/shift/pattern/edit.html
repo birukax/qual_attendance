@@ -1,15 +1,23 @@
 {% extends "_base.html" %}
 {% block content %}
-    <div class="relative w-full max-w-2xl max-h-full p-4">
+    <div class="relative w-fit mx-auto">
         <!-- Modal content -->
-        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+        <div class="relative bg-white rounded-lg shadow p-4  sm:p-8 w-fit">
             <form action="{% url 'shift:edit_pattern' pattern.id %}" method="post">
                 {% csrf_token %}
-                <div class="inline-flex flex-col p-4 space-y-4 font-bold md:p-5">{{ form }}</div>
+                <div class="gap-4 grid sm:grid-cols-2 ">
+                    {{ form.media }}
+                    {% for field in form %}
+                        <div class="grid grid-cols-1 justify-between gap-2">
+                            {{ field.label_tag }}
+                            {{ field }}
+                        </div>
+                    {% endfor %}
+                </div>
                 <div class="flex items-center gap-4 p-4 border-t border-gray-200 rounded-b md:p-5 ">
                     <button type="submit"
                             value='Submit'
-                            class="px-4 py-2 text-sm  text-center text-white bg-slate-800 rounded-lg hover:bg-slate-700 focus:ring-4 focus:outline-none focus:ring-blue-300 ">
+                            class="px-4 py-2 text-sm  text-center text-white bg-slate-700 rounded-lg hover:bg-slate-600 focus:ring-4 focus:outline-none focus:ring-blue-300 ">
                         Edit
                     </button>
                     <a href="{% url 'shift:shift_patterns' pattern.shift.id %}"

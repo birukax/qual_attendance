@@ -1,44 +1,40 @@
 {% extends "_base.html" %}
 {% block content %}
-    <div class="relative p-4 bg-white w-fit">
+    <div class="relative py-4 px-6 bg-white w-full overflow-x-auto">
         <!-- Modal content -->
-        <div class="relative bg-white rounded-lg shadow dark:bg-slate-700">
+        <div class="relative bg-white rounded-lg shadow ">
             <form method="post" action="{% url 'shift:assign_employees' %}">
                 {% csrf_token %}
-                <div class="flex items-center justify-between gap-2 p-2 border-t border-slate-200 rounded-b md:p-5">
-                    <div class="flex justify-between gap-4 p-4 md:p-5">
+                <div class="flex items-center justify-between bg-slate-100">
+                    <div class="flex justify-between  p-4">
                         <h1>
                             Selected
-                            <span class="font-bold">{{ employees.count }}</span>
+                            <span class="text-sm">{{ employees.count }}</span>
                             employees.
                         </h1>
                     </div>
-                    <div class="flex-col justify-between p-4 space-y-4 font-bold md:p-5">{{ select_shift_form.as_p }}</div>
-                    <div class="flex justify-between gap-4 p-4 font-bold md:p-5">
+                    <div class="flex-col justify-between p-4 ">{{ select_shift_form.as_p }}</div>
+                    <div class="flex justify-between gap-4 p-4">
                         <button type="submit"
                                 value='Change'
-                                class="px-5 py-2 text-sm font-medium text-center text-white bg-slate-700 rounded-lg hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-slate-300 ">
+                                class="px-4 py-2 text-sm font-medium text-center text-white bg-slate-700 rounded-lg hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-slate-300 ">
                             Assign
                         </button>
                         <a href="{% url 'shift:select_employees' %}"
-                           class="px-5 py-2 text-sm font-medium text-center  bg-slate-100 rounded-lg hover:bg-slate-300 focus:ring-4 focus:outline-none focus:ring-slate-300 ">Cancel</a>
+                           class="px-4 py-2 text-sm text-center  bg-slate-200 rounded-lg hover:bg-slate-300 focus:ring-4 focus:outline-none focus:ring-slate-300 ">Cancel</a>
                     </div>
                 </div>
             </div>
-            <table class="overflow-x-auto text-base text-left text-slate-900 ">
-                <thead class="uppercase text-slate-900 bg-slate-50">
+            <table class=" text-sm text-left text-slate-900 table-auto w-full">
+                <thead class="uppercase text-slate-900 bg-slate-100 text-xs">
                     <tr>
-                        <th scope="col" class="px-2 py-2 whitespace-nowrap">ID</th>
-                        <th scope="col" class="px-2 py-2">Full name</th>
-                        <th scope="col" class="px-2 py-2">Department</th>
-                        <th scope="col" class="px-2 py-2">
-                            Employment
-                            <br>
-                            date
-                        </th>
-                        <th scope="col" class="px-2 py-2">Status</th>
-                        <th scope="col" class="px-2 py-2">Shift</th>
-                        <th scope="col" class="px-2 py-2">Actions</th>
+                        <th scope="col" class="px-2 py-3 whitespace-nowrap">ID</th>
+                        <th scope="col" class="px-2 py-3">Full name</th>
+                        <th scope="col" class="px-2 py-3">Department</th>
+                        <th scope="col" class="px-2 py-3">Date</th>
+                        <th scope="col" class="px-2 py-3">Status</th>
+                        <th scope="col" class="px-2 py-3">Shift</th>
+                        <th scope="col" class="px-2 py-3">Action</th>
                     </tr>
                 </thead>
                 <tbody>

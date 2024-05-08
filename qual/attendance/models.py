@@ -75,6 +75,8 @@ class Attendance(models.Model):
     leave_type = models.ForeignKey(
         LeaveType, on_delete=models.CASCADE, null=True, related_name="leave_type"
     )
+    deleted = models.BooleanField(default=False)
+    recompiled = models.BooleanField(default=False)
     approved = models.BooleanField(default=False)
     rejected = models.BooleanField(default=False)
     approved_by = models.ForeignKey(
@@ -91,6 +93,12 @@ class Attendance(models.Model):
 
 class DailyRecord(models.Model):
     date = models.DateField()
+    device = models.ForeignKey(
+        "device.Device",
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+    )
     attendances = models.IntegerField()
     late_check_in = models.IntegerField()
     late_check_out = models.IntegerField()
@@ -99,3 +107,4 @@ class DailyRecord(models.Model):
     absent = models.IntegerField()
     day_off = models.IntegerField()
     leave = models.IntegerField()
+    holiday = models.IntegerField(null=True)

@@ -1,14 +1,28 @@
 from django.contrib import admin
 from .models import *
 
+
 @admin.register(Leave)
 class LeaveAdmin(admin.ModelAdmin):
-    list_display = ['employee', 'leave_type', 'is_half_day', 'start_date', 'end_date', 'evidence']
-    search_fields = ['employee__name']
+    list_display = [
+        "employee",
+        "leave_type",
+        "is_half_day",
+        "start_date",
+        "end_date",
+    ]
+    search_fields = ["employee__name"]
     list_per_page = 15
-    
+
+
 @admin.register(LeaveType)
 class LeaveTypeAdmin(admin.ModelAdmin):
-    list_display = ['name', 'slug', 'description', 'maximum_days', 'paid']
-    prepopulated_fields = {'slug': ('name',)}
+    list_display = [
+        "name",
+        "slug",
+        "description",
+        "maximum_days",
+        "paid",
+    ]
+    prepopulated_fields = {"slug": ("name",)}
     list_per_page = 15

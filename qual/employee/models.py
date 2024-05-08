@@ -2,7 +2,6 @@ import pyodbc
 from datetime import date, datetime, timedelta, time
 from django.db import models
 from django.urls import reverse
-import shift.models as shift
 
 
 class Department(models.Model):
@@ -37,6 +36,8 @@ class Department(models.Model):
                 name = d.name
                 if not Department.objects.filter(code=code).exists():
                     Department.objects.create(code=code, name=name)
+                else:
+                    Department.objects.filter(code=code).update(name=name)
 
     except Exception as e:
         print(e)
@@ -55,10 +56,21 @@ class Employee(models.Model):
     employee_id = models.CharField(unique=True, max_length=50)
     name = models.CharField(max_length=150)
     department = models.ForeignKey(
-        Department, on_delete=models.CASCADE, related_name="employees", null=True
+        Department,
+        on_delete=models.CASCADE,
+        related_name="employees",
+        null=True,
+        blank=True,
+    )
+    device = models.ForeignKey(
+        "device.Device",
+        on_delete=models.CASCADE,
+        related_name="employees",
+        null=True,
+        blank=True,
     )
     shift = models.ForeignKey(
-        shift.Shift,
+        "shift.Shift",
         on_delete=models.CASCADE,
         related_name="employees",
         null=True,

@@ -1,15 +1,21 @@
 <li>
     <a href="{% url 'overtime:overtimes' %}"
-       class="block py-2 px-3 md:p-0  {% if request.resolver_match.url_name == 'overtimes' %} text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:dark:text-blue-500 {% else %} text-slate-900 rounded hover:bg-slate-100 md:hover:bg-transparent md:hover:text-blue-700 {% endif %}"
+       class="block py-2 px-3 md:p-0  {% if request.resolver_match.url_name == 'overtimes' %} text-slate-50 bg-slate-700 rounded md:bg-transparent md:text-slate-400 {% else %} text-slate-50 rounded hover:bg-slate-700 hover:text-slate-50 md:hover:bg-transparent md:hover:text-slate-400 {% endif %}"
        aria-current="page">Overtime</a>
 </li>
 {% if user_role == "ADMIN" or user_role == "HR" %}
     <li>
-        <a href="{% url 'overtime:ots' %}"
-           class="block py-2 px-3 md:p-0  {% if request.resolver_match.url_name == 'ots' %} text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:dark:text-blue-500 {% else %} text-slate-900 rounded hover:bg-slate-100 md:hover:bg-transparent md:hover:text-blue-700 {% endif %}">Ot</a>
+        <a href="{% url 'overtime:calculate_ots' %}"
+           class="block py-2 px-3 md:p-0  {% if request.resolver_match.url_name == 'calculate_ots' %} text-slate-50 bg-slate-700 rounded md:bg-transparent md:text-slate-400 {% else %} text-slate-50 rounded hover:bg-slate-700 hover:text-slate-50 md:hover:bg-transparent md:hover:text-slate-400 {% endif %}">Calculate</a>
     </li>
     <li>
-        <a href="{% url 'overtime:overtime_types' %}"
-           class="block py-2 px-3 md:p-0  {% if request.resolver_match.url_name == 'overtime_types' %} text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:dark:text-blue-500 {% else %} text-slate-900 rounded hover:bg-slate-100 md:hover:bg-transparent md:hover:text-blue-700 {% endif %}">Overtime type</a>
+        <a href="{% url 'overtime:ots' %}"
+           class="block py-2 px-3 md:p-0  {% if request.resolver_match.url_name == 'ots' %} text-slate-50 bg-slate-700 rounded md:bg-transparent md:text-slate-400 {% else %} text-slate-50 rounded hover:bg-slate-700 hover:text-slate-50 md:hover:bg-transparent md:hover:text-slate-400 {% endif %}">Ot</a>
     </li>
+    {% if user_role == "ADMIN" %}
+        <li>
+            <a href="{% url 'overtime:overtime_types' %}"
+               class="block py-2 px-3 md:p-0  {% if request.resolver_match.url_name == 'overtime_types' %} text-slate-50 bg-slate-700 rounded md:bg-transparent md:text-slate-400 {% else %} text-slate-50 rounded hover:bg-slate-700 hover:text-slate-50 md:hover:bg-transparent md:hover:text-slate-400 {% endif %}">Overtime type</a>
+        </li>
+    {% endif %}
 {% endif %}

@@ -1,30 +1,30 @@
 {% extends "_base.html" %}
 {% block content %}
-    <div class="p-4 shadow-md rounded-lg mx-auto w-fit bg-white">
+    <div class="p-4 shadow-md rounded-lg w-full bg-white">
         <div class="gap-4 flex">
-            <p class="text-xl font-semibold text-slate-700 ml-3 my-2">{{ employee.employee_id }}</p>
-            <p class="text-xl font-semibold text-slate-700 ml-3 my-2">{{ employee.name }}</p>
+            <p class="text-xl font-semibold text-slate-800 ml-3 my-2">{{ employee.employee_id }}</p>
+            <p class="text-xl font-semibold text-slate-800 ml-3 my-2">{{ employee.name }}</p>
         </div>
-        <table class="overflow-x-auto text-sm text-left w-fit">
-            <thead class="text-xs uppercase border-b border-black bg-gray-50">
+        <table class="overflow-x-auto text-sm text-left table-auto w-full">
+            <thead class="text-xs uppercase border-b border-slate-800 bg-gray-50">
                 <tr>
-                    <th scope="col" class="p-2">Status</th>
-                    <th scope="col" class="p-2">Check in date</th>
-                    <th scope="col" class="p-2">check in time</th>
-                    <th scope="col" class="p-2">Check out date</th>
-                    <th scope="col" class="p-2">check out time</th>
-                    <th scope="col" class="p-2">Current pattern</th>
+                    <th class="p-2">Status</th>
+                    <th class="p-2">Current pattern</th>
+                    <th class="p-2">Check in date</th>
+                    <th class="p-2">check in time</th>
+                    <th class="p-2">Check out date</th>
+                    <th class="p-2">check out time</th>
                 </tr>
             </thead>
             <tbody>
                 {% for attendance in page %}
                     <tr class="bg-white border-b hover:bg-gray-50 ">
                         <td class="p-2">{{ attendance.status }}</td>
+                        <td class="p-2">{{ attendance.current_pattern }}</td>
                         <td class="p-2">{{ attendance.check_in_date }}</td>
                         <td class="p-2">{{ attendance.check_in_time }}</td>
                         <td class="p-2">{{ attendance.check_out_date }}</td>
                         <td class="p-2">{{ attendance.check_out_time }}</td>
-                        <td class="p-2">{{ attendance.current_pattern }}</td>
                     </tr>
                 {% endfor %}
             </tbody>
@@ -32,7 +32,7 @@
         {% if page %}
             {% include "pagination.html" %}
         {% else %}
-            <p class="p-2 ml-2 text-lg">No attendance record.</p>
+            <p class="p-2 ml-2 ">No attendance record.</p>
         {% endif %}
     </div>
 {% endblock content %}

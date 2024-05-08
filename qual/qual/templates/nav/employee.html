@@ -1,9 +1,11 @@
 <li>
     <a href="{% url 'employee:employees' %}"
-       class="block py-2 px-3 md:p-0  {% if request.resolver_match.url_name == 'employees' %} text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:dark:text-blue-500 {% else %} text-slate-900 rounded hover:bg-slate-100 md:hover:bg-transparent md:hover:text-blue-700 {% endif %}"
+       class="block py-2 px-3 md:p-0  {% if request.resolver_match.url_name == 'employees' %} text-slate-50 bg-slate-700 rounded md:bg-transparent md:text-slate-400 {% else %} text-slate-50 rounded hover:bg-slate-700 hover:text-slate-50 md:hover:bg-transparent md:hover:text-slate-400 {% endif %}"
        aria-current="page">Employee</a>
 </li>
-<li>
-    <a href="{% url 'employee:departments' %}"
-       class="block py-2 px-3 md:p-0  {% if request.resolver_match.url_name == 'departments' %} text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:dark:text-blue-500 {% else %} text-slate-900 rounded hover:bg-slate-100 md:hover:bg-transparent md:hover:text-blue-700 {% endif %}">Department</a>
-</li>
+{% if user_role == "ADMIN" or user_role == 'HR' %}
+    <li>
+        <a href="{% url 'employee:departments' %}"
+           class="block py-2 px-3 md:p-0  {% if request.resolver_match.url_name == 'departments' %} text-slate-50 bg-slate-700 rounded md:bg-transparent md:text-slate-400 {% else %} text-slate-50 rounded hover:bg-slate-700 hover:text-slate-50 md:hover:bg-transparent md:hover:text-slate-400 {% endif %}">Department</a>
+    </li>
+{% endif %}

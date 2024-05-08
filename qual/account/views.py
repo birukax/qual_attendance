@@ -1,13 +1,21 @@
 from django.shortcuts import render, render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
-from .models import *
+from .models import Profile
 from django.core.paginator import Paginator
-from .forms import *
-from employee.models import *
+from .forms import (
+    CreateUserForm,
+    EditForm,
+    EditProfileForm,
+    EditUserForm,
+    SelectDeviceForm,
+)
+from employee.models import Employee, Department
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import user_passes_test
 
 
 @login_required
+@user_passes_test(lambda u: u.profile.role == "ADMIN")
 def create_user(request):
     if request.method == "POST":
         user_form = CreateUserForm(request.POST)
@@ -30,43 +38,47 @@ def create_user(request):
 
 
 @login_required
+@user_passes_test(lambda u: u.profile.role == "ADMIN")
 def edit_user(request, id):
     if request.method == "POST":
         form = EditUserForm(request.POST)
         user = get_object_or_404(Profile, id=id)
-
-        if form.is_valid():
-            user.user.email = form.cleaned_data["email"]
-            user.user.first_name = form.cleaned_data["first_name"]
-            user.user.last_name = form.cleaned_data["last_name"]
-            user.user.is_active = form.cleaned_data["is_active"]
-            user.save()
+        if not user.id == request.user.profile.id:
+            if form.is_valid():
+                user.user.email = form.cleaned_data["email"]
+                user.user.first_name = form.cleaned_data["first_name"]
+                user.user.last_name = form.cleaned_data["last_name"]
+                user.user.is_active = form.cleaned_data["is_active"]
+                user.save()
         return redirect("account:user_detail", id=id)
 
 
 @login_required
+@user_passes_test(lambda u: u.profile.role == "ADMIN")
 def edit_profile(request, id):
     if request.method == "POST":
         form = EditProfileForm(request.POST)
         user = get_object_or_404(Profile, id=id)
-        if form.is_valid():
-            user.role = form.cleaned_data["role"]
-            user.manages.set(form.cleaned_data["manages"])
-            user.employee = form.cleaned_data["employee"]
-            user.save()
+        if not user.id == request.user.profile.id:
+            if form.is_valid():
+                user.role = form.cleaned_data["role"]
+                user.device = form.cleaned_data["device"]
+                user.manages.set(form.cleaned_data["manages"])
+                user.employee = form.cleaned_data["employee"]
+                user.save()
 
         return redirect("account:user_detail", id=id)
 
 
 @login_required
+@user_passes_test(lambda u: u.profile.role == "ADMIN")
 def users(request):
-
     if request.user.is_superuser:
         users = User.objects.all()
     else:
-        user = User.objects.filter(is_superuser=False)
+        users = User.objects.filter(is_superuser=False)
     users = users.prefetch_related().exclude(id=request.user.id).order_by("id")
-    paginated = Paginator(users, 15)
+    paginated = Paginator(users, 20)
     page_number = request.GET.get("page")
 
     page = paginated.get_page(page_number)
@@ -75,34 +87,7 @@ def users(request):
 
 
 @login_required
-def edit(request, id):
-    if request.method == "POST":
-        form = EditForm(request.POST)
-        if form.is_valid():
-            user = get_object_or_404(User, id=id)
-            user.email = form.cleaned_data["email"]
-            user.first_name = form.cleaned_data["first_name"]
-            user.last_name = form.cleaned_data["last_name"]
-            user.save()
-        return redirect("account:profile_detail", id=user.profile.id)
-
-
-@login_required
-def profile_detail(request, id):
-    user = get_object_or_404(Profile, id=id)
-    form = EditForm(instance=user.user)
-
-    manages = user.manages.all().values("name")
-
-    context = {
-        "user": user,
-        "manages": manages,
-        "form": form,
-    }
-    return render(request, "user/profile/detail.html", context)
-
-
-@login_required
+@user_passes_test(lambda u: u.profile.role == "ADMIN")
 def user_detail(request, id):
     user = get_object_or_404(Profile, id=id)
     edit_user_form = EditUserForm(instance=user.user)
@@ -115,3 +100,46 @@ def user_detail(request, id):
         "edit_profile_form": edit_profile_form,
     }
     return render(request, "user/detail.html", context)
+
+
+@login_required
+def edit(request, id):
+    if request.method == "POST":
+        form = EditForm(request.POST)
+        if form.is_valid():
+            user = get_object_or_404(User, id=id)
+            user.email = form.cleaned_data["email"]
+            user.first_name = form.cleaned_data["first_name"]
+            user.last_name = form.cleaned_data["last_name"]
+            user.device = form.cleaned_data["device"]
+            user.save()
+        return redirect("account:profile_detail")
+
+
+@login_required
+@user_passes_test(lambda u: u.profile.role == "ADMIN" or u.profile.role == "HR")
+def select_device(request):
+    if request.method == "POST":
+        form = SelectDeviceForm(request.POST)
+        if form.is_valid():
+            user = get_object_or_404(Profile, id=request.user.profile.id)
+            user.device = form.cleaned_data["device"]
+            user.save()
+    return redirect("account:profile_detail")
+
+
+@login_required
+def profile_detail(request):
+    user = get_object_or_404(Profile, id=request.user.profile.id)
+    form = EditForm(instance=user.user)
+    select_device_form = SelectDeviceForm(instance=user)
+
+    manages = user.manages.all().values("name")
+
+    context = {
+        "user": user,
+        "manages": manages,
+        "form": form,
+        "select_device_form": select_device_form,
+    }
+    return render(request, "user/profile/detail.html", context)

@@ -5,13 +5,15 @@ from leave.models import Leave
 from holiday.models import Holiday
 from overtime.models import Overtime
 from django.core.paginator import Paginator
-from attendance.compiler import save_data
-from django.contrib.auth.decorators import permission_required
+from attendance.tasks import save_data
 import datetime
+from overtime.tasks import create_ots
+from django.contrib.auth.decorators import user_passes_test
 
 
 @login_required
-@permission_required("account.can_approve")
+# @user_passes_test(lambda u: u.profile.role == "HR")
+@user_passes_test(lambda u: u.has_perm("account.can_approve"))
 def approval(request):
     attendances = Attendance.objects.filter(approved=False, rejected=False)
     approved_attendances = Attendance.objects.filter(approved=True)
@@ -44,10 +46,13 @@ def approval(request):
 
 
 @login_required
-@permission_required("account.can_approve")
+@user_passes_test(lambda u: u.profile.role == "ADMIN")
+@user_passes_test(lambda u: u.has_perm("account.can_approve"))
 def attendance_approval(request):
-    attendances = Attendance.objects.filter(approved=False, rejected=False)
-    paginated = Paginator(attendances, 10)
+    attendances = Attendance.objects.filter(approved=False, rejected=False).order_by(
+        "check_in_time"
+    )
+    paginated = Paginator(attendances, 30)
     page_number = request.GET.get("page")
     page = paginated.get_page(page_number)
     context = {
@@ -57,23 +62,29 @@ def attendance_approval(request):
 
 
 @login_required
-@permission_required("account.can_approve")
+# @user_passes_test(lambda u: u.profile.role == "HR")
+# @user_passes_test(lambda u: u.has_perm("account.can_approve"))
 def approve_attendance(request):
-    # attendances = Attendance.objects.filter(approved=False, rejected=False)
-    # for attendance in attendances:
-    #     attendance.approved = True
-    #     attendance.save()
-    daily_record = DailyRecord.objects.all()
-    if daily_record:
-        date = daily_record.latest("date").date + datetime.timedelta(days=1)
-    else:
-        date = datetime.date.today() - datetime.timedelta(days=1)
-    save_data(request, date)
-    return redirect("approval:attendance_approval")
+    # daily_record = DailyRecord.objects.all()
+    request_device = request.user.profile.device
+    attendance = Attendance.objects.filter(
+        approved=False,
+        deleted=False,
+        recompiled=False,
+        device=request_device,
+    )
+    if attendance:
+        date = attendance.first().check_in_date
+        try:
+            save_data(request, date)
+        except Exception as e:
+            print(e)
+    return redirect("attendance:compile_view")
 
 
 @login_required
-@permission_required("account.can_approve")
+# @user_passes_test(lambda u: u.profile.role == "HR")
+@user_passes_test(lambda u: u.has_perm("account.can_approve"))
 def reject_attendance(request):
     pass
     # attendances = Attendance.objects.filter(approved=False, rejected=False)
@@ -83,10 +94,11 @@ def reject_attendance(request):
 
 
 @login_required
-@permission_required("account.can_approve")
+# @user_passes_test(lambda u: u.profile.role == "HR")
+@user_passes_test(lambda u: u.has_perm("account.can_approve"))
 def leave_approval(request):
-    leaves = Leave.objects.filter(approved=False, rejected=False)
-    paginated = Paginator(leaves, 10)
+    leaves = Leave.objects.filter(approved=False, rejected=False).order_by("start_date")
+    paginated = Paginator(leaves, 30)
     page_number = request.GET.get("page")
     page = paginated.get_page(page_number)
     context = {"page": page}
@@ -94,17 +106,20 @@ def leave_approval(request):
 
 
 @login_required
-@permission_required("account.can_approve")
+# @user_passes_test(lambda u: u.profile.role == "HR")
+@user_passes_test(lambda u: u.has_perm("account.can_approve"))
 def approve_leave(request, id):
     leave = get_object_or_404(Leave, id=id)
     leave.approved = True
+    leave.active = True
     leave.approved_by = request.user
     leave.save()
     return redirect("approval:leave_approval")
 
 
 @login_required
-@permission_required("account.can_approve")
+# @user_passes_test(lambda u: u.profile.role == "HR")
+@user_passes_test(lambda u: u.has_perm("account.can_approve"))
 def reject_leave(request, id):
     leave = get_object_or_404(Leave, id=id)
     leave.rejected = True
@@ -113,10 +128,13 @@ def reject_leave(request, id):
 
 
 @login_required
-@permission_required("account.can_approve")
+# @user_passes_test(lambda u: u.profile.role == "HR")
+@user_passes_test(lambda u: u.has_perm("account.can_approve"))
 def overtime_approval(request):
-    overtimes = Overtime.objects.filter(approved=False, rejected=False)
-    paginated = Paginator(overtimes, 10)
+    overtimes = Overtime.objects.filter(approved=False, rejected=False).order_by(
+        "start_date"
+    )
+    paginated = Paginator(overtimes, 30)
     page_number = request.GET.get("page")
     page = paginated.get_page(page_number)
     context = {"page": page}
@@ -124,17 +142,20 @@ def overtime_approval(request):
 
 
 @login_required
-@permission_required("account.can_approve")
+# @user_passes_test(lambda u: u.profile.role == "HR")
+@user_passes_test(lambda u: u.has_perm("account.can_approve"))
 def approve_overtime(request, id):
     overtime = get_object_or_404(Overtime, id=id)
     overtime.approved = True
     overtime.approved_by = request.user
     overtime.save()
+    # create_ots(overtime.id)
     return redirect("approval:overtime_approval")
 
 
 @login_required
-@permission_required("account.can_approve")
+# @user_passes_test(lambda u: u.profile.role == "HR")
+@user_passes_test(lambda u: u.has_perm("account.can_approve"))
 def reject_overtime(request, id):
     overtime = get_object_or_404(Overtime, id=id)
     overtime.rejected = True
@@ -143,10 +164,11 @@ def reject_overtime(request, id):
 
 
 @login_required
-@permission_required("account.can_approve")
+# @user_passes_test(lambda u: u.profile.role == "HR")
+@user_passes_test(lambda u: u.has_perm("account.can_approve"))
 def holiday_approval(request):
-    holidays = Holiday.objects.filter(approved=False, rejected=False)
-    paginated = Paginator(holidays, 10)
+    holidays = Holiday.objects.filter(approved=False, rejected=False).order_by("date")
+    paginated = Paginator(holidays, 30)
     page_number = request.GET.get("page")
     page = paginated.get_page(page_number)
     context = {"page": page}
@@ -154,7 +176,8 @@ def holiday_approval(request):
 
 
 @login_required
-@permission_required("account.can_approve")
+# @user_passes_test(lambda u: u.profile.role == "HR")
+@user_passes_test(lambda u: u.has_perm("account.can_approve"))
 def approve_holiday(request, id):
     holiday = get_object_or_404(Holiday, id=id)
     holiday.approved = True
@@ -163,8 +186,9 @@ def approve_holiday(request, id):
     return redirect("approval:holiday_approval")
 
 
+# @user_passes_test(lambda u: u.profile.role == "HR")
 @login_required
-@permission_required("account.can_approve")
+@user_passes_test(lambda u: u.has_perm("account.can_approve"))
 def reject_holiday(request, id):
     holiday = get_object_or_404(Holiday, id=id)
     holiday.rejected = True

@@ -30,7 +30,15 @@
             <!-- Modal body -->
             <form action="{% url 'overtime:create_overtime_type' %}" method="post">
                 {% csrf_token %}
-                <div class="justify-around flex-col p-4 space-y-4 font-bold md:p-5">{{ create_ot_type_form.as_p }}</div>
+                <div class="gap-2 grid grid-cols-2 mx-8">
+                    {{ create_ot_type_form.media }}
+                    {% for field in create_ot_type_form %}
+                        <div class="grid grid-cols-1 justify-between gap-2">
+                            {{ field.label_tag }}
+                            {{ field }}
+                        </div>
+                    {% endfor %}
+                </div>
                 <!-- Modal footer -->
                 <div class="flex items-center p-4 border-t border-slate-200 rounded-b md:p-5 dark:border-slate-600">
                     <button type="submit"

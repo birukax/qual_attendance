@@ -1,66 +1,64 @@
 {% extends "_base.html" %}
 {% block content %}
-  <div class="gap-6 mx-4 divide-black xl:flex w-fit dividey-2 ">
-    <div class="p-6 bg-white rounded-lg shadow gap-4">
-      <div class="flex items-center justify-between gap-64 mb-4">
-        <h5 class="mb-2 text-2xl font-semibold tracking-tight text-slate-900 dark:text-white">{{ device.name }}</h5>
-        <svg class="w-12 h-12 text-slate-900"
-             aria-hidden="true"
-             xmlns="http://www.w3.org/2000/svg"
-             fill="currentColor"
-             viewBox="0 0 20 20">
-          <path d="M20 9V2a2 2 0 0 0-2-2H2a2 2 0 0 0-2 2v7h20ZM0 11v2a2 2 0 0 0 2 2h7v3H6a1 1 0 0 0 0 2h8a1 1 0 0 0 0-2h-3v-3h7a2 2 0 0 0 2-2v-2H0Z" />
-        </svg>
+  <div class="p-8  bg-white rounded-lg shadow ">
+    <div class="flex items-center justify-between  mb-2">
+      <h5 class="mb-2 text-2xl font-semibold tracking-tight text-slate-900 dark:text-white">{{ device.name }}</h5>
+      <svg class="w-12 h-12 text-slate-800"
+           aria-hidden="true"
+           xmlns="http://www.w3.org/2000/svg"
+           fill="currentColor"
+           viewBox="0 0 20 20">
+        <path d="M20 9V2a2 2 0 0 0-2-2H2a2 2 0 0 0-2 2v7h20ZM0 11v2a2 2 0 0 0 2 2h7v3H6a1 1 0 0 0 0 2h8a1 1 0 0 0 0-2h-3v-3h7a2 2 0 0 0 2-2v-2H0Z" />
+      </svg>
+    </div>
+    <div class="flex-row space-y-2 font-normal text-slate-900 mb-2">
+      <div class="flex justify-between">
+        <span class="mr-2">IP:</span>
+        <p class="font-semibold text-right">{{ device.ip }}</p>
       </div>
-      <div class="flex-row gap-3 font-normal text-slate-900 mb-2">
-        <div class="flex justify-between">
-          <span class="mr-2">IP:</span>
-          <p class="font-semibold text-right">{{ device.ip }}</p>
-        </div>
-        <div class="flex justify-between">
-          <span class="mr-2">PORT:</span>
-          <p class="font-semibold text-right">{{ device.port }}</p>
-        </div>
-        <div class="flex justify-between">
-          <span class="mr-2">Device time:</span>
-          <p class="font-semibold text-right">{{ device_time }}</p>
-        </div>
-        <div class="flex justify-between">
-          <span class="mr-2">Version:</span>
-          <p class="font-semibold text-right">{{ device_version }}</p>
-        </div>
-        <div class="flex justify-between">
-          <span class="mr-2">Mac:</span>
-          <p class="font-semibold text-right">{{ device_mac }}</p>
-        </div>
-        <div class="flex justify-between">
-          <span class="mr-2">Serial number:</span>
-          <p class="font-semibold text-right">{{ device_serialnumber }}</p>
-        </div>
-        <div class="flex justify-between mt-4">
-          <a href="{% url 'device:sync_users' device.id %}"
-             class="inline-flex items-center px-5 py-2 text-sm font-medium text-center text-white rounded-lg bg-slate-700 hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-slate-300">
-            Sync users
-          </a>
-          <a href="{% url 'device:sync_time' device.id %}"
-             class="inline-flex items-center px-5 py-2 text-sm font-medium text-center text-white rounded-lg bg-slate-700 hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-slate-300">
-            Sync time
-          </a>
-        </div>
+      <div class="flex justify-between">
+        <span class="mr-2">PORT:</span>
+        <p class="font-semibold text-right">{{ device.port }}</p>
       </div>
-      <div class="grid max-w-screen-xl grid-cols-2  gap-12 p-4 mx-auto text-slate-900 justify-between">
-        <div class="flex flex-col items-center justify-center">
-          <dt class="mb-2 text-3xl font-semibold">{{ users.count }}</dt>
-          <dd class="text-slate-700">
-            Users
-          </dd>
-        </div>
-        <div class="flex flex-col items-center justify-center">
-          <dt class="mb-2 text-3xl font-semibold">{{ attendances.count }}</dt>
-          <dd class="text-slate-700">
-            Attendances
-          </dd>
-        </div>
+      <div class="flex justify-between">
+        <span class="mr-2">Device time:</span>
+        <p class="font-semibold text-right">{{ device_time }}</p>
+      </div>
+      <div class="flex justify-between">
+        <span class="mr-2">Version:</span>
+        <p class="font-semibold text-right">{{ device_version }}</p>
+      </div>
+      <div class="flex justify-between">
+        <span class="mr-2">Mac:</span>
+        <p class="font-semibold text-right">{{ device_mac }}</p>
+      </div>
+      <div class="flex justify-between">
+        <span class="mr-2">Serial number:</span>
+        <p class="font-semibold text-right">{{ device_serialnumber }}</p>
+      </div>
+      <div class="flex justify-between mt-4">
+        <a href="{% url 'device:sync_users' device.id %}"
+           class="inline-flex items-center px-5 py-2 text-sm font-medium text-center text-white rounded-lg bg-slate-700 hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-slate-300">
+          Sync users
+        </a>
+        <a href="{% url 'device:sync_time' device.id %}"
+           class="inline-flex items-center px-5 py-2 text-sm font-medium text-center text-white rounded-lg bg-slate-700 hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-slate-300">
+          Sync time
+        </a>
+      </div>
+    </div>
+    <div class="grid max-w-screen-xl grid-cols-2  gap-12 p-4 mx-auto text-slate-900 justify-between">
+      <div class="flex flex-col items-center justify-center">
+        <dt class="mb-2 text-3xl font-semibold">{{ users.count }}</dt>
+        <dd class="text-slate-700">
+          Users
+        </dd>
+      </div>
+      <div class="flex flex-col items-center justify-center">
+        <dt class="mb-2 text-3xl font-semibold">{{ attendances.count }}</dt>
+        <dd class="text-slate-700">
+          Attendances
+        </dd>
       </div>
     </div>
   </div>

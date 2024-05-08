@@ -11,22 +11,37 @@
         <title>Qualabels Attendance</title>
         {% compress css %}
             <link rel="stylesheet" href="{% static 'src/output.css' %}" />
+            <link rel="stylesheet"
+                  href="{% static 'django_select2/django_select2.css' %}" />
+            <link rel="stylesheet"
+                  href="{% static 'django_select2/django_select2.js' %}" />
         {% endcompress %}
     </head>
     <body class="w-full bg-isabelline-500">
         {% with request.user.profile.role as user_role %}
-            <div class="w-full ">
+            <div>
                 {% include "session_security/all.html" %}
                 {% if request.user.is_authenticated %}
-                    <div class="left-0">{% include "sidebar.html" %}</div>
+                    <div>{% include "sidebar.html" %}</div>
+                    <div class="lg:ml-60">
+                        {% include 'navbar.html' %}
+                        <div class="w-full mx-auto">
+                            {% block content %}
+                            {% endblock content %}
+                        </div>
+                    </div>
+                {% else %}
+                    <div>
+                        <div class="w-full mx-auto">
+                            {% block login %}
+                            {% endblock login %}
+                        </div>
+                    </div>
                 {% endif %}
-                {% include 'navbar.html' %}
-                <div class="w-fit mx-auto ">
-                    {% block content %}
-                    {% endblock content %}
-                </div>
             </div>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.js"></script>
         {% endwith %}
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.js"></script>
+        {{ form.media }}
     </body>
 </html>

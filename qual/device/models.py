@@ -1,7 +1,6 @@
 from django.urls import reverse
 from django.utils.text import slugify
 from django.db import models
-from employee.models import Employee as employee
 
 
 class Device(models.Model):
@@ -33,7 +32,7 @@ class DeviceUser(models.Model):
     card = models.CharField(max_length=150)
     device = models.ForeignKey(Device, on_delete=models.CASCADE)
     employee = models.ForeignKey(
-        employee, on_delete=models.CASCADE, null=True, blank=True
+        "employee.Employee", on_delete=models.CASCADE, null=True, blank=True
     )
 
     def __str__(self):

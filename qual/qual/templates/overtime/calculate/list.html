@@ -1,0 +1,57 @@
+{% extends "_base.html" %}
+{% block content %}
+  <div class="py-4 px-6 bg-white rounded-lg shadow-md w-full overflow-x-auto">
+    <div class="flex justify-between mx-2 mb-2">
+      <a href="{% url 'overtime:calculate_ots' %}"
+         class="inline-flex items-center px-4 py-2 text-sm text-center text-white rounded-lg bg-slate-700 hover:bg-slate-600 focus:ring-4 focus:outline-none focus:ring-slate-300 ">
+        Calculate
+      </a>
+      {% if page %}
+        <a href="{% url 'overtime:post_overtime' %}"
+           class="inline-flex items-center px-4 py-2 text-sm text-center text-white rounded-lg bg-slate-800 hover:bg-slate-700 focus:ring-4 focus:outline-none focus:ring-slate-300">
+          Post
+          <svg class="w-4 h-4 ml-2 -mr-1"
+               fill="currentColor"
+               viewBox="0 0 20 20"
+               xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd">
+            </path>
+          </svg>
+        </a>
+      {% endif %}
+    </div>
+    <table class="text-sm text-left w-full table-auto">
+      <thead class="text-xs font-semibold uppercase bg-slate-100">
+        <tr>
+          <th scope="col" class="p-2">Employee</th>
+          <th scope="col" class="p-2">Date</th>
+          <th scope="col" class="p-2">Date</th>
+          <th scope="col" class="p-2">Code</th>
+          <th scope="col" class="p-2">Code</th>
+          <th scope="col" class="p-2">Start time</th>
+          <th scope="col" class="p-2 ">End time</th>
+          <th scope="col" class="p-2">Paid</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for ot in page %}
+          <tr class="bg-white border-b hover:bg-slate-50">
+            <th class="p-2 font-semibold text-slate-900 whitespace-nowrap ">{{ ot.employee.name }}</th>
+            <td class="p-2">{{ ot.start_date }}</td>
+            <td class="p-2">{{ ot.end_date }}</td>
+            <td class="p-2">{{ ot.units_worked }}</td>
+            <td class="p-2">{{ ot.overtime_type.pay_item_code }}</td>
+            <td class="p-2">{{ ot.start_time }}</td>
+            <td class="p-2">{{ ot.end_time }}</td>
+            <td class="p-2">{{ ot.paid }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% if page %}
+      {% include "pagination.html" %}
+    {% else %}
+      <p class="ml-4 ">There is no overtime.</p>
+    {% endif %}
+  </div>
+{% endblock content %}

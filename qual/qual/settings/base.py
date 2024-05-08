@@ -62,7 +62,8 @@ INSTALLED_APPS = [
     "compressor",
     "django_filters",
     "celery",
-    # "channels",
+    "django_flatpickr",
+    "django_select2",
 ]
 
 MIDDLEWARE = [
@@ -166,6 +167,9 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 BROKER_URL = "redis://redis:6379"
 RESULT_BACKEND = "redis://redis:6379"
 
+
+# SELECT2_JS = ["../static/django_select2/django_select2.js"]
+# SELECT2_CSS = ["../static/django_select2/django_select2.css"]
 # REDIS_HOST = "redis"
 # REDIS_URL = "redis://redis:6379/0"
 # REDIS_PORT = 6379

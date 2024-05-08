@@ -1,22 +1,22 @@
 {% extends "_base.html" %}
 {% block content %}
-  <div class="bg-white mx-auto overflow-x-auto shadow-md p-4  w-fit rounded-lg">
-    {% include "device/create.html" %}
-    <div class="w-fit overflow-x-auto mt-1">
-      <table class="w-fit  text-sm font-semibold text-left text-slate-800 rtl:text-right">
-        <thead class="text-xs uppercase text-slate-900 bg-gray-50 ">
+  <div class="bg-white overflow-x-auto shadow-md py-4 px-6  w-full rounded-lg">
+    <div class="ml-2 mb-2">{% include "device/create.html" %}</div>
+    <div>
+      <table class="w-full  text-sm font-semibold text-left text-slate-900 table-auto ">
+        <thead class="text-xs uppercase text-slate-900 bg-slate-100 ">
           <tr>
             <th scope="col" class="p-3">ID</th>
             <th scope="col" class="p-3">Device name</th>
             <th scope="col" class="p-3">Device IP</th>
             <th scope="col" class="p-3">Device Port</th>
             <th scope="col" class="p-3">Attendances</th>
-            <th scope="col" class="p-3">Actions</th>
+            <th scope="col" class="p-3 text-right">Action</th>
           </tr>
         </thead>
         <tbody>
           {% for d in devices %}
-            <tr class="bg-white border-b text-slate-900 hover:bg-gray-50">
+            <tr class="bg-white border-b text-slate-900 hover:bg-slate-50">
               <td class="p-3 whitespace-nowrap">{{ d.id }}</td>
               <td class="p-3">{{ d.name }}</td>
               <td class="p-3">{{ d.ip }}</td>

@@ -6,7 +6,10 @@ ENV ACCEPT_EULA=Y
 WORKDIR /code
 
 RUN apt-get update -y \
-    && apt-get install -y
+&& apt-get install -y
+
+# RUN apt-get install -y sudo
+# RUN sudo sysctl -w vm.overcommit_memory=1
 
 RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - \
     && curl https://packages.microsoft.com/config/debian/10/prod.list > /etc/apt/sources.list.d/mssql-release.list \

@@ -1,12 +1,14 @@
 {% extends "_base.html" %}
 {% block content %}
-    <div class="p-4 shadow-md rounded-lg mx-auto w-fit bg-white">
+    <div class="py-4 px-6 shadow-md rounded-lg w-full bg-white overflow-x-auto">
         <div class="gap-4 flex mb-2 items-center">
-            {% include "shift/pattern/create.html" %}
+            {% if user_role == "ADMIN" or user_role == 'HR' %}
+                {% include "shift/pattern/create.html" %}
+            {% endif %}
             <p class="text-xl font-semibold text-slate-900 ml-3 my-2">{{ shift.name }}</p>
         </div>
-        <table class="overflow-x-auto text-sm text-left w-fit">
-            <thead class="text-xs uppercase border-b border-black bg-gray-50">
+        <table class=" text-sm text-left w-full table-auto text-slate-900">
+            <thead class="text-xs uppercase  bg-slate-100">
                 <tr>
                     <th scope="col" class="p-2">Name</th>
                     <th scope="col" class="p-2">Next pattern</th>
@@ -14,7 +16,7 @@
                     <th scope="col" class="p-2">End time</th>
                     <th scope="col" class="p-2">Tolerance</th>
                     <th scope="col" class="p-2">Day span</th>
-                    <th scope="col" class="p-2">Action</th>
+                    {% if user_role == "ADMIN" or user_role == 'HR' %}<th scope="col" class="p-2 text-right">Action</th>{% endif %}
                 </tr>
             </thead>
             <tbody>
@@ -26,10 +28,12 @@
                         <td class="p-2">{{ pattern.end_time }}</td>
                         <td class="p-2">{{ pattern.tolerance }}</td>
                         <td class="p-2">{{ pattern.day_span }}</td>
-                        <td class="p-2">
-                            <a href="{% url 'shift:edit_pattern' pattern.id %}"
-                               class="font-semibold text-slate-900  hover:underline">Edit</a>
-                        </td>
+                        {% if user_role == "ADMIN" or user_role == 'HR' %}
+                            <td class="p-2 text-right">
+                                <a href="{% url 'shift:edit_pattern' pattern.id %}"
+                                   class="font-semibold text-slate-900  hover:underline">Edit</a>
+                            </td>
+                        {% endif %}
                     </tr>
                 {% endfor %}
             </tbody>

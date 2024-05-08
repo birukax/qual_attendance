@@ -1,6 +1,5 @@
 from django.db import models
 from django.conf import settings
-import employee.models as Employee
 from django.urls import reverse
 
 
@@ -11,12 +10,13 @@ class Profile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     role = models.CharField(max_length=10, choices=ROLES, default="USER")
     employee = models.ForeignKey(
-        Employee.Employee, on_delete=models.CASCADE, null=True, blank=True
+        "employee.Employee", on_delete=models.CASCADE, null=True, blank=True
+    )
+    device = models.ForeignKey(
+        "device.Device", on_delete=models.CASCADE, blank=True, null=True
     )
     manages = models.ManyToManyField(
-        Employee.Department,
-        blank=True,
-        related_name="managers",
+        "employee.Department", related_name="managers", blank=True
     )
 
     class Meta:

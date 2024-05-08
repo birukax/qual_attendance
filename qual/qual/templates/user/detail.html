@@ -1,32 +1,23 @@
 {% extends "_base.html" %}
 {% block content %}
-  <div class="w-full max-w-xl mx-auto bg-white shadow sm:p-8">
+  <div class="w-full rounded-lg shadow-md  bg-white md:px-16 md:py-8 px-8 py-6">
     <div class="justify-between">
-      <div class="flex items-center justify-between mb-1">
-        <div class="flex gap-2">
-          <a href="{% url 'account:users' %}">
-            <svg class="w-6 h-6 text-slate-800 dark:text-white"
-                 aria-hidden="true"
-                 xmlns="http://www.w3.org/2000/svg"
-                 width="24"
-                 height="24"
-                 fill="none"
-                 viewBox="0 0 24 24">
-              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 19-7-7 7-7" />
-            </svg>
-          </a>
-          <h5 class="text-2xl font-semibold leading-none text-slate-900 uppercase">User detail</h5>
-        </div>
-        <svg class="w-12 h-12 text-slate-800"
-             aria-hidden="true"
-             xmlns="http://www.w3.org/2000/svg"
-             fill="currentColor"
-             viewBox="0 0 20 20">
-          <path d="M7 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9Zm2 1H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Z" />
-        </svg>
+      <div class="flex items-center justify-between mb-4">
+        <a href="{% url 'account:users' %}">
+          <svg class="w-6 h-6 text-slate-800 dark:text-white"
+               aria-hidden="true"
+               xmlns="http://www.w3.org/2000/svg"
+               width="24"
+               height="24"
+               fill="none"
+               viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 19-7-7 7-7" />
+          </svg>
+        </a>
+        <h5 class="text-2xl font-semibold leading-none text-slate-900 uppercase">User detail</h5>
       </div>
     </div>
-    <div>{% include "user/edit.html" %}</div>
+    <div class="mb-2">{% include "user/edit.html" %}</div>
     <div class="flow-root">
       <ul role="list" class="divide-y divide-slate-200 dark:divide-slate-700">
         <div class="flex-1 min-w-0 ms-4">
@@ -81,6 +72,14 @@
               <p class="font-medium text-slate-900 truncate dark:text-white">Role</p>
             </div>
             <div class="inline-flex items-center  font-semibold text-slate-900 dark:text-white">{{ user.role }}</div>
+          </div>
+        </li>
+        <li class="py-2">
+          <div class="flex text-sm items-center">
+            <div class="flex-1 min-w-0 ms-4">
+              <p class="font-medium text-slate-900 truncate dark:text-white">Device</p>
+            </div>
+            <div class="inline-flex items-center  font-semibold text-slate-900 dark:text-white">{{ user.device.name }}</div>
           </div>
         </li>
         <li class="pt-3 pb-0 sm:pt-4">

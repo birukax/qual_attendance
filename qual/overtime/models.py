@@ -32,7 +32,7 @@ class OvertimeType(models.Model):
         ("OTH", "OTH"),
         ("OTW", "OTW"),
     )
-    days = models.ManyToManyField(Day, related_name="overtime_types")
+    days = models.ManyToManyField(Day, related_name="overtime_types", blank=True)
     name = models.CharField(max_length=100)
     pay_item_code = models.CharField(
         max_length=100, choices=CHOICES, null=True, blank=True
@@ -55,10 +55,8 @@ class Overtime(models.Model):
     reason = models.TextField()
     start_date = models.DateField()
     end_date = models.DateField()
-    start_time_expected = models.TimeField()
-    end_time_expected = models.TimeField()
-    start_time_actual = models.TimeField(null=True, blank=True)
-    end_time_actual = models.TimeField(null=True, blank=True)
+    start_time = models.TimeField()
+    end_time = models.TimeField()
     worked_hours = models.DurationField(null=True, blank=True)
     approved = models.BooleanField(default=False)
     rejected = models.BooleanField(default=False)
@@ -83,15 +81,21 @@ class Ot(models.Model):
         employee.Employee, on_delete=models.CASCADE, related_name="ots"
     )
     overtime_type = models.ForeignKey(
-        OvertimeType, on_delete=models.CASCADE, null=True, blank=True, related_name="ots"
+        OvertimeType,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name="ots",
     )
     overtime = models.ForeignKey(
         Overtime, null=True, blank=True, on_delete=models.CASCADE, related_name="ots"
     )
-    date = models.DateField()
+    start_date = models.DateField()
+    end_date = models.DateField(null=True)
     start_time = models.TimeField()
     end_time = models.TimeField()
     units_worked = models.FloatField()
+    paid = models.BooleanField(default=False)
 
     # def __str__(self):
     #     return self.name

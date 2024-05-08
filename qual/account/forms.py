@@ -30,7 +30,12 @@ class CreateUserForm(forms.ModelForm):
 class EditUserForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ["email", "first_name", "last_name", "is_active"]
+        fields = (
+            "first_name",
+            "last_name",
+            "email",
+            "is_active",
+        )
 
     def __init__(self, *args, **kwargs):
         super(EditUserForm, self).__init__(*args, **kwargs)
@@ -42,7 +47,12 @@ class EditUserForm(forms.ModelForm):
 class EditProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ["role", "employee", "manages"]
+        fields = (
+            "role",
+            "device",
+            "employee",
+            "manages",
+        )
 
     def __init__(self, *args, **kwargs):
         super(EditProfileForm, self).__init__(*args, **kwargs)
@@ -55,8 +65,10 @@ class EditProfileForm(forms.ModelForm):
 class EditForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = [
-            "email",
-            "first_name",
-            "last_name",
-        ]
+        fields = ("email", "first_name", "last_name")
+
+
+class SelectDeviceForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ("device",)
