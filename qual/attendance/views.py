@@ -6,6 +6,10 @@ from .models import RawAttendance, Attendance, DailyRecord
 from employee.models import Employee
 from employee.filters import EmployeeFilter
 from device.models import Device
+from overtime.models import Overtime
+from shift.models import Shift
+from leave.models import Leave
+from holiday.models import Holiday
 from django.core.paginator import Paginator
 from .filters import (
     CompileFilter,
@@ -17,24 +21,53 @@ from device.forms import CreateDeviceForm
 import datetime
 from .tasks import save_recompiled, sync_raw_attendance, compile
 from .forms import RecompileForm, EmployeesForm
-
+from django.db.models import F, Count
 from django.contrib.auth.decorators import user_passes_test
+from datetime import date, datetime, timedelta
 
 
 @login_required
 def dashboard(request):
     attendances = Attendance.objects.all()
     employees = Employee.objects.all()
+    shifts = Shift.objects.all()
     devices = Device.objects.all()
-    create_device_form = CreateDeviceForm()
+    overtimes = Overtime.objects.all()
+    leaves = Leave.objects.all()
+    holidays = Holiday.objects.all()
+    approvals = (
+        overtimes.filter(approved=False, rejected=False).count()
+        + leaves.filter(approved=False, rejected=False).count()
+        + holidays.filter(approved=False, rejected=False).count()
+    )
+
+    start = datetime.now().date() - timedelta(days=30)
+    most_absents = (
+        employees.filter(
+            attendances__status="Absent", attendances__check_in_date__gte=start
+        )
+        .annotate(absent_count=Count("attendances"))
+        .order_by("-absent_count")[:10]
+    )
+
+    new_employees = Employee.objects.filter(status="Active").order_by("-employee_id")[
+        :5
+    ]
+
     return render(
         request,
         "dashboard.html",
         {
             "attendances": attendances,
             "employees": employees,
+            "shifts": shifts,
             "devices": devices,
-            "form": create_device_form,
+            "overtimes": overtimes,
+            "leaves": leaves,
+            "holidays": holidays,
+            "approvals": approvals,
+            "new_employees": new_employees,
+            "most_absents": most_absents,
         },
     )
 
@@ -173,11 +206,11 @@ def download_attendance(request):
         "employee",
         "device",
         "current pattern",
-        "worked_hours",
         "check in date",
-        "check in time",
         "check out date",
+        "check in time",
         "check out time",
+        "worked_hours",
         "Check in type",
         "Check out type",
         "status",
@@ -201,11 +234,11 @@ def download_attendance(request):
                 attendance.employee.name,
                 device,
                 attendance.current_pattern.name,
-                attendance.worked_hours,
                 attendance.check_in_date,
-                attendance.check_in_time,
                 attendance.check_out_date,
+                attendance.check_in_time,
                 attendance.check_out_time,
+                attendance.worked_hours,
                 attendance.check_in_type,
                 attendance.check_out_type,
                 attendance.status,

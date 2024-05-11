@@ -9,6 +9,7 @@ from django.contrib.auth.models import User
 class LeaveType(models.Model):
     name = models.CharField(max_length=100)
     slug = models.SlugField(max_length=100)
+    annual = models.BooleanField(default=False)
     description = models.TextField()
     maximum_days = models.PositiveIntegerField(default=0)
     paid = models.BooleanField(default=True)
@@ -32,7 +33,7 @@ class Leave(models.Model):
     )
     start_date = models.DateField()
     end_date = models.DateField()
-    is_half_day = models.BooleanField(default=False)
+    half_day = models.BooleanField(default=False)
     active = models.BooleanField(default=False)
     approved = models.BooleanField(default=False)
     rejected = models.BooleanField(default=False)

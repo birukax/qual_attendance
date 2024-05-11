@@ -7,7 +7,8 @@
         <thead class="uppercase  bg-slate-100 text-xs">
           <tr>
             <th scope="col" class="p-3">Name</th>
-            <th scope="col" class="p-3">Max</th>
+            <th scope="col" class="p-3">Maximum days</th>
+            <th scope="col" class="p-3">Annual</th>
             <th scope="col" class="p-3">Paid</th>
             <th scope="col" class="p-3">Leaves</th>
             <th scope="col" class="p-3 text-right">Actions</th>
@@ -18,6 +19,7 @@
             <tr class="bg-white text-slate-900 hover:bg-slate-50">
               <td class="p-3">{{ leave_type.name }}</td>
               <td class="p-3">{{ leave_type.maximum_days }}</td>
+              <td class="p-3">{{ leave_type.annual }}</td>
               <td class="p-3">{{ leave_type.paid }}</td>
               <td class="p-3">{{ leave_type.leaves.count }}</td>
               <td class="p-3 text-right">

@@ -1,3 +1,4 @@
+from datetime import date, timedelta, datetime, time
 from .models import Leave, LeaveType
 from django import forms
 from django.utils.text import slugify
@@ -9,6 +10,9 @@ from django_flatpickr.widgets import (
 )
 from django_flatpickr.schemas import FlatpickrOptions
 from django_select2 import forms as s2forms
+from django.core.exceptions import ValidationError
+from django.db.models import Q
+from django.utils.translation import gettext_lazy as _
 
 
 class EmployeeWidget(s2forms.ModelSelect2Widget):
@@ -24,7 +28,7 @@ class CreateLeaveForm(forms.ModelForm):
             "start_date",
             "end_date",
             "reason",
-            "is_half_day",
+            "half_day",
         )
         widgets = {
             "employee": EmployeeWidget,
@@ -32,7 +36,7 @@ class CreateLeaveForm(forms.ModelForm):
             "start_date": DatePickerInput(options=FlatpickrOptions()),
             "end_date": DatePickerInput(options=FlatpickrOptions()),
             "reason": forms.Textarea(attrs={"rows": 3}),
-            "is_half_day": forms.CheckboxInput(),
+            "half_day": forms.CheckboxInput(),
         }
 
     def __init__(self, *args, **kwargs):
@@ -46,6 +50,48 @@ class CreateLeaveForm(forms.ModelForm):
                 status="Active", department__in=user.manages.all()
             )
 
+    def clean(self):
+        cleaned_data = super().clean()
+        employee = cleaned_data.get("employee")
+        start_date = cleaned_data.get("start_date")
+        end_date = cleaned_data.get("end_date")
+        leave_type = cleaned_data.get("leave_type")
+        half_day = cleaned_data.get("half_day")
+
+        if employee:
+            active_leave = employee.leaves.filter(
+                Q(start_date__gte=start_date, end_date__lte=start_date),
+                Q(start_date__gte=end_date, end_date__lte=end_date),
+            )
+            if active_leave:
+                raise ValidationError(
+                    _("Employee can't have multiple leave on the same date.")
+                )
+
+        if end_date and start_date and leave_type:
+            total_days = (
+                datetime.combine(end_date, time(00, 00, 00))
+                - datetime.combine(start_date, time(00, 00, 00))
+                + timedelta(days=1)
+            )
+            if half_day:
+                total_days = total_days - timedelta(hours=12)
+            print(total_days)
+            if start_date > end_date:
+                raise ValidationError(_("Start Date cannot be greater than End Date."))
+
+            if leave_type.annual == True:
+                employee_balance = employee.annual_leave_balance
+                total_days = total_days.days + 1
+                if employee_balance - total_days < 0:
+                    raise ValidationError(_("Insufficient annual leave balance."))
+            else:
+                maximum_days = leave_type.maximum_days
+                if total_days.days > maximum_days:
+                    raise ValidationError(
+                        _("Total date is greater than the leave type's maximum date.")
+                    )
+
 
 class CreateLeaveTypeForm(forms.ModelForm):
     class Meta:
@@ -54,6 +100,7 @@ class CreateLeaveTypeForm(forms.ModelForm):
             "name",
             "maximum_days",
             "description",
+            "annual",
             "paid",
         )
         widgets = {
@@ -77,6 +124,7 @@ class EditLeaveTypeForm(forms.ModelForm):
             "name",
             "maximum_days",
             "description",
+            "annual",
             "paid",
         )
         widgets = {

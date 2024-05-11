@@ -186,7 +186,10 @@ def calculate_ot():
                     ot.units_worked = units
                     ot.start_time = start_time
                     ot.end_time = end_time
+                    ot.have_attendance = True
                     ot.save()
+                else:
+                    print("no attendance")
 
         except:
             pass
@@ -198,8 +201,7 @@ def post_ot():
     user = config("NAV_INSTANCE_USER")
     password = config("NAV_INSTANCE_PASSWORD")
     auth = HttpNtlmAuth(user, password)
-    ots = Ot.objects.filter(paid=False)
-    print(url)
+    ots = Ot.objects.filter(paid=False, have_attendance=True)
     for ot in ots:
         date = f"{ot.start_date}"
         headers = {
@@ -226,13 +228,15 @@ def post_ot():
                 headers=headers,
                 auth=auth,
             )
-            response.raise_for_status()
             if response.ok:
                 ot.paid = True
                 ot.save()
+            else:
+                response.raise_for_status()
+            not_completely_paid = Ot.objects.filter(paid=False, id=ot.id)
+            if not not_completely_paid:
+                overtime = ot.overtime
+                overtime.paid = True
+                overtime.save()
         except requests.exceptions.HTTPError as err:
             print(f"Error {err}")
-    overtimes = Overtime.objects.filter(paid=False, approved=True)
-    for overtime in overtimes:
-        overtime.paid = True
-        overtime.save()

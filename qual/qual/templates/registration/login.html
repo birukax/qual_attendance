@@ -1,8 +1,14 @@
 {% extends "_base.html" %}
 {% block login %}
-  <section class="p-4 mx-auto mt-4 rounded-3xl shadow-lg bg-slate-800 w-fit">
-    <div class="flex flex-col items-center justify-center p-12 mx-auto my-8 ">
-      <div class="w-full p-4 bg-white  shadow dark:border md:mt-0 sm:max-w-md ">
+  {% load static %}
+  <section class="sm:p-4 mx-auto mt-4 rounded-3xl shadow-lg bg-slate-800 w-fit">
+    <div class="flex flex-col items-center justify-center px-4 sm:px-12 pb-8 pt-4 mx-auto ">
+      <img src="{% static 'images/test-logo.svg' %}"
+           class="  mx-auto  w-3/4  mb-2"
+           height=""
+           width=""
+           alt="logo">
+      <div class="w-full sm:p-4 bg-white  shadow dark:border md:mt-0 sm:max-w-md ">
         <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
           {% if user.is_authenticated %}
             <p class="text-4xl font-semibold text-slate-800">404</p>

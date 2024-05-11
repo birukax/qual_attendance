@@ -51,29 +51,13 @@ def overtime_detail(request, id):
 @login_required
 def create_overtime(request):
     if request.method == "POST":
-        role = request.user.profile.role
         form = CreateOvertimeForm(request.POST, user=request.user)
         if form.is_valid():
-            context = {"form": form}
-            start_date = form.cleaned_data["start_date"]
-            end_date = form.cleaned_data["end_date"]
-            start_time = form.cleaned_data["start_time"]
-            end_time = form.cleaned_data["end_time"]
-            if start_date > end_date:
-                messages.error(request, "Start Date cannot be greater than End Date.")
-                return render(request, "overtime/create.html", context)
-            if start_time > end_time:
-                if not start_date < end_date:
-                    messages.error(
-                        request, "Start Time cannot be greater than End Time."
-                    )
-                    return render(request, "overtime/create.html", context)
-
             form.save()
-        return redirect("overtime:overtimes")
+            return redirect("overtime:overtimes")
     else:
-        form = CreateOvertimeForm(user=request.user)
-        return render(request, "overtime/create.html", {"form": form})
+        form = CreateOvertimeForm(request.GET, user=request.user)
+    return render(request, "overtime/create.html", {"form": form})
 
 
 @login_required

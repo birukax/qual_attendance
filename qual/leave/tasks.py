@@ -12,13 +12,13 @@ def calculate_annual_leaves():
     for e in employees:
         employment_date = datetime.combine(e.employment_date, datetime.min.time())
         leaves = Leave.objects.filter(
-            employee=e, approved=True, leave_type__name="Annual"
+            employee=e, approved=True, leave_type__annual=True
         )
         e.annual_leave_taken = 0
         for l in leaves:
             leave_days = l.end_date.day - l.start_date.day + 1
-            if l.is_half_day:
-                leave_days = 0.5
+            if l.half_day:
+                leave_days = leave_days - 0.5
             print(f"{e.name}  {leave_days}")
             e.annual_leave_taken = e.annual_leave_taken + leave_days
             e.save()

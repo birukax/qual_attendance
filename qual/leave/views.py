@@ -6,7 +6,7 @@ from .models import Leave, LeaveType
 from .forms import CreateLeaveForm, CreateLeaveTypeForm, EditLeaveTypeForm
 from django.core.paginator import Paginator
 from django.http import HttpResponse
-from .calculate import calculate_annual_leaves
+from .tasks import calculate_annual_leaves
 from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test
 from employee.models import Employee
@@ -49,38 +49,11 @@ def create_leave(request):
     if request.method == "POST":
         form = CreateLeaveForm(request.POST, user=request.user)
         if form.is_valid():
-            context = {"form": form}
-            employee = form.cleaned_data["employee"]
-            leave_type = form.cleaned_data["leave_type"]
-            start_date = form.cleaned_data["start_date"]
-            end_date = form.cleaned_data["end_date"]
-            total_days = form.cleaned_data["end_date"] - form.cleaned_data["start_date"]
-            active_leave = employee.leaves.filter(active=True)
-            if active_leave:
-                messages.error(request, "Employee has an active leave.")
-                return render(request, "leave/create.html", context)
-            if start_date > end_date:
-                messages.error(request, "Start Date cannot be greater than End Date.")
-                return render(request, "leave/create.html", context)
-            if leave_type.name == "Annual":
-                employee_balance = employee.annual_leave_balance
-                total_days = total_days.days + 1
-                if employee_balance - total_days < 0:
-                    messages.error(request, "Insufficient Leave Balance.")
-                    return render(request, "leave/create.html", context)
-            else:
-                maximum_days = leave_type.maximum_days
-                if total_days.days > maximum_days:
-                    messages.error(request, "Maximum Days exceeded.")
-                    return render(request, "leave/create.html", context)
             form.save()
             return redirect("leave:leaves")
-        else:
-
-            messages.error(request, form.errors)
         # return redirect("leave:leaves")
-
-    form = CreateLeaveForm(user=request.user)
+    else:
+        form = CreateLeaveForm(request.GET, user=request.user)
     return render(request, "leave/create.html", {"form": form})
     # return redirect("leave:create_leave")
 
@@ -172,7 +145,7 @@ def download_annual_leave(request):
 @login_required
 @user_passes_test(lambda u: u.profile.role == "ADMIN" or u.profile.role == "HR")
 def leave_type_list(request):
-    leave_types = LeaveType.objects.all()
+    leave_types = LeaveType.objects.all().order_by("name")
     create_leave_type_form = CreateLeaveTypeForm()
     paginated = Paginator(leave_types, 30)
     page_number = request.GET.get("page")
@@ -189,7 +162,7 @@ def leave_type_list(request):
 def leave_type_detail(request, id):
     leave_type = LeaveType.objects.get(id=id)
     edit_leave_type_form = EditLeaveTypeForm(instance=leave_type)
-    leaves = Leave.objects.filter(leave_type=leave_type)
+    leaves = Leave.objects.filter(leave_type=leave_type).order_by("start_date")
     paginated = Paginator(leaves, 30)
     page_number = request.GET.get("page")
 
@@ -228,6 +201,7 @@ def edit_leave_type(request, id):
         leave_type.description = form.cleaned_data["description"]
         leave_type.maximum_days = form.cleaned_data["maximum_days"]
         leave_type.paid = form.cleaned_data["paid"]
+        leave_type.annual = form.cleaned_data["annual"]
         leave_type.save()
     return redirect("leave:leave_type_detail", id=id)
 

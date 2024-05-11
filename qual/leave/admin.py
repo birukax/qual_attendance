@@ -7,7 +7,7 @@ class LeaveAdmin(admin.ModelAdmin):
     list_display = [
         "employee",
         "leave_type",
-        "is_half_day",
+        "half_day",
         "start_date",
         "end_date",
     ]
