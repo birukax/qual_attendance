@@ -254,12 +254,8 @@ def download_attendance(request):
 def raw_attendance_list(request):
     # attendances = RawAttendance.objects.all().order_by("-date", "-time")[:1000]
     request_device = request.user.profile.device
-    if request_device:
-        attendances = RawAttendance.objects.filter(device=request_device).order_by(
-            "-date", "-time"
-        )
-    else:
-        attendances = RawAttendance.objects.all().order_by("-date", "-time")
+
+    attendances = RawAttendance.objects.all().order_by("-date", "-time")
     attendance_filter = RawAttendanceFilter(request.GET, queryset=attendances)
     attendances = attendance_filter.qs
     paginated = Paginator(attendances, 30)
@@ -273,7 +269,10 @@ def raw_attendance_list(request):
 @user_passes_test(lambda u: u.profile.role == "HR" or u.profile.role == "ADMIN")
 def get_raw_data(request):
     request_device = request.user.profile.device.id
-    sync_raw_attendance.delay(request_device)
+    if request_device:
+        sync_raw_attendance.delay(request_device)
+    else:
+        sync_raw_attendance.delay()
     return redirect("attendance:raw_attendance")
 
 
