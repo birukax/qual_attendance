@@ -13,10 +13,10 @@ from shift.models import Shift, Pattern
 
 @shared_task
 def sync_raw_attendance(request_device=None):
-    if request_device:
-        devices = Device.objects.filter(id=request_device)
-    else:
+    if request_device is None:
         devices = Device.objects.all()
+    else:
+        devices = Device.objects.filter(id=request_device)
 
     # devices = Device.objects.all().order_by("name")
 

@@ -268,9 +268,9 @@ def raw_attendance_list(request):
 @login_required
 @user_passes_test(lambda u: u.profile.role == "HR" or u.profile.role == "ADMIN")
 def get_raw_data(request):
-    request_device = request.user.profile.device.id
+    request_device = request.user.profile.device
     if request_device:
-        sync_raw_attendance.delay(request_device)
+        sync_raw_attendance.delay(request_device=request_device.id)
     else:
         sync_raw_attendance.delay()
     return redirect("attendance:raw_attendance")

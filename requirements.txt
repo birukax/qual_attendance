@@ -54,4 +54,4 @@ requests-ntlm==1.2.0
 django-flatpickr==2.0.3
 django-select2==8.1.2
 python-decouple==3.8
-# uwsgi==2.0.24
+uwsgi==2.0.24
