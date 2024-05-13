@@ -236,6 +236,9 @@ def create_pattern(request, id):
                 tolerance=tolerance,
                 next=next,
             )
+            if not pattern.next:
+                pattern.next = pattern
+                pattern.save()
         return redirect("shift:shift_patterns", id=shift.id)
 
 
