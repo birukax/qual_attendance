@@ -61,8 +61,8 @@ services:
     working_dir: /code/qual/
     volumes:
       - .:/code
-    command: celery multi start w1 -A qual -B -l debug
-    # command: celery -A qual worker -E -l debug
+    # command: celery multi start w1 -A qual -B -l debug
+    command: celery -A qual worker -E -l debug
     environment:
       DJANGO_SETTINGS_MODULE: qual.settings.prod
       BROKER_URL: redis://redis:6379/0
