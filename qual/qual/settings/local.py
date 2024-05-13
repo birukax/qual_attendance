@@ -1,4 +1,6 @@
 from .base import *
+from decouple import config
+
 
 DEBUG = True
 ALLOWED_HOSTS = ["*"]
@@ -7,8 +9,8 @@ DATABASES = {
         "ENGINE": "django.db.backends.postgresql",
         "HOST": "localhost",
         "NAME": "qual",
-        "USER": "admin",
-        "PASSWORD": "password",
+        "USER": config("DB_USER"),
+        "PASSWORD": config("DB_PASSWORD"),
         "PORT": 5432,
     }
 }

@@ -1,4 +1,5 @@
 from .base import *
+from decouple import config
 
 ADMIN = [("admin", "admin@email.com")]
 ALLOWED_HOSTS = ["*"]
@@ -8,8 +9,8 @@ DATABASES = {
         "ENGINE": "django.db.backends.postgresql",
         "HOST": "host.docker.internal",
         "NAME": "qual",
-        "USER": "admin",
-        "PASSWORD": "password",
+        "USER": config("DB_USER"),
+        "PASSWORD": config("DB_PASSWORD"),
         "PORT": 5432,
     }
 }
