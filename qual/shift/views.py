@@ -204,8 +204,8 @@ def assign_employees(request):
                 ).order_by("name")
             for employee in employees:
                 employee.shift = shift
-                if employee.device is None:
-                    employee.device = shift.device
+                # if employee.device is None:
+                employee.device = shift.device
                 employee.save()
             if (
                 request.user.profile.role == "Admin"

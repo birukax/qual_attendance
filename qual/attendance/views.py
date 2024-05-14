@@ -23,7 +23,7 @@ from .tasks import save_recompiled, sync_raw_attendance, compile
 from .forms import RecompileForm, EmployeesForm
 from django.db.models import F, Count
 from django.contrib.auth.decorators import user_passes_test
-from datetime import date, datetime, timedelta
+import datetime
 
 
 @login_required
