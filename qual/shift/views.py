@@ -59,10 +59,12 @@ def create_shift(request):
             name = form.cleaned_data["name"]
             continous = form.cleaned_data["continous"]
             saturday_half = form.cleaned_data["saturday_half"]
+            device = form.cleaned_data["device"]
             shift = Shift(
                 name=name,
                 continous=continous,
                 saturday_half=saturday_half,
+                device=device,
             )
             shift.save()
 
@@ -202,6 +204,8 @@ def assign_employees(request):
                 ).order_by("name")
             for employee in employees:
                 employee.shift = shift
+                if employee.device is None:
+                    employee.device = shift.device
                 employee.save()
             if (
                 request.user.profile.role == "Admin"
