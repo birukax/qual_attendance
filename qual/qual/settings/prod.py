@@ -3,7 +3,8 @@ from decouple import config
 
 ADMIN = [("admin", "admin@email.com")]
 ALLOWED_HOSTS = ["*"]
-DEBUG = False
+# DEBUG = False
+DEBUG = True
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",

@@ -4,12 +4,14 @@
   <div class="bg-white h-full mx-auto  ">
     <!-- <img src="{% static 'images/Logo1.png' %}" class="object-contain h-3/4 w-3/4 mx-auto " height="" width="" alt="logo"> -->
     <dl class="grid max-w-screen-xl grid-cols-2 gap-4 p-2 mx-auto text-slate-900 sm:grid-cols-3 xl:grid-cols-6  sm:p-4">
-      <div class="flex flex-col items-center py-4 justify-center rounded-lg bg-slate-100">
-        <dt class="mb-2 text-4xl font-bold text-slate-800">{{ approvals }}</dt>
-        <dd class="text-slate-500 dark:text-slate-400">
-          Approvals
-        </dd>
-      </div>
+      {% if 'account.can_approve' in request.user.get_all_permissions %}
+        <div class="flex flex-col items-center py-4 justify-center rounded-lg bg-slate-100">
+          <dt class="mb-2 text-4xl font-bold text-slate-800">{{ approvals }}</dt>
+          <dd class="text-slate-500 dark:text-slate-400">
+            Approvals
+          </dd>
+        </div>
+      {% endif %}
       <div class="flex flex-col items-center py-4 justify-center rounded-lg bg-slate-100">
         <dt class="mb-2 text-4xl font-bold text-slate-800">{{ attendances.count }}</dt>
         <dd class="text-slate-500 dark:text-slate-400">

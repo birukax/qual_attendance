@@ -41,7 +41,7 @@ def dashboard(request):
         + holidays.filter(approved=False, rejected=False).count()
     )
 
-    start = datetime.now().date() - timedelta(days=30)
+    start = datetime.datetime.now().date() - datetime.timedelta(days=30)
     most_absents = (
         employees.filter(
             attendances__status="Absent", attendances__check_in_date__gte=start
