@@ -9,8 +9,9 @@
         <thead class="uppercase whitespace-nowrap bg-slate-100 text-xs">
           <tr>
             <th scope="col" class="p-3">Shift name</th>
-            <th scope="col" class="p-3">Continous</th>
             <th scope="col" class="p-3">Device</th>
+            <th scope="col" class="p-3">Current pattern</th>
+            <th scope="col" class="p-3">Continous</th>
             <th scope="col" class="p-3">Saturday half</th>
             <th scope="col" class="p-3">Patterns</th>
             <th scope="col" class="p-3 text-right">Actions</th>
@@ -21,8 +22,9 @@
             <tr class="bg-white border-b hover:bg-slate-50 whitespace-nowrap">
               <th scope="row"
                   class="p-3 font-semibold text-slate-900 whitespace-nowrap">{{ shift.name }}</th>
-              <td class="p-3">{{ shift.continous }}</td>
               <td class="p-3">{{ shift.device }}</td>
+              <td class="p-3">{{ shift.current_pattern }}</td>
+              <td class="p-3">{{ shift.continous }}</td>
               <td class="p-3">{{ shift.saturday_half }}</td>
               <td class="p-3">{{ shift.patterns.count }}</td>
               <td class="p-3 text-right">

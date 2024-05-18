@@ -14,6 +14,7 @@ from django.core.paginator import Paginator
 from .filters import (
     CompileFilter,
     AttendanceDownloadFilter,
+    CompiledAttendanceDownloadFilter,
     AttendanceFilter,
     RawAttendanceFilter,
 )
@@ -120,6 +121,7 @@ def compile_view(request):
         daily_records = DailyRecord.objects.filter(device=request_device).latest("date")
     else:
         daily_records = []
+
     no_shift = Employee.objects.filter(
         shift=None, status="Active", device=request_device
     ).count()
@@ -127,7 +129,9 @@ def compile_view(request):
         approved=False, device=request_device
     ).order_by("check_in_time")
     compile_filter = CompileFilter(request.GET, queryset=attendances)
-
+    attendance_download_filter = CompiledAttendanceDownloadFilter(
+        request.GET, queryset=attendances
+    )
     attendances = compile_filter.qs
 
     paginated = Paginator(attendances, 30)
@@ -138,6 +142,7 @@ def compile_view(request):
         "daily_records": daily_records,
         "no_shift": no_shift,
         "compile_filter": compile_filter,
+        "attendance_download_filter": attendance_download_filter,
     }
     return render(request, "attendance/compile/list.html", context)
 
@@ -163,6 +168,70 @@ def compile_attendance(request):
     except Exception as e:
         print(e)
     return redirect("attendance:compile_view")
+
+
+@login_required
+def download_compiled_attendance(request):
+    user = request.user.profile
+    attendances = Attendance.objects.filter(
+        approved=False, deleted=False, recompiled=False, device=user.device
+    ).order_by("-check_in_time")
+    form = CompiledAttendanceDownloadFilter(
+        data=request.POST,
+        queryset=attendances,
+    )
+    attendances = form.qs
+    response = HttpResponse(content_type="application/ms-excel")
+    response["Content-Disposition"] = 'attachment; filename="compiled.xlsx"'
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "Attendance"
+
+    headers = [
+        "employee",
+        "device",
+        "current pattern",
+        "check in date",
+        "check out date",
+        "check in time",
+        "check out time",
+        "worked_hours",
+        "Check in type",
+        "Check out type",
+        "status",
+        "Leave type",
+    ]
+    ws.append(headers)
+
+    for attendance in attendances.order_by("-check_in_date"):
+
+        if attendance.device:
+            device = attendance.device.name
+        else:
+            device = ""
+        if attendance.leave_type:
+            leave_type = attendance.leave_type.name
+        else:
+            leave_type = ""
+
+        ws.append(
+            [
+                attendance.employee.name,
+                device,
+                attendance.current_pattern.name,
+                attendance.check_in_date,
+                attendance.check_out_date,
+                attendance.check_in_time,
+                attendance.check_out_time,
+                attendance.worked_hours,
+                attendance.check_in_type,
+                attendance.check_out_type,
+                attendance.status,
+                leave_type,
+            ]
+        )
+    wb.save(response)
+    return response
 
 
 @login_required

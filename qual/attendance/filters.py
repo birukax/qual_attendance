@@ -28,6 +28,21 @@ class AttendanceDownloadFilter(django_filters.FilterSet):
     # status = django_filters.ChoiceFilter(choices=Attendance.CHOICES)
 
 
+class CompiledAttendanceDownloadFilter(django_filters.FilterSet):
+    class Meta:
+        model = Attendance
+        fields = {
+            "employee__name": ["icontains"],
+            "device": ["exact"],
+            "current_pattern__shift": ["exact"],
+            "status": ["exact"],
+            "check_in_type": ["exact"],
+            "check_out_type": ["exact"],
+        }
+
+    # status = django_filters.ChoiceFilter(choices=Attendance.CHOICES)
+
+
 class AttendanceFilter(django_filters.FilterSet):
     class Meta:
         model = Attendance

@@ -2,82 +2,62 @@
 {% block content %}
   <div class="relative p-4 overflow-x-auto bg-white rounded-lg shadow-md w-full">
     <div class="flex items-center justify-between mx-2 mb-2 gap-4">
-      <div class="px-2 text-sm space-y-2">
-        {% if page %}
-          <div class="flex gap-6">
-            <a href="{% url 'approval:approve_attendance' %}"
-               class="inline-flex items-center px-4 py-2 text-sm text-center text-white rounded-lg bg-slate-700 hover:bg-slate-600 focus:ring-4 focus:outline-none focus:ring-slate-300 ">
-              Save
-              <svg class="w-4 h-4 ml-1 text-white"
-                   aria-hidden="true"
-                   xmlns="http://www.w3.org/2000/svg"
-                   width="20"
-                   height="20"
-                   fill="none"
-                   viewBox="0 0 20 20">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 11.917 9.724 16.5 19 7.5" />
-              </svg>
-            </a>
-            <a href="{% url 'attendance:delete_compiled_attendance' %}"
-               class="inline-flex items-center px-4 py-2 text-sm text-center text-white rounded-lg bg-slate-700 hover:bg-slate-600 focus:ring-4 focus:outline-none focus:ring-slate-300 ">
-              Delete
-              <svg class="w-4 h-4 ml-1 text-white"
-                   aria-hidden="true"
-                   xmlns="http://www.w3.org/2000/svg"
-                   width="20"
-                   height="20"
-                   fill="none"
-                   viewBox="0 0 20 20">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6" />
-              </svg>
-            </a>
-          </div>
-        {% endif %}
-        <ul class="max-w-md space-y-1 list-inside text-slate-900">
-          <li class="flex items-center">
-            {% if no_shift == 0 %}
-              <svg class="w-3.5 h-3.5 me-2 text-green-500 dark:text-green-400 flex-shrink-0"
-                   aria-hidden="true"
-                   xmlns="http://www.w3.org/2000/svg"
-                   fill="currentColor"
-                   viewBox="0 0 20 20">
-                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
-              </svg>
-            {% else %}
-              <svg class="w-3.5 h-3.5 me-2 text-slate-500 dark:text-slate-400 flex-shrink-0"
-                   aria-hidden="true"
-                   xmlns="http://www.w3.org/2000/svg"
-                   fill="currentColor"
-                   viewBox="0 0 20 20">
-                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
-              </svg>
-            {% endif %}
-            <h2 class="font-semibold">There are currently {{ no_shift }} employees without a shift.</h2>
-          </li>
-          <li class="flex items-center">
-            <svg class="w-3.5 h-3.5 me-2 text-green-500 dark:text-green-400 flex-shrink-0"
-                 aria-hidden="true"
-                 xmlns="http://www.w3.org/2000/svg"
-                 fill="currentColor"
-                 viewBox="0 0 20 20">
-              <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
-            </svg>
-            Last compiled on {{ daily_records.date }}
-          </li>
-        </ul>
-      </div>
-      <div class="grid grid-cols-1 gap-2 items-stretch">
+      <div class="px-2 lg:flex gap-4 space-y-2  lg:space-y-0 items-center justify-between  w-full">
         <div>
-          <form method="post" action="{% url 'attendance:compile_attendance' %}">
-            {% csrf_token %}
+
+          <p class="flex items-center whitespace-nowrap">
+            <svg class="w-3.5 h-3.5 me-2 text-green-500 dark:text-green-400 flex-shrink-0"
+            aria-hidden="true"
+               xmlns="http://www.w3.org/2000/svg"
+               fill="currentColor"
+               viewBox="0 0 20 20">
+               <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
+              </svg>
+              Last compiled on {{ daily_records.date }}
+            </p>
+          </div>
+        <div class="inline-flex grid-cols-3  sm:grid-cols-6 w-full gap-4 md:mb-1">
+          {% if page %}
+            <div>{% include "attendance/compile/filter.html" %}</div>
+            <div>{% include "attendance/compile/download.html" %}</div>
+            <div>
+              <a href="{% url 'approval:approve_attendance' %}"
+                 class="inline-flex  items-center px-4 py-2 text-sm text-center text-white rounded-lg bg-slate-700 hover:bg-slate-600 focus:ring-4 focus:outline-none focus:ring-slate-300 ">
+                Save
+                <svg class="w-4 h-4 ml-1 text-white"
+                     aria-hidden="true"
+                     xmlns="http://www.w3.org/2000/svg"
+                     width="20"
+                     height="20"
+                     fill="none"
+                     viewBox="0 0 20 20">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 11.917 9.724 16.5 19 7.5" />
+                </svg>
+              </a>
+            </div>
+            <div>
+              <a href="{% url 'attendance:delete_compiled_attendance' %}"
+                 class="inline-flex items-center px-4 py-2 text-sm text-center text-white rounded-lg bg-slate-700 hover:bg-slate-600 focus:ring-4 focus:outline-none focus:ring-slate-300  justify-around">
+                Delete
+                <svg class="w-4 h-4 ml-1 text-white"
+                     aria-hidden="true"
+                     xmlns="http://www.w3.org/2000/svg"
+                     width="20"
+                     height="20"
+                     fill="none"
+                     viewBox="0 0 20 20">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6" />
+                </svg>
+              </a>
+            </div>
+          {% endif %}
+          <div>
             <a href="{% url 'attendance:compile_attendance' %}"
                class="inline-flex items-center px-4 py-2 text-sm text-center text-white rounded-lg bg-slate-700 hover:bg-slate-600 focus:ring-4 focus:outline-none focus:ring-slate-300 ">
               Compile
             </a>
-            {{ compile_date }}
-          </form>
+          </div>
         </div>
-        <div>{% include "attendance/compile/filter.html" %}</div>
       </div>
     </div>
     <table class="text-sm text-left text-slate-900 w-full table-auto">

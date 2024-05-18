@@ -24,4 +24,9 @@ urlpatterns = [
     path("get_raw_data", views.get_raw_data, name="get_raw_data"),
     path("raw_attendance_list", views.raw_attendance_list, name="raw_attendance"),
     path("download_attendance", views.download_attendance, name="download_attendance"),
+    path(
+        "download_compiled_attendance",
+        views.download_compiled_attendance,
+        name="download_compiled_attendance",
+    ),
 ]
