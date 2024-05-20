@@ -2,6 +2,7 @@ import pyodbc
 from datetime import date, datetime, timedelta, time
 from django.db import models
 from django.urls import reverse
+from decouple import config
 
 
 class Department(models.Model):
@@ -17,7 +18,14 @@ class Department(models.Model):
     try:
 
         def sync_department(self):
-            connection = "DRIVER={ODBC Driver 18 for SQL Server};SERVER=172.16.18.23;DATABASE=QualabelsProd_2022_23;TrustServerCertificate=yes;UID=QA;PWD=@F3rdinand1upe"
+            server = config("NAV_SERVER")
+            database = config("NAV_SERVER_DATABASE")
+            uid = config("NAV_SERVER_UID")
+            password = config("NAV_SERVER_PASSWORD")
+            connection = (
+                "DRIVER={ODBC Driver 18 for SQL Server};"
+                + f"SERVER={server};DATABASE={database};TrustServerCertificate=yes;UID={uid};PWD={password}"
+            )
             # connection = "DRIVER={ODBC Driver 18 for SQL Server};SERVER=172.16.18.23;DATABASE=QualabelsProd_2022_23;TrustServerCertificate=yes;Trusted_Connection=yes"
             conn = pyodbc.connect(connection)
 
@@ -91,7 +99,14 @@ class Employee(models.Model):
         return reverse("employee:employee_detail", args={self.id})
 
     def sync_employee(self):
-        connection = "DRIVER={ODBC Driver 18 for SQL Server};SERVER=172.16.18.23;DATABASE=QualabelsProd_2022_23;TrustServerCertificate=yes;UID=QA;PWD=@F3rdinand1upe"
+        server = config("NAV_SERVER")
+        database = config("NAV_SERVER_DATABASE")
+        uid = config("NAV_SERVER_UID")
+        password = config("NAV_SERVER_PASSWORD")
+        connection = (
+            "DRIVER={ODBC Driver 18 for SQL Server};"
+            + f"SERVER={server};DATABASE={database};TrustServerCertificate=yes;UID={uid};PWD={password}"
+        )
         conn = pyodbc.connect(connection)
         if conn:
             print("successful")
