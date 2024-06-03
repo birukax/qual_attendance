@@ -60,8 +60,11 @@ class CreateLeaveForm(forms.ModelForm):
 
         if employee:
             active_leave = employee.leaves.filter(
-                Q(start_date__gte=start_date, end_date__lte=start_date),
-                Q(start_date__gte=end_date, end_date__lte=end_date),
+                Q(
+                    Q(start_date__lte=start_date, end_date__gte=start_date)
+                    or Q(start_date__lte=end_date, end_date__gte=end_date)
+                ),
+                Q(Q(approved=True) or Q(rejected=False)),
             )
             if active_leave:
                 raise ValidationError(
@@ -76,7 +79,6 @@ class CreateLeaveForm(forms.ModelForm):
             )
             if half_day:
                 total_days = total_days - timedelta(hours=12)
-            print(total_days)
             if start_date > end_date:
                 raise ValidationError(_("Start Date cannot be greater than End Date."))
 

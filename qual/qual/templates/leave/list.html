@@ -16,6 +16,7 @@
             <th scope="col" class="p-4">Start Date</th>
             <th scope="col" class="p-4">End Date</th>
             <th scope="col" class="p-4">Half day</th>
+            <th scope="col" class="p-4">Status</th>
             <th scope="col" class="p-4 text-right">Actions</th>
           </tr>
         </thead>
@@ -27,6 +28,15 @@
               <td class="p-4 whitespace-nowrap">{{ leave.start_date }}</td>
               <td class="p-4 whitespace-nowrap">{{ leave.end_date }}</td>
               <td class="p-4">{{ leave.half_day }}</td>
+              <td class="p-4 whitespace-nowrap">
+                {% if leave.approved %}
+                  Approved
+                {% elif not leave.approved and not leave.rejected %}
+                  Pending
+                {% else %}
+                  Rejected
+                {% endif %}
+              </td>
               <td class="p-4 text-right">
                 <a href="{{ leave.get_absolute_url }}"
                    class="font-semibold text-slate-800 hover:underline">Detail</a>

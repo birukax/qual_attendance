@@ -10,6 +10,8 @@ class LeaveAdmin(admin.ModelAdmin):
         "half_day",
         "start_date",
         "end_date",
+        "approved",
+        "rejected",
     ]
     search_fields = ["employee__name"]
     list_per_page = 15
