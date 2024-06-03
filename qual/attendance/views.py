@@ -158,13 +158,16 @@ def compile_attendance(request):
     else:
         date = datetime.date.today() - datetime.timedelta(days=1)
     try:
-        compile(
-            date=date,
-            employees=None,
-            pattern=None,
-            recompiled=False,
-            request_device=request_device,
-        )
+        if date > datetime.date.today():
+            pass
+        else:
+            compile(
+                date=date,
+                employees=None,
+                pattern=None,
+                recompiled=False,
+                request_device=request_device,
+            )
     except Exception as e:
         print(e)
     return redirect("attendance:compile_view")

@@ -453,6 +453,8 @@ def compile(date, employees, request_device, pattern, recompiled):
 
 def save_data(request, date):
     request_device = request.user.profile.device
+    if date >= datetime.today():
+        return False
     attendances = Attendance.objects.filter(
         approved=False,
         deleted=False,
@@ -463,6 +465,7 @@ def save_data(request, date):
     shifts = Shift.objects.filter(device=request_device)
     try:
         for attendance in attendances:
+
             attendance.approved = True
             attendance.approved_by = request.user
             attendance.save()
