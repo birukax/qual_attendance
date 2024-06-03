@@ -1,10 +1,10 @@
 {% extends "_base.html" %}
 {% block content %}
-  <div class="py-4 px-8 bg-white rounded-lg shadow-md w-full">
+  <div class="p-8 bg-white rounded-lg shadow-md max-w-screen-md mx-auto">
     <div class="flex justify-between">
       <div>
         <a href="{% url 'leave:leaves' %}" class="mx-2">
-          <svg class="w-6 h-6 text-slate-800 "
+          <svg class="w-8 h-8 text-slate-800 "
                aria-hidden="true"
                xmlns="http://www.w3.org/2000/svg"
                width="24"
@@ -16,10 +16,10 @@
         </a>
       </div>
       <div class="flex items-center justify-between mb-1">
-        <h5 class="text-2xl font-extrabold leading-none underline text-slate-800">Leave detail</h5>
+        <h5 class="text-3xl font-bold leading-relaxed text-slate-800">Leave detail</h5>
         {% if leave.evidence %}
           <a href="#"
-             class="text-sm font-medium text-blue-600 hover:underline dark:text-blue-500">Download Evidence</a>
+             class="text-sm font-medium text-slate-600 hover:underline ">Download Evidence</a>
         {% endif %}
       </div>
     </div>
@@ -36,11 +36,11 @@
       </div>
       <div class="flex-row font-normal text-slate-800">
         <div class="flex justify-between mb-1">
-          <span class="mr-2 uppercase ">Employee ID:</span>
+          <span class="mr-2 capitalize">Employee Id:</span>
           <p class="font-semibold">{{ leave.employee.employee_id }}</p>
         </div>
         <div class="flex justify-between mb-1">
-          <span class="mr-2 uppercase ">Shift:</span>
+          <span class="mr-2 capitalize ">Shift:</span>
           <p class="font-semibold">{{ leave.employee.shift }}</p>
         </div>
       </div>

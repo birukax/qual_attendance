@@ -1,6 +1,6 @@
 {% extends "_base.html" %}
 {% block content %}
-  <div class="px-4  bg-white w-full rounded-lg shadow ">
+  <div class="px-4  bg-white rounded-lg shadow max-w-screen-md mx-auto">
     <div class="p-4  bg-white ">
       <div class="flex items-center gap-2 justify-between">
         <a href="{% url 'overtime:overtime_types' %}" class="">
@@ -56,25 +56,25 @@
       <table class="overflow-x-auto text-sm text-left text-slate-900 table-auto w-full">
         <thead class="text-slate-900 uppercase bg-slate-100 text-xs">
           <tr>
-            <th scope="col" class="px-2 py-2 text-sm whitespace-nowrap">Employee</th>
-            <th scope="col" class="px-2 py-2 text-sm whitespace-nowrap">Start date</th>
+            <th scope="col" class="p-3 text-sm whitespace-nowrap">Employee</th>
+            <th scope="col" class="p-3 text-sm whitespace-nowrap">Start date</th>
             <th scope="col" class="px-1 py-1 text-sm whitespace-nowrap">Start time</th>
-            <th scope="col" class="px-2 py-2 text-sm whitespace-nowrap">End date</th>
-            <th scope="col" class="px-1 py-1 text-sm whitespace-nowrap">End time</th>
-            <th scope="col" class="px-1 py-1 text-sm whitespace-nowrap">Units</th>
-            <th scope="col" class="px-2 py-2 text-sm whitespace-nowrap text-right">Action</th>
+            <th scope="col" class="p-3 text-sm whitespace-nowrap">End date</th>
+            <th scope="col" class="p-1  text-sm whitespace-nowrap">End time</th>
+            <th scope="col" class="p-1  text-sm whitespace-nowrap">Units</th>
+            <th scope="col" class="p-3 text-sm whitespace-nowrap text-right">Action</th>
           </tr>
         </thead>
         <tbody>
           {% for ot in page %}
             <tr class="bg-white border-b hover:bg-slate-50">
-              <td class="px-2 py-2 font-semibold whitespace-nowrap">{{ ot.employee.name }}</td>
-              <td class="px-2 py-2 whitespace-nowrap">{{ ot.start_date }}</td>
-              <td class="px-2 py-2 whitespace-nowrap">{{ ot.start_time }}</td>
-              <td class="px-2 py-2 whitespace-nowrap">{{ ot.end_date }}</td>
-              <td class="px-2 py-2 whitespace-nowrap">{{ ot.end_time }}</td>
-              <td class="px-2 py-2 whitespace-nowrap">{{ ot.units_worked }}</td>
-              <td class="px-2 py-2 whitespace-nowrap text-right">
+              <td class="p-3 font-semibold whitespace-nowrap">{{ ot.employee.name }}</td>
+              <td class="p-3 whitespace-nowrap">{{ ot.start_date }}</td>
+              <td class="p-3 whitespace-nowrap">{{ ot.start_time }}</td>
+              <td class="p-3 whitespace-nowrap">{{ ot.end_date }}</td>
+              <td class="p-3 whitespace-nowrap">{{ ot.end_time }}</td>
+              <td class="p-3 whitespace-nowrap">{{ ot.units_worked }}</td>
+              <td class="p-3 whitespace-nowrap text-right">
                 <a href="{{ ot.overtime.get_absolute_url }}"
                    class="font-semibold text-slate-900  hover:underline">Detail</a>
               </td>

@@ -10,26 +10,26 @@
         <table class=" text-sm text-left w-full table-auto text-slate-900">
             <thead class="text-xs uppercase  bg-slate-100">
                 <tr>
-                    <th scope="col" class="p-2">Name</th>
-                    <th scope="col" class="p-2">Next pattern</th>
-                    <th scope="col" class="p-2">Start time</th>
-                    <th scope="col" class="p-2">End time</th>
-                    <th scope="col" class="p-2">Tolerance</th>
-                    <th scope="col" class="p-2">Day span</th>
-                    {% if user_role == "ADMIN" or user_role == 'HR' %}<th scope="col" class="p-2 text-right">Action</th>{% endif %}
+                    <th scope="col" class="p-4">Name</th>
+                    <th scope="col" class="p-4">Next pattern</th>
+                    <th scope="col" class="p-4">Start time</th>
+                    <th scope="col" class="p-4">End time</th>
+                    <th scope="col" class="p-4">Tolerance</th>
+                    <th scope="col" class="p-4">Day span</th>
+                    {% if user_role == "ADMIN" or user_role == 'HR' %}<th scope="col" class="p-4 text-right">Action</th>{% endif %}
                 </tr>
             </thead>
             <tbody>
                 {% for pattern in page %}
                     <tr class="bg-white border-b hover:bg-gray-50 ">
-                        <td class="p-2">{{ pattern.name }}</td>
-                        <td class="p-2">{{ pattern.next }}</td>
-                        <td class="p-2">{{ pattern.start_time }}</td>
-                        <td class="p-2">{{ pattern.end_time }}</td>
-                        <td class="p-2">{{ pattern.tolerance }}</td>
-                        <td class="p-2">{{ pattern.day_span }}</td>
+                        <td class="p-4">{{ pattern.name }}</td>
+                        <td class="p-4">{{ pattern.next }}</td>
+                        <td class="p-4">{{ pattern.start_time }}</td>
+                        <td class="p-4">{{ pattern.end_time }}</td>
+                        <td class="p-4">{{ pattern.tolerance }}</td>
+                        <td class="p-4">{{ pattern.day_span }}</td>
                         {% if user_role == "ADMIN" or user_role == 'HR' %}
-                            <td class="p-2 text-right">
+                            <td class="p-4 text-right">
                                 <a href="{% url 'shift:edit_pattern' pattern.id %}"
                                    class="font-semibold text-slate-900  hover:underline">Edit</a>
                             </td>
@@ -41,7 +41,7 @@
         {% if page %}
             {% include "pagination.html" %}
         {% else %}
-            <p class="p-2 ml-2 text-lg">No pattern record.</p>
+            <p class="p-4 ml-2 text-lg">No pattern record.</p>
         {% endif %}
     </div>
 {% endblock content %}

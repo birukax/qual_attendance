@@ -4,27 +4,27 @@
         <table class="overflow-x-auto text-sm text-left w-full table-auto">
             <thead class="text-xs uppercase  bg-slate-100">
                 <tr>
-                    <th scope="col" class="p-2">Employee</th>
-                    <th scope="col" class="p-2">Ot type</th>
-                    <th scope="col" class="p-2">PIC</th>
-                    <th scope="col" class="p-2">Date</th>
-                    <th scope="col" class="p-2">Start time</th>
-                    <th scope="col" class="p-2">End time</th>
-                    <th scope="col" class="p-2">Units</th>
-                    <th scope="col" class="p-2">Paid</th>
+                    <th scope="col" class="p-4">Employee</th>
+                    <th scope="col" class="p-4">Ot type</th>
+                    <th scope="col" class="p-4">PIC</th>
+                    <th scope="col" class="p-4">Date</th>
+                    <th scope="col" class="p-4">Start time</th>
+                    <th scope="col" class="p-4">End time</th>
+                    <th scope="col" class="p-4">Units</th>
+                    <th scope="col" class="p-4">Paid</th>
                 </tr>
             </thead>
             <tbody>
                 {% for ot in page %}
                     <tr class="bg-white border-b hover:bg-slate-50 ">
-                        <td class="p-2">{{ ot.employee.name }}</td>
-                        <td class="p-2">{{ ot.overtime_type }}</td>
-                        <td class="p-2">{{ ot.overtime_type.pay_item_code }}</td>
-                        <td class="p-2">{{ ot.start_date }}</td>
-                        <td class="p-2">{{ ot.start_time }}</td>
-                        <td class="p-2">{{ ot.end_time }}</td>
-                        <td class="p-2">{{ ot.units_worked }}</td>
-                        <td class="p-2">{{ ot.paid }}</td>
+                        <td class="p-4">{{ ot.employee.name }}</td>
+                        <td class="p-4">{{ ot.overtime_type }}</td>
+                        <td class="p-4">{{ ot.overtime_type.pay_item_code }}</td>
+                        <td class="p-4">{{ ot.start_date }}</td>
+                        <td class="p-4">{{ ot.start_time }}</td>
+                        <td class="p-4">{{ ot.end_time }}</td>
+                        <td class="p-4">{{ ot.units_worked }}</td>
+                        <td class="p-4">{{ ot.paid }}</td>
                     </tr>
                 {% endfor %}
             </tbody>
@@ -32,7 +32,7 @@
         {% if page %}
             {% include "pagination.html" %}
         {% else %}
-            <p class="p-2 ml-2 text-lg">No ot record.</p>
+            <p class="p-4 ml-2 text-lg">No ot record.</p>
         {% endif %}
     </div>
 {% endblock content %}

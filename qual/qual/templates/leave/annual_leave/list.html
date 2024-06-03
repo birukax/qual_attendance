@@ -13,25 +13,25 @@
       <table class="table-auto w-full text-sm text-left ">
         <thead class="text-xs uppercase text-slate-900 bg-slate-100">
           <tr>
-            <th scope="col" class="p-2">ID</th>
-            <th scope="col" class="p-2">Employee</th>
-            <th scope="col" class="p-2">Start</th>
-            <th scope="col" class="p-2">balance</th>
-            <th scope="col" class="p-2">taken</th>
-            <th scope="col" class="p-2">difference</th>
-            <th scope="col" class="p-2">remaining</th>
+            <th scope="col" class="p-4">ID</th>
+            <th scope="col" class="p-4">Employee</th>
+            <th scope="col" class="p-4">Start</th>
+            <th scope="col" class="p-4">balance</th>
+            <th scope="col" class="p-4">taken</th>
+            <th scope="col" class="p-4">difference</th>
+            <th scope="col" class="p-4">remaining</th>
           </tr>
         </thead>
         <tbody>
           {% for e in page %}
             <tr class="bg-white border-b hover:bg-slate-50">
-              <td class="p-2 whitespace-nowrap">{{ e.employee_id }}</td>
-              <td class="p-2 whitespace-nowrap lowercase first-letter:capitalize">{{ e.name }}</td>
-              <td class="p-2 whitespace-nowrap">{{ e.employment_date }}</td>
-              <td class="p-2 whitespace-nowrap">{{ e.annual_leave_balance }}</td>
-              <td class="p-2 whitespace-nowrap">{{ e.annual_leave_taken }}</td>
-              <td class="p-2 whitespace-nowrap">{{ e.annual_leave_difference }}</td>
-              <td class="p-2">{{ e.annual_leave_remaining }}</td>
+              <td class="p-4 whitespace-nowrap">{{ e.employee_id }}</td>
+              <td class="p-4 whitespace-nowrap lowercase first-letter:capitalize">{{ e.name }}</td>
+              <td class="p-4 whitespace-nowrap">{{ e.employment_date }}</td>
+              <td class="p-4 whitespace-nowrap">{{ e.annual_leave_balance }}</td>
+              <td class="p-4 whitespace-nowrap">{{ e.annual_leave_taken }}</td>
+              <td class="p-4 whitespace-nowrap">{{ e.annual_leave_difference }}</td>
+              <td class="p-4">{{ e.annual_leave_remaining }}</td>
               <!-- <td class="px-2 py-4 text-right">
             <a href="{{ e.get_absolute_url }}" class="font-medium text-blue-800 dark:text-blue-500 hover:underline">Detail</a>
           </td> -->

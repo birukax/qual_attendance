@@ -11,23 +11,23 @@
       <table class="text-sm text-left text-slate-900 table-auto w-full">
         <thead class="text-xs uppercase bg-slate-100">
           <tr>
-            <th scope="col" class="p-2">Employee</th>
-            <th scope="col" class="p-2">Leave Type</th>
-            <th scope="col" class="p-2">Start Date</th>
-            <th scope="col" class="p-2">End Date</th>
-            <th scope="col" class="p-2">Half day</th>
-            <th scope="col" class="p-2 text-right">Actions</th>
+            <th scope="col" class="p-4">Employee</th>
+            <th scope="col" class="p-4">Leave Type</th>
+            <th scope="col" class="p-4">Start Date</th>
+            <th scope="col" class="p-4">End Date</th>
+            <th scope="col" class="p-4">Half day</th>
+            <th scope="col" class="p-4 text-right">Actions</th>
           </tr>
         </thead>
         <tbody>
           {% for leave in page %}
             <tr class="bg-white border-b hover:bg-slate-50">
-              <td class="p-2 whitespace-nowrap">{{ leave.employee.name }}</td>
-              <th class="p-2 font-medium text-slate-900 whitespace-nowrap dark:text-white">{{ leave.leave_type }}</th>
-              <td class="p-2 whitespace-nowrap">{{ leave.start_date }}</td>
-              <td class="p-2 whitespace-nowrap">{{ leave.end_date }}</td>
-              <td class="p-2">{{ leave.half_day }}</td>
-              <td class="p-2 text-right">
+              <td class="p-4 whitespace-nowrap">{{ leave.employee.name }}</td>
+              <th class="p-4 font-medium text-slate-900 whitespace-nowrap dark:text-white">{{ leave.leave_type }}</th>
+              <td class="p-4 whitespace-nowrap">{{ leave.start_date }}</td>
+              <td class="p-4 whitespace-nowrap">{{ leave.end_date }}</td>
+              <td class="p-4">{{ leave.half_day }}</td>
+              <td class="p-4 text-right">
                 <a href="{{ leave.get_absolute_url }}"
                    class="font-semibold text-slate-800 hover:underline">Detail</a>
               </td>
