@@ -41,6 +41,16 @@ def create_ots(id):
             end=end,
         )
         ot.save()
+    elif overtime.start_date.isoweekday() == 7:
+        ot = Ot(
+            start_date=overtime.start_date,
+            end_date=overtime.end_date,
+            employee=overtime.employee,
+            start_time=overtime.start_time,
+            end_time=overtime.end_time,
+            overtime_type=OvertimeType.objects.filter(pay_item_code="OTW").first(),
+            overtime=overtime,
+        )
     else:
         for ot_type in ot_types:
             if ot_type.day_span == 2 and overtime.start_date < overtime.end_date:
