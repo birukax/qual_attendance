@@ -19,12 +19,11 @@ from .filters import (
     RawAttendanceFilter,
 )
 from device.forms import CreateDeviceForm
-import datetime
+from datetime import date, timedelta, datetime
 from .tasks import save_recompiled, sync_raw_attendance, compile
 from .forms import RecompileForm, EmployeesForm
 from django.db.models import F, Count
 from django.contrib.auth.decorators import user_passes_test
-import datetime
 
 
 @login_required
@@ -42,7 +41,7 @@ def dashboard(request):
         + holidays.filter(approved=False, rejected=False).count()
     )
 
-    start = datetime.datetime.now().date() - datetime.timedelta(days=30)
+    start = datetime.now().date() - timedelta(days=30)
     most_absents = (
         employees.filter(
             attendances__status="Absent", attendances__check_in_date__gte=start
@@ -154,11 +153,11 @@ def compile_attendance(request):
     if DailyRecord.objects.filter(device=request_device).exists():
         date = DailyRecord.objects.filter(device=request_device).latest(
             "date"
-        ).date + datetime.timedelta(days=1)
+        ).date + timedelta(days=1)
     else:
-        date = datetime.date.today() - datetime.timedelta(days=1)
+        date = date.today() - timedelta(days=1)
     try:
-        if date > datetime.date.today():
+        if date > date.today():
             pass
         else:
             compile(

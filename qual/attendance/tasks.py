@@ -3,13 +3,11 @@ from celery import shared_task
 from .models import RawAttendance, Attendance, DailyRecord
 from device.models import Device
 from employee.models import Employee
-import datetime
 from zk import ZK
 from leave.models import Leave
 from holiday.models import Holiday
-from datetime import date, datetime, timedelta, time
 from shift.models import Shift, Pattern
-
+import datetime
 
 @shared_task
 def sync_raw_attendance(request_device=None):
@@ -59,7 +57,7 @@ def sync_raw_attendance(request_device=None):
         print("syncing attendance...")
         for attendance in attendances:
             # for attendance in attendances[count_attendance:]:
-            if not attendance.timestamp < datetime(2024, 1, 1):
+            if not attendance.timestamp < datetime.datetime(2024, 1, 1):
                 sync(attendance, device)
         print("Sync successful..")
 
@@ -80,14 +78,14 @@ def create_attendance(**kwargs):
             emp = kwargs["employee"]
 
             if kwargs["check_in_time"]:
-                inn = datetime.combine(kwargs["check_in_date"], kwargs["check_in_time"])
-                expected = datetime.combine(
+                inn = datetime.datetime.combine(kwargs["check_in_date"], kwargs["check_in_time"])
+                expected = datetime.datetime.combine(
                     kwargs["check_in_date"], emp.shift.current_pattern.start_time
                 )
-                early_expected = expected - timedelta(
+                early_expected = expected - datetime.timedelta(
                     minutes=emp.shift.current_pattern.tolerance
                 )
-                late_expected = expected + timedelta(
+                late_expected = expected + datetime.timedelta(
                     minutes=emp.shift.current_pattern.tolerance
                 )
                 if inn < early_expected:
@@ -102,16 +100,16 @@ def create_attendance(**kwargs):
         try:
             emp = kwargs["employee"]
             if kwargs["check_out_time"]:
-                outt = datetime.combine(
+                outt = datetime.datetime.combine(
                     kwargs["check_out_date"], kwargs["check_out_time"]
                 )
-                expected = datetime.combine(
+                expected = datetime.datetime.combine(
                     kwargs["check_out_date"], emp.shift.current_pattern.end_time
                 )
-                early_expected = expected - timedelta(
+                early_expected = expected - datetime.timedelta(
                     minutes=emp.shift.current_pattern.tolerance
                 )
-                late_expected = expected + timedelta(
+                late_expected = expected + datetime.timedelta(
                     minutes=emp.shift.current_pattern.tolerance
                 )
                 if outt < early_expected:
@@ -125,10 +123,10 @@ def create_attendance(**kwargs):
 
         try:
             if kwargs["check_in_date"] and kwargs["check_out_date"]:
-                c_in = datetime.combine(
+                c_in = datetime.datetime.combine(
                     kwargs["check_in_date"], kwargs["check_in_time"]
                 )
-                c_out = datetime.combine(
+                c_out = datetime.datetime.combine(
                     kwargs["check_out_date"], kwargs["check_out_time"]
                 )
                 worked_hours = c_out - c_in
@@ -214,24 +212,24 @@ def compile(date, employees, request_device, pattern, recompiled):
                         )
 
                     elif attendance:
-                        attendance_first = datetime.combine(
+                        attendance_first = datetime.datetime.combine(
                             attendance.first().date, attendance.first().time
                         )
-                        attendance_last = datetime.combine(
+                        attendance_last = datetime.datetime.combine(
                             attendance.last().date, attendance.last().time
                         )
                         check_out = RawAttendance.objects.filter(
-                            date=date + timedelta(days=1),
-                            time__lt=time(hour=9, minute=0),
+                            date=date + datetime.timedelta(days=1),
+                            time__lt=datetime.time(hour=9, minute=0),
                             employee=employee,
                         ).order_by("time")
                         if attendance.count() == 1 or (
                             attendance.count() >= 2
-                            and attendance_last - attendance_first < timedelta(hours=1)
+                            and attendance_last - attendance_first < datetime.timedelta(hours=1)
                         ):
                             if current_pattern.day_span == 2 and check_out:
                                 attendance = attendance.filter(
-                                    time__gt=time(hour=9, minute=0)
+                                    time__gt=datetime.time(hour=9, minute=0)
                                 )
                                 if attendance:
                                     # print(3)
@@ -269,7 +267,7 @@ def compile(date, employees, request_device, pattern, recompiled):
                                 )
                         elif (
                             attendance.count() >= 2
-                            and attendance_last - attendance_first > timedelta(hours=1)
+                            and attendance_last - attendance_first > datetime.timedelta(hours=1)
                         ):
                             if current_pattern.day_span == 1:
                                 # print(5)
@@ -341,26 +339,26 @@ def compile(date, employees, request_device, pattern, recompiled):
                             status="Day Off",
                         )
                     elif attendance:
-                        attendance_first = datetime.combine(
+                        attendance_first = datetime.datetime.combine(
                             attendance.first().date, attendance.first().time
                         )
-                        attendance_last = datetime.combine(
+                        attendance_last = datetime.datetime.combine(
                             attendance.last().date, attendance.last().time
                         )
-                        next_day = date + timedelta(days=1)
+                        next_day = date + datetime.timedelta(days=1)
                         check_out = RawAttendance.objects.filter(
                             employee=employee,
                             date=next_day,
-                            time__lt=time(hour=10, minute=0),
+                            time__lt=datetime.time(hour=10, minute=0),
                         ).order_by("time")
                         if attendance.count() == 1 or (
                             attendance.count() >= 2
-                            and attendance_last - attendance_first < timedelta(hours=1)
+                            and attendance_last - attendance_first < datetime.timedelta(hours=1)
                         ):
 
                             if check_out:
                                 attendance = attendance.filter(
-                                    time__lt=time(hour=10, minute=0)
+                                    time__lt=datetime.time(hour=10, minute=0)
                                 )
                                 # print(11)
                                 if attendance:
@@ -396,7 +394,7 @@ def compile(date, employees, request_device, pattern, recompiled):
                                     check_in_time=attendance.first().time,
                                 )
                         elif attendance.count() >= 2 and (
-                            attendance_last - attendance_first > timedelta(hours=1)
+                            attendance_last - attendance_first > datetime.timedelta(hours=1)
                         ):
                             if current_pattern.day_span == 2 and check_out:
                                 # print(13)
@@ -453,7 +451,7 @@ def compile(date, employees, request_device, pattern, recompiled):
 
 def save_data(request, date):
     request_device = request.user.profile.device
-    if date >= datetime.today():
+    if date >= datetime.date.today():
         return False
     attendances = Attendance.objects.filter(
         approved=False,
