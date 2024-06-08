@@ -2,29 +2,18 @@
 {% block content %}
   <div class=" w-full border rounded-t-lg shadow border-slate-200 py-4 px-8 bg-white">
     <div class=" bg-white ">
-      <div class="flex items-center justify-between">
-        <a href="{% url 'leave:leave_types' %}" class="">
-          <svg class="w-6 h-6 text-slate-800 dark:text-white"
-               aria-hidden="true"
-               xmlns="http://www.w3.org/2000/svg"
-               width="24"
-               height="24"
-               fill="none"
-               viewBox="0 0 24 24">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 19-7-7 7-7" />
-          </svg>
-        </a>
-        <h5 class="mb-2 text-xl font-bold uppercase text-slate-800">Leave type detail</h5>
+      <div class="flex items-center justify-end">
+        <h5 class="mb-2 text-xl font-semibold text-slate-700 capitalize leading-relaxed">Leave type detail</h5>
       </div>
       <div class="flex items-center justify-between mb-2">
-        <h5 class="mb-2 text-xl font-bold uppercase text-slate-800">{{ leave_type.name }}</h5>
-        <svg class="w-12 h-12 transition duration-75 text-slate-800 "
+        <svg class="w-16 h-16 text-slate-800 "
              aria-hidden="true"
              xmlns="http://www.w3.org/2000/svg"
              fill="currentColor"
-             viewBox="0 0 20 20">
+             viewBox="0 0 24 24">
           <path fill-rule="evenodd" d="M5 5c.6 0 1-.4 1-1a1 1 0 1 1 2 0c0 .6.4 1 1 1h1c.6 0 1-.4 1-1a1 1 0 1 1 2 0c0 .6.4 1 1 1h1c.6 0 1-.4 1-1a1 1 0 1 1 2 0c0 .6.4 1 1 1a2 2 0 0 1 2 2v1c0 .6-.4 1-1 1H4a1 1 0 0 1-1-1V7c0-1.1.9-2 2-2ZM3 19v-7c0-.6.4-1 1-1h16c.6 0 1 .4 1 1v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Zm6-6c0-.6-.4-1-1-1a1 1 0 1 0 0 2c.6 0 1-.4 1-1Zm2 0a1 1 0 1 1 2 0c0 .6-.4 1-1 1a1 1 0 0 1-1-1Zm6 0c0-.6-.4-1-1-1a1 1 0 1 0 0 2c.6 0 1-.4 1-1ZM7 17a1 1 0 1 1 2 0c0 .6-.4 1-1 1a1 1 0 0 1-1-1Zm6 0c0-.6-.4-1-1-1a1 1 0 1 0 0 2c.6 0 1-.4 1-1Zm2 0a1 1 0 1 1 2 0c0 .6-.4 1-1 1a1 1 0 0 1-1-1Z" clip-rule="evenodd" />
         </svg>
+        <h5 class="mb-2 text-2xl font-semibold capitalize text-slate-800">{{ leave_type.name }}</h5>
       </div>
       <div class="flex-col my-2 text-slate-900 mx-2">
         <div class="flex justify-between mb-2">

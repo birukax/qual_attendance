@@ -11,28 +11,28 @@ from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test
 from employee.models import Employee
 from employee.filters import EmployeeFilter
-from .filters import AnnualLeaveDownloadFilter
+from .filters import AnnualLeaveDownloadFilter, LeaveDownloadFilter, LeaveFilter
 from openpyxl import Workbook
 
 
 @login_required
-def leave_list(request):
+def leaves(request):
+    context = {}
     user = request.user.profile
     if user.role == "ADMIN" or user.role == "HR":
         leaves = Leave.objects.all().order_by("-start_date")
     else:
         leaves = Leave.objects.filter(employee__department__in=user.manages.all())
+    leave_filter = LeaveFilter(request.GET, queryset=leaves)
+    leaves = leave_filter.qs
+
     paginated = Paginator(leaves, 30)
     page_number = request.GET.get("page")
-
     page = paginated.get_page(page_number)
-    return render(
-        request,
-        "leave/list.html",
-        {
-            "page": page,
-        },
-    )
+    context["page"] = page
+    context["leave_filter"] = leave_filter
+
+    return render(request, "leave/list.html", context)
 
 
 @login_required

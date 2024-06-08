@@ -4,23 +4,23 @@
     <div class="mb-2">{% include "overtime/overtime_type/create.html" %}</div>
     <div>
       <table class="overflow-x-auto text-left text-slate-900 table-auto w-full text-sm ">
-        <thead class="text-slate-900 uppercase bg-slate-50 text-xs">
+        <thead class="text-slate-900 uppercase bg-slate-200 text-xs">
           <tr>
-            <th scope="col" class="p-4">Name</th>
-            <th scope="col" class="p-4">Pay item code</th>
-            <th scope="col" class="p-4">Days</th>
-            <th scope="col" class="p-4">OTs</th>
-            <th scope="col" class="p-4 text-right">Actions</th>
+            <th scope="col" class="p-3">Name</th>
+            <th scope="col" class="p-3">Pay item code</th>
+            <th scope="col" class="p-3">Days</th>
+            <th scope="col" class="p-3">OTs</th>
+            <th scope="col" class="p-3 text-right">Actions</th>
           </tr>
         </thead>
         <tbody>
           {% for ott in page %}
-            <tr class="bg-white text-slate-900 hover:bg-slate-50 font-semibold border-b">
-              <td class="p-4">{{ ott.name }}</td>
-              <td class="p-4">{{ ott.pay_item_code }}</td>
-              <td class="p-4">{{ ott.days.count }}</td>
-              <td class="p-4">{{ ott.ots.count }}</td>
-              <td class="p-4 text-right">
+            <tr class=" text-slate-950 hover:bg-slate-50 border-b">
+              <td class="p-3">{{ ott.name }}</td>
+              <td class="p-3 text-sm">{{ ott.pay_item_code }}</td>
+              <td class="p-3">{{ ott.days.count }}</td>
+              <td class="p-3">{{ ott.ots.count }}</td>
+              <td class="p-3 text-right">
                 <a href="{{ ott.get_absolute_url }}"
                    class="text-slate-900 font-semibold hover:underline">Detail</a>
               </td>

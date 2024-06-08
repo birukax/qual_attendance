@@ -8,6 +8,7 @@ class LeaveAdmin(admin.ModelAdmin):
         "employee",
         "leave_type",
         "half_day",
+        "active",
         "start_date",
         "end_date",
         "approved",

@@ -4,7 +4,7 @@ from . import views
 app_name = "leave"
 
 urlpatterns = [
-    path("leaves/", views.leave_list, name="leaves"),
+    path("leaves/", views.leaves, name="leaves"),
     path("annual_leaves/", views.annual_leave_list, name="annual_leaves"),
     path("create/", views.create_leave, name="create_leave"),
     path("calculate/", views.calculate_leave_balance, name="calculate_leave_balance"),

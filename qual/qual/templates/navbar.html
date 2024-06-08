@@ -62,8 +62,16 @@
                             {% include "nav/approval.html" %}
                         {% elif url_name == "leaves" or url_name == "leave_types" or url_name == "annual_leaves" %}
                             {% include "nav/leave.html" %}
+                        {% elif url_name == "leave_detail" %}
+                            {% include "nav/leave_detail.html" %}
+                        {% elif url_name == "leave_type_detail" %}
+                            {% include "nav/leave_type_detail.html" %}
                         {% elif url_name == "overtimes" or url_name == "overtime_types" or url_name == "ots" or url_name == "calculate_ots" %}
                             {% include "nav/overtime.html" %}
+                        {% elif url_name == "overtime_detail" %}
+                            {% include "nav/overtime_detail.html" %}
+                        {% elif url_name == "overtime_type_detail" %}
+                            {% include "nav/overtime_type_detail.html" %}
                         {% elif url_name == "shifts" or url_name == "select_employees" %}
                             {% include "nav/shift.html" %}
                         {% elif url_name == "shift_detail" or url_name == "shift_employees" or url_name == "shift_patterns" %}

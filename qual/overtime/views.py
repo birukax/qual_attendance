@@ -10,7 +10,7 @@ from .tasks import calculate_ot, post_ot
 from urllib.parse import quote
 from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test
-from .filters import OvertimeDownloadFilter
+from .filters import OvertimeDownloadFilter, OvertimeFilter
 from openpyxl import Workbook
 from django.http import HttpResponse
 
@@ -25,7 +25,9 @@ def overtimes(request):
         overtimes = Overtime.objects.filter(
             employee__department__in=user.manages.all()
         ).order_by("-start_date")
+    overtime_filter = OvertimeFilter(request.GET, queryset=overtimes)
     download_filter = OvertimeDownloadFilter(queryset=overtimes)
+    overtimes = overtime_filter.qs
     paginated = Paginator(overtimes, 30)
     page_number = request.GET.get("page")
 
@@ -34,6 +36,7 @@ def overtimes(request):
         "page": page,
         "create_overtime_form": create_overtime_form,
         "download_filter": download_filter,
+        "overtime_filter": overtime_filter,
     }
     return render(request, "overtime/list.html", context)
 

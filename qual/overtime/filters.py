@@ -12,3 +12,14 @@ class OvertimeDownloadFilter(django_filters.FilterSet):
             "paid": ["exact"],
             "rejected": ["exact"],
         }
+
+
+class OvertimeFilter(django_filters.FilterSet):
+    class Meta:
+        model = Overtime
+        fields = {
+            "employee__name": ["icontains"],
+            "paid": ["exact"],
+            "approved": ["exact"],
+            "rejected": ["exact"],
+        }

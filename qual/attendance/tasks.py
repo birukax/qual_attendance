@@ -172,7 +172,12 @@ def compile(date, employees, request_device, pattern, recompiled):
                     current_pattern = Pattern.objects.get(id=pattern)
                 else:
                     current_pattern = employee.shift.current_pattern
-                leave = Leave.objects.filter(employee=employee, active=True)
+                leave = Leave.objects.filter(
+                    employee=employee,
+                    start_date__gte=date,
+                    end_date__lte=date,
+                    approved=True,
+                )
                 holiday = Holiday.objects.filter(date=date, approved=True)
                 # emp_data = Attendance.objects.filter(
                 #     employee=employee, approved=False, deleted=False
@@ -473,12 +478,12 @@ def save_data(request, date):
             emp.last_updated = attendance.check_in_date
             emp.save()
 
-            emp_leave = Leave.objects.filter(employee=emp, active=True)
-            if emp_leave:
-                if emp_leave.first().end_date >= attendance.check_in_date:
-                    e_leave = emp_leave.first()
-                    e_leave.active = False
-                    e_leave.save()
+            emp_leaves = Leave.objects.filter(employee=emp, active=True, approved=True)
+            if emp_leaves:
+                for emp_leave in emp_leaves:
+                    if emp_leave.end_date >= attendance.check_in_date:
+                        emp_leave.active = False
+                        emp_leave.save()
         for shift in shifts:
             if shift.continous:
                 shift.current_pattern = shift.current_pattern.next

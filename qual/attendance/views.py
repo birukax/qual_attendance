@@ -48,7 +48,7 @@ def dashboard(request):
             attendances__status="Absent", attendances__check_in_date__gte=start
         )
         .annotate(absent_count=Count("attendances"))
-        .order_by("-absent_count")[:10]
+        .order_by("-absent_count")[:20]
     )
 
     new_employees = Employee.objects.filter(status="Active").order_by("-employee_id")[
