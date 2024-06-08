@@ -45,9 +45,9 @@
     </dl>
     <div class="xl:flex gap-4 xl:justify-between divide-x border rounded-lg">
       <div class="relative overflow-x-auto shadow sm:rounded-lg w-full  p-2 bg-white border border-slate-200 rounded-lg  sm:p-4">
-        <h5 class="text-lg  leading-none text-slate-900 mb-2">Top absent employees in the last 30 days.</h5>
+        <h5 class="text-base  leading-relaxed text-slate-900 mb-2">Top absents in the last 30 days.</h5>
         <table class="w-full text-sm text-left text-slate-900 overflow-x-auto table-auto">
-          <thead class="text-xs text-slate-800 uppercase bg-slate-100 ">
+          <thead class="text-xs text-slate-800 uppercase bg-slate-100 rounded-lg border-t">
             <tr>
               <th scope="col" class="p-3">Name</th>
               <th scope="col" class="p-3">Department</th>
@@ -57,7 +57,7 @@
           </thead>
           <tbody>
             {% for most_absent in most_absents %}
-              <tr class="bg-white border-b  hover:bg-slate-50 ">
+              <tr class="bg-white border-b  hover:bg-slate-50 text-sm ">
                 <th class="p-3 font-medium text-slate-900 whitespace-nowrap ">{{ most_absent.name }}</th>
                 <td class="p-3">{{ most_absent.department }}</td>
                 <td class="p-3">{{ most_absent.shift }}</td>
@@ -68,15 +68,15 @@
         </table>
       </div>
       <div class="w-full max-w-md p-4 bg-white border border-slate-200 rounded-lg shadow sm:p-8 ">
-        <div class="flex items-center justify-between mb-4 mx-4">
-          <h5 class="text-xl font-bold leading-none text-slate-900 ">Latest Employees</h5>
+        <div class="flex items-center justify-between p-4 bg-slate-100 rounded-lg mt-2">
+          <h5 class="text-xl leading-none text-slate-900 ">Latest Employees</h5>
           <a href="{% url 'employee:employees' %}"
-             class="text-sm font-medium text-blue-600 hover:underline dark:text-blue-500">View all</a>
+             class="text-sm font-medium text-slate-900 underline hover:bg-slate-100 ">View all</a>
         </div>
-        <div class="flow-root bg-slate-100 rounded-lg">
+        <div class="flow-root ">
           <ul role="list" class="divide-y divide-slate-400">
             {% for e in new_employees %}
-              <li class=" hover:bg-slate-200 p-4">
+              <li class=" hover:bg-slate-50 p-3">
                 <a href="{{ e.get_absolute_url }}">
                   <div class="flex items-center">
                     <div class="flex-1 min-w-0 ms-4">

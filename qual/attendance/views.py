@@ -51,7 +51,7 @@ def dashboard(request):
     )
 
     new_employees = Employee.objects.filter(status="Active").order_by("-employee_id")[
-        :5
+        :10
     ]
 
     return render(
