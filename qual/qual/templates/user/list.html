@@ -8,7 +8,7 @@
       </a>
     </div>
     <table class="text-left text-slate-900 table-auto w-full text-sm">
-      <thead class="font-semibold text-slate-900 uppercase bg-white text-xs">
+      <thead class="font-semibold bg-slate-100 text-slate-900 uppercase bg-white text-xs">
         <tr>
           <th scope="col" class="p-2">Username</th>
           <th scope="col" class="p-2">Email</th>
@@ -21,7 +21,7 @@
       </thead>
       <tbody>
         {% for user in page %}
-          <tr class="bg-white border-b">
+          <tr class="bg-white border-b hover:bg-slate-50">
             <th scope="row"
                 class="p-2 font-semibold text-slate-900 whitespace-nowrap dark:text-white">{{ user.username }}</th>
             <td class="p-2">{{ user.email }}</td>
