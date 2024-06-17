@@ -1,9 +1,12 @@
 {% extends "_base.html" %}
 {% block content %}
   <div class="py-4 px-6  bg-white w-slate rounded-lg overflow-x-auto">
-    {% if user_role == "ADMIN" or user_role == 'HR' %}
-      <div class="mb-1">{% include "shift/create.html" %}</div>
-    {% endif %}
+    <div class="flex gap-4 mb-1">
+      {% if user_role == "ADMIN" or user_role == 'HR' %}
+        <div>{% include "shift/create.html" %}</div>
+      {% endif %}
+      <div>{% include "shift/filter.html" %}</div>
+    </div>
     <div>
       <table class="text-sm text-left text-slate-900 w-full table-auto ">
         <thead class="uppercase whitespace-nowrap bg-slate-100 text-xs">

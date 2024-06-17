@@ -298,7 +298,16 @@ def download_attendance(request):
         if attendance.leave_type:
             leave_type = attendance.leave_type.name
         else:
-            leave_type = ""
+            leaves = Leave.objects.filter(
+                employee=attendance.employee,
+                approved=True,
+                start_date__lte=attendance.check_in_date,
+                end_date__gte=attendance.check_in_date,
+            )
+            if leaves:
+                leave_type = leaves.first().leave_type.name
+            else:
+                leave_type = ""
 
         ws.append(
             [

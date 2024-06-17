@@ -4,9 +4,6 @@
     <div class="flex justify-end">
       <div class="flex items-center justify-between mb-1">
         <h5 class="text-xl font-semibold leading-relaxed text-slate-700 capitalize">Leave detail</h5>
-        <!-- {% if leave.evidence %}
-          <a href="#" class="text-sm font-medium text-slate-600 hover:underline ">Download Evidence</a>
-        {% endif %} -->
       </div>
     </div>
     <div class="justify-between mb-1">
@@ -53,6 +50,22 @@
                 Approved
               {% elif leave.rejected == True %}
                 Rejected
+              {% else %}
+                Pending
+              {% endif %}
+            </div>
+          </div>
+        </li>
+        <li class="py-2 ">
+          <div class="flex items-center">
+            <div class="flex-1 min-w-0 ms-4">
+              <p class="text-sm font-medium truncate text-slate-800 dark:text-white">By</p>
+            </div>
+            <div class="inline-flex items-center text-base font-semibold text-slate-800 dark:text-white">
+              {% if leave.approved == True %}
+                {{ leave.approved_by }}
+              {% elif leave.rejected == True %}
+                {{ leave.rejected_by }}
               {% else %}
                 Pending
               {% endif %}
@@ -118,6 +131,12 @@
           </div>
         </li>
       </ul>
+    </div>
+    <div class="justify-end flex">
+      {% if not leave.approved and not leave.rejected %}
+        <a href="{% url 'leave:cancel_leave' leave.id %}"
+           class="text-base  text-slate-900 hover:underline ">Cancel leave</a>
+      {% endif %}
     </div>
   </div>
 {% endblock content %}

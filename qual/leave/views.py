@@ -59,6 +59,16 @@ def create_leave(request):
 
 
 @login_required
+def cancel_leave(request, id):
+    leave = Leave.objects.get(id=id)
+    if leave.approved == False:
+        leave.rejected = True
+        leave.rejected_by = request.user
+        leave.save()
+    return redirect("leave:leave_detail", id=id)
+
+
+@login_required
 def edit_leave(request, id):
     return render(request, "leave/edit.html")
 

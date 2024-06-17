@@ -9,6 +9,7 @@ from attendance.tasks import save_data
 import datetime
 from overtime.tasks import create_ots
 from django.contrib.auth.decorators import user_passes_test
+from .filters import LeaveFilter, OvertimeFilter
 
 
 @login_required
@@ -58,7 +59,7 @@ def attendance_approval(request):
     context = {
         "page": page,
     }
-    return render(request, "approval/attendance_approval.html", context)
+    return render(request, "approval/attendance/list.html", context)
 
 
 @login_required
@@ -98,11 +99,17 @@ def reject_attendance(request):
 @user_passes_test(lambda u: u.has_perm("account.can_approve"))
 def leave_approval(request):
     leaves = Leave.objects.filter(approved=False, rejected=False).order_by("start_date")
+    leave_filter = LeaveFilter(request.GET, queryset=leaves)
+    leaves = leave_filter.qs
+
     paginated = Paginator(leaves, 30)
     page_number = request.GET.get("page")
     page = paginated.get_page(page_number)
-    context = {"page": page}
-    return render(request, "approval/leave_approval.html", context)
+    context = {
+        "page": page,
+        "leave_filter": leave_filter,
+    }
+    return render(request, "approval/leave/list.html", context)
 
 
 @login_required
@@ -123,6 +130,7 @@ def approve_leave(request, id):
 def reject_leave(request, id):
     leave = get_object_or_404(Leave, id=id)
     leave.rejected = True
+    leave.rejected_by = request.user
     leave.save()
     return redirect("approval:leave_approval")
 
@@ -134,11 +142,16 @@ def overtime_approval(request):
     overtimes = Overtime.objects.filter(approved=False, rejected=False).order_by(
         "start_date"
     )
+    overtime_filter = OvertimeFilter(request.GET, queryset=overtimes)
+    overtimes = overtime_filter.qs
     paginated = Paginator(overtimes, 30)
     page_number = request.GET.get("page")
     page = paginated.get_page(page_number)
-    context = {"page": page}
-    return render(request, "approval/overtime_approval.html", context)
+    context = {
+        "page": page,
+        "overtime_filter": overtime_filter,
+    }
+    return render(request, "approval/overtime/list.html", context)
 
 
 @login_required
@@ -172,7 +185,7 @@ def holiday_approval(request):
     page_number = request.GET.get("page")
     page = paginated.get_page(page_number)
     context = {"page": page}
-    return render(request, "approval/holiday_approval.html", context)
+    return render(request, "approval/holiday/list.html", context)
 
 
 @login_required

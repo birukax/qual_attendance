@@ -14,6 +14,7 @@ from employee.filters import EmployeeFilter
 from employee.forms import ChangeEmployeeShiftForm
 from django.contrib.auth.decorators import user_passes_test
 from device.models import Device
+from .filters import ShiftFilter
 
 
 @login_required
@@ -21,6 +22,8 @@ from device.models import Device
 def shifts(request):
     create_shift_form = CreateShiftForm(data=request.GET)
     shifts = Shift.objects.all().order_by("-name")
+    shift_filter = ShiftFilter(request.GET, queryset=shifts)
+    shifts = shift_filter.qs
     paginated = Paginator(shifts, 30)
     page_number = request.GET.get("page")
 
@@ -28,6 +31,7 @@ def shifts(request):
     context = {
         "create_shift_form": create_shift_form,
         "page": page,
+        "shift_filter": shift_filter,
     }
     return render(request, "shift/list.html", context)
 

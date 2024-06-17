@@ -44,6 +44,13 @@ class Leave(models.Model):
         null=True,
         related_name="leave_approval",
     )
+    rejected_by = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+        related_name="leave_rejection",
+    )
     reason = models.TextField(null=True, max_length=250)
     # evidence = models.FileField(null=True, blank=True, upload_to="leave_evidence/")
 
