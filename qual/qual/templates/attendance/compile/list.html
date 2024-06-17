@@ -17,9 +17,9 @@
             </p>
           </div>
         <div class="inline-flex grid-cols-3  sm:grid-cols-6 w-full gap-4 md:mb-1">
+          <div>{% include "attendance/compile/filter.html" %}</div>
+          <div>{% include "attendance/compile/download.html" %}</div>
           {% if page %}
-            <div>{% include "attendance/compile/filter.html" %}</div>
-            <div>{% include "attendance/compile/download.html" %}</div>
             <div>
               <a href="{% url 'approval:approve_attendance' %}"
                  class="inline-flex  items-center px-4 py-2 text-sm text-center text-white rounded-lg bg-slate-700 hover:bg-slate-600 focus:ring-4 focus:outline-none focus:ring-slate-300 ">
