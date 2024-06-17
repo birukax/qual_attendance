@@ -59,13 +59,11 @@ class CreateLeaveForm(forms.ModelForm):
         half_day = cleaned_data.get("half_day")
 
         if employee:
-            active_leave = employee.leaves.filter(
-                Q(
-                    Q(start_date=start_date, end_date=end_date)
-                    or Q(start_date__lte=start_date, end_date__gte=start_date)
-                    or Q(start_date__lte=end_date, end_date__gte=end_date)
-                ),
-                Q(Q(approved=True) or Q(rejected=False)),
+            active_leave = Leave.objects.filter(
+                ~Q(rejected=True),
+                start_date__range=(start_date, end_date),
+                end_date__range=(start_date, end_date),
+                employee=employee,
             )
             if active_leave:
                 raise ValidationError(
