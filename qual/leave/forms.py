@@ -61,7 +61,8 @@ class CreateLeaveForm(forms.ModelForm):
         if employee:
             active_leave = employee.leaves.filter(
                 Q(
-                    Q(start_date__lte=start_date, end_date__gte=start_date)
+                    Q(start_date=start_date, end_date=end_date)
+                    or Q(start_date__lte=start_date, end_date__gte=start_date)
                     or Q(start_date__lte=end_date, end_date__gte=end_date)
                 ),
                 Q(Q(approved=True) or Q(rejected=False)),
