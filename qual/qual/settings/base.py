@@ -177,3 +177,7 @@ RESULT_BACKEND = "redis://redis:6379"
 
 # npx tailwindcss -i ./qual/qual/static/src/input.css -o ./qual/qual/static/src/output.css --watch
 # c:\Users\biruk\Documents\projects\educa\env\educa\Scripts\python.exe -m pip install -U djlint
+
+
+# Get-ChildItem -Recurse -Filter "__pycache__" | Remove-Item -Recurse -Force
+# Get-ChildItem -Recurse -Filter "*.pyc" | Remove-Item -Force
