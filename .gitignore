@@ -4,3 +4,4 @@ qual/uwsgi_app.sock
 .env
 package-lock.json
 __pycache__/
+.vscode/
