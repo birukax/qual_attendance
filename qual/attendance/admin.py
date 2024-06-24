@@ -22,16 +22,16 @@ class AttendanceAdmin(admin.ModelAdmin):
         "deleted",
         "recompiled",
     ]
-    list_per_page = 15
+    list_per_page = 50
     list_filter = ["status", "approved", "recompiled", "deleted"]
 
 
 @admin.register(RawAttendance)
 class RawAttendanceAdmin(admin.ModelAdmin):
     list_display = ["uid", "device", "employee", "date", "time", "status", "punch"]
-    list_filter = ["date"]
+    list_filter = ["date", "device"]
     search_fields = ["employee__name"]
-    list_per_page = 15
+    list_per_page = 50
 
 
 @admin.register(DailyRecord)
@@ -47,4 +47,4 @@ class DailyRecordAdmin(admin.ModelAdmin):
         "day_off",
         "leave",
     ]
-    list_per_page = 15
+    list_per_page = 50

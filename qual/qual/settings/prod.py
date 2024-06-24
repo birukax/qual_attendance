@@ -2,7 +2,7 @@ from .base import *
 from decouple import config
 
 ADMIN = [("admin", "admin@email.com")]
-ALLOWED_HOSTS = ["*"]
+SECRET_KEY = config("SECRET_KEY")
 # DEBUG = False
 DEBUG = True
 DATABASES = {

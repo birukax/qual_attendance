@@ -16,6 +16,7 @@ import os
 from pathlib import Path
 
 # from .celery import app as celery_app
+ALLOWED_HOSTS = ["*"]
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -27,7 +28,6 @@ LOGIN_REDIRECT_URL = "/"
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-(4x*c^lqncc)!e4vp4qb6x06y7ojqh@z*dhxc)l45mf8o%!jqb"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
@@ -50,15 +50,15 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django.contrib.postgres",
     "session_security",
-    "approval.apps.ApprovalConfig",
-    "attendance.apps.AttendanceConfig",
-    "account.apps.AccountConfig",
-    "device.apps.DeviceConfig",
-    "employee.apps.EmployeeConfig",
-    "shift.apps.ShiftConfig",
-    "leave.apps.LeaveConfig",
-    "holiday.apps.HolidayConfig",
-    "overtime.apps.OvertimeConfig",
+    "approval",
+    "attendance",
+    "account",
+    "device",
+    "employee",
+    "shift",
+    "leave",
+    "holiday",
+    "overtime",
     "compressor",
     "django_filters",
     "celery",

@@ -1,31 +1,16 @@
 from django.urls import reverse
 from django.db import models
-from shift.models import *
-from leave.models import *
-import device.models
-import employee.models
-import threading
-import pandas
-import datetime
-from threading import Thread
-
-# from asyncio.windows_events import NULL
 from datetime import date, datetime, timedelta
-from zk import ZK
-from device.models import Device
-from employee.models import Employee
-import shift.models
-import leave.models
 from django.contrib.auth.models import User
 
 
 class RawAttendance(models.Model):
     uid = models.CharField(max_length=50)
     device = models.ForeignKey(
-        device.models.Device, on_delete=models.CASCADE, related_name="raw_attendances"
+        "device.Device", on_delete=models.CASCADE, related_name="raw_attendances"
     )
     employee = models.ForeignKey(
-        employee.models.Employee,
+        "employee.Employee",
         on_delete=models.CASCADE,
         related_name="raw_attendances",
     )
@@ -54,16 +39,18 @@ class Attendance(models.Model):
     ]
     id = models.AutoField(primary_key=True)
     employee = models.ForeignKey(
-        employee.models.Employee, on_delete=models.CASCADE, related_name="attendances"
+        "employee.Employee", on_delete=models.CASCADE, related_name="attendances"
     )
     device = models.ForeignKey(
-        device.models.Device,
+        "device.Device",
         on_delete=models.CASCADE,
         related_name="attendances",
         null=True,
         blank=True,
     )
-    current_pattern = models.ForeignKey(Pattern, on_delete=models.CASCADE, null=True)
+    current_pattern = models.ForeignKey(
+        "shift.Pattern", on_delete=models.CASCADE, null=True
+    )
     worked_hours = models.DurationField(null=True, blank=True)
     check_in_date = models.DateField()
     check_out_date = models.DateField(null=True, blank=True)
@@ -73,7 +60,10 @@ class Attendance(models.Model):
     check_out_type = models.CharField(max_length=10, choices=TYPES, null=True)
     status = models.CharField(max_length=10, choices=CHOICES, null=True)
     leave_type = models.ForeignKey(
-        LeaveType, on_delete=models.CASCADE, null=True, related_name="leave_type"
+        "leave.LeaveType",
+        on_delete=models.CASCADE,
+        null=True,
+        related_name="leave_type",
     )
     deleted = models.BooleanField(default=False)
     recompiled = models.BooleanField(default=False)

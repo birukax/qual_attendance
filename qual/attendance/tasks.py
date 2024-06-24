@@ -9,6 +9,7 @@ from holiday.models import Holiday
 from shift.models import Shift, Pattern
 import datetime
 
+
 @shared_task
 def sync_raw_attendance(request_device=None):
     if request_device is None:
@@ -55,10 +56,23 @@ def sync_raw_attendance(request_device=None):
         print("Device disabled")
         attendances = device_connected.get_attendance()
         print("syncing attendance...")
+        last = (
+            RawAttendance.objects.filter(device=device).order_by("date", "time").last()
+        )
+        if last:
+            last = datetime.datetime.combine(last.date, last.time)
+        else:
+            last = datetime.datetime(2024, 1, 1)
+        print(last)
+        try:
+            attendances = [
+                attendance for attendance in attendances if attendance.timestamp >= last
+            ]
+        except:
+            pass
         for attendance in attendances:
             # for attendance in attendances[count_attendance:]:
-            if not attendance.timestamp < datetime.datetime(2024, 1, 1):
-                sync(attendance, device)
+            sync(attendance, device)
         print("Sync successful..")
 
         device_connected.enable_device()
@@ -78,7 +92,9 @@ def create_attendance(**kwargs):
             emp = kwargs["employee"]
 
             if kwargs["check_in_time"]:
-                inn = datetime.datetime.combine(kwargs["check_in_date"], kwargs["check_in_time"])
+                inn = datetime.datetime.combine(
+                    kwargs["check_in_date"], kwargs["check_in_time"]
+                )
                 expected = datetime.datetime.combine(
                     kwargs["check_in_date"], emp.shift.current_pattern.start_time
                 )
@@ -230,7 +246,8 @@ def compile(date, employees, request_device, pattern, recompiled):
                         ).order_by("time")
                         if attendance.count() == 1 or (
                             attendance.count() >= 2
-                            and attendance_last - attendance_first < datetime.timedelta(hours=1)
+                            and attendance_last - attendance_first
+                            < datetime.timedelta(hours=1)
                         ):
                             if current_pattern.day_span == 2 and check_out:
                                 attendance = attendance.filter(
@@ -272,7 +289,8 @@ def compile(date, employees, request_device, pattern, recompiled):
                                 )
                         elif (
                             attendance.count() >= 2
-                            and attendance_last - attendance_first > datetime.timedelta(hours=1)
+                            and attendance_last - attendance_first
+                            > datetime.timedelta(hours=1)
                         ):
                             if current_pattern.day_span == 1:
                                 # print(5)
@@ -358,7 +376,8 @@ def compile(date, employees, request_device, pattern, recompiled):
                         ).order_by("time")
                         if attendance.count() == 1 or (
                             attendance.count() >= 2
-                            and attendance_last - attendance_first < datetime.timedelta(hours=1)
+                            and attendance_last - attendance_first
+                            < datetime.timedelta(hours=1)
                         ):
 
                             if check_out:
@@ -399,7 +418,8 @@ def compile(date, employees, request_device, pattern, recompiled):
                                     check_in_time=attendance.first().time,
                                 )
                         elif attendance.count() >= 2 and (
-                            attendance_last - attendance_first > datetime.timedelta(hours=1)
+                            attendance_last - attendance_first
+                            > datetime.timedelta(hours=1)
                         ):
                             if current_pattern.day_span == 2 and check_out:
                                 # print(13)
