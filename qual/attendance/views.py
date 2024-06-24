@@ -19,7 +19,7 @@ from .filters import (
     RawAttendanceFilter,
 )
 from device.forms import CreateDeviceForm
-from datetime import date, timedelta, datetime
+import datetime
 from .tasks import save_recompiled, sync_raw_attendance, compile
 from .forms import RecompileForm, EmployeesForm
 from django.db.models import F, Count
@@ -41,7 +41,7 @@ def dashboard(request):
         + holidays.filter(approved=False, rejected=False).count()
     )
 
-    start = datetime.now().date() - timedelta(days=30)
+    start = datetime.datetime.today().date() - datetime.timedelta(days=30)
     most_absents = (
         employees.filter(
             attendances__status="Absent", attendances__check_in_date__gte=start
@@ -153,11 +153,11 @@ def compile_attendance(request):
     if DailyRecord.objects.filter(device=request_device).exists():
         date = DailyRecord.objects.filter(device=request_device).latest(
             "date"
-        ).date + timedelta(days=1)
+        ).date + datetime.timedelta(days=1)
     else:
-        date = date.today() - timedelta(days=1)
+        date = datetime.date.today() - datetime.timedelta(days=1)
     try:
-        if date > date.today():
+        if date > datetime.date.today():
             pass
         else:
             compile(
@@ -335,7 +335,9 @@ def raw_attendance_list(request):
     # attendances = RawAttendance.objects.all().order_by("-date", "-time")[:1000]
     request_device = request.user.profile.device
 
-    attendances = RawAttendance.objects.all().order_by("-date", "-time")
+    attendances = RawAttendance.objects.filter(device=request_device).order_by(
+        "-date", "-time"
+    )
     attendance_filter = RawAttendanceFilter(request.GET, queryset=attendances)
     attendances = attendance_filter.qs
     paginated = Paginator(attendances, 30)
