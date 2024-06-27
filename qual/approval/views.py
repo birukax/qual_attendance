@@ -121,6 +121,18 @@ def approve_leave(request, id):
     leave.active = True
     leave.approved_by = request.user
     leave.save()
+    attendances = Attendance.objects.filter(
+        employee=leave.employee,
+        check_in_date__gte=leave.start_date,
+        check_in_date__lte=leave.end_date,
+        status="Absent",
+    )
+    if attendances:
+        for attendance in attendances:
+            print(attendance.check_in_date)
+            attendance.status = "On Leave"
+            attendance.leave_type = leave.leave_type
+            attendance.save()
     return redirect("approval:leave_approval")
 
 

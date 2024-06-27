@@ -1446,10 +1446,6 @@ input:checked + .toggle-bg {
   height: 0.75rem;
 }
 
-.h-3\.5 {
-  height: 0.875rem;
-}
-
 .h-3\/4 {
   height: 75%;
 }
@@ -1540,10 +1536,6 @@ input:checked + .toggle-bg {
 
 .w-3 {
   width: 0.75rem;
-}
-
-.w-3\.5 {
-  width: 0.875rem;
 }
 
 .w-3\/4 {
@@ -1875,12 +1867,12 @@ input:checked + .toggle-bg {
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
-.grid-cols-7 {
-  grid-template-columns: repeat(7, minmax(0, 1fr));
+.grid-cols-5 {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
 }
 
-.grid-cols-6 {
-  grid-template-columns: repeat(6, minmax(0, 1fr));
+.grid-cols-7 {
+  grid-template-columns: repeat(7, minmax(0, 1fr));
 }
 
 .flex-row {
@@ -4096,10 +4088,6 @@ input:checked + .toggle-bg {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 
-  .sm\:grid-cols-6 {
-    grid-template-columns: repeat(6, minmax(0, 1fr));
-  }
-
   .sm\:rounded-lg {
     border-radius: 0.5rem;
   }
@@ -4192,10 +4180,6 @@ input:checked + .toggle-bg {
 
   .md\:flex-row {
     flex-direction: row;
-  }
-
-  .md\:gap-12 {
-    gap: 3rem;
   }
 
   .md\:space-x-0 > :not([hidden]) ~ :not([hidden]) {

@@ -2,10 +2,10 @@
 {% block content %}
   <div class="relative p-4 overflow-x-auto bg-white rounded-lg shadow-md w-full">
     <div class="flex items-center justify-between mx-2 mb-2 gap-4">
-      <div class="px-2 lg:flex gap-4 mb-4 space-y-2  lg:space-y-0 items-center justify-between  w-full">
+      <div class="px-2 lg:flex gap-6 mb-4 space-y-2  lg:space-y-0 items-center justify-between  w-full">
         <div>
           <p class="flex items-center whitespace-nowrap">
-            <svg class="w-3.5 h-3.5 me-2 text-green-500 dark:text-green-400 flex-shrink-0"
+            <svg class="w-4 h-4 me-2 text-green-500 dark:text-green-400 flex-shrink-0"
                  aria-hidden="true"
                  xmlns="http://www.w3.org/2000/svg"
                  fill="currentColor"
@@ -15,7 +15,7 @@
             Last compiled on {{ daily_records.date }}
           </p>
         </div>
-        <div class="inline-flex grid-cols-6 w-full gap-6 md:gap-12 md:mb-1">
+        <div class="grid grid-cols-5 w-full gap-6  md:mb-1">
           <div>
             <a href="{% url 'attendance:compile_attendance' %}"
                class="inline-flex items-center px-4 py-2 text-sm text-center text-white rounded-lg bg-slate-700 hover:bg-slate-600 focus:ring-4 focus:outline-none focus:ring-slate-300 ">

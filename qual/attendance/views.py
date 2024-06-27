@@ -115,7 +115,7 @@ def attendance_list(request):
 def compile_view(request):
     request_device = request.user.profile.device
     if not request_device:
-        return redirect("attendance:attendances")
+        return redirect("attendance:raw_attendance")
     if DailyRecord.objects.filter(device=request_device).exists():
         daily_records = DailyRecord.objects.filter(device=request_device).latest("date")
     else:
@@ -202,6 +202,7 @@ def download_compiled_attendance(request):
         "Check out type",
         "status",
         "Leave type",
+        "Half Day",
     ]
     ws.append(headers)
 
@@ -213,9 +214,17 @@ def download_compiled_attendance(request):
             device = ""
         if attendance.leave_type:
             leave_type = attendance.leave_type.name
+            leave = Leave.objects.filter(
+                employee=attendance.employee,
+                approved=True,
+                start_date__lte=attendance.check_in_date,
+                end_date__gte=attendance.check_in_date,
+            ).first()
+            if leave.half_day:
+                half_day = True
         else:
             leave_type = ""
-
+            half_day = False
         ws.append(
             [
                 attendance.employee.name,
@@ -230,6 +239,7 @@ def download_compiled_attendance(request):
                 attendance.check_out_type,
                 attendance.status,
                 leave_type,
+                half_day,
             ]
         )
     wb.save(response)
@@ -286,6 +296,7 @@ def download_attendance(request):
         "Check out type",
         "status",
         "Leave type",
+        "Half Day",
     ]
     ws.append(headers)
 
@@ -306,8 +317,10 @@ def download_attendance(request):
             )
             if leaves:
                 leave_type = leaves.first().leave_type.name
+                half_day = leaves.first().half_day
             else:
                 leave_type = ""
+                half_day = False
 
         ws.append(
             [
@@ -323,6 +336,7 @@ def download_attendance(request):
                 attendance.check_out_type,
                 attendance.status,
                 leave_type,
+                half_day,
             ]
         )
     wb.save(response)
