@@ -188,8 +188,8 @@ def compile(date, employees, request_device, pattern, recompiled):
                     current_pattern = employee.shift.current_pattern
                 leave = Leave.objects.filter(
                     employee=employee,
-                    start_date__gte=date,
-                    end_date__lte=date,
+                    start_date__lte=date,
+                    end_date__gte=date,
                     approved=True,
                 )
                 holiday = Holiday.objects.filter(date=date, approved=True)

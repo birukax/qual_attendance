@@ -125,7 +125,7 @@ def approve_leave(request, id):
         employee=leave.employee,
         check_in_date__gte=leave.start_date,
         check_in_date__lte=leave.end_date,
-        status="Absent",
+        status__in=("Absent","Day Off" ),
     )
     if attendances:
         for attendance in attendances:
