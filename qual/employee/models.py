@@ -123,7 +123,11 @@ class Employee(models.Model):
             name = f"{fname} {mname} {lname}"
             employment_date = e.employment_date
             termination_date = e.termination_date
-            department = Department.objects.get(code=e.department)
+            try:
+                department = Department.objects.get(code=e.department)
+            except Exception as exc:
+                print(exc)
+                department = None
             status = e.status
             if status == 0:
                 status = "Active"
