@@ -55,13 +55,13 @@ def employee_detail(request, id):
     if not (request.user.profile.role == "HR" or request.user.profile.role == "ADMIN"):
         if employee.department not in request.user.profile.manages.all():
             return redirect("employee:employees")
+    change_shift_form = ChangeEmployeeShiftForm(instance=employee)
     employee_devices = DeviceUser.objects.filter(employee=employee)
     add_device_user_form = AddDeviceUserForm()
     attendances = Attendance.objects.filter(employee=employee, approved=True).order_by(
         "-check_in_date"
     )
     paginated = Paginator(attendances, 30)
-    change_shift_form = ChangeEmployeeShiftForm(instance=employee)
     page_number = request.GET.get("page")
     page = paginated.get_page(page_number)
     return render(
