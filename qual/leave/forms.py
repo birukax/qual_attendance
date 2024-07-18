@@ -12,6 +12,7 @@ from django_flatpickr.schemas import FlatpickrOptions
 from django_select2 import forms as s2forms
 from django.core.exceptions import ValidationError
 from django.db.models import Q
+from .tasks import calculate_total_days
 from django.utils.translation import gettext_lazy as _
 
 
@@ -75,24 +76,20 @@ class CreateLeaveForm(forms.ModelForm):
                 )
 
         if end_date and start_date and leave_type:
-            total_days = (
-                datetime.combine(end_date, time(00, 00, 00))
-                - datetime.combine(start_date, time(00, 00, 00))
-                + timedelta(days=1)
-            )
+            total_days = calculate_total_days(start_date, end_date, leave_type.annual)
             if half_day:
-                total_days = total_days - timedelta(hours=12)
+                total_days = total_days - 0.5
             if start_date > end_date:
                 raise ValidationError(_("Start Date cannot be greater than End Date."))
 
             if leave_type.annual == True:
-                employee_balance = employee.annual_leave_balance
-                total_days = total_days.days + 1
-                if employee_balance - total_days < 0:
+                employee_balance = employee.annual_leave_remaining
+                # total_days = total_days.days + 1
+                if employee_balance < total_days:
                     raise ValidationError(_("Insufficient annual leave balance."))
             else:
                 maximum_days = leave_type.maximum_days
-                if total_days.days > maximum_days:
+                if total_days > maximum_days:
                     raise ValidationError(
                         _("Total date is greater than the leave type's maximum date.")
                     )

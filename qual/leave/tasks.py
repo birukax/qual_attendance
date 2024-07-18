@@ -26,7 +26,10 @@ def calculate_total_leave_days(id):
         dates = rrule(DAILY, dtstart=leave.start_date, until=leave.end_date)
         total_sundays = get_all_sundays(leave.start_date, leave.end_date)
         total_holidays = get_all_holidays(leave.start_date, leave.end_date)
-        leave.total_days = dates.count() - total_sundays - total_holidays
+        if leave.leave_type.annual:
+            leave.total_days = dates.count() - total_sundays - total_holidays
+        else:
+            leave.total_days = dates.count()
         leave.save()
         if leave.half_day:
             leave.total_days = leave.total_days - 0.5
@@ -36,11 +39,14 @@ def calculate_total_leave_days(id):
     return leave.total_days
 
 
-def calculate_total_days(start_date, end_date):
+def calculate_total_days(start_date, end_date, annual=False):
     dates = rrule(DAILY, dtstart=start_date, until=end_date)
     total_sundays = get_all_sundays(start_date, end_date)
     total_holidays = get_all_holidays(start_date, end_date)
-    total_days = dates.count() - total_sundays - total_holidays
+    if annual:
+        total_days = dates.count() - total_sundays - total_holidays
+    else:
+        total_days = dates.count()
     return total_days
 
 
@@ -62,7 +68,11 @@ def calculate_annual_leaves(end_date=date):
             #     leave_days = l.end_date.day - l.start_date.day + 1
             # print(f"{e.name}  {leave_days}")
             if l.end_date > end_date:
-                leave_days = calculate_total_days(l.start_date, end_date)
+                leave_days = calculate_total_days(
+                    l.start_date,
+                    end_date,
+                    l.leave_type.annual,
+                )
             else:
                 leave_days = l.total_days
             # if l.half_day:

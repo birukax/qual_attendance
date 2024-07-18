@@ -28,7 +28,9 @@ def leaves(request):
     if user.role == "ADMIN" or user.role == "HR":
         leaves = Leave.objects.all().order_by("-start_date")
     else:
-        leaves = Leave.objects.filter(employee__department__in=user.manages.all())
+        leaves = Leave.objects.filter(
+            employee__department__in=user.manages.all()
+        ).order_by("-start_date")
     leave_filter = LeaveFilter(request.GET, queryset=leaves)
     leaves = leave_filter.qs
 

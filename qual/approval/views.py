@@ -10,6 +10,7 @@ import datetime
 from overtime.tasks import create_ots
 from django.contrib.auth.decorators import user_passes_test
 from .filters import LeaveFilter, OvertimeFilter
+from leave.tasks import calculate_total_leave_days
 
 
 @login_required
@@ -99,6 +100,8 @@ def reject_attendance(request):
 @user_passes_test(lambda u: u.has_perm("account.can_approve"))
 def leave_approval(request):
     leaves = Leave.objects.filter(approved=False, rejected=False).order_by("start_date")
+    for l in leaves:
+        calculate_total_leave_days(l.id)
     leave_filter = LeaveFilter(request.GET, queryset=leaves)
     leaves = leave_filter.qs
 
@@ -125,7 +128,7 @@ def approve_leave(request, id):
         employee=leave.employee,
         check_in_date__gte=leave.start_date,
         check_in_date__lte=leave.end_date,
-        status__in=("Absent","Day Off" ),
+        status__in=("Absent", "Day Off"),
     )
     if attendances:
         for attendance in attendances:
