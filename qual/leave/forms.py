@@ -19,6 +19,10 @@ class EmployeeWidget(s2forms.ModelSelect2Widget):
     search_fields = ["name__icontains", "employee_id__icontains"]
 
 
+class ALCalculateDateForm(forms.Form):
+    date = forms.DateField(initial=date.today())
+
+
 class CreateLeaveForm(forms.ModelForm):
     class Meta:
         model = Leave

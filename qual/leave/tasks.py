@@ -3,23 +3,70 @@ from dateutil.relativedelta import relativedelta
 from PyAstronomy import pyasl
 from employee.models import Employee
 from .models import Leave
+from dateutil.rrule import rrule, DAILY, WEEKLY
+from holiday.models import Holiday
+
+
+def get_all_sundays(start_date, end_date):
+    total_sundays = rrule(
+        WEEKLY, dtstart=start_date, until=end_date, byweekday=6
+    ).count()
+    return total_sundays
+
+
+def get_all_holidays(start_date, end_date):
+    total_holidays = Holiday.objects.filter(date__range=(start_date, end_date)).count()
+    return total_holidays
+
 
 # from pandas import timedelta_range
+def calculate_total_leave_days(id):
+    try:
+        leave = Leave.objects.get(id=id)
+        dates = rrule(DAILY, dtstart=leave.start_date, until=leave.end_date)
+        total_sundays = get_all_sundays(leave.start_date, leave.end_date)
+        total_holidays = get_all_holidays(leave.start_date, leave.end_date)
+        leave.total_days = dates.count() - total_sundays - total_holidays
+        leave.save()
+        if leave.half_day:
+            leave.total_days = leave.total_days - 0.5
+            leave.save()
+    except Exception as e:
+        print(e)
+    return leave.total_days
 
 
-def calculate_annual_leaves():
+def calculate_total_days(start_date, end_date):
+    dates = rrule(DAILY, dtstart=start_date, until=end_date)
+    total_sundays = get_all_sundays(start_date, end_date)
+    total_holidays = get_all_holidays(start_date, end_date)
+    total_days = dates.count() - total_sundays - total_holidays
+    return total_days
+
+
+def calculate_annual_leaves(end_date=date):
     employees = Employee.objects.filter(status="Active").order_by("employment_date")
     for e in employees:
         employment_date = datetime.combine(e.employment_date, datetime.min.time())
         leaves = Leave.objects.filter(
-            employee=e, approved=True, leave_type__annual=True
+            employee=e,
+            approved=True,
+            leave_type__annual=True,
         )
         e.annual_leave_taken = 0
         for l in leaves:
-            leave_days = l.end_date.day - l.start_date.day + 1
-            if l.half_day:
-                leave_days = leave_days - 0.5
-            print(f"{e.name}  {leave_days}")
+            calculate_total_leave_days(l.id)
+            # if l.end_date > end_date:
+            #     leave_days = end_date.day - l.start_date.day + 1
+            # else:
+            #     leave_days = l.end_date.day - l.start_date.day + 1
+            # print(f"{e.name}  {leave_days}")
+            if l.end_date > end_date:
+                leave_days = calculate_total_days(l.start_date, end_date)
+            else:
+                leave_days = l.total_days
+            # if l.half_day:
+            #     leave_days = leave_days - 0.5
             e.annual_leave_taken = e.annual_leave_taken + leave_days
             e.save()
         # print(leaves)
@@ -30,7 +77,7 @@ def calculate_annual_leaves():
             if e.status == "Terminated":
                 end_date = e.termination_date
             else:
-                end_date = datetime.today()
+                end_date = end_date
             total_years = relativedelta(end_date, employment_date)
             years = total_years.years
             decimal_years = pyasl.decimalYear(
@@ -50,7 +97,7 @@ def calculate_annual_leaves():
 
             t = total / years
 
-            print(float(t * y))
+            # print(float(t * y))
             e.annual_leave_balance = round(float(t * y), 2)
             e.annual_leave_remaining = round(
                 float(

@@ -34,6 +34,7 @@ class Leave(models.Model):
     start_date = models.DateField()
     end_date = models.DateField()
     half_day = models.BooleanField(default=False)
+    total_days = models.FloatField(default=False)
     active = models.BooleanField(default=False)
     approved = models.BooleanField(default=False)
     rejected = models.BooleanField(default=False)

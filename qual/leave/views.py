@@ -1,18 +1,24 @@
 from tracemalloc import start
 from django.forms import ValidationError
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import Leave, LeaveType
-from .forms import CreateLeaveForm, CreateLeaveTypeForm, EditLeaveTypeForm
+from .forms import (
+    CreateLeaveForm,
+    CreateLeaveTypeForm,
+    EditLeaveTypeForm,
+    ALCalculateDateForm,
+)
 from django.core.paginator import Paginator
 from django.http import HttpResponse
-from .tasks import calculate_annual_leaves
+from .tasks import calculate_annual_leaves, calculate_total_leave_days
 from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test
 from employee.models import Employee
 from employee.filters import EmployeeFilter
 from .filters import AnnualLeaveDownloadFilter, LeaveDownloadFilter, LeaveFilter
 from openpyxl import Workbook
+import datetime
 
 
 @login_required
@@ -37,7 +43,9 @@ def leaves(request):
 
 @login_required
 def leave_detail(request, id):
-    leave = Leave.objects.get(id=id)
+    leave = get_object_or_404(Leave, id=id)
+    calculate_total_leave_days(leave.id)
+
     if not (request.user.profile.role == "HR" or request.user.profile.role == "ADMIN"):
         if leave.employee.department not in request.user.profile.manages.all():
             return redirect("leave:leaves")
@@ -86,12 +94,13 @@ def annual_leave_list(request):
     employees = employee_filter.qs
     paginated = Paginator(employees, 30)
     page_number = request.GET.get("page")
-
+    calculate_date_form = ALCalculateDateForm()
     page = paginated.get_page(page_number)
     context = {
         "page": page,
         "employee_filter": employee_filter,
         "download_filter": download_filter,
+        "form": calculate_date_form,
     }
     return render(request, "leave/annual_leave/list.html", context)
 
@@ -99,8 +108,14 @@ def annual_leave_list(request):
 @login_required
 @user_passes_test(lambda u: u.profile.role == "ADMIN" or u.profile.role == "HR")
 def calculate_leave_balance(request):
+    date = datetime.date.today()
+    if request.method == "POST":
+        form = ALCalculateDateForm(request.POST)
+        if form.is_valid():
+            date = form.cleaned_data["date"]
+    print(date)
     print("calculating")
-    calculate_annual_leaves()
+    calculate_annual_leaves(end_date=date)
     return redirect("leave:annual_leaves")
 
 

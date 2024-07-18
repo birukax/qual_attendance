@@ -103,14 +103,10 @@
             <li class="py-3 sm:py-4">
               <div class="flex items-center">
                 <div class="flex-1 min-w-0 ms-4">
-                  <p class="text-sm font-medium text-gray-900 truncate dark:text-white">Have Evidence</p>
+                  <p class="text-sm font-medium text-gray-900 truncate dark:text-white">Total days</p>
                 </div>
                 <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                  {% if l.evidence %}
-                    True
-                  {% else %}
-                    False
-                  {% endif %}
+                  {{l.total_days}}
                 </div>
               </div>
             </li>
