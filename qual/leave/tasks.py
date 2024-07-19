@@ -15,7 +15,7 @@ def get_all_sundays(start_date, end_date):
 
 
 def get_all_holidays(start_date, end_date):
-    total_holidays = Holiday.objects.filter(date__range=(start_date, end_date)).count()
+    total_holidays = Holiday.objects.filter(date__range=(start_date, end_date), approved=True).count()
     return total_holidays
 
 

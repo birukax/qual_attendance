@@ -18,6 +18,7 @@
           <th scope="col" class="p-4">Leave Type</th>
           <th scope="col" class="p-4">Start Date</th>
           <th scope="col" class="p-4">End Date</th>
+          <th scope="col" class="p-4">Total days</th>
           <th scope="col" class="p-4">Half day</th>
           <th scope="col" class="p-4">Status</th>
           <th scope="col" class="p-4 text-right">Actions</th>
@@ -34,6 +35,7 @@
           </th>
           <td class="p-4 whitespace-nowrap">{{ leave.start_date }}</td>
           <td class="p-4 whitespace-nowrap">{{ leave.end_date }}</td>
+          <td class="p-4 whitespace-nowrap">{{ leave.total_days }}</td>
           <td class="p-4">{{ leave.half_day }}</td>
           <td class="p-4 whitespace-nowrap">
             {% if leave.approved %} 
