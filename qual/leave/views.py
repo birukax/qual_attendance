@@ -146,10 +146,12 @@ def download_annual_leave(request):
     headers = [
         "ID",
         "Name",
+        "Department",
         "Employment date",
+        "Last calculated",
         "Total",
         "Taken",
-        "Difference",
+        # "Difference",
         "remaining",
     ]
     ws.append(headers)
@@ -160,10 +162,12 @@ def download_annual_leave(request):
             [
                 employee.employee_id,
                 employee.name,
+                employee.department.name,
                 employee.employment_date,
+                employee.calculate_date,
                 employee.annual_leave_balance,
                 employee.annual_leave_taken,
-                employee.annual_leave_difference,
+                # employee.annual_leave_difference,
                 employee.annual_leave_remaining,
             ]
         )

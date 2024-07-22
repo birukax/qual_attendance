@@ -112,13 +112,10 @@ def calculate_annual_leaves(end_date=date):
 
             # print(float(t * y))
             e.calculate_date = end_date
+            e.annual_leave_taken = e.annual_leave_taken + e.annual_leave_difference
             e.annual_leave_balance = round(float(t * y), 2)
             e.annual_leave_remaining = round(
-                float(
-                    e.annual_leave_balance
-                    - e.annual_leave_difference
-                    - e.annual_leave_taken
-                ),
+                float(e.annual_leave_balance - e.annual_leave_taken),
                 2,
             )
             e.save()
