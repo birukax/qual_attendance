@@ -90,7 +90,7 @@ def annual_leave_list(request):
     # if request_device:
     #     employees = Employee.objects.filter(device=request_device).order_by("name")
     # else:
-    employees = Employee.objects.all().order_by("name")
+    employees = Employee.objects.filter(status="Active").order_by("name")
     download_filter = AnnualLeaveDownloadFilter(queryset=employees)
     employee_filter = EmployeeFilter(request.GET, queryset=employees)
     employees = employee_filter.qs

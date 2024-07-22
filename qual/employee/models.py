@@ -84,9 +84,12 @@ class Employee(models.Model):
         null=True,
         blank=True,
     )
+    status = models.CharField(max_length=50, choices=STATUS_CHOICES, default="Active")
     employment_date = models.DateField(null=True)
     termination_date = models.DateField(null=True)
-    status = models.CharField(max_length=50, choices=STATUS_CHOICES, default="Active")
+    calculate_date = models.DateField(null=True)
+    total_annual_leave_taken = models.FloatField(default=0, null=True, blank=True)
+    # total_annual_leave_ramaining = models.FloatField(default=0, null=True, blank=True)
     annual_leave_balance = models.FloatField(default=0, null=True, blank=True)
     annual_leave_taken = models.FloatField(default=0, null=True, blank=True)
     annual_leave_remaining = models.FloatField(default=0, null=True, blank=True)

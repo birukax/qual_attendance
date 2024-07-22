@@ -15,7 +15,9 @@ def get_all_sundays(start_date, end_date):
 
 
 def get_all_holidays(start_date, end_date):
-    total_holidays = Holiday.objects.filter(date__range=(start_date, end_date), approved=True).count()
+    total_holidays = Holiday.objects.filter(
+        date__range=(start_date, end_date), approved=True
+    ).count()
     return total_holidays
 
 
@@ -60,6 +62,7 @@ def calculate_annual_leaves(end_date=date):
             leave_type__annual=True,
         )
         e.annual_leave_taken = 0
+        e.total_annual_leave_taken = 0
         for l in leaves:
             calculate_total_leave_days(l.id)
             # if l.end_date > end_date:
@@ -77,17 +80,21 @@ def calculate_annual_leaves(end_date=date):
                 leave_days = l.total_days
             # if l.half_day:
             #     leave_days = leave_days - 0.5
+            total_leave_days = l.total_days
+
+            e.total_annual_leave_taken = e.total_annual_leave_taken + total_leave_days
             e.annual_leave_taken = e.annual_leave_taken + leave_days
+
             e.save()
         # print(leaves)
         if employment_date < datetime(2016, 1, 1):
             pass
         else:
             total = 0
-            if e.status == "Terminated":
-                end_date = e.termination_date
-            else:
-                end_date = end_date
+            # if e.status == "Terminated" and e.termination_date > datetime(2016, 1, 1):
+            #     end_date = e.termination_date
+            # else:
+            end_date = end_date
             total_years = relativedelta(end_date, employment_date)
             years = total_years.years
             decimal_years = pyasl.decimalYear(
@@ -108,6 +115,7 @@ def calculate_annual_leaves(end_date=date):
             t = total / years
 
             # print(float(t * y))
+            e.calculate_date = end_date
             e.annual_leave_balance = round(float(t * y), 2)
             e.annual_leave_remaining = round(
                 float(
