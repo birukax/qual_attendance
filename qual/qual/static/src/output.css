@@ -1619,6 +1619,10 @@ input:checked + .toggle-bg {
   max-width: 36rem;
 }
 
+.max-w-full {
+  max-width: 100%;
+}
+
 .flex-1 {
   flex: 1 1 0%;
 }
@@ -1925,6 +1929,10 @@ input:checked + .toggle-bg {
 
 .justify-stretch {
   justify-content: stretch;
+}
+
+.justify-items-end {
+  justify-items: end;
 }
 
 .gap-12 {
@@ -4289,6 +4297,10 @@ input:checked + .toggle-bg {
     display: none;
   }
 
+  .lg\:max-w-md {
+    max-width: 28rem;
+  }
+
   .lg\:translate-x-0 {
     --tw-translate-x: 0px;
     transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
@@ -4296,6 +4308,10 @@ input:checked + .toggle-bg {
 
   .lg\:grid-cols-6 {
     grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+
+  .lg\:justify-between {
+    justify-content: space-between;
   }
 
   .lg\:space-y-0 > :not([hidden]) ~ :not([hidden]) {
@@ -4308,6 +4324,10 @@ input:checked + .toggle-bg {
 @media (min-width: 1280px) {
   .xl\:flex {
     display: flex;
+  }
+
+  .xl\:max-w-md {
+    max-width: 28rem;
   }
 
   .xl\:grid-cols-6 {

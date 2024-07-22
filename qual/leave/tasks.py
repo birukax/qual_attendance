@@ -62,7 +62,6 @@ def calculate_annual_leaves(end_date=date):
             leave_type__annual=True,
         )
         e.annual_leave_taken = 0
-        e.total_annual_leave_taken = 0
         for l in leaves:
             calculate_total_leave_days(l.id)
             # if l.end_date > end_date:
@@ -70,19 +69,16 @@ def calculate_annual_leaves(end_date=date):
             # else:
             #     leave_days = l.end_date.day - l.start_date.day + 1
             # print(f"{e.name}  {leave_days}")
-            if l.end_date > end_date:
-                leave_days = calculate_total_days(
-                    l.start_date,
-                    end_date,
-                    l.leave_type.annual,
-                )
-            else:
-                leave_days = l.total_days
+            # if l.end_date > end_date:
+            #     leave_days = calculate_total_days(
+            #         l.start_date,
+            #         end_date,
+            #         l.leave_type.annual,
+            #     )
+            # else:
+            leave_days = l.total_days
             # if l.half_day:
             #     leave_days = leave_days - 0.5
-            total_leave_days = l.total_days
-
-            e.total_annual_leave_taken = e.total_annual_leave_taken + total_leave_days
             e.annual_leave_taken = e.annual_leave_taken + leave_days
 
             e.save()

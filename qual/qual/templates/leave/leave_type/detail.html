@@ -1,9 +1,9 @@
 {% extends "_base.html" %}
 {% block content %}
-  <div class=" w-full border rounded-t-lg shadow border-slate-200 py-4 px-8 bg-white">
+  <div class=" max-w-2xl border rounded-t-lg shadow border-slate-200 py-4 px-8 bg-white mx-auto">
     <div class=" bg-white ">
       <div class="flex items-center justify-end">
-        <h5 class="mb-2 text-xl font-semibold text-slate-700 capitalize leading-relaxed">Leave type detail</h5>
+        <h5 class="mb-2 text-xl font-semibold text-slate-700  leading-relaxed">Leave type detail</h5>
       </div>
       <div class="flex items-center justify-between mb-2">
         <svg class="w-16 h-16 text-slate-800 "
@@ -39,7 +39,7 @@
         {% include "leave/leave_type/edit.html" %}
       </div>
     </div>
-    <div class="relative bg-white overflow-x-auto">
+    <!-- <div class="relative bg-white overflow-x-auto">
       <table class=" text-sm text-left text-slate-950 w-full table-auto">
         <thead class="text-xs uppercase text-slate-900 bg-slate-100">
           <tr>
@@ -60,14 +60,13 @@
               <td class="px-3 py-3 whitespace-nowrap">{{ leave.approved }}</td>
               <td class="px-3 py-3 whitespace-nowrap">{{ leave.is_half_day }}</td>
               <td class="inline-block px-3 py-3 whitespace-nowrap">
-                <a href="{{ leave.get_absolute_url }}"
-                   class="font-semibold text-slate-900 hover:underline">Detail</a>
+                <a href="{{ leave.get_absolute_url }}" class="font-semibold text-slate-900 hover:underline">Detail</a>
               </td>
             </tr>
           {% endfor %}
         </tbody>
       </table>
       {% include "pagination.html" %}
-    </div>
+    </div> -->
   </div>
 {% endblock content %}
