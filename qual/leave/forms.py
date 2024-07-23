@@ -83,10 +83,11 @@ class CreateLeaveForm(forms.ModelForm):
                 raise ValidationError(_("Start Date cannot be greater than End Date."))
 
             if leave_type.annual == True:
-                employee_balance = employee.annual_leave_remaining
+                pass
+                # employee_balance = employee.annual_leave_remaining
                 # total_days = total_days.days + 1
-                if employee_balance < total_days:
-                    raise ValidationError(_("Insufficient annual leave balance."))
+                # if employee_balance < total_days:
+                #     raise ValidationError(_("Insufficient annual leave balance."))
             else:
                 maximum_days = leave_type.maximum_days
                 if total_days > maximum_days:
@@ -103,6 +104,7 @@ class CreateLeaveTypeForm(forms.ModelForm):
             "maximum_days",
             "description",
             "annual",
+            "exclude_rest_days",
             "paid",
         )
         widgets = {
@@ -127,6 +129,7 @@ class EditLeaveTypeForm(forms.ModelForm):
             "maximum_days",
             "description",
             "annual",
+            "exclude_rest_days",
             "paid",
         )
         widgets = {

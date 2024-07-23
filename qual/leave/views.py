@@ -217,8 +217,14 @@ def create_leave_type(request):
         description = form.cleaned_data["description"]
         maximum_days = form.cleaned_data["maximum_days"]
         paid = form.cleaned_data["paid"]
+        exclude_rest_days = form.cleaned_data["exclude_rest_days"]
+
         leave_type = LeaveType(
-            name=name, description=description, maximum_days=maximum_days, paid=paid
+            name=name,
+            description=description,
+            maximum_days=maximum_days,
+            paid=paid,
+            exclude_rest_days=exclude_rest_days,
         )
         leave_type.save()
     return redirect("leave:leave_types")
@@ -235,6 +241,7 @@ def edit_leave_type(request, id):
         leave_type.maximum_days = form.cleaned_data["maximum_days"]
         leave_type.paid = form.cleaned_data["paid"]
         leave_type.annual = form.cleaned_data["annual"]
+        leave_type.exclude_rest_days = form.cleaned_data["exclude_rest_days"]
         leave_type.save()
     return redirect("leave:leave_type_detail", id=id)
 

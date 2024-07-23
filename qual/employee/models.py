@@ -88,6 +88,7 @@ class Employee(models.Model):
     employment_date = models.DateField(null=True)
     termination_date = models.DateField(null=True)
     calculate_date = models.DateField(null=True)
+    old_rule_balance = models.FloatField(default=0, null=True, blank=True)
     annual_leave_balance = models.FloatField(default=0, null=True, blank=True)
     annual_leave_taken = models.FloatField(default=0, null=True, blank=True)
     annual_leave_remaining = models.FloatField(default=0, null=True, blank=True)

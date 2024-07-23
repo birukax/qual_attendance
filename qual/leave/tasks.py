@@ -28,7 +28,7 @@ def calculate_total_leave_days(id):
         dates = rrule(DAILY, dtstart=leave.start_date, until=leave.end_date)
         total_sundays = get_all_sundays(leave.start_date, leave.end_date)
         total_holidays = get_all_holidays(leave.start_date, leave.end_date)
-        if leave.leave_type.annual:
+        if leave.leave_type.exclude_rest_days:
             leave.total_days = dates.count() - total_sundays - total_holidays
         else:
             leave.total_days = dates.count()
@@ -41,11 +41,11 @@ def calculate_total_leave_days(id):
     return leave.total_days
 
 
-def calculate_total_days(start_date, end_date, annual=False):
+def calculate_total_days(start_date, end_date, exclude_rest_days=False):
     dates = rrule(DAILY, dtstart=start_date, until=end_date)
     total_sundays = get_all_sundays(start_date, end_date)
     total_holidays = get_all_holidays(start_date, end_date)
-    if annual:
+    if exclude_rest_days:
         total_days = dates.count() - total_sundays - total_holidays
     else:
         total_days = dates.count()
@@ -53,9 +53,14 @@ def calculate_total_days(start_date, end_date, annual=False):
 
 
 def calculate_annual_leaves(end_date=date):
-    employees = Employee.objects.filter(status="Active").order_by("employment_date")
+    employees = Employee.objects.filter(
+        status="Active",
+    ).order_by("employment_date")
     for e in employees:
-        employment_date = datetime.combine(e.employment_date, datetime.min.time())
+        if e.employment_date < date(2019, 9, 5):
+            employment_date = datetime(2019, 9, 5, 0, 0, 0)
+        else:
+            employment_date = datetime.combine(e.employment_date, datetime.min.time())
         leaves = Leave.objects.filter(
             employee=e,
             approved=True,
@@ -94,13 +99,15 @@ def calculate_annual_leaves(end_date=date):
             total_years = relativedelta(end_date, employment_date)
             years = total_years.years
             decimal_years = pyasl.decimalYear(
-                datetime.combine(end_date, datetime.min.time())
+                datetime.combine(end_date, datetime.max.time())
             ) - pyasl.decimalYear(employment_date)
             # print(decimal_years)
             years = years + 1
             for year in range(years):
                 balance = 16
-                add = int((year - 1) / 2)
+                # add = int((year - 1) / 2)
+                add = int((year) / 2)
+                # print(total)
                 if add > 14:
                     add = 14
                 total = total + balance + add
@@ -114,6 +121,7 @@ def calculate_annual_leaves(end_date=date):
             e.calculate_date = end_date
             e.annual_leave_taken = e.annual_leave_taken + e.annual_leave_difference
             e.annual_leave_balance = round(float(t * y), 2)
+            e.annual_leave_balance = e.annual_leave_balance + e.old_rule_balance
             e.annual_leave_remaining = round(
                 float(e.annual_leave_balance - e.annual_leave_taken),
                 2,
