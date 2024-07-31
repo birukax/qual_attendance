@@ -32,6 +32,8 @@ def leaves(request):
             employee__department__in=user.manages.all()
         ).order_by("-start_date")
     for l in leaves:
+        # l.saturday_half = l.employee.shift.saturday_half
+        # l.save()
         calculate_total_leave_days(l.id)
     leave_filter = LeaveFilter(request.GET, queryset=leaves)
     leaves = leave_filter.qs

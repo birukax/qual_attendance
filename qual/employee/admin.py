@@ -21,7 +21,7 @@ class EmployeeAdmin(admin.ModelAdmin):
         "shift",
         "status",
     ]
-    list_per_page = 15
+    list_per_page = 50
 
 
 @admin.register(Department)
@@ -33,4 +33,4 @@ class DepartmentAdmin(admin.ModelAdmin):
 # class SalaryAdmin(admin.ModelAdmin):
 #     list_display = ["employee", "salary", "effective_date", "end_date"]
 #     search_fields = ["employee__name"]
-#     list_per_page = 15
+#     list_per_page = 50

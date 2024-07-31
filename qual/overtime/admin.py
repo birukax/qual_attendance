@@ -11,7 +11,7 @@ class OvertimeTypeAdmin(admin.ModelAdmin):
         "start_time",
         "end_time",
     ]
-    list_per_page = 15
+    list_per_page = 50
 
 
 @admin.register(Overtime)
@@ -25,7 +25,7 @@ class OvertimeAdmin(admin.ModelAdmin):
         "end_time",
         "paid",
     ]
-    list_per_page = 15
+    list_per_page = 50
 
 
 @admin.register(Ot)

@@ -6,7 +6,7 @@ from .models import Shift, Pattern
 class ShiftAdmin(admin.ModelAdmin):
     list_display = ["name", "slug", "current_pattern", "continous", "saturday_half"]
     prepopulated_fields = {"slug": ("name",)}
-    list_per_page = 15
+    list_per_page = 50
 
 
 @admin.register(Pattern)
@@ -20,4 +20,4 @@ class PatternAdmin(admin.ModelAdmin):
         "end_time",
         "tolerance",
     ]
-    list_per_page = 15
+    list_per_page = 50

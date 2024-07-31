@@ -14,6 +14,13 @@ def get_all_sundays(start_date, end_date):
     return total_sundays
 
 
+def get_all_saturdays(start_date, end_date):
+    total_sundays = rrule(
+        WEEKLY, dtstart=start_date, until=end_date, byweekday=5
+    ).count()
+    return total_sundays
+
+
 def get_all_holidays(start_date, end_date):
     total_holidays = Holiday.objects.filter(
         date__range=(start_date, end_date), approved=True
@@ -28,14 +35,17 @@ def calculate_total_leave_days(id):
         dates = rrule(DAILY, dtstart=leave.start_date, until=leave.end_date)
         total_sundays = get_all_sundays(leave.start_date, leave.end_date)
         total_holidays = get_all_holidays(leave.start_date, leave.end_date)
+        total_saturdays = get_all_saturdays(leave.start_date, leave.end_date)
         if leave.leave_type.exclude_rest_days:
             leave.total_days = dates.count() - total_sundays - total_holidays
         else:
             leave.total_days = dates.count()
-        leave.save()
         if leave.half_day:
             leave.total_days = leave.total_days - 0.5
-            leave.save()
+        elif leave.saturday_half and leave.leave_type.exclude_rest_days:
+            total_saturdays = total_saturdays * 0.5
+            leave.total_days = leave.total_days - total_saturdays
+        leave.save()
     except Exception as e:
         print(e)
     return leave.total_days
