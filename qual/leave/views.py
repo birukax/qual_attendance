@@ -32,6 +32,7 @@ def leaves(request):
             employee__department__in=user.manages.all()
         ).order_by("-start_date")
     for l in leaves:
+        # if l.employee.shift:
         # l.saturday_half = l.employee.shift.saturday_half
         # l.save()
         calculate_total_leave_days(l.id)
@@ -63,7 +64,26 @@ def create_leave(request):
     if request.method == "POST":
         form = CreateLeaveForm(request.POST, user=request.user)
         if form.is_valid():
-            form.save()
+            employee = form.cleaned_data["employee"]
+            leave_type = form.cleaned_data["leave_type"]
+            start_date = form.cleaned_data["start_date"]
+            end_date = form.cleaned_data["end_date"]
+            half_day = form.cleaned_data["half_day"]
+            reason = form.cleaned_data["reason"]
+            if employee.shift:
+                saturday_half = employee.shift.saturday_half
+            else:
+                saturday_half = False
+            leave = Leave(
+                employee=employee,
+                leave_type=leave_type,
+                start_date=start_date,
+                end_date=end_date,
+                half_day=half_day,
+                reason=reason,
+                saturday_half=saturday_half,
+            )
+            leave.save()
             return redirect("leave:leaves")
         # return redirect("leave:leaves")
     else:
