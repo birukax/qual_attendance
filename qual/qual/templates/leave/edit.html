@@ -1,0 +1,37 @@
+{% extends "_base.html" %}
+{% block content %}
+    <div class="relative mx-auto w-fit">
+        <!-- Modal content -->
+        <div class="relative p-4 bg-white rounded-lg shadow sm:p-8 w-fit">
+            <div class="ml-4 font-semibold text-red-700">
+                {% if messages %}
+                    {% for message in messages %}<p>{{ message }}</p>{% endfor %}
+                {% endif %}
+                {% if form.errors %}
+                    {% for error in form.non_field_errors %}<p>{{ error }}</p>{% endfor %}
+                {% endif %}
+            </div>
+            <form action="{% url 'leave:edit_leave' leave.id %}" method="post">
+                {% csrf_token %}
+                <div class="grid gap-4 sm:grid-cols-2 ">
+                    {{ form.media }}
+                    {% for field in form %}
+                        <div class="grid justify-between grid-cols-1 gap-2">
+                            {{ field.label_tag }}
+                            {{ field }}
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="flex items-center gap-4 p-4 border-t border-gray-200 rounded-b md:p-5 ">
+                    <button type="submit"
+                            value='Submit'
+                            class="px-4 py-2 text-sm text-center text-white rounded-lg bg-slate-700 hover:bg-slate-600 focus:ring-4 focus:outline-none focus:ring-blue-300 ">
+                        Edit
+                    </button>
+                    <a href="{% url 'leave:leave_detail' leave.id %}"
+                       class="px-4 py-2 text-sm text-center rounded-lg text-slate-950 bg-slate-200 hover:bg-slate-300 focus:ring-4 focus:outline-none focus:ring-slate-300 ">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock content %}

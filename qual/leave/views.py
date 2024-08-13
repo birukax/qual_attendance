@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from .models import Leave, LeaveType
 from .forms import (
     CreateLeaveForm,
+    EditLeaveForm,
     CreateLeaveTypeForm,
     EditLeaveTypeForm,
     ALCalculateDateForm,
@@ -106,7 +107,30 @@ def cancel_leave(request, id):
 
 @login_required
 def edit_leave(request, id):
-    return render(request, "leave/edit.html")
+    leave = get_object_or_404(Leave, id=id)
+    if not leave.approved and not leave.rejected:
+        if request.method == "POST":
+            form = EditLeaveForm(data=request.POST, instance=leave)
+            if form.is_valid():
+                employee = form.cleaned_data["employee"]
+                leave.leave_type = form.cleaned_data["leave_type"]
+                leave.start_date = form.cleaned_data["start_date"]
+                leave.end_date = form.cleaned_data["end_date"]
+                leave.half_day = form.cleaned_data["half_day"]
+                leave.reason = form.cleaned_data["reason"]
+                if employee.shift:
+                    saturday_half = employee.shift.saturday_half
+                else:
+                    saturday_half = False
+                leave.saturday_half = saturday_half
+                leave.save()
+                return redirect("leave:leave_detail", id=id)
+        else:
+            form = EditLeaveForm(instance=leave)
+        context = {"form": form, "leave": leave}
+        return render(request, "leave/edit.html", context)
+
+    return redirect("leave:leave_detail", id=id)
 
 
 @login_required

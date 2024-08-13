@@ -1,9 +1,9 @@
 {% extends "_base.html" %}
 {% block content %}
-  <div class="px-8 py-4 bg-white rounded-lg shadow-md max-w-screen-md mx-auto">
+  <div class="max-w-screen-md px-8 py-4 mx-auto bg-white rounded-lg shadow-md">
     <div class="flex justify-end">
       <div class="flex items-center justify-between mb-1">
-        <h5 class="text-xl font-semibold leading-relaxed text-slate-700 capitalize">Leave detail</h5>
+        <h5 class="text-xl font-semibold leading-relaxed capitalize text-slate-700">Leave detail</h5>
       </div>
     </div>
     <div class="justify-between mb-1">
@@ -29,7 +29,7 @@
       </div>
     </div>
     <div class="flow-root">
-      <ul role="list" class="divide-y divide-slate-200 space-y-2">
+      <ul role="list" class="space-y-2 divide-y divide-slate-200">
         <li class="py-2 ">
           <div class="flex items-center">
             <div class="flex-1 min-w-0 ms-4">
@@ -128,10 +128,14 @@
         </li>
       </ul>
     </div>
-    <div class="justify-end flex">
+    <div class="flex justify-end">
       {% if not leave.approved and not leave.rejected %}
-        <a href="{% url 'leave:cancel_leave' leave.id %}"
-           class="text-base  text-slate-900 hover:underline ">Cancel leave</a>
+        <div class="flex gap-6">
+          <a href="{% url 'leave:edit_leave' leave.id %}"
+             class="text-base text-slate-900 hover:underline ">Edit leave</a>
+          <a href="{% url 'leave:cancel_leave' leave.id %}"
+             class="text-base text-slate-900 hover:underline ">Cancel leave</a>
+        </div>
       {% endif %}
     </div>
   </div>
