@@ -1,8 +1,8 @@
 {% extends "_base.html" %}
 {% block login %}
   {% load static %}
-  <section class="sm:p-4 mx-auto mt-4 rounded-3xl shadow-lg bg-slate-800 w-fit">
-    <div class="flex flex-col items-center justify-center px-4 sm:px-12 pb-8 pt-4 mx-auto ">
+  <section class="sm:p-4 mx-auto mt-4 rounded-tr-3xl rounded-bl-3xl rounded-br-3xl shadow-lg bg-slate-800 w-fit">
+    <div class="flex flex-col items-center justify-center px-8 pb-8 pt-4 mx-auto ">
       <img src="{% static 'images/test-logo.svg' %}"
            class="  mx-auto  w-3/4  mb-2"
            height=""
@@ -30,7 +30,7 @@
                 <input type="username"
                        name="username"
                        id="username"
-                       class="bg-slate-50 border border-slate-300 text-slate-900 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                       class="bg-slate-50 border border-slate-300 text-slate-900 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-slate-500 dark:focus:border-slate-500"
                        placeholder="username"
                        required="">
               </div>
@@ -41,7 +41,7 @@
                        name="password"
                        id="password"
                        placeholder="••••••••"
-                       class="bg-slate-50 border border-slate-300 text-slate-900 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                       class="bg-slate-50 border border-slate-300 text-slate-900 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-slate-500 dark:focus:border-slate-500"
                        required="">
               </div>
               <button type="submit"

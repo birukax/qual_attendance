@@ -6,7 +6,7 @@ from zk import ZK
 from django.shortcuts import get_object_or_404
 
 
-@shared_task
+# @shared_task
 def add_user(employee_id, device_id):
     employee = get_object_or_404(Employee, id=employee_id)
     device = Device.objects.get(id=device_id)
@@ -14,14 +14,14 @@ def add_user(employee_id, device_id):
     device_connected = ZK(
         ip=device.ip,
         port=device.port,
-        timeout=50,
+        timeout=500,
     )
     device_connected.connect()
     device_connected.set_user(uid=uid, name=employee.name, user_id=employee.employee_id)
     device_connected.disconnect()
 
 
-@shared_task
+# @shared_task
 def get_users(id):
     device = get_object_or_404(Device, id=id)
     device_connected = ZK(

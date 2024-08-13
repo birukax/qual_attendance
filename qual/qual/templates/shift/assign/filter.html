@@ -30,7 +30,7 @@
             <!-- Modal body -->
             <form method="get" action="{% url 'shift:select_employees' %}">
                 {% csrf_token %}
-                <div class="flex-col justify-around p-4 space-y-4 font-bold md:p-5 item-stretch">{{ employee_filter.form }}</div>
+                <div class="flex-col justify-around p-4 space-y-4 md:p-5 item-stretch">{{ employee_filter.form }}</div>
                 <!-- Modal footer -->
                 <div class="flex items-center p-4 border-t border-gray-200 rounded-b md:p-5 dark:border-gray-600">
                     <button type="submit"

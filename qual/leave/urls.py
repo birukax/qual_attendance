@@ -15,6 +15,11 @@ urlpatterns = [
         views.download_annual_leave,
         name="download_annual_leave",
     ),
+    path(
+        "leave/download",
+        views.download_leave,
+        name="download_leave",
+    ),
     # path("aprove_leave/<int:id>/", views.approve_leave, name="approve_leave"),
     path("leave_type/create", views.create_leave_type, name="create_leave_type"),
     path("leave_types/", views.leave_type_list, name="leave_types"),

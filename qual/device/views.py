@@ -110,15 +110,39 @@ def add_employee(request, id):
                 return redirect("employee:employee_detail", id=id)
             else:
                 print("adding user to device")
-                add_user.delay(id, device_id)
-                get_users.delay(id=device_id)
+                add_user(id, device_id)
+                # add_user.delay(id, device_id)
+                get_users(id=device_id)
+                # get_users.delay(id=device_id)
     return redirect("employee:employee_detail", id=id)
 
 
 @login_required
 @user_passes_test(lambda u: u.profile.role == "ADMIN")
 def sync_users(request, id):
-    get_users.delay(id)
+    get_users(id)
+    # get_users.delay(id)
+    return redirect("device:device_detail", id=id)
+
+
+@login_required
+@user_passes_test(lambda u: u.profile.role == "ADMIN" or u.profile.role == "HR")
+def restart_device(request, id):
+    device = get_object_or_404(Device, id=id)
+    device_connected = ZK(
+        ip=device.ip,
+        port=device.port,
+        timeout=50,
+        # force_udp=True,
+        # ommit_ping=True,
+        # verbose=True,
+    )
+    try:
+        device_connected.connect()
+        device_connected.restart()
+        device_connected.disconnect()
+    except Exception as e:
+        print("error: ", e)
     return redirect("device:device_detail", id=id)
 
 

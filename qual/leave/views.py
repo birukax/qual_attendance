@@ -37,6 +37,7 @@ def leaves(request):
         # l.save()
         calculate_total_leave_days(l.id)
     leave_filter = LeaveFilter(request.GET, queryset=leaves)
+    download_filter = LeaveDownloadFilter(queryset=leaves)
     leaves = leave_filter.qs
 
     paginated = Paginator(leaves, 30)
@@ -44,6 +45,7 @@ def leaves(request):
     page = paginated.get_page(page_number)
     context["page"] = page
     context["leave_filter"] = leave_filter
+    context["download_filter"] = download_filter
 
     return render(request, "leave/list.html", context)
 
@@ -191,6 +193,78 @@ def download_annual_leave(request):
                 employee.annual_leave_taken,
                 # employee.annual_leave_difference,
                 employee.annual_leave_remaining,
+            ]
+        )
+    wb.save(response)
+    return response
+
+
+@login_required
+def download_leave(request):
+    user = request.user.profile
+    if user.role == "HR" or user.role == "ADMIN":
+        leaves = Leave.objects.all().order_by("start_date")
+    else:
+        leaves = Leave.objects.filter(department__in=user.manages.all()).order_by(
+            "start_date"
+        )
+    form = LeaveDownloadFilter(
+        data=request.POST,
+        queryset=leaves,
+    )
+    leaves = form.qs
+    response = HttpResponse(content_type="application/ms-excel")
+    response["Content-Disposition"] = 'attachment; filename="leave.xlsx"'
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "leave"
+
+    headers = [
+        "ID",
+        "Name",
+        "Department",
+        "Employment date",
+        "Leave Type",
+        "Start date",
+        "End date",
+        "Half day",
+        "Total days",
+        "Status",
+        "Approved by",
+        "Rejected by",
+    ]
+    ws.append(headers)
+
+    for leave in leaves:
+        if leave.approved:
+            status = "Approved"
+        elif leave.rejected:
+            status = "Rejected"
+        else:
+            status = "Pending"
+        if leave.approved_by:
+            approved_by = leave.approved_by.username
+        else:
+            approved_by = ""
+        if leave.rejected_by:
+            rejected_by = leave.rejected_by.username
+        else:
+            rejected_by = ""
+
+        ws.append(
+            [
+                leave.employee.employee_id,
+                leave.employee.name,
+                leave.employee.department.name,
+                leave.employee.employment_date,
+                leave.leave_type.name,
+                leave.start_date,
+                leave.end_date,
+                leave.half_day,
+                leave.total_days,
+                status,
+                approved_by,
+                rejected_by,
             ]
         )
     wb.save(response)
