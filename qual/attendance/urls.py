@@ -29,4 +29,10 @@ urlpatterns = [
         views.download_compiled_attendance,
         name="download_compiled_attendance",
     ),
+    path("on_fields", views.on_fields, name="on_fields"),
+    path("on_fields/<int:id>", views.on_field_detail, name="on_field_detail"),
+    path("on_fields/create", views.create_on_field, name="create_on_field"),
+    path("on_fields/<int:id>/edit", views.edit_on_field, name="edit_on_field"),
+    path("on_fields/<int:id>/cancel", views.cancel_on_field, name="cancel_on_field"),
+    path("on_fields/download", views.download_on_field, name="download_on_field"),
 ]

@@ -11,7 +11,12 @@ class LeaveFilter(django_filters.FilterSet):
             "employee__name": ["icontains"],
             "leave_type": ["exact"],
             "half_day": ["exact"],
+            "start_date": ["exact"],
         }
+
+    start_date = django_filters.DateFromToRangeFilter(
+        widget=django_filters.widgets.RangeWidget(attrs={"type": "date"})
+    )
 
 
 class OvertimeFilter(django_filters.FilterSet):

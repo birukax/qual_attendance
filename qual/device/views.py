@@ -82,7 +82,7 @@ def device_detail(request, id):
 @user_passes_test(lambda u: u.profile.role == "ADMIN")
 def device_users(request, id):
     device = get_object_or_404(Device, id=id)
-    users = DeviceUser.objects.filter(device=device).order_by("name")
+    users = DeviceUser.objects.filter(device=device).order_by("-uid")
     attendances = RawAttendance.objects.filter(device=device)
     paginated = Paginator(users, 30)
     page_number = request.GET.get("page")

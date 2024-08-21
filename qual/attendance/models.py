@@ -35,6 +35,7 @@ class Attendance(models.Model):
         ("Absent", "Absent"),
         ("Day Off", "Day Off"),
         ("On Leave", "On Leave"),
+        ("On Field", "On Field"),
         ("Holiday", "Holiday"),
     ]
     id = models.AutoField(primary_key=True)
@@ -98,3 +99,41 @@ class DailyRecord(models.Model):
     day_off = models.IntegerField()
     leave = models.IntegerField()
     holiday = models.IntegerField(null=True)
+
+
+class OnField(models.Model):
+    employee = models.ForeignKey(
+        "employee.Employee",
+        on_delete=models.CASCADE,
+        related_name="on_fields",
+    )
+    start_date = models.DateField()
+    end_date = models.DateField()
+    total_days = models.FloatField(null=True, blank=True)
+    reason = models.TextField(null=True, blank=True)
+    approved = models.BooleanField(default=False, null=True, blank=True)
+    rejected = models.BooleanField(default=False, null=True, blank=True)
+    created_by = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="on_field_created",
+        null=True,
+        blank=True,
+    )
+    approved_by = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+        related_name="on_field_approval",
+    )
+    rejected_by = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+        related_name="on_field_rejection",
+    )
+
+    def get_absolute_url(self):
+        return reverse("attendance:on_field_detail", args={self.id})

@@ -1,13 +1,15 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from attendance.models import Attendance, DailyRecord
+from attendance.models import Attendance, OnField
 from leave.models import Leave
 from holiday.models import Holiday
 from overtime.models import Overtime
+
 from django.core.paginator import Paginator
 from attendance.tasks import save_data
-import datetime
-from overtime.tasks import create_ots
+
+# import datetime
+# from overtime.tasks import create_ots
 from django.contrib.auth.decorators import user_passes_test
 from .filters import LeaveFilter, OvertimeFilter
 from leave.tasks import calculate_total_leave_days
@@ -17,32 +19,16 @@ from leave.tasks import calculate_total_leave_days
 # @user_passes_test(lambda u: u.profile.role == "HR")
 @user_passes_test(lambda u: u.has_perm("account.can_approve"))
 def approval(request):
-    attendances = Attendance.objects.filter(approved=False, rejected=False)
-    approved_attendances = Attendance.objects.filter(approved=True)
-    rejected_attendances = Attendance.objects.filter(rejected=True)
     leaves = Leave.objects.filter(approved=False, rejected=False)
-    approved_leaves = Leave.objects.filter(approved=True)
-    rejected_leaves = Leave.objects.filter(rejected=True)
     holidays = Holiday.objects.filter(approved=False, rejected=False)
-    approved_holidays = Holiday.objects.filter(approved=True)
-    rejected_holidays = Holiday.objects.filter(rejected=True)
     overtimes = Overtime.objects.filter(approved=False, rejected=False)
-    approved_overtimes = Overtime.objects.filter(approved=True)
-    rejected_overtimes = Overtime.objects.filter(rejected=True)
+    on_fields = OnField.objects.filter(approved=False, rejected=False)
 
     context = {
-        "attendances": attendances,
-        "approved_attendances": approved_attendances,
-        "rejected_attendances": rejected_attendances,
+        "on_fields": on_fields,
         "leaves": leaves,
-        "approved_leaves": approved_leaves,
-        "rejected_leaves": rejected_leaves,
         "holidays": holidays,
-        "approved_holidays": approved_holidays,
-        "rejected_holidays": rejected_holidays,
         "overtimes": overtimes,
-        "approved_overtimes": approved_overtimes,
-        "rejected_overtimes": rejected_overtimes,
     }
     return render(request, "approval/list.html", context)
 
@@ -222,3 +208,58 @@ def reject_holiday(request, id):
     holiday.rejected = True
     holiday.save()
     return redirect("approval:holiday_approval")
+
+
+@login_required
+# @user_passes_test(lambda u: u.profile.role == "HR")
+@user_passes_test(lambda u: u.has_perm("account.can_approve"))
+def on_field_approval(request):
+    on_fields = OnField.objects.filter(approved=False, rejected=False).order_by(
+        "start_date"
+    )
+    # for l in on_fields:
+    #     calculate_total_on_field_days(l.id)
+    # on_field_filter = On_fieldFilter(request.GET, queryset=on_fields)
+    # on_fields = on_field_filter.qs
+
+    paginated = Paginator(on_fields, 30)
+    page_number = request.GET.get("page")
+    page = paginated.get_page(page_number)
+    context = {
+        "page": page,
+        # "on_field_filter": on_field_filter,
+    }
+    return render(request, "approval/on_field/list.html", context)
+
+
+@login_required
+# @user_passes_test(lambda u: u.profile.role == "HR")
+@user_passes_test(lambda u: u.has_perm("account.can_approve"))
+def approve_on_field(request, id):
+    on_field = get_object_or_404(OnField, id=id)
+    on_field.approved = True
+    on_field.approved_by = request.user
+    on_field.save()
+    attendances = Attendance.objects.filter(
+        employee=on_field.employee,
+        check_in_date__gte=on_field.start_date,
+        check_in_date__lte=on_field.end_date,
+        status="Absent",
+    )
+    if attendances:
+        for attendance in attendances:
+            # print(attendance.check_in_date)
+            attendance.status = "On Field"
+            attendance.save()
+    return redirect("approval:on_field_approval")
+
+
+@login_required
+# @user_passes_test(lambda u: u.profile.role == "HR")
+@user_passes_test(lambda u: u.has_perm("account.can_approve"))
+def reject_on_field(request, id):
+    on_field = get_object_or_404(OnField, id=id)
+    on_field.rejected = True
+    on_field.rejected_by = request.user
+    on_field.save()
+    return redirect("approval:on_field_approval")

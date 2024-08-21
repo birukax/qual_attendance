@@ -1,12 +1,12 @@
 <nav aria-label="Page navigation example" class="px-4 py-2 text-sm">
   <ul class="inline-flex -space-x-px font-semibold">
     <li>
-      <a href="?{{ request }}&page=1"
+      <a href="?{{ request.META.QUERY_STRING }}&page=1"
          class="flex items-center justify-center h-6 px-3 leading-tight bg-white border rounded-l-lg text-slate-800 border-slate-300 hover:bg-slate-700 hover:text-slate-50 ">First</a>
     </li>
     <li>
       {% if page.has_previous %}
-        <a href="?{{ request }}&page={{ page.previous_page_number }}"
+        <a href="?{{ request.META.QUERY_STRING }}&page={{ page.previous_page_number }}"
            class="flex items-center justify-center h-6 px-3 leading-tight bg-white border ms-0 text-slate-800 border-e-0 border-slate-300 hover:bg-slate-700 hover:text-slate-50 ">Previous</a>
       {% endif %}
     </li>
@@ -19,18 +19,18 @@
           </p>
         {% elif num > page.number|add:'-4' and num < page.number|add:'4' %}
           <a class="flex items-center justify-center h-6 px-3 leading-tight bg-white border text-slate-800 border-slate-300 hover:bg-slate-700 hover:text-slate-50 "
-             href="?{{ request }}&page={{ num }}">{{ num }}</a>
+             href="?{{ request.META.QUERY_STRING }}&page={{ num }}">{{ num }}</a>
         {% endif %}
       {% endfor %}
     </li>
     <li>
       {% if page.has_next %}
-        <a href="?{{ request }}&page={{ page.next_page_number }}"
+        <a href="?{{ request.META.QUERY_STRING }}&page={{ page.next_page_number }}"
            class="flex items-center justify-center h-6 px-3 leading-tight bg-white border text-slate-800 border-slate-300 hover:bg-slate-700 hover:text-slate-50 ">Next</a>
       {% endif %}
     </li>
     <li>
-      <a href="?{{ request }}&page={{ page.paginator.num_pages }}"
+      <a href="?{{ request.META.QUERY_STRING }}&page={{ page.paginator.num_pages }}"
          class="flex items-center justify-center h-6 px-3 leading-tight bg-white border text-slate-800 border-slate-300 rounded-e-lg hover:bg-slate-700 hover:text-slate-50 ">Last</a>
     </li>
   </ul>

@@ -28,10 +28,10 @@
         </button>
       </div>
       <!-- Modal body -->
-      <form method="get" action="{% url 'leave:download_leave' %}">
+      <form method="post" action="{% url 'leave:download_leave' %}">
         {% csrf_token %}
         <div class="gap-2 grid grid-cols-1 w-fit mx-auto mt-2">
-          {% for field in download_filter.form %}
+          {% for field in leave_filter.form %}
             <div class="grid grid-cols-1 md:grid-cols-2 items-center gap-2">{{ field.label_tag }} {{ field }}</div>
           {% endfor %}
         </div>

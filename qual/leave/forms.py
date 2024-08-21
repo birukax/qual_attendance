@@ -1,12 +1,10 @@
-from datetime import date, timedelta, datetime, time
+from datetime import date
 from .models import Leave, LeaveType
 from django import forms
 from django.utils.text import slugify
 from employee.models import Employee
 from django_flatpickr.widgets import (
     DatePickerInput,
-    TimePickerInput,
-    DateTimePickerInput,
 )
 from django_flatpickr.schemas import FlatpickrOptions
 from django_select2 import forms as s2forms
@@ -62,14 +60,14 @@ class CreateLeaveForm(forms.ModelForm):
         end_date = cleaned_data.get("end_date")
         leave_type = cleaned_data.get("leave_type")
         half_day = cleaned_data.get("half_day")
+        qs = Leave.objects.filter(employee=employee).exclude(rejected=True)
 
         if employee:
-            active_leave = Leave.objects.filter(
-                ~Q(rejected=True),
-                start_date__range=(start_date, end_date),
-                end_date__range=(start_date, end_date),
-                employee=employee,
-            )
+            qs = Leave.objects.filter(employee=employee).exclude(rejected=True)
+            active_leave = qs.filter(
+                Q(start_date__lte=start_date, end_date__gte=start_date)
+                | Q(start_date__lte=end_date, end_date__gte=end_date)
+            ).exists()
             if active_leave:
                 raise ValidationError(
                     _("Employee can't have multiple leave on the same date.")
@@ -130,13 +128,16 @@ class EditLeaveForm(forms.ModelForm):
         half_day = cleaned_data.get("half_day")
 
         if employee:
-            active_leave = Leave.objects.filter(
-                ~Q(rejected=True),
-                start_date__range=(start_date, end_date),
-                end_date__range=(start_date, end_date),
-                employee=employee,
+            qs = (
+                Leave.objects.filter(employee=employee)
+                .exclude(id=self.instance.id)
+                .exclude(rejected=True)
             )
-            if active_leave.count() > 1:
+            active_leave = qs.filter(
+                Q(start_date__lte=start_date, end_date__gte=start_date)
+                | Q(start_date__lte=end_date, end_date__gte=end_date)
+            ).exists()
+            if active_leave:
                 raise ValidationError(
                     _("Employee can't have multiple leave on the same date.")
                 )

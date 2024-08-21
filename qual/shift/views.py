@@ -212,7 +212,7 @@ def assign_employees(request):
                 employee.device = shift.device
                 employee.save()
             if (
-                request.user.profile.role == "Admin"
+                request.user.profile.role == "ADMIN"
                 or request.user.profile.role == "HR"
             ):
                 return redirect("shift:shifts")

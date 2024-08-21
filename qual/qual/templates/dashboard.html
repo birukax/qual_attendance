@@ -13,15 +13,27 @@
         </div>
       {% endif %}
       <div class="flex flex-col items-center py-4 justify-center rounded-lg bg-slate-100">
+        <dt class="mb-2 text-4xl font-bold text-slate-800">{{ shifts.count }}</dt>
+        <dd class="text-slate-500 dark:text-slate-400">
+          Shifts
+        </dd>
+      </div>
+      <div class="flex flex-col items-center py-4 justify-center rounded-lg bg-slate-100">
+        <dt class="mb-2 text-4xl font-bold text-slate-800">{{ devices.count }}</dt>
+        <dd class="text-slate-500 dark:text-slate-400">
+          Devices
+        </dd>
+      </div>
+      <div class="flex flex-col items-center py-4 justify-center rounded-lg bg-slate-100">
         <dt class="mb-2 text-4xl font-bold text-slate-800">{{ attendances.count }}</dt>
         <dd class="text-slate-500 dark:text-slate-400">
           Attendances
         </dd>
       </div>
       <div class="flex flex-col items-center py-4 justify-center rounded-lg bg-slate-100">
-        <dt class="mb-2 text-4xl font-bold text-slate-800">{{ shifts.count }}</dt>
+        <dt class="mb-2 text-4xl font-bold text-slate-800">{{ on_fields.count }}</dt>
         <dd class="text-slate-500 dark:text-slate-400">
-          Shifts
+          On Fields
         </dd>
       </div>
       <div class="flex flex-col items-center py-4 justify-center rounded-lg bg-slate-100">
