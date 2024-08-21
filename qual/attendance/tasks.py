@@ -351,16 +351,7 @@ def compile(date, employees, request_device, pattern, recompiled):
                             recompiled=recompiled,
                             status="Holiday",
                         )
-                    elif current_pattern.day_span == 0:
-                        # print(10)
-                        create_attendance(
-                            employee=employee,
-                            current_pattern=current_pattern,
-                            device=request_device,
-                            check_in_date=date,
-                            recompiled=recompiled,
-                            status="Day Off",
-                        )
+
                     elif attendance:
                         attendance_first = datetime.datetime.combine(
                             attendance.first().date, attendance.first().time
@@ -445,7 +436,16 @@ def compile(date, employees, request_device, pattern, recompiled):
                                     check_out_date=attendance.last().date,
                                     check_out_time=attendance.last().time,
                                 )
-
+                    elif current_pattern.day_span == 0:
+                        # print(10)
+                        create_attendance(
+                            employee=employee,
+                            current_pattern=current_pattern,
+                            device=request_device,
+                            check_in_date=date,
+                            recompiled=recompiled,
+                            status="Day Off",
+                        )
                     elif leave:
                         # print(15)
                         create_attendance(

@@ -121,12 +121,16 @@ def compile_view(request):
         return redirect("attendance:raw_attendance")
     if DailyRecord.objects.filter(device=request_device).exists():
         daily_records = DailyRecord.objects.filter(device=request_device).latest("date")
+        last_date = daily_records.date
+        current_date = daily_records.date + datetime.timedelta(days=1)
     else:
         daily_records = []
+        last_date = ""
+        current_date = datetime.date.today()
 
-    no_shift = Employee.objects.filter(
-        shift=None, status="Active", device=request_device
-    ).count()
+    # no_shift = Employee.objects.filter(
+    #     shift=None, status="Active", device=request_device
+    # ).count()
     attendances = Attendance.objects.filter(
         approved=False, device=request_device
     ).order_by("check_in_time")
@@ -141,8 +145,9 @@ def compile_view(request):
     page = paginated.get_page(page_number)
     context = {
         "page": page,
-        "daily_records": daily_records,
-        "no_shift": no_shift,
+        "last_date": last_date,
+        "current_date": current_date,
+        # "no_shift": no_shift,
         "compile_filter": compile_filter,
         "attendance_download_filter": attendance_download_filter,
     }
