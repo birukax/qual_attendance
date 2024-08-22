@@ -78,7 +78,6 @@ class RawAttendanceFilter(django_filters.FilterSet):
         model = RawAttendance
         fields = {
             "employee__name": ["icontains"],
-            "device": ["exact"],
             "date": ["exact"],
         }
 

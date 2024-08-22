@@ -369,17 +369,6 @@ def raw_attendance_list(request):
     return render(request, "attendance/raw_attendance/list.html", context)
 
 
-# @login_required
-# @user_passes_test(lambda u: u.profile.role == "HR" or u.profile.role == "ADMIN")
-# def get_raw_data(request):
-#     request_device = request.user.profile.device
-#     if request_device:
-#         sync_raw_attendance.delay(request_device=request_device.id)
-#     else:
-#         sync_raw_attendance.delay()
-#     return redirect("attendance:raw_attendance")
-
-
 @login_required
 @user_passes_test(lambda u: u.profile.role == "HR" or u.profile.role == "ADMIN")
 def get_raw_data(request):
@@ -389,6 +378,49 @@ def get_raw_data(request):
     else:
         sync_raw_attendance()
     return redirect("attendance:raw_attendance")
+
+
+@login_required
+def download_raw_data(request):
+    user = request.user.profile
+    if user.role == "HR" or user.role == "ADMIN":
+        raw_datas = RawAttendance.objects.all()
+    else:
+        raw_datas = RawAttendance.objects.filter(
+            employee__department__in=user.manages.all()
+        )
+    form = RawAttendanceFilter(
+        data=request.POST,
+        queryset=raw_datas,
+    )
+    raw_datas = form.qs
+    response = HttpResponse(content_type="application/ms-excel")
+    response["Content-Disposition"] = 'attachment; filename="Raw data.xlsx"'
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "Raw data"
+
+    headers = [
+        "Employee",
+        "Department",
+        "Device",
+        "Date",
+        "Time",
+    ]
+    ws.append(headers)
+
+    for raw_data in raw_datas.order_by("-date", "-employee__name"):
+        ws.append(
+            [
+                raw_data.employee.name,
+                raw_data.employee.department.name,
+                raw_data.device.name,
+                raw_data.date,
+                raw_data.time,
+            ]
+        )
+    wb.save(response)
+    return response
 
 
 @login_required
