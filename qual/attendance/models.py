@@ -31,7 +31,9 @@ class Attendance(models.Model):
         ("No Data", "No Data"),
     ]
     CHOICES = [
-        ("Checked In", "Checked In"),
+        # ("Checked In", "Checked In"),
+        ("Complete", "Complete"),
+        ("Incomplete", "Incomplete"),
         ("Absent", "Absent"),
         ("Day Off", "Day Off"),
         ("On Leave", "On Leave"),

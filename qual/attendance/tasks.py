@@ -86,7 +86,11 @@ def create_attendance(**kwargs):
             if kwargs["status"]:
                 status = kwargs["status"]
         except:
-            status = "Checked In"
+            try:
+                if kwargs["check_in_time"] and kwargs["check_out_time"]:
+                    status = "Complete"
+            except:
+                status = "Incomplete"
 
         try:
             emp = kwargs["employee"]
@@ -211,7 +215,11 @@ def compile(date, employees, request_device, pattern, recompiled):
                     attendance = RawAttendance.objects.filter(
                         date=date, employee=employee
                     ).order_by("time")
-                    if date.isoweekday() == 7 and current_pattern.day_span == 2 and attendance.count() < 2:
+                    if (
+                        date.isoweekday() == 7
+                        and current_pattern.day_span == 2
+                        and attendance.count() < 2
+                    ):
                         # print(2)
                         create_attendance(
                             employee=employee,
@@ -316,7 +324,7 @@ def compile(date, employees, request_device, pattern, recompiled):
                             recompiled=recompiled,
                             status="Holiday",
                         )
-                    
+
                     elif date.isoweekday() == 7:
                         # print(2)
                         create_attendance(
@@ -353,7 +361,7 @@ def compile(date, employees, request_device, pattern, recompiled):
                     attendance = RawAttendance.objects.filter(
                         date=date, employee=employee
                     ).order_by("time")
-                    
+
                     if attendance:
                         attendance_first = datetime.datetime.combine(
                             attendance.first().date, attendance.first().time
