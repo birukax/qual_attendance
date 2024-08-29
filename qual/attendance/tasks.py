@@ -211,17 +211,7 @@ def compile(date, employees, request_device, pattern, recompiled):
                     attendance = RawAttendance.objects.filter(
                         date=date, employee=employee
                     ).order_by("time")
-                    if holiday:
-                        # print(1)
-                        create_attendance(
-                            employee=employee,
-                            current_pattern=current_pattern,
-                            device=request_device,
-                            check_in_date=date,
-                            recompiled=recompiled,
-                            status="Holiday",
-                        )
-                    elif date.isoweekday() == 7:
+                    if date.isoweekday() == 7 and current_pattern.day_span == 2 and attendance.count() < 2:
                         # print(2)
                         create_attendance(
                             employee=employee,
@@ -316,6 +306,28 @@ def compile(date, employees, request_device, pattern, recompiled):
                                     check_out_date=check_out.first().date,
                                     check_out_time=check_out.first().time,
                                 )
+                    elif holiday:
+                        # print(1)
+                        create_attendance(
+                            employee=employee,
+                            current_pattern=current_pattern,
+                            device=request_device,
+                            check_in_date=date,
+                            recompiled=recompiled,
+                            status="Holiday",
+                        )
+                    
+                    elif date.isoweekday() == 7:
+                        # print(2)
+                        create_attendance(
+                            employee=employee,
+                            current_pattern=current_pattern,
+                            device=request_device,
+                            check_in_date=date,
+                            recompiled=recompiled,
+                            status="Day Off",
+                        )
+
                     elif leave:
                         # print(7)
                         create_attendance(
@@ -341,18 +353,8 @@ def compile(date, employees, request_device, pattern, recompiled):
                     attendance = RawAttendance.objects.filter(
                         date=date, employee=employee
                     ).order_by("time")
-                    if holiday:
-                        # print(9)
-                        create_attendance(
-                            employee=employee,
-                            current_pattern=current_pattern,
-                            device=request_device,
-                            check_in_date=date,
-                            recompiled=recompiled,
-                            status="Holiday",
-                        )
-
-                    elif attendance:
+                    
+                    if attendance:
                         attendance_first = datetime.datetime.combine(
                             attendance.first().date, attendance.first().time
                         )
@@ -436,6 +438,17 @@ def compile(date, employees, request_device, pattern, recompiled):
                                     check_out_date=attendance.last().date,
                                     check_out_time=attendance.last().time,
                                 )
+                    elif holiday:
+                        # print(9)
+                        create_attendance(
+                            employee=employee,
+                            current_pattern=current_pattern,
+                            device=request_device,
+                            check_in_date=date,
+                            recompiled=recompiled,
+                            status="Holiday",
+                        )
+
                     elif current_pattern.day_span == 0:
                         # print(10)
                         create_attendance(
