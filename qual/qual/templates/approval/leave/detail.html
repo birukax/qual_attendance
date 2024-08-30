@@ -29,34 +29,38 @@
       </div>
       <!-- Modal body -->
       <div class="w-full p-4 bg-white rounded-lg shadow ">
-        <div class="flex gap-4">
-          <a href="{% url 'approval:approve_leave' l.id %}"
-             class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-slate-700 hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-slate-300 dark:bg-slate-600 dark:hover:bg-slate-700 dark:focus:ring-slate-800">
-            Approve
-            <svg class="w-4 h-4 ml-1 text-white"
-                 aria-hidden="true"
-                 xmlns="http://www.w3.org/2000/svg"
-                 width="20"
-                 height="20"
-                 fill="none"
-                 viewBox="0 0 20 20">
-              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 11.917 9.724 16.5 19 7.5" />
-            </svg>
-          </a>
-          <a href="{% url 'approval:reject_leave' l.id %}"
-             class="inline-flex items-center px-3 py-2 text-sm font-medium text-center rounded-lg bg-slate-200 hover:bg-slate-300 focus:ring-4 focus:outline-none focus:ring-slate-300 ">
-            Reject
-            <svg class="w-4 h-4 ml-1"
-                 aria-hidden="true"
-                 xmlns="http://www.w3.org/2000/svg"
-                 width="20"
-                 height="20"
-                 fill="none"
-                 viewBox="0 0 20 20">
-              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6" />
-            </svg>
-          </a>
-        </div>
+        {% if request.user.profile.employee == l.employee %}
+          <p class=" text-red-900 text-base">You can not approve your own leave.</p>
+        {% else %}
+          <div class="flex gap-4">
+            <a href="{% url 'approval:approve_leave' l.id %}"
+               class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-slate-700 hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-slate-300 dark:bg-slate-600 dark:hover:bg-slate-700 dark:focus:ring-slate-800">
+              Approve
+              <svg class="w-4 h-4 ml-1 text-white"
+                   aria-hidden="true"
+                   xmlns="http://www.w3.org/2000/svg"
+                   width="20"
+                   height="20"
+                   fill="none"
+                   viewBox="0 0 20 20">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 11.917 9.724 16.5 19 7.5" />
+              </svg>
+            </a>
+            <a href="{% url 'approval:reject_leave' l.id %}"
+               class="inline-flex items-center px-3 py-2 text-sm font-medium text-center rounded-lg bg-slate-200 hover:bg-slate-300 focus:ring-4 focus:outline-none focus:ring-slate-300 ">
+              Reject
+              <svg class="w-4 h-4 ml-1"
+                   aria-hidden="true"
+                   xmlns="http://www.w3.org/2000/svg"
+                   width="20"
+                   height="20"
+                   fill="none"
+                   viewBox="0 0 20 20">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6" />
+              </svg>
+            </a>
+          </div>
+        {% endif %}
         <div class="flow-root">
           <ul role="list" class="divide-y divide-gray-200 ">
             <li class="py-3 sm:py-4">
@@ -75,7 +79,6 @@
                 <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">{{ l.leave_type }}</div>
               </div>
             </li>
-            
             <li class="py-3 sm:py-4">
               <div class="flex items-center">
                 <div class="flex-1 min-w-0 ms-4">
@@ -105,9 +108,7 @@
                 <div class="flex-1 min-w-0 ms-4">
                   <p class="text-sm font-medium text-gray-900 truncate dark:text-white">Total days</p>
                 </div>
-                <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                  {{l.total_days}}
-                </div>
+                <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">{{ l.total_days }}</div>
               </div>
             </li>
             <li class="pt-3 pb-0 sm:pt-4">

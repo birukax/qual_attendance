@@ -105,10 +105,13 @@ def leave_approval(request):
 # @user_passes_test(lambda u: u.profile.role == "HR")
 @user_passes_test(lambda u: u.has_perm("account.can_approve"))
 def approve_leave(request, id):
+    user = request.user
     leave = get_object_or_404(Leave, id=id)
+    if user.profile.employee == leave.employee:
+        return redirect("approval:leave_approval")
     leave.approved = True
     leave.active = True
-    leave.approved_by = request.user
+    leave.approved_by = user
     leave.save()
     attendances = Attendance.objects.filter(
         employee=leave.employee,
@@ -129,7 +132,10 @@ def approve_leave(request, id):
 # @user_passes_test(lambda u: u.profile.role == "HR")
 @user_passes_test(lambda u: u.has_perm("account.can_approve"))
 def reject_leave(request, id):
+    user = request.user
     leave = get_object_or_404(Leave, id=id)
+    if user.profile.employee == leave.employee:
+        return redirect("approval:leave_approval")
     leave.rejected = True
     leave.rejected_by = request.user
     leave.save()
