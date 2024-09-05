@@ -88,9 +88,9 @@ def create_attendance(**kwargs):
         except:
             try:
                 if kwargs["check_in_time"] and kwargs["check_out_time"]:
-                    status = "Complete"
+                    status = "Checked"
             except:
-                status = "Incomplete"
+                status = "No Data"
 
         try:
             emp = kwargs["employee"]

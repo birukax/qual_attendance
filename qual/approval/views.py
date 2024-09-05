@@ -63,6 +63,8 @@ def approve_attendance(request):
     )
     if attendance:
         date = attendance.first().check_in_date
+        if attendance.first().compile_date == date:
+            return redirect("attendance:compile_view")
         try:
             save_data(request, date)
         except Exception as e:

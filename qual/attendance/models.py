@@ -32,8 +32,8 @@ class Attendance(models.Model):
     ]
     CHOICES = [
         # ("Checked In", "Checked In"),
-        ("Complete", "Complete"),
-        ("Incomplete", "Incomplete"),
+        ("Checked", "Checked"),
+        ("No Data", "No Data"),
         ("Absent", "Absent"),
         ("Day Off", "Day Off"),
         ("On Leave", "On Leave"),
@@ -62,6 +62,7 @@ class Attendance(models.Model):
     check_in_type = models.CharField(max_length=10, choices=TYPES, null=True)
     check_out_type = models.CharField(max_length=10, choices=TYPES, null=True)
     status = models.CharField(max_length=10, choices=CHOICES, null=True)
+    compile_date = models.DateField(default=date.today())
     leave_type = models.ForeignKey(
         "leave.LeaveType",
         on_delete=models.CASCADE,
@@ -110,7 +111,7 @@ class OnField(models.Model):
         related_name="on_fields",
     )
     start_date = models.DateField()
-    end_date = models.DateField()
+    end_date = models.DateField(null=True, blank=True)
     total_days = models.FloatField(null=True, blank=True)
     reason = models.TextField(null=True, blank=True)
     approved = models.BooleanField(default=False, null=True, blank=True)
