@@ -524,148 +524,148 @@ def cancel_recompile(request):
     return redirect("attendance:recompile_view")
 
 
-@login_required
-@user_passes_test(lambda u: u.profile.role == "HR" or u.profile.role == "ADMIN")
-def on_fields(request):
-    on_fields = OnField.objects.all().order_by("-start_date")
-    on_field_filter = OnFieldFilter(request.GET, queryset=on_fields)
-    on_fields = on_field_filter.qs
-    paginated = Paginator(on_fields, 30)
-    page_number = request.GET.get("page")
-    page = paginated.get_page(page_number)
+# @login_required
+# @user_passes_test(lambda u: u.profile.role == "HR" or u.profile.role == "ADMIN")
+# def on_fields(request):
+#     on_fields = OnField.objects.all().order_by("-start_date")
+#     on_field_filter = OnFieldFilter(request.GET, queryset=on_fields)
+#     on_fields = on_field_filter.qs
+#     paginated = Paginator(on_fields, 30)
+#     page_number = request.GET.get("page")
+#     page = paginated.get_page(page_number)
 
-    context = {"page": page, "on_field_filter": on_field_filter}
-    return render(request, "attendance/on_field/list.html", context)
-
-
-@login_required
-@user_passes_test(lambda u: u.profile.role == "HR" or u.profile.role == "ADMIN")
-def on_field_detail(request, id):
-    on_field = get_object_or_404(OnField, id=id)
-    context = {
-        "on_field": on_field,
-    }
-    return render(request, "attendance/on_field/detail.html", context)
+#     context = {"page": page, "on_field_filter": on_field_filter}
+#     return render(request, "attendance/on_field/list.html", context)
 
 
-@login_required
-@user_passes_test(lambda u: u.profile.role == "HR" or u.profile.role == "ADMIN")
-def create_on_field(request):
-    if request.method == "POST":
-
-        form = CreateOnFieldForm(request.POST)
-        if form.is_valid():
-            employee = form.cleaned_data["employee"]
-            start_date = form.cleaned_data["start_date"]
-            end_date = form.cleaned_data["end_date"]
-            reason = form.cleaned_data["reason"]
-            total_days = calculate_total_days(
-                start_date, end_date, exclude_rest_days=True
-            )
-            created_by = request.user
-            OnField.objects.create(
-                employee=employee,
-                start_date=start_date,
-                end_date=end_date,
-                reason=reason,
-                total_days=total_days,
-                created_by=created_by,
-            )
-            return redirect("attendance:on_fields")
-    else:
-
-        form = CreateOnFieldForm()
-    context = {
-        "form": form,
-    }
-    return render(request, "attendance/on_field/create.html", context)
+# @login_required
+# @user_passes_test(lambda u: u.profile.role == "HR" or u.profile.role == "ADMIN")
+# def on_field_detail(request, id):
+#     on_field = get_object_or_404(OnField, id=id)
+#     context = {
+#         "on_field": on_field,
+#     }
+#     return render(request, "attendance/on_field/detail.html", context)
 
 
-@login_required
-@user_passes_test(lambda u: u.profile.role == "HR" or u.profile.role == "ADMIN")
-def edit_on_field(request, id):
-    on_field = get_object_or_404(OnField, id=id)
-    if request.method == "POST":
-        form = EditOnFieldForm(request.POST, instance=on_field)
-        if form.is_valid():
-            form.save()
-            on_field.total_days = calculate_total_days(
-                on_field.start_date, on_field.end_date, exclude_rest_days=True
-            )
-            on_field.save()
-            return redirect("attendance:on_fields")
-    else:
-        form = EditOnFieldForm(instance=on_field)
-    context = {
-        "form": form,
-        "on_field": on_field,
-    }
-    return render(request, "attendance/on_field/edit.html", context)
+# @login_required
+# @user_passes_test(lambda u: u.profile.role == "HR" or u.profile.role == "ADMIN")
+# def create_on_field(request):
+#     if request.method == "POST":
+
+#         form = CreateOnFieldForm(request.POST)
+#         if form.is_valid():
+#             employee = form.cleaned_data["employee"]
+#             start_date = form.cleaned_data["start_date"]
+#             end_date = form.cleaned_data["end_date"]
+#             reason = form.cleaned_data["reason"]
+#             total_days = calculate_total_days(
+#                 start_date, end_date, exclude_rest_days=True
+#             )
+#             created_by = request.user
+#             OnField.objects.create(
+#                 employee=employee,
+#                 start_date=start_date,
+#                 end_date=end_date,
+#                 reason=reason,
+#                 total_days=total_days,
+#                 created_by=created_by,
+#             )
+#             return redirect("attendance:on_fields")
+#     else:
+
+#         form = CreateOnFieldForm()
+#     context = {
+#         "form": form,
+#     }
+#     return render(request, "attendance/on_field/create.html", context)
 
 
-@login_required
-@user_passes_test(lambda u: u.profile.role == "HR" or u.profile.role == "ADMIN")
-def cancel_on_field(request, id):
-    on_field = get_object_or_404(OnField, id=id)
-    if not on_field.approved:
-        on_field.rejected = True
-        on_field.rejected_by = request.user
-        on_field.save()
+# @login_required
+# @user_passes_test(lambda u: u.profile.role == "HR" or u.profile.role == "ADMIN")
+# def edit_on_field(request, id):
+#     on_field = get_object_or_404(OnField, id=id)
+#     if request.method == "POST":
+#         form = EditOnFieldForm(request.POST, instance=on_field)
+#         if form.is_valid():
+#             form.save()
+#             on_field.total_days = calculate_total_days(
+#                 on_field.start_date, on_field.end_date, exclude_rest_days=True
+#             )
+#             on_field.save()
+#             return redirect("attendance:on_fields")
+#     else:
+#         form = EditOnFieldForm(instance=on_field)
+#     context = {
+#         "form": form,
+#         "on_field": on_field,
+#     }
+#     return render(request, "attendance/on_field/edit.html", context)
 
-    return redirect("attendance:on_field_detail", id=id)
+
+# @login_required
+# @user_passes_test(lambda u: u.profile.role == "HR" or u.profile.role == "ADMIN")
+# def cancel_on_field(request, id):
+#     on_field = get_object_or_404(OnField, id=id)
+#     if not on_field.approved:
+#         on_field.rejected = True
+#         on_field.rejected_by = request.user
+#         on_field.save()
+
+#     return redirect("attendance:on_field_detail", id=id)
 
 
-@login_required
-def download_on_field(request):
-    user = request.user.profile
-    on_fields = OnField.objects.all().order_by("-start_date")
-    form = OnFieldFilter(
-        data=request.POST,
-        queryset=on_fields,
-    )
-    on_fields = form.qs
-    response = HttpResponse(content_type="application/ms-excel")
-    response["Content-Disposition"] = 'attachment; filename="on_fields.xlsx"'
-    wb = Workbook()
-    ws = wb.active
-    ws.title = "On Field"
+# @login_required
+# def download_on_field(request):
+#     user = request.user.profile
+#     on_fields = OnField.objects.all().order_by("-start_date")
+#     form = OnFieldFilter(
+#         data=request.POST,
+#         queryset=on_fields,
+#     )
+#     on_fields = form.qs
+#     response = HttpResponse(content_type="application/ms-excel")
+#     response["Content-Disposition"] = 'attachment; filename="on_fields.xlsx"'
+#     wb = Workbook()
+#     ws = wb.active
+#     ws.title = "On Field"
 
-    headers = [
-        "Employee",
-        "Start Date",
-        "End Date",
-        "Total Days",
-        "Created By",
-        "Status",
-        "By",
-    ]
-    ws.append(headers)
+#     headers = [
+#         "Employee",
+#         "Start Date",
+#         "End Date",
+#         "Total Days",
+#         "Created By",
+#         "Status",
+#         "By",
+#     ]
+#     ws.append(headers)
 
-    for on_field in on_fields.order_by("-start_date"):
+#     for on_field in on_fields.order_by("-start_date"):
 
-        if on_field.approved:
-            status = "Approved"
-        elif on_field.rejected:
-            status = "Rejected"
-        else:
-            status = "Pending"
+#         if on_field.approved:
+#             status = "Approved"
+#         elif on_field.rejected:
+#             status = "Rejected"
+#         else:
+#             status = "Pending"
 
-        if on_field.approved:
-            by = on_field.approved_by.username
-        elif on_field.rejected:
-            by = on_field.rejected_by.username
-        else:
-            by = ""
-        ws.append(
-            [
-                on_field.employee.name,
-                on_field.start_date,
-                on_field.end_date,
-                on_field.total_days,
-                on_field.created_by.username,
-                status,
-                by,
-            ]
-        )
-    wb.save(response)
-    return response
+#         if on_field.approved:
+#             by = on_field.approved_by.username
+#         elif on_field.rejected:
+#             by = on_field.rejected_by.username
+#         else:
+#             by = ""
+#         ws.append(
+#             [
+#                 on_field.employee.name,
+#                 on_field.start_date,
+#                 on_field.end_date,
+#                 on_field.total_days,
+#                 on_field.created_by.username,
+#                 status,
+#                 by,
+#             ]
+#         )
+#     wb.save(response)
+#     return response

@@ -10,10 +10,10 @@
     <a href="{% url 'approval:leave_approval' %}"
        class="block py-2 px-3 md:p-0  {% if request.resolver_match.url_name == 'leave_approval' %} text-slate-50 bg-slate-700 rounded md:bg-transparent md:text-slate-400 {% else %} text-slate-50 rounded hover:bg-slate-700 hover:text-slate-50 md:hover:bg-transparent md:hover:text-slate-400 {% endif %}">Leave</a>
 </li>
-<li>
+<!-- <li>
     <a href="{% url 'approval:on_field_approval' %}"
        class="block py-2 px-3 md:p-0  {% if request.resolver_match.url_name == 'on_field_approval' %} text-slate-50 bg-slate-700 rounded md:bg-transparent md:text-slate-400 {% else %} text-slate-50 rounded hover:bg-slate-700 hover:text-slate-50 md:hover:bg-transparent md:hover:text-slate-400 {% endif %}">On field</a>
-</li>
+</li> -->
 <li>
     <a href="{% url 'approval:overtime_approval' %}"
        class="block py-2 px-3 md:p-0  {% if request.resolver_match.url_name == 'overtime_approval' %} text-slate-50 bg-slate-700 rounded md:bg-transparent md:text-slate-400 {% else %} text-slate-50 rounded hover:bg-slate-700 hover:text-slate-50 md:hover:bg-transparent md:hover:text-slate-400 {% endif %}">Overtime</a>

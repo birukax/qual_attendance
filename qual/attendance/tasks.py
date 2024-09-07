@@ -160,6 +160,7 @@ def create_attendance(**kwargs):
             check_in_type=check_in_type,
             check_out_type=check_out_type,
             status=status,
+            compile_date=datetime.date.today(),
         )
 
     except Exception as e:
