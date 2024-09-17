@@ -14,10 +14,9 @@
             </div>
             <form action="{% url 'leave:edit_leave' leave.id %}" method="post">
                 {% csrf_token %}
-                <div class="grid gap-4 sm:grid-cols-2 ">
-                    {{ form.media }}
+                <div class="grid grid-cols-1 gap-2 mx-8">
                     {% for field in form %}
-                        <div class="flex-col">
+                        <div class="grid items-stretch grid-cols-1 gap-2">
                             {{ field.label_tag }}
                             {{ field }}
                         </div>
