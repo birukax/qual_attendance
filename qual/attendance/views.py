@@ -309,26 +309,25 @@ def download_attendance(request):
     ws.append(headers)
 
     for attendance in attendances.order_by("-check_in_date"):
-
         if attendance.device:
             device = attendance.device.name
         else:
             device = ""
-        if attendance.leave_type:
-            leave_type = attendance.leave_type.name
+        # if attendance.leave_type:
+        #     leave_type = attendance.leave_type.name
+        # else:
+        leaves = Leave.objects.filter(
+            employee=attendance.employee,
+            approved=True,
+            start_date__lte=attendance.check_in_date,
+            end_date__gte=attendance.check_in_date,
+        )
+        if leaves:
+            leave_type = leaves.first().leave_type.name
+            half_day = leaves.first().half_day
         else:
-            leaves = Leave.objects.filter(
-                employee=attendance.employee,
-                approved=True,
-                start_date__lte=attendance.check_in_date,
-                end_date__gte=attendance.check_in_date,
-            )
-            if leaves:
-                leave_type = leaves.first().leave_type.name
-                half_day = leaves.first().half_day
-            else:
-                leave_type = ""
-                half_day = False
+            leave_type = ""
+            half_day = False
 
         ws.append(
             [
