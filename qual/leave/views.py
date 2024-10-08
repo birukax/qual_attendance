@@ -119,8 +119,8 @@ def download_leave(request):
             [
                 leave.employee.employee_id,
                 leave.employee.name,
-                device_name,
                 leave.employee.department.name,
+                device_name,
                 leave.employee.employment_date,
                 leave.leave_type.name,
                 leave.start_date,
