@@ -25,6 +25,7 @@ class LeaveFilter(django_filters.FilterSet):
         model = Leave
         fields = {
             "employee__name": ["icontains"],
+            "employee__device": ["exact"],
             "leave_type": ["exact"],
             "approved": ["exact"],
             "rejected": ["exact"],
@@ -42,6 +43,7 @@ class LeaveDownloadFilter(django_filters.FilterSet):
         model = Leave
         fields = {
             "employee__name": ["icontains"],
+            "employee__device": ["exact"],
             "leave_type": ["exact"],
             "approved": ["exact"],
             "rejected": ["exact"],

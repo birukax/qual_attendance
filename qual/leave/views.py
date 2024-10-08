@@ -83,6 +83,7 @@ def download_leave(request):
         "ID",
         "Name",
         "Department",
+        "Device",
         "Employment date",
         "Leave Type",
         "Start date",
@@ -110,11 +111,15 @@ def download_leave(request):
             rejected_by = leave.rejected_by.username
         else:
             rejected_by = ""
-
+        if leave.employee.device:
+            device_name = leave.employee.device.name
+        else:
+            device_name = ""
         ws.append(
             [
                 leave.employee.employee_id,
                 leave.employee.name,
+                device_name,
                 leave.employee.department.name,
                 leave.employee.employment_date,
                 leave.leave_type.name,
