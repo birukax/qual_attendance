@@ -137,6 +137,12 @@
              class="text-base text-slate-900 hover:underline ">Cancel leave</a>
         </div>
       {% endif %}
+      {% if leave.approved and 'account.can_approve' in request.user.get_all_permissions %}
+        <div class="flex gap-6">
+          <a href="{% url 'leave:reopen_leave' leave.id %}"
+             class="text-base text-slate-900 hover:underline ">Reopen leave</a>
+        </div>
+      {% endif %}
     </div>
   </div>
 {% endblock content %}

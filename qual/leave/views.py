@@ -13,6 +13,7 @@ from django.http import HttpResponse
 from .tasks import calculate_annual_leaves, calculate_total_leave_days
 from django.contrib.auth.decorators import user_passes_test
 from employee.models import Employee
+from attendance.models import Attendance
 from employee.filters import EmployeeFilter
 from .filters import AnnualLeaveDownloadFilter, LeaveFilter
 from openpyxl import Workbook
@@ -170,6 +171,31 @@ def cancel_leave(request, id):
         leave.rejected = True
         leave.rejected_by = request.user
         leave.save()
+    return redirect("leave:leave_detail", id=id)
+
+
+@login_required
+@user_passes_test(lambda u: u.has_perm("account.can_approve"))
+def reopen_leave(request, id):
+    leave = get_object_or_404(Leave, id=id)
+    attendances = Attendance.objects.filter(
+        employee=leave.employee,
+        check_in_date__gte=leave.start_date,
+        check_in_date__lte=leave.end_date,
+        status="On Leave",
+    )
+    if leave.rejected:
+        leave.rejected = False
+        leave.rejected_by = None
+        leave.save()
+    elif leave.approved:
+        leave.approved = False
+        leave.approved_by = None
+        leave.save()
+    if attendances:
+        for attendance in attendances:
+            attendance.status = "Absent"
+            attendance.save()
     return redirect("leave:leave_detail", id=id)
 
 

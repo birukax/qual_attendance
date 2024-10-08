@@ -9,6 +9,7 @@ urlpatterns = [
     path("<int:id>/", views.leave_detail, name="leave_detail"),
     path("edit/<int:id>/", views.edit_leave, name="edit_leave"),
     path("cancel/<int:id>/", views.cancel_leave, name="cancel_leave"),
+    path("reopen/<int:id>/", views.reopen_leave, name="reopen_leave"),
     path("annual_leaves/", views.annual_leave_list, name="annual_leaves"),
     path("calculate/", views.calculate_leave_balance, name="calculate_leave_balance"),
     path(

@@ -4184,10 +4184,6 @@ input:checked + .toggle-bg {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
-  .md\:grid-cols-4 {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-
   .md\:flex-row {
     flex-direction: row;
   }
@@ -4265,11 +4261,6 @@ input:checked + .toggle-bg {
   .md\:text-slate-400 {
     --tw-text-opacity: 1;
     color: rgb(148 163 184 / var(--tw-text-opacity));
-  }
-
-  .md\:text-slate-700 {
-    --tw-text-opacity: 1;
-    color: rgb(51 65 85 / var(--tw-text-opacity));
   }
 
   .md\:hover\:bg-transparent:hover {
