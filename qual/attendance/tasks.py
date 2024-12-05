@@ -1,5 +1,4 @@
 from __future__ import absolute_import
-from celery import shared_task
 from .models import RawAttendance, Attendance, DailyRecord
 from device.models import Device
 from employee.models import Employee
@@ -10,7 +9,6 @@ from shift.models import Shift, Pattern
 import datetime
 
 
-@shared_task
 def sync_raw_attendance(request_device=None):
     if request_device is None:
         devices = Device.objects.all()

@@ -4,7 +4,7 @@ from decouple import config
 ADMIN = [("admin", "admin@email.com")]
 SECRET_KEY = config("SECRET_KEY")
 DEBUG = False
-DEBUG = True
+# DEBUG = True
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
@@ -32,3 +32,4 @@ SELECT2_CACHE_BACKEND = "select2"
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
 SECURE_SSL_REDIRECT = True
+

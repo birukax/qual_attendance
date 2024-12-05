@@ -61,7 +61,7 @@ INSTALLED_APPS = [
     "overtime",
     "compressor",
     "django_filters",
-    "celery",
+    # "celery",
     "django_flatpickr",
     "django_select2",
 ]
