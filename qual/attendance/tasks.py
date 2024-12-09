@@ -247,7 +247,7 @@ def compile(date, employees, request_device, pattern, recompiled):
                             attendance.count() >= 2
                             and attendance_last - attendance_first
                             < datetime.timedelta(hours=1)
-                        ):
+                        ) or current_pattern.day_span == 2:
                             if current_pattern.day_span == 2 and check_out:
                                 attendance = attendance.filter(
                                     time__gt=datetime.time(hour=9, minute=0)
