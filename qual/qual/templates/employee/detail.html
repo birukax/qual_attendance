@@ -54,21 +54,21 @@
                 </div>
                 <div class="flex justify-between mb-2">
                     <span class="mr-2 ">Leave balance:</span>
-                    <p class="font-semibold">{{ employee.annual_leave_balance }}</p>
+                    <p class="font-semibold">{{ employee.annual_leave_balance|floatformat:2 }}</p>
                 </div>
                 <div class="flex justify-between mb-2">
                     <span class="mr-2 ">Leave taken:</span>
-                    <p class="font-semibold">{{ employee.annual_leave_taken }}</p>
+                    <p class="font-semibold">{{ employee.annual_leave_taken|floatformat:2 }}</p>
                 </div>
                 {% if request.user.profile.role == "ADMIN" %}
                     <div class="flex justify-between mb-2">
                         <span class="mr-2 ">Leave difference:</span>
-                        <p class="font-semibold">{{ employee.annual_leave_difference }}</p>
+                        <p class="font-semibold">{{ employee.annual_leave_difference|floatformat:2 }}</p>
                     </div>
                 {% endif %}
                 <div class="flex justify-between mb-2">
                     <span class="mr-2 ">Leave remaining:</span>
-                    <p class="font-semibold">{{ employee.annual_leave_remaining }}</p>
+                    <p class="font-semibold">{{ employee.annual_leave_remaining|floatformat:2 }}</p>
                 </div>
                 <div class="flex justify-between mb-2">
                     <span class="mr-2 ">Default device:</span>

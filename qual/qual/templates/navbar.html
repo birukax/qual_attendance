@@ -52,7 +52,7 @@
                  id="navbar-cta">
                 {% with request.resolver_match.url_name as url_name %}
                     <ul class="flex flex-col p-4 mt-4 font-medium border rounded-lg md:p-0 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 ">
-                        {% if url_name in  "employees" or url_name == "departments" %}
+                        {% if url_name ==  "employees" or url_name == "departments" %}
                             {% include 'nav/employee.html' %}
                         {% elif url_name == "attendances" or url_name == "compile_view" or url_name == "raw_attendance" or url_name == "recompile_view" or url_name == "on_fields" %}
                             {% include 'nav/attendance.html' %}

@@ -13,7 +13,7 @@ networks:
 services:
 
   redis:
-    image: redis
+    image: redis:7.2.4
     restart: always
     ports:
       - "4371:4370"
@@ -31,12 +31,12 @@ services:
       BROKER_URL: redis://redis:6379/0
       BROKER_BACKEND: redis://redis:6379/0
     depends_on:
-      # - celery
       - redis
       - nginx
-    # network_mode: "host"
-    # networks:
-    #   - qualabels-domain
+      # - celery
+      # network_mode: "host"
+      # networks:
+      #   - qualabels-domain
 
   nginx:
     image: nginx:1.24.0
@@ -54,28 +54,28 @@ services:
       - "4370:4370"
       # - "6380:6379"
 
-  celery:
-    build:
-      context: .
-    restart: always
-    working_dir: /code/qual/
-    volumes:
-      - .:/code
-    # command: celery multi start w1 -A qual -B -l debug
-    command: celery -A qual worker -E -l debug
-    environment:
-      DJANGO_SETTINGS_MODULE: qual.settings.prod
-      BROKER_URL: redis://redis:6379/0
-      RESULT_BACKEND: redis://redis:6379/0
-    depends_on:
-      - web
-      - redis
-    #   - nginx
-    # networks:
-    #   - qualabels-domain
-    # ports:
-    #   - '4372:4370'
-    # network_mode: "host"
+      # celery:
+      #   build:
+      #     context: .
+      #   restart: always
+      #   working_dir: /code/qual/
+      #   volumes:
+      #     - .:/code
+      #   # command: celery multi start w1 -A qual -B -l debug
+      #   command: celery -A qual worker -E -l debug
+      #   environment:
+      #     DJANGO_SETTINGS_MODULE: qual.settings.prod
+      #     BROKER_URL: redis://redis:6379/0
+      #     RESULT_BACKEND: redis://redis:6379/0
+      #   depends_on:
+      #     - web
+      #     - redis
+      #   - nginx
+      # networks:
+      #   - qualabels-domain
+      # ports:
+      #   - '4372:4370'
+      # network_mode: "host"
 volumes:
   .:
 

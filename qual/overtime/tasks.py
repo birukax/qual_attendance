@@ -1,6 +1,5 @@
 from __future__ import absolute_import
 import requests
-from celery import shared_task
 from attendance.models import RawAttendance
 from django.shortcuts import get_object_or_404
 from datetime import datetime, timedelta
@@ -135,7 +134,6 @@ def create_ots(id):
                     )
 
 
-# @shared_task
 def calculate_ot():
 
     overtimes = Overtime.objects.filter(paid=False, approved=True)
@@ -205,7 +203,6 @@ def calculate_ot():
             pass
 
 
-# @shared_task
 def post_ot():
     url = config("NAV")
     user = config("NAV_INSTANCE_USER")

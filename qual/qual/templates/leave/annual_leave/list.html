@@ -30,10 +30,10 @@
               <td class="p-4 whitespace-nowrap lowercase first-letter:capitalize">{{ e.name }}</td>
               <td class="p-4 whitespace-nowrap">{{ e.employment_date }}</td>
               <td class="p-4 whitespace-nowrap">{{ e.calculate_date }}</td>
-              <td class="p-4 whitespace-nowrap">{{ e.annual_leave_balance }}</td>
-              <td class="p-4 whitespace-nowrap">{{ e.annual_leave_taken }}</td>
+              <td class="p-4 whitespace-nowrap">{{ e.annual_leave_balance|floatformat:2 }}</td>
+              <td class="p-4 whitespace-nowrap">{{ e.annual_leave_taken|floatformat:2 }}</td>
               <!-- <td class="p-4 whitespace-nowrap">{{ e.annual_leave_difference }}</td> -->
-              <td class="p-4">{{ e.annual_leave_remaining }}</td>
+              <td class="p-4">{{ e.annual_leave_remaining|floatformat:2 }}</td>
               <!-- <td class="px-2 py-4 text-right">
             <a href="{{ e.get_absolute_url }}" class="font-medium text-blue-800 dark:text-blue-500 hover:underline">Detail</a>
           </td> -->
