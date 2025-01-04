@@ -17,7 +17,4 @@ urlpatterns = [
     path("holiday_approval", views.holiday_approval, name="holiday_approval"),
     path("approve_holiday/<int:id>", views.approve_holiday, name="approve_holiday"),
     path("reject_holiday/<int:id>", views.reject_holiday, name="reject_holiday"),
-    path("on_field_approval", views.on_field_approval, name="on_field_approval"),
-    path("approve_on_field/<int:id>", views.approve_on_field, name="approve_on_field"),
-    path("reject_on_field/<int:id>", views.reject_on_field, name="reject_on_field"),
 ]

@@ -1,6 +1,6 @@
 from django.forms import DateInput
 import django_filters
-from .models import Attendance, RawAttendance, OnField
+from .models import Attendance, RawAttendance
 from django_select2 import forms as s2forms
 
 
@@ -82,20 +82,5 @@ class RawAttendanceFilter(django_filters.FilterSet):
         }
 
     date = django_filters.DateFromToRangeFilter(
-        widget=django_filters.widgets.RangeWidget(attrs={"type": "date"})
-    )
-
-
-class OnFieldFilter(django_filters.FilterSet):
-    class Meta:
-        model = OnField
-        fields = {
-            "employee__name": ["icontains"],
-            "approved": ["exact"],
-            "rejected": ["exact"],
-            "start_date": ["exact"],
-        }
-
-    start_date = django_filters.DateFromToRangeFilter(
         widget=django_filters.widgets.RangeWidget(attrs={"type": "date"})
     )

@@ -48,8 +48,3 @@ class DailyRecordAdmin(admin.ModelAdmin):
         "leave",
     ]
     list_per_page = 50
-
-
-@admin.register(OnField)
-class OnFieldAdmin(admin.ModelAdmin):
-    list_display = ["employee", "start_date", "end_date", "approved", "rejected"]

@@ -1,7 +1,9 @@
 from django.urls import reverse
 from django.db import models
-from datetime import date, datetime, timedelta
+from django.utils.timezone import now
 from django.contrib.auth.models import User
+
+# from datetime import date, datetime, timedelta
 
 
 class RawAttendance(models.Model):
@@ -62,7 +64,7 @@ class Attendance(models.Model):
     check_in_type = models.CharField(max_length=10, choices=TYPES, null=True)
     check_out_type = models.CharField(max_length=10, choices=TYPES, null=True)
     status = models.CharField(max_length=10, choices=CHOICES, null=True)
-    compile_date = models.DateField(default=date.today())
+    compile_date = models.DateField(default=now())
     leave_type = models.ForeignKey(
         "leave.LeaveType",
         on_delete=models.CASCADE,
@@ -102,41 +104,3 @@ class DailyRecord(models.Model):
     day_off = models.IntegerField()
     leave = models.IntegerField()
     holiday = models.IntegerField(null=True)
-
-
-class OnField(models.Model):
-    employee = models.ForeignKey(
-        "employee.Employee",
-        on_delete=models.CASCADE,
-        related_name="on_fields",
-    )
-    start_date = models.DateField()
-    end_date = models.DateField(null=True, blank=True)
-    total_days = models.FloatField(null=True, blank=True)
-    reason = models.TextField(null=True, blank=True)
-    approved = models.BooleanField(default=False, null=True, blank=True)
-    rejected = models.BooleanField(default=False, null=True, blank=True)
-    created_by = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        related_name="on_field_created",
-        null=True,
-        blank=True,
-    )
-    approved_by = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        blank=True,
-        null=True,
-        related_name="on_field_approval",
-    )
-    rejected_by = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        blank=True,
-        null=True,
-        related_name="on_field_rejection",
-    )
-
-    def get_absolute_url(self):
-        return reverse("attendance:on_field_detail", args={self.id})

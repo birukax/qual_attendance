@@ -164,8 +164,8 @@ SESSION_SECURITY_EXPIRE_AFTER = 60 * 60
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 
-BROKER_URL = "redis://redis:6379"
-RESULT_BACKEND = "redis://redis:6379"
+# BROKER_URL = "redis://redis:6379"
+# RESULT_BACKEND = "redis://redis:6379"
 
 
 # SELECT2_JS = ["../static/django_select2/django_select2.js"]

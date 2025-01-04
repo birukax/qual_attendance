@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from attendance.models import Attendance, OnField
+from attendance.models import Attendance
 from leave.models import Leave
 from holiday.models import Holiday
 from overtime.models import Overtime
@@ -22,10 +22,8 @@ def approval(request):
     leaves = Leave.objects.filter(approved=False, rejected=False)
     holidays = Holiday.objects.filter(approved=False, rejected=False)
     overtimes = Overtime.objects.filter(approved=False, rejected=False)
-    on_fields = OnField.objects.filter(approved=False, rejected=False)
 
     context = {
-        "on_fields": on_fields,
         "leaves": leaves,
         "holidays": holidays,
         "overtimes": overtimes,
@@ -216,58 +214,3 @@ def reject_holiday(request, id):
     holiday.rejected = True
     holiday.save()
     return redirect("approval:holiday_approval")
-
-
-@login_required
-# @user_passes_test(lambda u: u.profile.role == "HR")
-@user_passes_test(lambda u: u.has_perm("account.can_approve"))
-def on_field_approval(request):
-    on_fields = OnField.objects.filter(approved=False, rejected=False).order_by(
-        "start_date"
-    )
-    # for l in on_fields:
-    #     calculate_total_on_field_days(l.id)
-    # on_field_filter = On_fieldFilter(request.GET, queryset=on_fields)
-    # on_fields = on_field_filter.qs
-
-    paginated = Paginator(on_fields, 30)
-    page_number = request.GET.get("page")
-    page = paginated.get_page(page_number)
-    context = {
-        "page": page,
-        # "on_field_filter": on_field_filter,
-    }
-    return render(request, "approval/on_field/list.html", context)
-
-
-@login_required
-# @user_passes_test(lambda u: u.profile.role == "HR")
-@user_passes_test(lambda u: u.has_perm("account.can_approve"))
-def approve_on_field(request, id):
-    on_field = get_object_or_404(OnField, id=id)
-    on_field.approved = True
-    on_field.approved_by = request.user
-    on_field.save()
-    attendances = Attendance.objects.filter(
-        employee=on_field.employee,
-        check_in_date__gte=on_field.start_date,
-        check_in_date__lte=on_field.end_date,
-        status="Absent",
-    )
-    if attendances:
-        for attendance in attendances:
-            # print(attendance.check_in_date)
-            attendance.status = "On Field"
-            attendance.save()
-    return redirect("approval:on_field_approval")
-
-
-@login_required
-# @user_passes_test(lambda u: u.profile.role == "HR")
-@user_passes_test(lambda u: u.has_perm("account.can_approve"))
-def reject_on_field(request, id):
-    on_field = get_object_or_404(OnField, id=id)
-    on_field.rejected = True
-    on_field.rejected_by = request.user
-    on_field.save()
-    return redirect("approval:on_field_approval")
