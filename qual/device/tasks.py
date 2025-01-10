@@ -15,7 +15,9 @@ def add_user(employee_id, device_id):
         timeout=500,
     )
     device_connected.connect()
+    device_connected.disable_device()
     device_connected.set_user(uid=uid, name=employee.name, user_id=employee.employee_id)
+    device_connected.enable_device()
     device_connected.disconnect()
 
 

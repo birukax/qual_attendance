@@ -3,8 +3,8 @@ from decouple import config
 
 ADMIN = [("admin", "admin@email.com")]
 SECRET_KEY = config("SECRET_KEY")
-DEBUG = False
-# DEBUG = True
+# DEBUG = False
+DEBUG = True
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
