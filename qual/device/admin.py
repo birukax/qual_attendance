@@ -6,12 +6,12 @@ from .models import Device, DeviceUser
 class DeviceAdmin(admin.ModelAdmin):
     list_display = ["name", "slug", "ip", "port"]
     prepopulated_fields = {"slug": ("name",)}
-    list_per_page = 15
+    list_per_page = 50
 
 
 @admin.register(DeviceUser)
 class DeviceUserAdmin(admin.ModelAdmin):
     list_display = ["uid", "name", "user_id", "device"]
-    list_per_page = 15
+    list_per_page = 50
     list_filter = ["device"]
     search_fields = ["name", "user_id"]

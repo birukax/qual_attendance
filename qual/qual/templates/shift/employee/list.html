@@ -7,23 +7,23 @@
         <table class=" text-sm text-left w-full table-auto">
             <thead class="text-xs uppercase  bg-slate-100">
                 <tr>
-                    <th scope="col" class="p-2">Id</th>
-                    <th scope="col" class="p-2">Name</th>
-                    <th scope="col" class="p-2">Status</th>
-                    <th scope="col" class="p-2">Department</th>
-                    <th scope="col" class="p-2">Attendances</th>
-                    <th scope="col" class="p-2">Detail</th>
+                    <th scope="col" class="p-4">Id</th>
+                    <th scope="col" class="p-4">Name</th>
+                    <th scope="col" class="p-4">Status</th>
+                    <th scope="col" class="p-4">Department</th>
+                    <th scope="col" class="p-4">Attendances</th>
+                    <th scope="col" class="p-4">Detail</th>
                 </tr>
             </thead>
             <tbody>
                 {% for employee in page %}
                     <tr class="bg-white border-b hover:bg-slate-50 ">
-                        <td class="p-2">{{ employee.employee_id }}</td>
-                        <td class="p-2">{{ employee.name }}</td>
-                        <td class="p-2">{{ employee.status }}</td>
-                        <td class="p-2">{{ employee.department.name }}</td>
-                        <td class="p-2">{{ employee.attendances.count }}</td>
-                        <td class="p-2">
+                        <td class="p-4">{{ employee.employee_id }}</td>
+                        <td class="p-4">{{ employee.name }}</td>
+                        <td class="p-4">{{ employee.status }}</td>
+                        <td class="p-4">{{ employee.department.name }}</td>
+                        <td class="p-4">{{ employee.attendances.count }}</td>
+                        <td class="p-4">
                             <a href="{{ employee.get_absolute_url }}"
                                class="font-semibold text-slate-900  hover:underline">Detail</a>
                         </td>
@@ -34,7 +34,7 @@
         {% if page %}
             {% include "pagination.html" %}
         {% else %}
-            <p class="p-2 ml-2 text-lg">No employee record.</p>
+            <p class="p-4 ml-2 text-lg">No employee record.</p>
         {% endif %}
     </div>
 {% endblock content %}

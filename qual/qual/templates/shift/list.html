@@ -1,16 +1,20 @@
 {% extends "_base.html" %}
 {% block content %}
   <div class="py-4 px-6  bg-white w-slate rounded-lg overflow-x-auto">
-    {% if user_role == "ADMIN" or user_role == 'HR' %}
-      <div class="mb-1">{% include "shift/create.html" %}</div>
-    {% endif %}
+    <div class="flex gap-4 mb-1">
+      {% if user_role == "ADMIN" or user_role == 'HR' %}
+        <div>{% include "shift/create.html" %}</div>
+      {% endif %}
+      <div>{% include "shift/filter.html" %}</div>
+    </div>
     <div>
       <table class="text-sm text-left text-slate-900 w-full table-auto ">
         <thead class="uppercase whitespace-nowrap bg-slate-100 text-xs">
           <tr>
             <th scope="col" class="p-3">Shift name</th>
-            <th scope="col" class="p-3">Continous</th>
             <th scope="col" class="p-3">Device</th>
+            <th scope="col" class="p-3">Current pattern</th>
+            <th scope="col" class="p-3">Continous</th>
             <th scope="col" class="p-3">Saturday half</th>
             <th scope="col" class="p-3">Patterns</th>
             <th scope="col" class="p-3 text-right">Actions</th>
@@ -21,8 +25,9 @@
             <tr class="bg-white border-b hover:bg-slate-50 whitespace-nowrap">
               <th scope="row"
                   class="p-3 font-semibold text-slate-900 whitespace-nowrap">{{ shift.name }}</th>
-              <td class="p-3">{{ shift.continous }}</td>
               <td class="p-3">{{ shift.device }}</td>
+              <td class="p-3">{{ shift.current_pattern }}</td>
+              <td class="p-3">{{ shift.continous }}</td>
               <td class="p-3">{{ shift.saturday_half }}</td>
               <td class="p-3">{{ shift.patterns.count }}</td>
               <td class="p-3 text-right">

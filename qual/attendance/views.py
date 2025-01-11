@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from openpyxl import Workbook
@@ -6,35 +6,68 @@ from .models import RawAttendance, Attendance, DailyRecord
 from employee.models import Employee
 from employee.filters import EmployeeFilter
 from device.models import Device
+from overtime.models import Overtime
+from shift.models import Shift
+from leave.models import Leave
+from holiday.models import Holiday
 from django.core.paginator import Paginator
 from .filters import (
     CompileFilter,
     AttendanceDownloadFilter,
+    CompiledAttendanceDownloadFilter,
     AttendanceFilter,
     RawAttendanceFilter,
 )
-from device.forms import CreateDeviceForm
 import datetime
 from .tasks import save_recompiled, sync_raw_attendance, compile
-from .forms import RecompileForm, EmployeesForm
-
+from .forms import RecompileForm
+from django.db.models import Count
 from django.contrib.auth.decorators import user_passes_test
+from leave.tasks import calculate_total_days
 
 
 @login_required
 def dashboard(request):
     attendances = Attendance.objects.all()
     employees = Employee.objects.all()
+    shifts = Shift.objects.all()
     devices = Device.objects.all()
-    create_device_form = CreateDeviceForm()
+    overtimes = Overtime.objects.all()
+    leaves = Leave.objects.all()
+    holidays = Holiday.objects.all()
+    approvals = (
+        overtimes.filter(approved=False, rejected=False).count()
+        + leaves.filter(approved=False, rejected=False).count()
+        + holidays.filter(approved=False, rejected=False).count()
+    )
+
+    start = datetime.datetime.today().date() - datetime.timedelta(days=30)
+    most_absents = (
+        employees.filter(
+            attendances__status="Absent", attendances__check_in_date__gte=start
+        )
+        .annotate(absent_count=Count("attendances"))
+        .order_by("-absent_count")[:20]
+    )
+
+    new_employees = Employee.objects.filter(status="Active").order_by("-employee_id")[
+        :10
+    ]
+
     return render(
         request,
         "dashboard.html",
         {
             "attendances": attendances,
             "employees": employees,
+            "shifts": shifts,
             "devices": devices,
-            "form": create_device_form,
+            "overtimes": overtimes,
+            "leaves": leaves,
+            "holidays": holidays,
+            "approvals": approvals,
+            "new_employees": new_employees,
+            "most_absents": most_absents,
         },
     )
 
@@ -82,19 +115,26 @@ def attendance_list(request):
 def compile_view(request):
     request_device = request.user.profile.device
     if not request_device:
-        return redirect("attendance:attendances")
+        return redirect("attendance:raw_attendance")
     if DailyRecord.objects.filter(device=request_device).exists():
         daily_records = DailyRecord.objects.filter(device=request_device).latest("date")
+        last_date = daily_records.date
+        current_date = daily_records.date + datetime.timedelta(days=1)
     else:
         daily_records = []
-    no_shift = Employee.objects.filter(
-        shift=None, status="Active", device=request_device
-    ).count()
+        last_date = ""
+        current_date = datetime.date.today()
+
+    # no_shift = Employee.objects.filter(
+    #     shift=None, status="Active", device=request_device
+    # ).count()
     attendances = Attendance.objects.filter(
         approved=False, device=request_device
     ).order_by("check_in_time")
     compile_filter = CompileFilter(request.GET, queryset=attendances)
-
+    attendance_download_filter = CompiledAttendanceDownloadFilter(
+        request.GET, queryset=attendances
+    )
     attendances = compile_filter.qs
 
     paginated = Paginator(attendances, 30)
@@ -102,9 +142,11 @@ def compile_view(request):
     page = paginated.get_page(page_number)
     context = {
         "page": page,
-        "daily_records": daily_records,
-        "no_shift": no_shift,
+        "last_date": last_date,
+        "current_date": current_date,
+        # "no_shift": no_shift,
         "compile_filter": compile_filter,
+        "attendance_download_filter": attendance_download_filter,
     }
     return render(request, "attendance/compile/list.html", context)
 
@@ -120,16 +162,93 @@ def compile_attendance(request):
     else:
         date = datetime.date.today() - datetime.timedelta(days=1)
     try:
-        compile(
-            date=date,
-            employees=None,
-            pattern=None,
-            recompiled=False,
-            request_device=request_device,
-        )
+        if date > datetime.date.today():
+            pass
+        else:
+            compile(
+                date=date,
+                employees=None,
+                pattern=None,
+                recompiled=False,
+                request_device=request_device,
+            )
     except Exception as e:
         print(e)
     return redirect("attendance:compile_view")
+
+
+@login_required
+def download_compiled_attendance(request):
+    user = request.user.profile
+    attendances = Attendance.objects.filter(
+        approved=False, deleted=False, recompiled=False, device=user.device
+    ).order_by("-check_in_time")
+    form = CompiledAttendanceDownloadFilter(
+        data=request.POST,
+        queryset=attendances,
+    )
+    attendances = form.qs
+    response = HttpResponse(content_type="application/ms-excel")
+    response["Content-Disposition"] = 'attachment; filename="compiled.xlsx"'
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "Attendance"
+
+    headers = [
+        "Employee",
+        "Device",
+        "Current pattern",
+        "Check in date",
+        "Check out date",
+        "Check in time",
+        "Check out time",
+        "Worked_hours",
+        "Check in type",
+        "Check out type",
+        "Status",
+        "Leave type",
+        "Half Day",
+    ]
+    ws.append(headers)
+
+    for attendance in attendances.order_by("-check_in_date"):
+
+        if attendance.device:
+            device = attendance.device.name
+        else:
+            device = ""
+        if attendance.leave_type:
+            leave_type = attendance.leave_type.name
+            leave = Leave.objects.filter(
+                employee=attendance.employee,
+                approved=True,
+                start_date__lte=attendance.check_in_date,
+                end_date__gte=attendance.check_in_date,
+            ).first()
+            if leave.half_day:
+                half_day = True
+        else:
+            leave_type = ""
+            half_day = False
+        ws.append(
+            [
+                attendance.employee.name,
+                device,
+                attendance.current_pattern.name,
+                attendance.check_in_date,
+                attendance.check_out_date,
+                attendance.check_in_time,
+                attendance.check_out_time,
+                attendance.worked_hours,
+                attendance.check_in_type,
+                attendance.check_out_type,
+                attendance.status,
+                leave_type,
+                half_day,
+            ]
+        )
+    wb.save(response)
+    return response
 
 
 @login_required
@@ -170,46 +289,58 @@ def download_attendance(request):
     ws.title = "Attendance"
 
     headers = [
-        "employee",
-        "device",
-        "current pattern",
-        "worked_hours",
-        "check in date",
-        "check in time",
-        "check out date",
-        "check out time",
+        "Employee",
+        "Device",
+        "Current pattern",
+        "Check in date",
+        "Check out date",
+        "Check in time",
+        "Check out time",
+        "Worked_hours",
         "Check in type",
         "Check out type",
-        "status",
+        "Status",
         "Leave type",
+        "Half Day",
     ]
     ws.append(headers)
 
     for attendance in attendances.order_by("-check_in_date"):
-
         if attendance.device:
             device = attendance.device.name
         else:
             device = ""
-        if attendance.leave_type:
-            leave_type = attendance.leave_type.name
+        # if attendance.leave_type:
+        #     leave_type = attendance.leave_type.name
+        # else:
+        leaves = Leave.objects.filter(
+            employee=attendance.employee,
+            approved=True,
+            start_date__lte=attendance.check_in_date,
+            end_date__gte=attendance.check_in_date,
+        )
+        if leaves:
+            leave_type = leaves.first().leave_type.name
+            half_day = leaves.first().half_day
         else:
             leave_type = ""
+            half_day = False
 
         ws.append(
             [
                 attendance.employee.name,
                 device,
                 attendance.current_pattern.name,
-                attendance.worked_hours,
                 attendance.check_in_date,
-                attendance.check_in_time,
                 attendance.check_out_date,
+                attendance.check_in_time,
                 attendance.check_out_time,
+                attendance.worked_hours,
                 attendance.check_in_type,
                 attendance.check_out_type,
                 attendance.status,
                 leave_type,
+                half_day,
             ]
         )
     wb.save(response)
@@ -221,12 +352,10 @@ def download_attendance(request):
 def raw_attendance_list(request):
     # attendances = RawAttendance.objects.all().order_by("-date", "-time")[:1000]
     request_device = request.user.profile.device
-    if request_device:
-        attendances = RawAttendance.objects.filter(device=request_device).order_by(
-            "-date", "-time"
-        )
-    else:
-        attendances = RawAttendance.objects.all().order_by("-date", "-time")
+
+    attendances = RawAttendance.objects.filter(device=request_device).order_by(
+        "-date", "-time"
+    )
     attendance_filter = RawAttendanceFilter(request.GET, queryset=attendances)
     attendances = attendance_filter.qs
     paginated = Paginator(attendances, 30)
@@ -239,9 +368,55 @@ def raw_attendance_list(request):
 @login_required
 @user_passes_test(lambda u: u.profile.role == "HR" or u.profile.role == "ADMIN")
 def get_raw_data(request):
-    request_device = request.user.profile.device.id
-    sync_raw_attendance.delay(request_device)
+    request_device = request.user.profile.device
+    if request_device:
+        sync_raw_attendance(request_device=request_device.id)
+    else:
+        sync_raw_attendance()
     return redirect("attendance:raw_attendance")
+
+
+@login_required
+def download_raw_data(request):
+    user = request.user.profile
+    if user.role == "HR" or user.role == "ADMIN":
+        raw_datas = RawAttendance.objects.all()
+    else:
+        raw_datas = RawAttendance.objects.filter(
+            employee__department__in=user.manages.all()
+        )
+    form = RawAttendanceFilter(
+        data=request.POST,
+        queryset=raw_datas,
+    )
+    raw_datas = form.qs
+    response = HttpResponse(content_type="application/ms-excel")
+    response["Content-Disposition"] = 'attachment; filename="Raw data.xlsx"'
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "Raw data"
+
+    headers = [
+        "Employee",
+        "Department",
+        "Device",
+        "Date",
+        "Time",
+    ]
+    ws.append(headers)
+
+    for raw_data in raw_datas.order_by("-date", "-employee__name"):
+        ws.append(
+            [
+                raw_data.employee.name,
+                raw_data.employee.department.name,
+                raw_data.device.name,
+                raw_data.date,
+                raw_data.time,
+            ]
+        )
+    wb.save(response)
+    return response
 
 
 @login_required

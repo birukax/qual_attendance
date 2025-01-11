@@ -7,12 +7,17 @@ class LeaveAdmin(admin.ModelAdmin):
     list_display = [
         "employee",
         "leave_type",
-        "is_half_day",
+        "half_day",
+        "saturday_half",
+        "active",
         "start_date",
         "end_date",
+        "approved",
+        "rejected",
     ]
     search_fields = ["employee__name"]
-    list_per_page = 15
+    list_filter = ["leave_type", "approved", "rejected", "half_day", "saturday_half"]
+    list_per_page = 50
 
 
 @admin.register(LeaveType)
@@ -23,6 +28,8 @@ class LeaveTypeAdmin(admin.ModelAdmin):
         "description",
         "maximum_days",
         "paid",
+        "exclude_rest_days",
     ]
     prepopulated_fields = {"slug": ("name",)}
-    list_per_page = 15
+    list_filter = ["paid", "exclude_rest_days"]
+    list_per_page = 50

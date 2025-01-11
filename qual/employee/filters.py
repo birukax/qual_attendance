@@ -11,4 +11,9 @@ class EmployeeFilter(django_filters.FilterSet):
             "status": ["exact"],
             "department": ["exact"],
             "device": ["exact"],
+            "employment_date": ["exact"],
         }
+
+    employment_date = django_filters.DateFromToRangeFilter(
+        widget=django_filters.widgets.RangeWidget(attrs={"type": "date"})
+    )

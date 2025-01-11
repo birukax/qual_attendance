@@ -1,20 +1,20 @@
 {% extends "_base.html" %}
 {% block content %}
     <div class="block p-4 bg-white rounded-lg   w-full">
-        <div class="grid  grid-cols-2  gap-8 p-2 mx-auto text-slate-900 sm:grid-cols-3  sm:p-8">
-            <div class="flex flex-col px-4 py-8 bg-slate-200 items-center justify-center">
+        <div class="grid  grid-cols-2  gap-8 p-2 mx-auto text-slate-900 sm:grid-cols-3 md:grid-cols-3 sm:p-4  md:p-8">
+            <div class="flex flex-col rounded-xl px-4 py-8 bg-slate-100 items-center justify-center">
                 <dt class="mb-2 text-6xl font-bold font-sans">{{ leaves.count }}</dt>
                 <dd class="text-slate-800 text-xl">
                     Leave
                 </dd>
             </div>
-            <div class="flex flex-col px-4 py-8 bg-slate-200 items-center justify-center">
+            <div class="flex flex-col rounded-xl px-4 py-8 bg-slate-100 items-center justify-center">
                 <dt class="mb-2 text-6xl font-bold font-sans">{{ overtimes.count }}</dt>
                 <dd class="text-slate-800 text-xl">
                     Overtime
                 </dd>
             </div>
-            <div class="flex flex-col px-4 py-8 bg-slate-200 items-center justify-center">
+            <div class="flex flex-col rounded-xl px-4 py-8 bg-slate-100 items-center justify-center">
                 <dt class="mb-2 text-6xl font-bold font-sans">{{ holidays.count }}</dt>
                 <dd class="text-slate-800 text-xl">
                     Holiday

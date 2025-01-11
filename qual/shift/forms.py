@@ -10,6 +10,9 @@ from django_flatpickr.widgets import (
 )
 from django_flatpickr.schemas import FlatpickrOptions
 
+from django.core.exceptions import ValidationError
+from django.utils.translation import gettext_lazy as _
+
 
 class CreateShiftForm(forms.ModelForm):
     class Meta:
@@ -92,6 +95,26 @@ class CreatePatternForm(forms.ModelForm):
     def __init__(self, shift, *args, **kwargs):
         super(CreatePatternForm, self).__init__(*args, **kwargs)
         self.fields["next"].queryset = Pattern.objects.filter(shift=shift)
+
+    def clean(self):
+        cleaned_data = super().clean()
+        name = cleaned_data.get("name")
+        next = cleaned_data.get("next")
+        start_time = cleaned_data.get("start_time")
+        end_time = cleaned_data.get("end_time")
+        tolerance = cleaned_data.get("tolerance")
+        day_span = cleaned_data.get("day_span")
+        if start_time and end_time and day_span:
+            if start_time > end_time and day_span < 2:
+                raise ValidationError(_("Start Time cannot be greater than End Time."))
+        if tolerance and day_span:
+            if tolerance > 120:
+                raise ValidationError(
+                    _("Tolerance cannot be greater than 120 minutes.")
+                )
+
+            if day_span > 2:
+                raise ValidationError(_("Day Span cannot be greater than 2 days."))
 
     def save(self, force_insert=False, force_update=False, commit=True):
         pattern = Pattern

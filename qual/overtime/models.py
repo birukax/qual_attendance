@@ -95,6 +95,7 @@ class Ot(models.Model):
     start_time = models.TimeField()
     end_time = models.TimeField()
     units_worked = models.FloatField()
+    have_attendance = models.BooleanField(default=False)
     paid = models.BooleanField(default=False)
 
     # def __str__(self):

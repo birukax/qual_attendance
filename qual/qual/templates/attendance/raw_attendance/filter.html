@@ -31,7 +31,7 @@
             <div class="mx-auto w-fit grid grid-cols-1 gap-2">
                 <form method="get" action="{% url 'attendance:raw_attendance' %}">
                     {% csrf_token %}
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-2 ">
+                    <div class="grid grid-cols-1 gap-2 ">
                         {{ raw_attendance_filter.media }}
                         {% for field in raw_attendance_filter.form %}
                             <div class="grid grid-cols-1 gap-2">

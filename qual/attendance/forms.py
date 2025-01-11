@@ -6,16 +6,22 @@ from device.models import Device
 from shift.models import Pattern
 from django_flatpickr.widgets import (
     DatePickerInput,
-    TimePickerInput,
-    DateTimePickerInput,
 )
 from django_flatpickr.schemas import FlatpickrOptions
+from django_select2 import forms as s2forms
+from django.core.exceptions import ValidationError
+from django.db.models import Q
+from django.utils.translation import gettext_lazy as _
+
+
+class EmployeeWidget(s2forms.ModelSelect2Widget):
+    search_fields = ["name__icontains", "employee_id__icontains"]
 
 
 class AttendanceDownloadForm(forms.ModelForm):
     class Meta:
         model = Attendance()
-        fields = ["employee", "device", "current_pattern"]
+        fields = ("employee", "device", "current_pattern")
 
     employee = forms.ModelChoiceField(Employee.objects.all(), required=False)
     device = forms.ModelChoiceField(Device.objects.all(), required=False)
@@ -33,6 +39,6 @@ class RecompileForm(forms.Form):
 class EmployeesForm(forms.ModelForm):
     class Meta:
         model = Employee
-        fields = ["id", "selected"]
+        fields = ("id", "selected")
 
     selected = forms.BooleanField(required=False)

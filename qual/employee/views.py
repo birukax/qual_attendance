@@ -55,13 +55,13 @@ def employee_detail(request, id):
     if not (request.user.profile.role == "HR" or request.user.profile.role == "ADMIN"):
         if employee.department not in request.user.profile.manages.all():
             return redirect("employee:employees")
+    change_shift_form = ChangeEmployeeShiftForm(instance=employee)
     employee_devices = DeviceUser.objects.filter(employee=employee)
     add_device_user_form = AddDeviceUserForm()
     attendances = Attendance.objects.filter(employee=employee, approved=True).order_by(
         "-check_in_date"
     )
-    paginated = Paginator(attendances, 10)
-    change_shift_form = ChangeEmployeeShiftForm(instance=employee)
+    paginated = Paginator(attendances, 30)
     page_number = request.GET.get("page")
     page = paginated.get_page(page_number)
     return render(
@@ -90,7 +90,7 @@ def employee_attendances(request, id):
     attendances = Attendance.objects.filter(employee=employee, approved=True).order_by(
         "-check_in_date"
     )
-    paginated = Paginator(attendances, 10)
+    paginated = Paginator(attendances, 30)
     page_number = request.GET.get("page")
 
     page = paginated.get_page(page_number)
@@ -109,7 +109,7 @@ def employee_leaves(request, id):
         if employee.department not in request.user.profile.manages.all():
             return redirect("employee:employees")
     leaves = Leave.objects.filter(employee=employee).order_by("-start_date")
-    paginated = Paginator(leaves, 10)
+    paginated = Paginator(leaves, 30)
     page_number = request.GET.get("page")
     page = paginated.get_page(page_number)
     context = {"page": page, "employee": employee}
@@ -127,7 +127,7 @@ def employee_overtimes(request, id):
         if employee.department not in request.user.profile.manages.all():
             return redirect("employee:employees")
     overtimes = Overtime.objects.filter(employee=employee).order_by("-start_date")
-    paginated = Paginator(overtimes, 10)
+    paginated = Paginator(overtimes, 30)
     page_number = request.GET.get("page")
     page = paginated.get_page(page_number)
     context = {"page": page, "employee": employee}
@@ -138,7 +138,7 @@ def employee_overtimes(request, id):
 @user_passes_test(lambda u: u.profile.role == "ADMIN" or u.profile.role == "HR")
 def departments(request):
     departments = Department.objects.all().order_by("code")
-    paginated = Paginator(departments, 10)
+    paginated = Paginator(departments, 30)
     page_number = request.GET.get("page")
     page = paginated.get_page(page_number)
     context = {

@@ -3,9 +3,6 @@
        class="block py-2 px-3 md:p-0  {% if request.resolver_match.url_name == 'approval' %} text-slate-50 bg-slate-700 rounded md:bg-transparent md:text-slate-400 {% else %} text-slate-50 rounded hover:bg-slate-700 hover:text-slate-50 md:hover:bg-transparent md:hover:text-slate-400 {% endif %}"
        aria-current="page">Approval</a>
 </li>
-<!-- <li>
-    <a href="{% url 'approval:attendance_approval' %}" class="block py-2 px-3 md:p-0  {% if request.resolver_match.url_name == 'attendance_approval' %} text-slate-50 bg-slate-700 rounded md:bg-transparent md:text-slate-700 {% else %} text-slate-900 rounded hover:bg-slate-700 hover:text-slate-50 md:hover:bg-transparent md:hover:text-slate-400 {% endif %}" aria-current="page">Attendance</a>
-</li> -->
 <li>
     <a href="{% url 'approval:leave_approval' %}"
        class="block py-2 px-3 md:p-0  {% if request.resolver_match.url_name == 'leave_approval' %} text-slate-50 bg-slate-700 rounded md:bg-transparent md:text-slate-400 {% else %} text-slate-50 rounded hover:bg-slate-700 hover:text-slate-50 md:hover:bg-transparent md:hover:text-slate-400 {% endif %}">Leave</a>

@@ -11,6 +11,9 @@ class Device(models.Model):
     )
     port = models.IntegerField(default=4370)
 
+    class Meta:
+        app_label = "device"
+
     def __str__(self):
         return self.name
 

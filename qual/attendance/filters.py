@@ -1,6 +1,5 @@
 from django.forms import DateInput
 import django_filters
-import django_filters.widgets
 from .models import Attendance, RawAttendance
 from django_select2 import forms as s2forms
 
@@ -19,11 +18,27 @@ class AttendanceDownloadFilter(django_filters.FilterSet):
             "status": ["exact"],
             "check_in_type": ["exact"],
             "check_out_type": ["exact"],
+            "check_in_date": ["exact"],
         }
 
     check_in_date = django_filters.DateFromToRangeFilter(
         widget=django_filters.widgets.RangeWidget(attrs={"type": "date"})
     )
+
+    # status = django_filters.ChoiceFilter(choices=Attendance.CHOICES)
+
+
+class CompiledAttendanceDownloadFilter(django_filters.FilterSet):
+    class Meta:
+        model = Attendance
+        fields = {
+            "employee__name": ["icontains"],
+            "device": ["exact"],
+            "current_pattern__shift": ["exact"],
+            "status": ["exact"],
+            "check_in_type": ["exact"],
+            "check_out_type": ["exact"],
+        }
 
     # status = django_filters.ChoiceFilter(choices=Attendance.CHOICES)
 
@@ -63,7 +78,6 @@ class RawAttendanceFilter(django_filters.FilterSet):
         model = RawAttendance
         fields = {
             "employee__name": ["icontains"],
-            "device": ["exact"],
             "date": ["exact"],
         }
 

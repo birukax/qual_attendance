@@ -1,6 +1,5 @@
 from __future__ import absolute_import
 import requests
-from celery import shared_task
 from attendance.models import RawAttendance
 from django.shortcuts import get_object_or_404
 from datetime import datetime, timedelta
@@ -20,10 +19,9 @@ def calculate_uw(start, end):
 
 def create_ots(id):
     overtime = get_object_or_404(Overtime, id=id)
-    holiday = Holiday.objects.filter(date=overtime.start_date).first()
+    holiday = Holiday.objects.filter(date=overtime.start_date, approved=True).first()
     ot_types = OvertimeType.objects.all()
     if holiday:
-
         ot = Ot(
             start_date=overtime.start_date,
             end_date=overtime.end_date,
@@ -41,6 +39,17 @@ def create_ots(id):
             end=end,
         )
         ot.save()
+    # elif overtime.start_date.isoweekday() == 7:
+    #     ot = Ot(
+    #         start_date=overtime.start_date,
+    #         end_date=overtime.end_date,
+    #         employee=overtime.employee,
+    #         start_time=overtime.start_time,
+    #         end_time=overtime.end_time,
+    #         overtime_type=OvertimeType.objects.filter(pay_item_code="OTW").first(),
+    #         overtime=overtime,
+    #     )
+    #     ot.save()
     else:
         for ot_type in ot_types:
             if ot_type.day_span == 2 and overtime.start_date < overtime.end_date:
@@ -125,7 +134,6 @@ def create_ots(id):
                     )
 
 
-# @shared_task
 def calculate_ot():
 
     overtimes = Overtime.objects.filter(paid=False, approved=True)
@@ -186,20 +194,21 @@ def calculate_ot():
                     ot.units_worked = units
                     ot.start_time = start_time
                     ot.end_time = end_time
+                    ot.have_attendance = True
                     ot.save()
+                else:
+                    print("no attendance")
 
         except:
             pass
 
 
-# @shared_task
 def post_ot():
     url = config("NAV")
     user = config("NAV_INSTANCE_USER")
     password = config("NAV_INSTANCE_PASSWORD")
     auth = HttpNtlmAuth(user, password)
-    ots = Ot.objects.filter(paid=False)
-    print(url)
+    ots = Ot.objects.filter(paid=False, have_attendance=True)
     for ot in ots:
         date = f"{ot.start_date}"
         headers = {
@@ -226,13 +235,15 @@ def post_ot():
                 headers=headers,
                 auth=auth,
             )
-            response.raise_for_status()
             if response.ok:
                 ot.paid = True
                 ot.save()
+            else:
+                response.raise_for_status()
+            not_completely_paid = Ot.objects.filter(paid=False, id=ot.id)
+            if not not_completely_paid:
+                overtime = ot.overtime
+                overtime.paid = True
+                overtime.save()
         except requests.exceptions.HTTPError as err:
             print(f"Error {err}")
-    overtimes = Overtime.objects.filter(paid=False, approved=True)
-    for overtime in overtimes:
-        overtime.paid = True
-        overtime.save()

@@ -1,0 +1,9 @@
+<li>
+    <a href="{% url 'attendance:on_fields' %}"
+       class="block py-2 px-3 md:p-0  {% if request.resolver_match.url_name == 'on_fields' %} text-slate-50 bg-slate-700 rounded md:bg-transparent md:text-slate-400 {% else %} text-slate-50 rounded hover:bg-slate-700 hover:text-slate-50 md:hover:bg-transparent md:hover:text-slate-400 {% endif %}"
+       aria-current="page">On field</a>
+</li>
+<li>
+    <a href="{% url 'attendance:on_field_detail' on_field.id %}"
+       class="block py-2 px-3 md:p-0  {% if request.resolver_match.url_name == 'on_field_detail' %} text-slate-50 bg-slate-700 rounded md:bg-transparent md:text-slate-400 {% else %} text-slate-50 rounded hover:bg-slate-700 hover:text-slate-50 md:hover:bg-transparent md:hover:text-slate-400 {% endif %}">On field detail</a>
+</li>

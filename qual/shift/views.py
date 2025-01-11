@@ -14,6 +14,7 @@ from employee.filters import EmployeeFilter
 from employee.forms import ChangeEmployeeShiftForm
 from django.contrib.auth.decorators import user_passes_test
 from device.models import Device
+from .filters import ShiftFilter
 
 
 @login_required
@@ -21,6 +22,8 @@ from device.models import Device
 def shifts(request):
     create_shift_form = CreateShiftForm(data=request.GET)
     shifts = Shift.objects.all().order_by("-name")
+    shift_filter = ShiftFilter(request.GET, queryset=shifts)
+    shifts = shift_filter.qs
     paginated = Paginator(shifts, 30)
     page_number = request.GET.get("page")
 
@@ -28,6 +31,7 @@ def shifts(request):
     context = {
         "create_shift_form": create_shift_form,
         "page": page,
+        "shift_filter": shift_filter,
     }
     return render(request, "shift/list.html", context)
 
@@ -59,10 +63,12 @@ def create_shift(request):
             name = form.cleaned_data["name"]
             continous = form.cleaned_data["continous"]
             saturday_half = form.cleaned_data["saturday_half"]
+            device = form.cleaned_data["device"]
             shift = Shift(
                 name=name,
                 continous=continous,
                 saturday_half=saturday_half,
+                device=device,
             )
             shift.save()
 
@@ -202,9 +208,11 @@ def assign_employees(request):
                 ).order_by("name")
             for employee in employees:
                 employee.shift = shift
+                # if employee.device is None:
+                employee.device = shift.device
                 employee.save()
             if (
-                request.user.profile.role == "Admin"
+                request.user.profile.role == "ADMIN"
                 or request.user.profile.role == "HR"
             ):
                 return redirect("shift:shifts")
@@ -236,6 +244,9 @@ def create_pattern(request, id):
                 tolerance=tolerance,
                 next=next,
             )
+            if not pattern.next:
+                pattern.next = pattern
+                pattern.save()
         return redirect("shift:shift_patterns", id=shift.id)
 
 

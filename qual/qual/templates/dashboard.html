@@ -1,11 +1,102 @@
 {% extends "_base.html" %}
 {% load static %}
 {% block content %}
-  <div class="bg-white mx-auto p-8 h-screen w-auto ">
-    <img src="{% static 'images/Logo1.png' %}"
-         class="object-contain h-3/4 w-3/4 mx-auto "
-         height=""
-         width=""
-         alt="logo">
+  <div class="bg-white h-full mx-auto  ">
+    <!-- <img src="{% static 'images/Logo1.png' %}" class="object-contain h-3/4 w-3/4 mx-auto " height="" width="" alt="logo"> -->
+    <dl class="grid max-w-screen-xl grid-cols-2 gap-4 p-2 mx-auto text-slate-900 sm:grid-cols-3 xl:grid-cols-6  sm:p-4">
+      {% if 'account.can_approve' in request.user.get_all_permissions %}
+        <div class="flex flex-col items-center py-4 justify-center rounded-lg bg-slate-100">
+          <dt class="mb-2 text-4xl font-bold text-slate-800">{{ approvals }}</dt>
+          <dd class="text-slate-500 dark:text-slate-400">
+            Approvals
+          </dd>
+        </div>
+      {% endif %}
+      <div class="flex flex-col items-center py-4 justify-center rounded-lg bg-slate-100">
+        <dt class="mb-2 text-4xl font-bold text-slate-800">{{ shifts.count }}</dt>
+        <dd class="text-slate-500 dark:text-slate-400">
+          Shifts
+        </dd>
+      </div>
+      <div class="flex flex-col items-center py-4 justify-center rounded-lg bg-slate-100">
+        <dt class="mb-2 text-4xl font-bold text-slate-800">{{ devices.count }}</dt>
+        <dd class="text-slate-500 dark:text-slate-400">
+          Devices
+        </dd>
+      </div>
+      <div class="flex flex-col items-center py-4 justify-center rounded-lg bg-slate-100">
+        <dt class="mb-2 text-4xl font-bold text-slate-800">{{ attendances.count }}</dt>
+        <dd class="text-slate-500 dark:text-slate-400">
+          Attendances
+        </dd>
+      </div>
+      <div class="flex flex-col items-center py-4 justify-center rounded-lg bg-slate-100">
+        <dt class="mb-2 text-4xl font-bold text-slate-800">{{ leaves.count }}</dt>
+        <dd class="text-slate-500 dark:text-slate-400">
+          Leaves
+        </dd>
+      </div>
+      <div class="flex flex-col items-center py-4 justify-center rounded-lg bg-slate-100">
+        <dt class="mb-2 text-4xl font-bold text-slate-800">{{ overtimes.count }}</dt>
+        <dd class="text-slate-500 dark:text-slate-400">
+          Overtimes
+        </dd>
+      </div>
+      <div class="flex flex-col items-center py-4 justify-center rounded-lg bg-slate-100">
+        <dt class="mb-2 text-4xl font-bold text-slate-800">{{ holidays.count }}</dt>
+        <dd class="text-slate-500 dark:text-slate-400">
+          Holidays
+        </dd>
+      </div>
+    </dl>
+    <div class="xl:flex gap-4 xl:justify-between  rounded-lg">
+      <div class="relative overflow-x-auto shadow sm:rounded-lg w-full  p-2 bg-white border border-slate-200 rounded-lg  sm:p-4">
+        <h5 class="text-base  leading-relaxed text-slate-900 mb-2">Top absents in the last 30 days.</h5>
+        <table class="w-full text-sm text-left text-slate-900 overflow-x-auto table-auto">
+          <thead class="text-xs text-slate-800 uppercase bg-slate-100 rounded-lg border-t">
+            <tr>
+              <th scope="col" class="p-3">Name</th>
+              <th scope="col" class="p-3">Department</th>
+              <th scope="col" class="p-3">Shift</th>
+              <th scope="col" class="p-3">Days</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for most_absent in most_absents %}
+              <tr class="bg-white border-b  hover:bg-slate-50 text-sm ">
+                <th class="p-3 font-medium text-slate-900 whitespace-nowrap ">{{ most_absent.name }}</th>
+                <td class="p-3">{{ most_absent.department }}</td>
+                <td class="p-3">{{ most_absent.shift }}</td>
+                <td class="p-3">{{ most_absent.absent_count }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <div class="max-w-full w-full xl:max-w-md p-4 bg-white border border-slate-200 rounded-lg shadow sm:p-8 ">
+        <div class="flex items-center justify-between p-4 bg-slate-100 rounded-lg mt-2">
+          <h5 class="text-xl leading-none text-slate-900 ">Latest Employees</h5>
+          <a href="{% url 'employee:employees' %}"
+             class="text-sm font-medium whitespace-nowrap text-slate-900 underline hover:bg-slate-100 ">View all</a>
+        </div>
+        <div class="flow-root ">
+          <ul role="list" class="divide-y divide-slate-400">
+            {% for e in new_employees %}
+              <li class=" hover:bg-slate-50 p-3">
+                <a href="{{ e.get_absolute_url }}">
+                  <div class="flex items-center">
+                    <div class="flex-1 min-w-0 ms-4">
+                      <p class="text-sm font-semibold text-slate-900 truncate ">{{ e.name }}</p>
+                      <p class="text-sm text-slate-800 truncate ">{{ e.department.name }}</p>
+                    </div>
+                    <div class="inline-flex items-center text-base font-semibold text-slate-900 ">{{ e.employee_id }}</div>
+                  </div>
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
   </div>
 {% endblock content %}

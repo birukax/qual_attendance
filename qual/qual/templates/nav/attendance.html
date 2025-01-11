@@ -1,17 +1,13 @@
 <li>
-    <a href="{% url 'attendance:attendances' %}"
-       class="block py-2 px-3 md:p-0  {% if request.resolver_match.url_name == 'attendances' %} text-slate-50 bg-slate-700 rounded md:bg-transparent md:text-slate-400 {% else %} text-slate-50 rounded hover:bg-slate-700 hover:text-slate-50 md:hover:bg-transparent md:hover:text-slate-400 {% endif %}"
-       aria-current="page">Attendance</a>
+    <a href="{% url 'attendance:raw_attendance' %}"
+       class="block py-2 px-3 md:p-0  {% if request.resolver_match.url_name == 'raw_attendance' %} text-slate-50 bg-slate-700 rounded md:bg-transparent md:text-slate-400 {% else %} text-slate-50 rounded hover:bg-slate-700 hover:text-slate-50 md:hover:bg-transparent md:hover:text-slate-400 {% endif %}">Raw data</a>
 </li>
 <li>
     <a href="{% url 'attendance:compile_view' %}"
        class="block py-2 px-3 md:p-0  {% if request.resolver_match.url_name == 'compile_view' %} text-slate-50 bg-slate-700 rounded md:bg-transparent md:text-slate-400 {% else %} text-slate-50 rounded hover:bg-slate-700 hover:text-slate-50 md:hover:bg-transparent md:hover:text-slate-400 {% endif %}">Compile</a>
 </li>
 <li>
-    <a href="{% url 'attendance:raw_attendance' %}"
-       class="block py-2 px-3 md:p-0  {% if request.resolver_match.url_name == 'raw_attendance' %} text-slate-50 bg-slate-700 rounded md:bg-transparent md:text-slate-400 {% else %} text-slate-50 rounded hover:bg-slate-700 hover:text-slate-50 md:hover:bg-transparent md:hover:text-slate-400 {% endif %}">Raw data</a>
+    <a href="{% url 'attendance:attendances' %}"
+       class="block py-2 px-3 md:p-0  {% if request.resolver_match.url_name == 'attendances' %} text-slate-50 bg-slate-700 rounded md:bg-transparent md:text-slate-400 {% else %} text-slate-50 rounded hover:bg-slate-700 hover:text-slate-50 md:hover:bg-transparent md:hover:text-slate-400 {% endif %}"
+       aria-current="page">History</a>
 </li>
-<!-- <li>
-    <a href="{% url 'attendance:recompile_view' %}"
-       class="block py-2 px-3 md:p-0  {% if request.resolver_match.url_name == 'recompile_view' %} text-slate-50 bg-slate-700 rounded md:bg-transparent md:text-slate-400 {% else %} text-slate-50 rounded hover:bg-slate-700 hover:text-slate-50 md:hover:bg-transparent md:hover:text-slate-400 {% endif %}">Recompile</a>
-</li> -->

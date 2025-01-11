@@ -1,26 +1,9 @@
 {% extends "_base.html" %}
 {% block content %}
-  <div class="py-4 px-8 bg-white rounded-lg shadow-md w-full">
-    <div class="flex justify-between">
-      <div>
-        <a href="{% url 'leave:leaves' %}" class="mx-2">
-          <svg class="w-6 h-6 text-slate-800 "
-               aria-hidden="true"
-               xmlns="http://www.w3.org/2000/svg"
-               width="24"
-               height="24"
-               fill="none"
-               viewBox="0 0 24 24">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 19-7-7 7-7" />
-          </svg>
-        </a>
-      </div>
+  <div class="max-w-screen-md px-8 py-4 mx-auto bg-white rounded-lg shadow-md">
+    <div class="flex justify-end">
       <div class="flex items-center justify-between mb-1">
-        <h5 class="text-2xl font-extrabold leading-none underline text-slate-800">Leave detail</h5>
-        {% if leave.evidence %}
-          <a href="#"
-             class="text-sm font-medium text-blue-600 hover:underline dark:text-blue-500">Download Evidence</a>
-        {% endif %}
+        <h5 class="text-xl font-semibold leading-relaxed capitalize text-slate-700">Leave detail</h5>
       </div>
     </div>
     <div class="justify-between mb-1">
@@ -36,17 +19,17 @@
       </div>
       <div class="flex-row font-normal text-slate-800">
         <div class="flex justify-between mb-1">
-          <span class="mr-2 uppercase ">Employee ID:</span>
+          <span class="mr-2 capitalize">Employee Id:</span>
           <p class="font-semibold">{{ leave.employee.employee_id }}</p>
         </div>
         <div class="flex justify-between mb-1">
-          <span class="mr-2 uppercase ">Shift:</span>
+          <span class="mr-2 capitalize ">Shift:</span>
           <p class="font-semibold">{{ leave.employee.shift }}</p>
         </div>
       </div>
     </div>
     <div class="flow-root">
-      <ul role="list" class="divide-y divide-slate-200 space-y-2">
+      <ul role="list" class="space-y-2 divide-y divide-slate-200">
         <li class="py-2 ">
           <div class="flex items-center">
             <div class="flex-1 min-w-0 ms-4">
@@ -76,6 +59,22 @@
         <li class="py-2 ">
           <div class="flex items-center">
             <div class="flex-1 min-w-0 ms-4">
+              <p class="text-sm font-medium truncate text-slate-800 dark:text-white">By</p>
+            </div>
+            <div class="inline-flex items-center text-base font-semibold text-slate-800 dark:text-white">
+              {% if leave.approved == True %}
+                {{ leave.approved_by }}
+              {% elif leave.rejected == True %}
+                {{ leave.rejected_by }}
+              {% else %}
+                Pending
+              {% endif %}
+            </div>
+          </div>
+        </li>
+        <li class="py-2 ">
+          <div class="flex items-center">
+            <div class="flex-1 min-w-0 ms-4">
               <p class="text-sm font-medium truncate text-slate-800 dark:text-white">Active</p>
             </div>
             <div class="inline-flex items-center text-base font-semibold text-slate-800 dark:text-white">{{ leave.active }}</div>
@@ -86,9 +85,7 @@
             <div class="flex-1 min-w-0 ms-4">
               <p class="text-sm font-medium truncate text-slate-800 dark:text-white">Half day</p>
             </div>
-            <div class="inline-flex items-center text-base font-semibold text-slate-800 dark:text-white">
-              {{ leave.is_half_day }}
-            </div>
+            <div class="inline-flex items-center text-base font-semibold text-slate-800 dark:text-white">{{ leave.half_day }}</div>
           </div>
         </li>
         <li class="py-2 ">
@@ -112,14 +109,10 @@
         <li class="py-2 ">
           <div class="flex items-center">
             <div class="flex-1 min-w-0 ms-4">
-              <p class="text-sm font-medium truncate text-slate-800 dark:text-white">Have Evidence</p>
+              <p class="text-sm font-medium truncate text-slate-800 dark:text-white">Total days</p>
             </div>
             <div class="inline-flex items-center text-base font-semibold text-slate-800 dark:text-white">
-              {% if leave.evidence %}
-                True
-              {% else %}
-                False
-              {% endif %}
+              {{ leave.total_days }}
             </div>
           </div>
         </li>
@@ -134,6 +127,22 @@
           </div>
         </li>
       </ul>
+    </div>
+    <div class="flex justify-end">
+      {% if not leave.approved and not leave.rejected %}
+        <div class="flex gap-6">
+          <a href="{% url 'leave:edit_leave' leave.id %}"
+             class="text-base text-slate-900 hover:underline ">Edit leave</a>
+          <a href="{% url 'leave:cancel_leave' leave.id %}"
+             class="text-base text-slate-900 hover:underline ">Cancel leave</a>
+        </div>
+      {% endif %}
+      {% if leave.approved and 'account.can_approve' in request.user.get_all_permissions %}
+        <div class="flex gap-6">
+          <a href="{% url 'leave:reopen_leave' leave.id %}"
+             class="text-base text-slate-900 hover:underline ">Reopen leave</a>
+        </div>
+      {% endif %}
     </div>
   </div>
 {% endblock content %}

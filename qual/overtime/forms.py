@@ -8,6 +8,8 @@ from django_flatpickr.widgets import (
 )
 from django_flatpickr.schemas import FlatpickrOptions
 from django_select2 import forms as s2forms
+from django.core.exceptions import ValidationError
+from django.utils.translation import gettext_lazy as _
 
 
 class EmployeeWidget(s2forms.ModelSelect2Widget):
@@ -81,3 +83,26 @@ class CreateOvertimeForm(forms.ModelForm):
             self.fields["employee"].queryset = Employee.objects.filter(
                 status="Active", department__in=self.user.profile.manages.all()
             )
+
+    def clean(self):
+        cleaned_data = super().clean()
+        employee = cleaned_data.get("employee")
+        start_date = cleaned_data.get("start_date")
+        end_date = cleaned_data.get("end_date")
+        start_time = cleaned_data.get("start_time")
+        end_time = cleaned_data.get("end_time")
+
+        if Overtime.objects.filter(
+            employee=employee, start_date=start_date, approved=True
+        ).exists():
+            raise ValidationError(
+                _("Employee can't have multiple overtime on the same date.")
+            )
+        if start_date and end_date and start_time and end_time:
+            if start_date > end_date:
+                raise ValidationError(_("Start Date cannot be greater than End Date."))
+            if start_time > end_time:
+                if not start_date < end_date:
+                    raise ValidationError(
+                        _("Start Time cannot be greater than End Time.")
+                    )

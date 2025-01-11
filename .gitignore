@@ -1,4 +1,7 @@
-./node_modules/
-./env/
-./qual/uwsgi_app.sock
+node_modules/
+env/
+qual/uwsgi_app.sock
 .env
+package-lock.json
+__pycache__/
+.vscode/

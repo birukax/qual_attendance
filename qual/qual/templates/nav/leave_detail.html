@@ -1,0 +1,9 @@
+<li>
+    <a href="{% url 'leave:leaves' %}"
+       class="block py-2 px-3 md:p-0  {% if request.resolver_match.url_name == 'leaves' %} text-slate-50 bg-slate-700 rounded md:bg-transparent md:text-slate-400 {% else %} text-slate-50 rounded hover:bg-slate-700 hover:text-slate-50 md:hover:bg-transparent md:hover:text-slate-400 {% endif %}"
+       aria-current="page">Leave</a>
+</li>
+<li>
+    <a href="{% url 'leave:leave_detail' leave.id %}"
+       class="block py-2 px-3 md:p-0  {% if request.resolver_match.url_name == 'leave_detail' %} text-slate-50 bg-slate-700 rounded md:bg-transparent md:text-slate-400 {% else %} text-slate-50 rounded hover:bg-slate-700 hover:text-slate-50 md:hover:bg-transparent md:hover:text-slate-400 {% endif %}">Leave detail</a>
+</li>

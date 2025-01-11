@@ -1,6 +1,6 @@
 {% extends "_base.html" %}
 {% block content %}
-  <div class="p-8  bg-white rounded-lg shadow ">
+  <div class="p-8 max-w-screen-md mx-auto  bg-white rounded-lg shadow ">
     <div class="flex items-center justify-between  mb-2">
       <h5 class="mb-2 text-2xl font-semibold tracking-tight text-slate-900 dark:text-white">{{ device.name }}</h5>
       <svg class="w-12 h-12 text-slate-800"
@@ -41,6 +41,10 @@
            class="inline-flex items-center px-5 py-2 text-sm font-medium text-center text-white rounded-lg bg-slate-700 hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-slate-300">
           Sync users
         </a>
+        <a href="{% url 'device:restart_device' device.id %}"
+        class="inline-flex items-center px-5 py-2 text-sm font-medium text-center text-white rounded-lg bg-slate-700 hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-slate-300">
+       Restart device
+     </a>
         <a href="{% url 'device:sync_time' device.id %}"
            class="inline-flex items-center px-5 py-2 text-sm font-medium text-center text-white rounded-lg bg-slate-700 hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-slate-300">
           Sync time

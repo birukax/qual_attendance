@@ -1,6 +1,6 @@
 {% extends "_base.html" %}
 {% block content %}
-    <div class=" w-full md:p-16 sm:p-8 p-4 shadow-md rounded-lg bg-white ">
+    <div class=" max-w-screen-md md:p-8 sm:p-4 p-4 shadow-md rounded-lg bg-white mx-auto">
         <div class="w-full p-4 bg-white ">
             <div class="flex items-stretch justify-between gap-8">
                 <div class="flex gap-2">
@@ -47,22 +47,28 @@
                     </div>
                 {% endif %}
                 <div class="flex justify-between mb-2">
+                    <span class="mr-2 ">Last calculated:</span>
+                    <div class="font-semibold text-right uppercase grid grid-cols-1  ">
+                        <p>{{ employee.calculate_date }}</p>
+                    </div>
+                </div>
+                <div class="flex justify-between mb-2">
                     <span class="mr-2 ">Leave balance:</span>
-                    <p class="font-semibold">{{ employee.annual_leave_balance }}</p>
+                    <p class="font-semibold">{{ employee.annual_leave_balance|floatformat:2 }}</p>
                 </div>
                 <div class="flex justify-between mb-2">
                     <span class="mr-2 ">Leave taken:</span>
-                    <p class="font-semibold">{{ employee.annual_leave_taken }}</p>
+                    <p class="font-semibold">{{ employee.annual_leave_taken|floatformat:2 }}</p>
                 </div>
                 {% if request.user.profile.role == "ADMIN" %}
                     <div class="flex justify-between mb-2">
                         <span class="mr-2 ">Leave difference:</span>
-                        <p class="font-semibold">{{ employee.annual_leave_difference }}</p>
+                        <p class="font-semibold">{{ employee.annual_leave_difference|floatformat:2 }}</p>
                     </div>
                 {% endif %}
                 <div class="flex justify-between mb-2">
                     <span class="mr-2 ">Leave remaining:</span>
-                    <p class="font-semibold">{{ employee.annual_leave_remaining }}</p>
+                    <p class="font-semibold">{{ employee.annual_leave_remaining|floatformat:2 }}</p>
                 </div>
                 <div class="flex justify-between mb-2">
                     <span class="mr-2 ">Default device:</span>
