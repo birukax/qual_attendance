@@ -12,12 +12,9 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 # from __future__ import absolute_import
 
-import os
 from pathlib import Path
 
 # from .celery import app as celery_app
-ALLOWED_HOSTS = ["*"]
-
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -35,7 +32,14 @@ LOGIN_REDIRECT_URL = "/"
 # LOGIN_URL = "login"
 # LOGOUT_URL = "logout"
 # DEBUG = True
-# ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = [
+    "*"
+    # "localhost",
+    # "172.0.0.1",
+    # "172.16.19.13:100",
+    # "172.16.19.10:100",
+    # "qual-attendance.com",
+]
 
 
 # Application definition
@@ -77,7 +81,6 @@ MIDDLEWARE = [
     "session_security.middleware.SessionSecurityMiddleware",
 ]
 
-ROOT_URLCONF = "qual.urls"
 
 TEMPLATES = [
     {
@@ -140,6 +143,7 @@ USE_TZ = False
 # env\qual\Lib\site-packages\django\contrib\admin\static\admin\
 
 STATIC_URL = "static/"
+STATICFILES_STORAGE = "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
 STATIC_ROOT = BASE_DIR / "qual/static/"
 DEVICE_CONN_TIMEOUT = "5"
 

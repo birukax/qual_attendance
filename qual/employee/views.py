@@ -10,6 +10,7 @@ from .filters import EmployeeFilter
 from device.forms import AddDeviceUserForm
 from device.models import DeviceUser, Device
 from django.contrib.auth.decorators import user_passes_test
+from .tasks import department_get, employee_get
 
 
 @login_required
@@ -41,10 +42,8 @@ def employees(request):
 @login_required
 @user_passes_test(lambda u: u.profile.role == "ADMIN" or u.profile.role == "HR")
 def sync_employee(request):
-    department_object = Department()
-    department_object.sync_department()
-    employee_object = Employee()
-    employee_object.sync_employee()
+    department_get()
+    employee_get()
     return redirect("employee:employees")
 
 

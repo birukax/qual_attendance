@@ -64,7 +64,7 @@ class Attendance(models.Model):
     check_in_type = models.CharField(max_length=10, choices=TYPES, null=True)
     check_out_type = models.CharField(max_length=10, choices=TYPES, null=True)
     status = models.CharField(max_length=10, choices=CHOICES, null=True)
-    compile_date = models.DateField(default=now())
+    compile_date = models.DateField(default=now)
     leave_type = models.ForeignKey(
         "leave.LeaveType",
         on_delete=models.CASCADE,

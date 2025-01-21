@@ -1,6 +1,9 @@
 from .base import *
 from decouple import config
 
+ROOT_URLCONF = "qual.urls"
+
+debug = True
 SECRET_KEY = "django-insecure-(4x*c^lqncc)!e4vp4qb6x06y7ojqh@z*dhxc)l45mf8o%!jqb"
 
 DEBUG = True

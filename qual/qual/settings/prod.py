@@ -8,7 +8,7 @@ DEBUG = True
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "HOST": "host.docker.internal",
+        "HOST": "localhost",
         "NAME": "qual",
         "USER": config("DB_USER"),
         "PASSWORD": config("DB_PASSWORD"),
@@ -16,18 +16,7 @@ DATABASES = {
     }
 }
 
-# CACHES = {
-#     "default": {
-#         "BACKEND": "django.core.cache.backends.redis.RedisCache",
-#         "LOCATION": "redis://redis:6379",
-#     },
-#     "select2": {
-#         "BACKEND": "django.core.cache.backends.redis.RedisCache",
-#         "LOCATION": "redis://redis:6379",
-#     },
-# }
-
-# SELECT2_CACHE_BACKEND = "select2"
+ROOT_URLCONF = "qual.qual.urls"
 
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True

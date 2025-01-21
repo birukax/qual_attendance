@@ -15,41 +15,6 @@ class Department(models.Model):
     def get_absolute_url(self):
         return reverse("department:department_detail", args={self.id})
 
-    try:
-
-        def sync_department(self):
-            server = config("NAV_SERVER")
-            database = config("NAV_SERVER_DATABASE")
-            uid = config("NAV_SERVER_UID")
-            password = config("NAV_SERVER_PASSWORD")
-            connection = (
-                "DRIVER={ODBC Driver 18 for SQL Server};"
-                + f"SERVER={server};DATABASE={database};TrustServerCertificate=yes;UID={uid};PWD={password}"
-            )
-            # connection = "DRIVER={ODBC Driver 18 for SQL Server};SERVER=172.16.18.23;DATABASE=QualabelsProd_2022_23;TrustServerCertificate=yes;Trusted_Connection=yes"
-            conn = pyodbc.connect(connection)
-
-            # conn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER=yourserver;DATABASE=yourdb;UID=username;PWD=password')
-
-            if conn:
-                print("successful")
-            cursor = conn.cursor()
-            department = cursor.execute(
-                "SELECT [Code] as code, [Name] as name from [dbo].[QuaLabels Manufacturers$Dimension Value] WHERE [Dimension Code]='COST CODE' and [Blocked]='0' "
-            )
-            dep = cursor.fetchall()
-
-            for d in dep:
-                code = d.code
-                name = d.name
-                if not Department.objects.filter(code=code).exists():
-                    Department.objects.create(code=code, name=name)
-                else:
-                    Department.objects.filter(code=code).update(name=name)
-
-    except Exception as e:
-        print(e)
-
 
 class Employee(models.Model):
     class Meta:
@@ -99,64 +64,6 @@ class Employee(models.Model):
 
     def get_absolute_url(self):
         return reverse("employee:employee_detail", args={self.id})
-
-    def sync_employee(self):
-        server = config("NAV_SERVER")
-        database = config("NAV_SERVER_DATABASE")
-        uid = config("NAV_SERVER_UID")
-        password = config("NAV_SERVER_PASSWORD")
-        connection = (
-            "DRIVER={ODBC Driver 18 for SQL Server};"
-            + f"SERVER={server};DATABASE={database};TrustServerCertificate=yes;UID={uid};PWD={password}"
-        )
-        conn = pyodbc.connect(connection)
-        if conn:
-            print("successful")
-        cursor = conn.cursor()
-        employee = cursor.execute(
-            "select [No_] as no, [First Name] as fname, [Middle Name] as mname, [Last Name] as lname, [Employment Date] as employment_date, [Termination Date] as termination_date, [Status] as status, [Global Dimension 1 Code] as department from [dbo].[QuaLabels Manufacturers$Employee] ORDER BY no"
-        )
-        emp = cursor.fetchall()
-
-        for e in emp:
-            fname = e.fname.replace(" ", "")
-            mname = e.mname.replace(" ", "")
-            lname = e.lname.replace(" ", "")
-            name = f"{fname} {mname} {lname}"
-            employment_date = e.employment_date
-            termination_date = e.termination_date
-            try:
-                department = Department.objects.get(code=e.department)
-            except Exception as exc:
-                print(exc)
-                department = None
-            status = e.status
-            if status == 0:
-                status = "Active"
-            elif status == 1:
-                status = "Inactive"
-            elif status == 2:
-                status = "Terminated"
-            if not Employee.objects.filter(employee_id=e.no).exists():
-                Employee.objects.create(
-                    employee_id=e.no,
-                    name=name,
-                    department=department,
-                    employment_date=employment_date,
-                    termination_date=termination_date,
-                    status=status,
-                )
-            else:
-                Employee.objects.filter(employee_id=e.no).update(
-                    employee_id=e.no,
-                    name=name,
-                    department=department,
-                    employment_date=employment_date,
-                    termination_date=termination_date,
-                    status=status,
-                )
-
-        conn.close()
 
 
 # class Salary(models.Model):

@@ -3,11 +3,13 @@
        class="fixed top-0 left-0 z-40 h-screen text-white transition-transform -translate-x-full w-60 lg:translate-x-0"
        aria-label="Sidebar">
   <div class="h-full  px-3 overflow-y-auto text-sm bg-slate-800 fill-white">
-    <img src="{% static 'images/test-logo.svg' %}"
-         class="  mx-auto  object-center w-3/4 my-1"
-         height=""
-         width=""
-         alt="logo">
+    <div class="my-4 items-center">
+      <img src="{% static 'images/logo.png' %}"
+           class="  mx-auto "
+           height=""
+           width=""
+           alt="logo2">
+    </div>
     <ul class="space-y-2 mx-auto mt-4">
       <li>
         <a href="{% url 'attendance:dashboard' %}"

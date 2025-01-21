@@ -15,8 +15,8 @@
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h14M1 6h14M1 11h7" />
                 </svg>
             </button>
-            <div class="flex space-x-3 md:order-2 md:space-x-0 rtl:space-x-reverse">
-                <p class="mt-2 mr-3 font-sans text-xl tracking-widest first-letter:uppercase text-slate-50">
+            <div class="flex space-x-3 md:order-2 md:space-x-0 rtl:space-x-reverse items-center">
+                <p class="mt-2 mr-3 font-sans text-xl tracking-widest first-letter:uppercase text-slate-100">
                     {{ request.user.username }}
                 </p>
                 <form method="post" action="{% url 'logout' %}">
