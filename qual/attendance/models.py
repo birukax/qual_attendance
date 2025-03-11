@@ -69,6 +69,7 @@ class Attendance(models.Model):
         "leave.LeaveType",
         on_delete=models.CASCADE,
         null=True,
+        blank=True,
         related_name="leave_type",
     )
     deleted = models.BooleanField(default=False)

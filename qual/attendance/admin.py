@@ -23,6 +23,9 @@ class AttendanceAdmin(admin.ModelAdmin):
         "recompiled",
     ]
     list_per_page = 50
+    search_fields = [
+        'employee__name'
+    ]
     list_filter = ["status", "approved", "recompiled", "deleted"]
 
 

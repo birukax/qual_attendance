@@ -10,7 +10,6 @@ def employee_get():
     user = config("NAV_INSTANCE_USER")
     password = config("NAV_INSTANCE_PASSWORD")
     auth = HttpNtlmAuth(user, password)
-
     try:
         response = requests.get(url, auth=auth)
         if response.ok:
@@ -48,9 +47,14 @@ def employee_get():
                     )
                     employee.save()
         else:
-            print(response.status_code, response.reason)
+            print(response.headers)
+            response.raise_for_status()
+    except requests.exceptions.HTTPError as e:
+        print(f"HTTP Error: {e}")  # Handle errors
+        if "Kerberos" in str(e): #This could indicate that the SPN is missing or incorrect
+            print("The error might be Kerberos related. Check the SPN for the service.")
     except Exception as e:
-        print(e)
+        print(f"An unexpected error occurred: {e}")
 
 
 def department_get():

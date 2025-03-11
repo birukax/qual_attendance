@@ -1,5 +1,4 @@
 from .base import *
-from decouple import config
 
 ROOT_URLCONF = "qual.urls"
 
@@ -10,8 +9,8 @@ DEBUG = True
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "HOST": "localhost",
-        "NAME": "qual",
+        "HOST": "172.16.18.23",
+        "NAME": config("DB_NAME"),
         "USER": config("DB_USER"),
         "PASSWORD": config("DB_PASSWORD"),
         "PORT": 5432,

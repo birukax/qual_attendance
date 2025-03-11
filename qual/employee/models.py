@@ -26,8 +26,8 @@ class Employee(models.Model):
         ("Terminated", "Terminated"),
     ]
 
-    employee_id = models.CharField(unique=True, max_length=50)
-    name = models.CharField(max_length=150)
+    employee_id = models.CharField(unique=True, max_length=50, db_index=True)
+    name = models.CharField(max_length=150, db_index=True)
     department = models.ForeignKey(
         Department,
         on_delete=models.CASCADE,

@@ -24,17 +24,17 @@ import datetime
 def leaves(request):
     context = {}
     user = request.user.profile
-    if user.role == "ADMIN" or user.role == "HR":
-        leaves = Leave.objects.all().order_by("-start_date")
-    else:
-        leaves = Leave.objects.filter(
-            employee__department__in=user.manages.all()
-        ).order_by("-start_date")
-    for l in leaves:
-        # if l.employee.shift:
-        # l.saturday_half = l.employee.shift.saturday_half
-        # l.save()
-        calculate_total_leave_days(l.id)
+    # if user.role == "ADMIN" or user.role == "HR":
+    leaves = Leave.objects.select_related('employee', 'leave_type').all()
+    # else:
+    #     leaves = Leave.objects..select_related('employee', 'leave_type','approved_by','rejected_by').filter(
+    #         employee__department__in=user.manages.all()
+    #     ).order_by("-start_date")
+    # for l in leaves:
+    #     # if l.employee.shift:
+    #     # l.saturday_half = l.employee.shift.saturday_half
+    #     # l.save()
+    #     calculate_total_leave_days(l.id)
     leave_filter = LeaveFilter(request.GET, queryset=leaves)
     # download_filter = LeaveDownloadFilter(queryset=leaves)
     leaves = leave_filter.qs

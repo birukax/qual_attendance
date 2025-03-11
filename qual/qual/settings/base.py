@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 # from __future__ import absolute_import
 
 from pathlib import Path
+from decouple import config
 
 # from .celery import app as celery_app
 
@@ -54,6 +55,10 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django.contrib.postgres",
     "session_security",
+    "compressor",
+    "django_select2",
+    "django_filters",
+    "django_flatpickr",
     "approval",
     "attendance",
     "account",
@@ -63,15 +68,12 @@ INSTALLED_APPS = [
     "leave",
     "holiday",
     "overtime",
-    "compressor",
-    "django_filters",
     # "celery",
-    "django_flatpickr",
-    "django_select2",
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -141,9 +143,9 @@ USE_TZ = False
 
 
 # env\qual\Lib\site-packages\django\contrib\admin\static\admin\
-
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 STATIC_URL = "static/"
-STATICFILES_STORAGE = "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
+# STATICFILES_STORAGE = "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
 STATIC_ROOT = BASE_DIR / "qual/static/"
 DEVICE_CONN_TIMEOUT = "5"
 
