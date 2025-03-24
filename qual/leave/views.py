@@ -52,7 +52,6 @@ def leaves(request):
 def leave_detail(request, id):
     leave = get_object_or_404(Leave, id=id)
     calculate_total_leave_days(leave.id)
-
     if not (request.user.profile.role == "HR" or request.user.profile.role == "ADMIN"):
         if leave.employee.department not in request.user.profile.manages.all():
             return redirect("leave:leaves")
@@ -161,6 +160,7 @@ def create_leave(request):
                 saturday_half=saturday_half,
             )
             leave.save()
+            calculate_total_leave_days(leave.id)
             return redirect("leave:leaves")
         # return redirect("leave:leaves")
     else:
