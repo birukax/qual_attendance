@@ -24,17 +24,17 @@ import datetime
 def leaves(request):
     context = {}
     user = request.user.profile
-    if user.role == "ADMIN" or user.role == "HR":
-        leaves = Leave.objects.all().order_by("-start_date")
-    else:
-        leaves = Leave.objects.filter(
-            employee__department__in=user.manages.all()
-        ).order_by("-start_date")
-    for l in leaves:
-        # if l.employee.shift:
-        # l.saturday_half = l.employee.shift.saturday_half
-        # l.save()
-        calculate_total_leave_days(l.id)
+    # if user.role == "ADMIN" or user.role == "HR":
+    leaves = Leave.objects.select_related('employee', 'leave_type').all()
+    # else:
+    #     leaves = Leave.objects..select_related('employee', 'leave_type','approved_by','rejected_by').filter(
+    #         employee__department__in=user.manages.all()
+    #     ).order_by("-start_date")
+    # for l in leaves:
+    #     # if l.employee.shift:
+    #     # l.saturday_half = l.employee.shift.saturday_half
+    #     # l.save()
+    #     calculate_total_leave_days(l.id)
     leave_filter = LeaveFilter(request.GET, queryset=leaves)
     # download_filter = LeaveDownloadFilter(queryset=leaves)
     leaves = leave_filter.qs
@@ -52,7 +52,6 @@ def leaves(request):
 def leave_detail(request, id):
     leave = get_object_or_404(Leave, id=id)
     calculate_total_leave_days(leave.id)
-
     if not (request.user.profile.role == "HR" or request.user.profile.role == "ADMIN"):
         if leave.employee.department not in request.user.profile.manages.all():
             return redirect("leave:leaves")
@@ -161,6 +160,7 @@ def create_leave(request):
                 saturday_half=saturday_half,
             )
             leave.save()
+            calculate_total_leave_days(leave.id)
             return redirect("leave:leaves")
         # return redirect("leave:leaves")
     else:

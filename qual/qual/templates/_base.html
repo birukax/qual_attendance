@@ -10,11 +10,14 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Qualabels Attendance</title>
         {% compress css %}
-            <link rel="stylesheet" href="{% static 'src/output.css' %}" />
-            <link rel="stylesheet"
-                  href="{% static 'django_select2/django_select2.css' %}" />
-            <link rel="stylesheet"
-                  href="{% static 'django_select2/django_select2.js' %}" />
+        <link rel="stylesheet" href="{% static 'src/output.css' %}" />
+        {% endcompress %}
+        {% compress js %}
+        <link rel="stylesheet"
+        href="{% static 'django_select2/django_select2.css' %}" />
+        <link rel="stylesheet"
+        href="{% static 'django_select2/django_select2.js' %}" />
+
         {% endcompress %}
     </head>
     <body class="w-full bg-isabelline-500">

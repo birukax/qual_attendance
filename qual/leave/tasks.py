@@ -48,7 +48,7 @@ def calculate_total_leave_days(id):
         leave.save()
     except Exception as e:
         print(e)
-    return leave.total_days
+    # return leave.total_days
 
 
 def calculate_total_days(start_date, end_date, exclude_rest_days=False):

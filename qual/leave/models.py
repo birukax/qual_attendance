@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 class LeaveType(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, db_index=True)
     slug = models.SlugField(max_length=100)
     annual = models.BooleanField(default=False)
     exclude_rest_days = models.BooleanField(default=False)
@@ -59,3 +59,6 @@ class Leave(models.Model):
 
     def get_absolute_url(self):
         return reverse("leave:leave_detail", args={self.id})
+
+    class Meta:
+        ordering = ['-start_date']
