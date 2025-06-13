@@ -1361,10 +1361,6 @@ input:checked + .toggle-bg {
   margin-top: 1rem;
 }
 
-.mt-12 {
-  margin-top: 3rem;
-}
-
 .box-border {
   box-sizing: border-box;
 }
