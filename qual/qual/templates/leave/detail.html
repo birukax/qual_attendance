@@ -129,12 +129,14 @@
       </ul>
     </div>
     <div class="flex justify-end">
-      {% if not leave.approved and not leave.rejected %}
+      {% if not leave.approved %}
         <div class="flex gap-6">
           <a href="{% url 'leave:edit_leave' leave.id %}"
              class="text-base text-slate-900 hover:underline ">Edit leave</a>
-          <a href="{% url 'leave:cancel_leave' leave.id %}"
-             class="text-base text-slate-900 hover:underline ">Cancel leave</a>
+          {% if not leave.rejected %}
+            <a href="{% url 'leave:cancel_leave' leave.id %}"
+               class="text-base text-slate-900 hover:underline ">Cancel leave</a>
+          {% endif %}
         </div>
       {% endif %}
       {% if leave.approved and 'account.can_approve' in request.user.get_all_permissions %}

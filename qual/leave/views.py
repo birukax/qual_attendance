@@ -25,7 +25,7 @@ def leaves(request):
     context = {}
     user = request.user.profile
     # if user.role == "ADMIN" or user.role == "HR":
-    leaves = Leave.objects.select_related('employee', 'leave_type').all()
+    leaves = Leave.objects.select_related("employee", "leave_type").all()
     # else:
     #     leaves = Leave.objects..select_related('employee', 'leave_type','approved_by','rejected_by').filter(
     #         employee__department__in=user.manages.all()
@@ -50,8 +50,8 @@ def leaves(request):
 
 @login_required
 def leave_detail(request, id):
+    calculate_total_leave_days(id)
     leave = get_object_or_404(Leave, id=id)
-    calculate_total_leave_days(leave.id)
     if not (request.user.profile.role == "HR" or request.user.profile.role == "ADMIN"):
         if leave.employee.department not in request.user.profile.manages.all():
             return redirect("leave:leaves")
@@ -207,7 +207,7 @@ def reopen_leave(request, id):
 @login_required
 def edit_leave(request, id):
     leave = get_object_or_404(Leave, id=id)
-    if not leave.approved and not leave.rejected:
+    if not leave.approved:
         if request.method == "POST":
             form = EditLeaveForm(data=request.POST, instance=leave)
             if form.is_valid():
@@ -222,6 +222,7 @@ def edit_leave(request, id):
                 else:
                     saturday_half = False
                 leave.saturday_half = saturday_half
+                leave.rejected = False
                 leave.save()
                 return redirect("leave:leave_detail", id=id)
         else:
@@ -365,6 +366,7 @@ def create_leave_type(request):
         maximum_days = form.cleaned_data["maximum_days"]
         paid = form.cleaned_data["paid"]
         exclude_rest_days = form.cleaned_data["exclude_rest_days"]
+        half_day_leave = form.cleaned_data["half_day_leave"]
 
         leave_type = LeaveType(
             name=name,
@@ -372,6 +374,7 @@ def create_leave_type(request):
             maximum_days=maximum_days,
             paid=paid,
             exclude_rest_days=exclude_rest_days,
+            half_day_leave=half_day_leave,
         )
         leave_type.save()
     return redirect("leave:leave_types")
@@ -389,6 +392,7 @@ def edit_leave_type(request, id):
         leave_type.paid = form.cleaned_data["paid"]
         leave_type.annual = form.cleaned_data["annual"]
         leave_type.exclude_rest_days = form.cleaned_data["exclude_rest_days"]
+        leave_type.half_day_leave = form.cleaned_data["half_day_leave"]
         leave_type.save()
     return redirect("leave:leave_type_detail", id=id)
 

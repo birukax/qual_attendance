@@ -172,6 +172,7 @@ class CreateLeaveTypeForm(forms.ModelForm):
             "description",
             "annual",
             "exclude_rest_days",
+            "half_day_leave",
             "paid",
         )
         widgets = {
@@ -197,6 +198,7 @@ class EditLeaveTypeForm(forms.ModelForm):
             "description",
             "annual",
             "exclude_rest_days",
+            "half_day_leave",
             "paid",
         )
         widgets = {

@@ -11,6 +11,7 @@ class LeaveType(models.Model):
     slug = models.SlugField(max_length=100)
     annual = models.BooleanField(default=False)
     exclude_rest_days = models.BooleanField(default=False)
+    half_day_leave = models.BooleanField(default=False)
     description = models.TextField()
     maximum_days = models.PositiveIntegerField(default=0)
     paid = models.BooleanField(default=True)
@@ -61,4 +62,4 @@ class Leave(models.Model):
         return reverse("leave:leave_detail", args={self.id})
 
     class Meta:
-        ordering = ['-start_date']
+        ordering = ["-start_date"]

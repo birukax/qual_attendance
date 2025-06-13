@@ -65,3 +65,4 @@ typing_extensions==4.12.2
 tzdata==2023.3
 urllib3==2.2.0
 wfastcgi==3.0.0
+whitenoise==6.9.0

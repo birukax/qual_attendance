@@ -36,15 +36,20 @@ def calculate_total_leave_days(id):
         total_sundays = get_all_sundays(leave.start_date, leave.end_date)
         total_holidays = get_all_holidays(leave.start_date, leave.end_date)
         total_saturdays = get_all_saturdays(leave.start_date, leave.end_date)
-        if leave.leave_type.exclude_rest_days:
+        if leave.leave_type.exclude_rest_days or leave.leave_type.half_day_leave:
             leave.total_days = dates.count() - total_sundays - total_holidays
         else:
             leave.total_days = dates.count()
-        if leave.half_day:
+        if leave.half_day and not leave.leave_type.half_day_leave:
             leave.total_days = leave.total_days - 0.5
-        elif leave.saturday_half and leave.leave_type.exclude_rest_days:
-            total_saturdays = total_saturdays * 0.5
-            leave.total_days = leave.total_days - total_saturdays
+        if leave.saturday_half:
+            total_sats = total_saturdays * 0.5
+            leave.total_days = leave.total_days - total_sats
+        if leave.leave_type.half_day_leave:
+            total_days = dates.count() - total_sundays - total_holidays
+            if leave.saturday_half:
+                total_days -= total_saturdays
+            leave.total_days = leave.total_days - (total_days * 0.5)
         leave.save()
     except Exception as e:
         print(e)
