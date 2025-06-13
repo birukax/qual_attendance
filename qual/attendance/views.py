@@ -212,11 +212,12 @@ def download_compiled_attendance(request):
     ws.append(headers)
 
     for attendance in attendances.order_by("-check_in_date"):
+        half_day = ""
+        device = ""
+        leave_type = ""
 
         if attendance.device:
             device = attendance.device.name
-        else:
-            device = ""
         if attendance.leave_type:
             leave_type = attendance.leave_type.name
             leave = Leave.objects.filter(
@@ -228,7 +229,6 @@ def download_compiled_attendance(request):
             if leave.half_day:
                 half_day = True
         else:
-            leave_type = ""
             half_day = False
         ws.append(
             [
