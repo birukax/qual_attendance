@@ -29,13 +29,15 @@ def get_all_holidays(start_date, end_date):
 
 
 # from pandas import timedelta_range
-def calculate_total_leave_days(id):
+def calculate_total_leave_days(id, end_date=None):
     try:
         leave = Leave.objects.get(id=id)
-        dates = rrule(DAILY, dtstart=leave.start_date, until=leave.end_date)
-        total_sundays = get_all_sundays(leave.start_date, leave.end_date)
-        total_holidays = get_all_holidays(leave.start_date, leave.end_date)
-        total_saturdays = get_all_saturdays(leave.start_date, leave.end_date)
+        if not end_date:
+            end_date = leave.end_date
+        dates = rrule(DAILY, dtstart=leave.start_date, until=end_date)
+        total_sundays = get_all_sundays(leave.start_date, end_date)
+        total_holidays = get_all_holidays(leave.start_date, end_date)
+        total_saturdays = get_all_saturdays(leave.start_date, end_date)
         if leave.leave_type.exclude_rest_days or leave.leave_type.half_day_leave:
             leave.total_days = dates.count() - total_sundays - total_holidays
         else:
@@ -80,10 +82,14 @@ def calculate_annual_leaves(end_date=date):
             employee=e,
             approved=True,
             leave_type__annual=True,
+            start_date__lte=end_date,
         )
         e.annual_leave_taken = 0
         for l in leaves:
-            calculate_total_leave_days(l.id)
+            if l.end_date > end_date:
+                calculate_total_leave_days(l.id, end_date=end_date)
+            else:
+                calculate_total_leave_days(l.id)
             # if l.end_date > end_date:
             #     leave_days = end_date.day - l.start_date.day + 1
             # else:
