@@ -10,14 +10,14 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Qualabels Attendance</title>
         {% compress css %}
-        <link rel="stylesheet" href="{% static 'src/output.css' %}" />
+            <link rel="stylesheet" href="{% static 'src/output.css' %}" />
+            <link rel="stylesheet"
+                  href="{% static 'django_select2/django_select2.css' %}" />
         {% endcompress %}
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
         {% compress js %}
-        <link rel="stylesheet"
-        href="{% static 'django_select2/django_select2.css' %}" />
-        <link rel="stylesheet"
-        href="{% static 'django_select2/django_select2.js' %}" />
-
+            <script src="{% static 'django_select2/django_select2.js' %}"></script>
         {% endcompress %}
     </head>
     <body class="w-full bg-isabelline-500">
@@ -35,7 +35,7 @@
                     </div>
                 {% else %}
                     <div>
-                        <div class="w-full mx-auto">
+                        <div class="w-screen h-screen place-content-center">
                             {% block login %}
                             {% endblock login %}
                         </div>
@@ -43,8 +43,6 @@
                 {% endif %}
             </div>
         {% endwith %}
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.js"></script>
         {{ form.media }}
     </body>
 </html>

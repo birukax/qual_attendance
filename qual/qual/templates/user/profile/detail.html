@@ -24,46 +24,40 @@
       </div>
     </div>
     <div class="flow-root">
-      <ul role="list" class="divide-y divide-gray-200 dark:divide-gray-700">
+      <ul role="list" class="divide-y divide-gray-200 ">
         <div class="flex-1 min-w-0 ms-4">
           <p class=" mb-2 text-xl font-semibold text-left text-gray-900">User info</p>
         </div>
         <li class="py-3">
           <div class="flex items-center">
             <div class="flex-1 min-w-0 ms-4">
-              <p class="font-medium text-gray-900 truncate dark:text-white">Employee</p>
+              <p class="font-medium text-gray-900 truncate ">Employee</p>
             </div>
-            <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-              {{ user.employee.name }}
-            </div>
+            <div class="inline-flex items-center text-base font-semibold text-gray-900 ">{{ user.employee.name }}</div>
           </div>
         </li>
         <li class="py-3">
           <div class="flex items-center">
             <div class="flex-1 min-w-0 ms-4">
-              <p class="font-medium text-gray-900 truncate dark:text-white">Email</p>
+              <p class="font-medium text-gray-900 truncate ">Email</p>
             </div>
-            <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">{{ user.user.email }}</div>
+            <div class="inline-flex items-center text-base font-semibold text-gray-900 ">{{ user.user.email }}</div>
           </div>
         </li>
         <li class="py-3">
           <div class="flex items-center">
             <div class="flex-1 min-w-0 ms-4">
-              <p class="font-medium text-gray-900 truncate dark:text-white">First name</p>
+              <p class="font-medium text-gray-900 truncate ">First name</p>
             </div>
-            <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-              {{ user.user.first_name }}
-            </div>
+            <div class="inline-flex items-center text-base font-semibold text-gray-900 ">{{ user.user.first_name }}</div>
           </div>
         </li>
         <li class="py-3">
           <div class="flex items-center">
             <div class="flex-1 min-w-0 ms-4">
-              <p class="font-medium text-gray-900 truncate dark:text-white">Last name</p>
+              <p class="font-medium text-gray-900 truncate ">Last name</p>
             </div>
-            <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-              {{ user.user.last_name }}
-            </div>
+            <div class="inline-flex items-center text-base font-semibold text-gray-900 ">{{ user.user.last_name }}</div>
           </div>
         </li>
         <div class="flex-1 min-w-0 ms-4">
@@ -72,18 +66,18 @@
         <li class="py-3">
           <div class="flex items-center">
             <div class="flex-1 min-w-0 ms-4">
-              <p class="font-medium text-gray-900 truncate dark:text-white">Role</p>
+              <p class="font-medium text-gray-900 truncate ">Role</p>
             </div>
-            <div class="inline-flex items-center font-semibold text-gray-900 dark:text-white">{{ user.role }}</div>
+            <div class="inline-flex items-center font-semibold text-gray-900 ">{{ user.role }}</div>
           </div>
         </li>
         {% if user_role == "ADMIN" or user_role == "HR" %}
           <li class="py-3">
             <div class="flex items-center">
               <div class="flex-1 min-w-0 ms-4">
-                <p class="font-medium text-gray-900 truncate dark:text-white">Device</p>
+                <p class="font-medium text-gray-900 truncate ">Device</p>
               </div>
-              <div class="inline-flex items-center font-semibold text-gray-900 dark:text-white">{{ user.device }}</div>
+              <div class="inline-flex items-center font-semibold text-gray-900 ">{{ user.device }}</div>
             </div>
           </li>
         {% endif %}

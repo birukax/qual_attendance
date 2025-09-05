@@ -15,7 +15,7 @@
              viewBox="0 0 14 18">
           <path d="M7 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9Zm2 1H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Z" />
         </svg>
-        <h5 class="mb-1 text-2xl font-semibold tracking-tight text-slate-800 dark:text-white">{{ leave.employee.name }}</h5>
+        <h5 class="mb-1 text-2xl font-semibold tracking-tight text-slate-800 ">{{ leave.employee.name }}</h5>
       </div>
       <div class="flex-row font-normal text-slate-800">
         <div class="flex justify-between mb-1">
@@ -33,19 +33,17 @@
         <li class="py-2 ">
           <div class="flex items-center">
             <div class="flex-1 min-w-0 ms-4">
-              <p class="text-sm font-medium truncate text-slate-800 dark:text-white">Leave type</p>
+              <p class="text-sm font-medium truncate text-slate-800 ">Leave type</p>
             </div>
-            <div class="inline-flex items-center text-base font-semibold text-slate-800 dark:text-white">
-              {{ leave.leave_type }}
-            </div>
+            <div class="inline-flex items-center text-base font-semibold text-slate-800 ">{{ leave.leave_type }}</div>
           </div>
         </li>
         <li class="py-2 ">
           <div class="flex items-center">
             <div class="flex-1 min-w-0 ms-4">
-              <p class="text-sm font-medium truncate text-slate-800 dark:text-white">Status</p>
+              <p class="text-sm font-medium truncate text-slate-800 ">Status</p>
             </div>
-            <div class="inline-flex items-center text-base font-semibold text-slate-800 dark:text-white">
+            <div class="inline-flex items-center text-base font-semibold text-slate-800 ">
               {% if leave.approved == True %}
                 Approved
               {% elif leave.rejected == True %}
@@ -59,9 +57,9 @@
         <li class="py-2 ">
           <div class="flex items-center">
             <div class="flex-1 min-w-0 ms-4">
-              <p class="text-sm font-medium truncate text-slate-800 dark:text-white">By</p>
+              <p class="text-sm font-medium truncate text-slate-800 ">By</p>
             </div>
-            <div class="inline-flex items-center text-base font-semibold text-slate-800 dark:text-white">
+            <div class="inline-flex items-center text-base font-semibold text-slate-800 ">
               {% if leave.approved == True %}
                 {{ leave.approved_by }}
               {% elif leave.rejected == True %}
@@ -75,55 +73,49 @@
         <li class="py-2 ">
           <div class="flex items-center">
             <div class="flex-1 min-w-0 ms-4">
-              <p class="text-sm font-medium truncate text-slate-800 dark:text-white">Active</p>
+              <p class="text-sm font-medium truncate text-slate-800 ">Active</p>
             </div>
-            <div class="inline-flex items-center text-base font-semibold text-slate-800 dark:text-white">{{ leave.active }}</div>
+            <div class="inline-flex items-center text-base font-semibold text-slate-800 ">{{ leave.active }}</div>
           </div>
         </li>
         <li class="py-2 ">
           <div class="flex items-center">
             <div class="flex-1 min-w-0 ms-4">
-              <p class="text-sm font-medium truncate text-slate-800 dark:text-white">Half day</p>
+              <p class="text-sm font-medium truncate text-slate-800 ">Half day</p>
             </div>
-            <div class="inline-flex items-center text-base font-semibold text-slate-800 dark:text-white">{{ leave.half_day }}</div>
+            <div class="inline-flex items-center text-base font-semibold text-slate-800 ">{{ leave.half_day }}</div>
           </div>
         </li>
         <li class="py-2 ">
           <div class="flex items-center">
             <div class="flex-1 min-w-0 ms-4">
-              <p class="text-sm font-medium truncate text-slate-800 dark:text-white">Start date</p>
+              <p class="text-sm font-medium truncate text-slate-800 ">Start date</p>
             </div>
-            <div class="inline-flex items-center text-base font-semibold text-slate-800 dark:text-white">
-              {{ leave.start_date }}
-            </div>
+            <div class="inline-flex items-center text-base font-semibold text-slate-800 ">{{ leave.start_date }}</div>
           </div>
         </li>
         <li class="py-2 ">
           <div class="flex items-center">
             <div class="flex-1 min-w-0 ms-4">
-              <p class="text-sm font-medium truncate text-slate-800 dark:text-white">End date</p>
+              <p class="text-sm font-medium truncate text-slate-800 ">End date</p>
             </div>
-            <div class="inline-flex items-center text-base font-semibold text-slate-800 dark:text-white">{{ leave.end_date }}</div>
+            <div class="inline-flex items-center text-base font-semibold text-slate-800 ">{{ leave.end_date }}</div>
           </div>
         </li>
         <li class="py-2 ">
           <div class="flex items-center">
             <div class="flex-1 min-w-0 ms-4">
-              <p class="text-sm font-medium truncate text-slate-800 dark:text-white">Total days</p>
+              <p class="text-sm font-medium truncate text-slate-800 ">Total days</p>
             </div>
-            <div class="inline-flex items-center text-base font-semibold text-slate-800 dark:text-white">
-              {{ leave.total_days }}
-            </div>
+            <div class="inline-flex items-center text-base font-semibold text-slate-800 ">{{ leave.total_days }}</div>
           </div>
         </li>
         <li class="pt-3 pb-0 sm:pt-4">
           <div class="flex-col items-center">
             <div class="flex-1 min-w-0 ms-4">
-              <p class="mb-1 text-base font-bold truncate text-slate-800 dark:text-white">Reason</p>
+              <p class="mb-1 text-base font-bold truncate text-slate-800 ">Reason</p>
             </div>
-            <div class="inline-flex items-center ml-4 text-base font-semibold text-slate-800 dark:text-white">
-              {{ leave.reason }}
-            </div>
+            <div class="inline-flex items-center ml-4 text-base font-semibold text-slate-800 ">{{ leave.reason }}</div>
           </div>
         </li>
       </ul>

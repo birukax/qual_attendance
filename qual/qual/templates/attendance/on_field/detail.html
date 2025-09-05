@@ -15,7 +15,7 @@
              viewBox="0 0 14 18">
           <path d="M7 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9Zm2 1H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Z" />
         </svg>
-        <h5 class="mb-1 text-2xl font-semibold tracking-tight text-slate-800 dark:text-white">{{ on_field.employee.name }}</h5>
+        <h5 class="mb-1 text-2xl font-semibold tracking-tight text-slate-800 ">{{ on_field.employee.name }}</h5>
       </div>
       <div class="flex-row font-normal text-slate-800">
         <div class="flex justify-between mb-1">
@@ -30,13 +30,12 @@
     </div>
     <div class="flow-root">
       <ul role="list" class="space-y-2 divide-y divide-slate-200">
-        
         <li class="py-2 ">
           <div class="flex items-center">
             <div class="flex-1 min-w-0 ms-4">
-              <p class="text-sm font-medium truncate text-slate-800 dark:text-white">Status</p>
+              <p class="text-sm font-medium truncate text-slate-800 ">Status</p>
             </div>
-            <div class="inline-flex items-center text-base font-semibold text-slate-800 dark:text-white">
+            <div class="inline-flex items-center text-base font-semibold text-slate-800 ">
               {% if on_field.approved == True %}
                 Approved
               {% elif on_field.rejected == True %}
@@ -50,9 +49,9 @@
         <li class="py-2 ">
           <div class="flex items-center">
             <div class="flex-1 min-w-0 ms-4">
-              <p class="text-sm font-medium truncate text-slate-800 dark:text-white">By</p>
+              <p class="text-sm font-medium truncate text-slate-800 ">By</p>
             </div>
-            <div class="inline-flex items-center text-base font-semibold text-slate-800 dark:text-white">
+            <div class="inline-flex items-center text-base font-semibold text-slate-800 ">
               {% if on_field.approved == True %}
                 {{ on_field.approved_by }}
               {% elif on_field.rejected == True %}
@@ -63,45 +62,36 @@
             </div>
           </div>
         </li>
-        
         <li class="py-2 ">
           <div class="flex items-center">
             <div class="flex-1 min-w-0 ms-4">
-              <p class="text-sm font-medium truncate text-slate-800 dark:text-white">Start date</p>
+              <p class="text-sm font-medium truncate text-slate-800 ">Start date</p>
             </div>
-            <div class="inline-flex items-center text-base font-semibold text-slate-800 dark:text-white">
-              {{ on_field.start_date }}
-            </div>
+            <div class="inline-flex items-center text-base font-semibold text-slate-800 ">{{ on_field.start_date }}</div>
           </div>
         </li>
         <li class="py-2 ">
           <div class="flex items-center">
             <div class="flex-1 min-w-0 ms-4">
-              <p class="text-sm font-medium truncate text-slate-800 dark:text-white">End date</p>
+              <p class="text-sm font-medium truncate text-slate-800 ">End date</p>
             </div>
-            <div class="inline-flex items-center text-base font-semibold text-slate-800 dark:text-white">
-              {{ on_field.end_date }}
-            </div>
+            <div class="inline-flex items-center text-base font-semibold text-slate-800 ">{{ on_field.end_date }}</div>
           </div>
         </li>
         <li class="py-2 ">
           <div class="flex items-center">
             <div class="flex-1 min-w-0 ms-4">
-              <p class="text-sm font-medium truncate text-slate-800 dark:text-white">Total days</p>
+              <p class="text-sm font-medium truncate text-slate-800 ">Total days</p>
             </div>
-            <div class="inline-flex items-center text-base font-semibold text-slate-800 dark:text-white">
-              {{ on_field.total_days }}
-            </div>
+            <div class="inline-flex items-center text-base font-semibold text-slate-800 ">{{ on_field.total_days }}</div>
           </div>
         </li>
         <li class="pt-3 pb-0 sm:pt-4">
           <div class="flex-col items-center">
             <div class="flex-1 min-w-0 ms-4">
-              <p class="mb-1 text-base font-bold truncate text-slate-800 dark:text-white">Reason</p>
+              <p class="mb-1 text-base font-bold truncate text-slate-800 ">Reason</p>
             </div>
-            <div class="inline-flex items-center ml-4 text-base font-semibold text-slate-800 dark:text-white">
-              {{ on_field.reason }}
-            </div>
+            <div class="inline-flex items-center ml-4 text-base font-semibold text-slate-800 ">{{ on_field.reason }}</div>
           </div>
         </li>
       </ul>

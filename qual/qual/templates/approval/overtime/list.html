@@ -16,10 +16,10 @@
       </thead>
       <tbody>
         {% for ot in page %}
-        <tr class="bg-white border-b">
+          <tr class="bg-white border-b">
             <td class="p-2">{{ ot.employee.employee_id }}</td>
             <th scope="row"
-                class="p-2 font-semibold text-slate-900 whitespace-nowrap dark:text-white">{{ ot.employee.name }}</th>
+                class="p-2 font-semibold text-slate-900 whitespace-nowrap ">{{ ot.employee.name }}</th>
             <td class="p-2">{{ ot.start_date }}</td>
             <td class="p-2">{{ ot.start_time }}</td>
             <td class="p-2">{{ ot.end_date }}</td>

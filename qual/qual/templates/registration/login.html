@@ -4,11 +4,11 @@
   <section class="sm:p-4 mx-auto mt-4 rounded-tr-3xl rounded-bl-3xl rounded-br-3xl shadow-lg bg-slate-800 w-fit">
     <div class="flex flex-col items-center justify-center px-8 pb-8 pt-4 mx-auto ">
       <img src="{% static 'images/logo.png' %}"
-           class="  mx-auto    mb-2"
+           class="mx-auto mb-2"
            height=""
            width=""
            alt="logo">
-      <div class="w-full sm:p-4 bg-white  shadow dark:border md:mt-0 sm:max-w-md ">
+      <div class="w-full sm:p-4 bg-white  shadow  md:mt-0 sm:max-w-md ">
         <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
           {% if user.is_authenticated %}
             <p class="text-4xl font-semibold text-slate-800">404</p>
@@ -16,32 +16,28 @@
               <a href="/" class="hover:underline">Go to home</a>
             </p>
           {% else %}
-            <h1 class="text-xl font-bold leading-tight tracking-tight text-slate-900 md:text-2xl dark:text-white">
-              Sign in to your account
-            </h1>
+            <h1 class="text-xl font-bold leading-tight tracking-tight text-slate-900 md:text-2xl ">Sign in to your account</h1>
             <form class="space-y-4 md:space-y-6"
                   method="post"
                   action="{% url 'login' %}">
               {% csrf_token %}
               {% if form.errors %}<p class="text-red-700">Your username and password didn't match. Please try again.</p>{% endif %}
               <div>
-                <label for="username"
-                       class="block mb-2 font-semibold text-slate-900 dark:text-white">Username</label>
+                <label for="username" class="block mb-2 font-semibold text-slate-900 ">Username</label>
                 <input type="username"
                        name="username"
                        id="username"
-                       class="bg-slate-50 border border-slate-300 text-slate-900 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-slate-500 dark:focus:border-slate-500"
+                       class="bg-slate-50 border border-slate-300 text-slate-900 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 "
                        placeholder="username"
                        required="">
               </div>
               <div>
-                <label for="password"
-                       class="block mb-2 font-semibold text-slate-900 dark:text-white">Password</label>
+                <label for="password" class="block mb-2 font-semibold text-slate-900 ">Password</label>
                 <input type="password"
                        name="password"
                        id="password"
                        placeholder="••••••••"
-                       class="bg-slate-50 border border-slate-300 text-slate-900 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:placeholder-slate-400 dark:text-white dark:focus:ring-slate-500 dark:focus:border-slate-500"
+                       class="bg-slate-50 border border-slate-300 text-slate-900 sm:text-sm rounded-lg focus:ring-slate-600 focus:border-slate-600 block w-full p-2.5 "
                        required="" />
                 <button type="button"
                         id="togglePassword"
@@ -73,7 +69,7 @@
               </div>
               <button type="submit"
                       value="login"
-                      class="w-full text-white bg-slate-800 hover:bg-slate-700 focus:ring-4 focus:outline-none focus:ring-slate-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-slate-600 dark:hover:bg-slate-700 dark:focus:ring-slate-800">
+                      class="w-full text-white bg-slate-800 hover:bg-slate-700 focus:ring-4 focus:outline-none focus:ring-slate-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center   ">
                 Sign in
               </button>
               <input type="hidden" name="next" value="{{ next }}">

@@ -27,7 +27,7 @@
           {% for leave in page %}
             <tr class="bg-white border-b hover:bg-slate-50">
               <td class="p-4 whitespace-nowrap">{{ leave.employee.name }}</td>
-              <th class="p-4 font-medium text-slate-900 whitespace-nowrap dark:text-white">{{ leave.leave_type.name }}</th>
+              <th class="p-4 font-medium text-slate-900 whitespace-nowrap ">{{ leave.leave_type.name }}</th>
               <td class="p-4 whitespace-nowrap">{{ leave.start_date }}</td>
               <td class="p-4 whitespace-nowrap">{{ leave.end_date }}</td>
               <td class="p-4 whitespace-nowrap">{{ leave.total_days }}</td>

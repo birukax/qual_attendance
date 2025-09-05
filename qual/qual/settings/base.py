@@ -54,8 +54,8 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.postgres",
-    "session_security",
     "compressor",
+    "session_security",
     "django_select2",
     "django_filters",
     "django_flatpickr",
@@ -141,15 +141,17 @@ USE_TZ = False
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
+WHITENOISE_MANIFEST_STRICT = True
 
 # env\qual\Lib\site-packages\django\contrib\admin\static\admin\
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
-STATIC_URL = "static/"
+STATIC_URL = "/static/"
 # STATICFILES_STORAGE = "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
 STATIC_ROOT = BASE_DIR / "qual/static/"
-DEVICE_CONN_TIMEOUT = "5"
+# STATICFILES_DIRS = [BASE_DIR / "qual/static"]
+# DEVICE_CONN_TIMEOUT = "5"
 
-MEDIA_URL = "media/"
+MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "qual/media/"
 
 # Default primary key field type
@@ -159,6 +161,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 COMPRESS_ROOT = BASE_DIR / "qual/static/"
 COMPRESS_ENABLED = True
+COMPRESS_URL = STATIC_URL
 STATICFILES_FINDERS = (
     "compressor.finders.CompressorFinder",
     "django.contrib.staticfiles.finders.FileSystemFinder",

@@ -23,7 +23,7 @@
         {% for user in page %}
           <tr class="bg-white border-b hover:bg-slate-50">
             <th scope="row"
-                class="p-2 font-semibold text-slate-900 whitespace-nowrap dark:text-white">{{ user.username }}</th>
+                class="p-2 font-semibold text-slate-900 whitespace-nowrap ">{{ user.username }}</th>
             <td class="p-2">{{ user.email }}</td>
             <td class="p-2 whitespace-nowrap">{{ user.first_name }} {{ user.last_name }}</td>
             <td class="p-2">{{ user.is_active }}</td>

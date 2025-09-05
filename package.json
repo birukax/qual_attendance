@@ -1,9 +1,0 @@
-{
-  "devDependencies": {
-    "tailwindcss": "^3.4.0"
-  },
-  "dependencies": {
-    "caniuse-lite": "^1.0.30001651",
-    "flowbite": "^2.2.1"
-  }
-}

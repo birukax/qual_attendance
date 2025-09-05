@@ -4,7 +4,7 @@
     <div class="justify-between">
       <div class="flex items-center justify-between mb-4">
         <a href="{% url 'account:users' %}">
-          <svg class="w-6 h-6 text-slate-800 dark:text-white"
+          <svg class="w-6 h-6 text-slate-800 "
                aria-hidden="true"
                xmlns="http://www.w3.org/2000/svg"
                width="24"
@@ -19,48 +19,48 @@
     </div>
     <div class="mb-2">{% include "user/edit.html" %}</div>
     <div class="flow-root">
-      <ul role="list" class="divide-y divide-slate-200 dark:divide-slate-700">
+      <ul role="list" class="divide-y divide-slate-200 ">
         <div class="flex-1 min-w-0 ms-4">
           <p class="my-2 mb-2 text-xl font-semibold text-left text-slate-900">User info</p>
         </div>
         <li class="py-2">
           <div class="flex text-sm items-center">
             <div class="flex-1 min-w-0 ms-4">
-              <p class="font-medium text-slate-900 truncate dark:text-white">Username</p>
+              <p class="font-medium text-slate-900 truncate ">Username</p>
             </div>
-            <div class="inline-flex items-center  font-semibold text-slate-900 dark:text-white">{{ user.user.username }}</div>
+            <div class="inline-flex items-center  font-semibold text-slate-900 ">{{ user.user.username }}</div>
           </div>
         </li>
         <li class="py-2">
           <div class="flex text-sm items-center">
             <div class="flex-1 min-w-0 ms-4">
-              <p class="font-medium text-slate-900 truncate dark:text-white">First name</p>
+              <p class="font-medium text-slate-900 truncate ">First name</p>
             </div>
-            <div class="inline-flex items-center  font-semibold text-slate-900 dark:text-white">{{ user.user.first_name }}</div>
+            <div class="inline-flex items-center  font-semibold text-slate-900 ">{{ user.user.first_name }}</div>
           </div>
         </li>
         <li class="py-2">
           <div class="flex text-sm items-center">
             <div class="flex-1 min-w-0 ms-4">
-              <p class="font-medium text-slate-900 truncate dark:text-white">Last name</p>
+              <p class="font-medium text-slate-900 truncate ">Last name</p>
             </div>
-            <div class="inline-flex items-center  font-semibold text-slate-900 dark:text-white">{{ user.user.last_name }}</div>
+            <div class="inline-flex items-center  font-semibold text-slate-900 ">{{ user.user.last_name }}</div>
           </div>
         </li>
         <li class="py-2">
           <div class="flex text-sm items-center">
             <div class="flex-1 min-w-0 ms-4">
-              <p class="font-medium text-slate-900 truncate dark:text-white">Employee</p>
+              <p class="font-medium text-slate-900 truncate ">Employee</p>
             </div>
-            <div class="inline-flex items-center  font-semibold text-slate-900 dark:text-white">{{ user.employee.name }}</div>
+            <div class="inline-flex items-center  font-semibold text-slate-900 ">{{ user.employee.name }}</div>
           </div>
         </li>
         <li class="py-2">
           <div class="flex text-sm items-center">
             <div class="flex-1 min-w-0 ms-4">
-              <p class="font-medium text-slate-900 truncate dark:text-white">Email</p>
+              <p class="font-medium text-slate-900 truncate ">Email</p>
             </div>
-            <div class="inline-flex items-center  font-semibold text-slate-900 dark:text-white">{{ user.user.email }}</div>
+            <div class="inline-flex items-center  font-semibold text-slate-900 ">{{ user.user.email }}</div>
           </div>
         </li>
         <div class="flex-1 min-w-0 ms-4">
@@ -69,17 +69,17 @@
         <li class="py-2">
           <div class="flex text-sm items-center">
             <div class="flex-1 min-w-0 ms-4">
-              <p class="font-medium text-slate-900 truncate dark:text-white">Role</p>
+              <p class="font-medium text-slate-900 truncate ">Role</p>
             </div>
-            <div class="inline-flex items-center  font-semibold text-slate-900 dark:text-white">{{ user.role }}</div>
+            <div class="inline-flex items-center  font-semibold text-slate-900 ">{{ user.role }}</div>
           </div>
         </li>
         <li class="py-2">
           <div class="flex text-sm items-center">
             <div class="flex-1 min-w-0 ms-4">
-              <p class="font-medium text-slate-900 truncate dark:text-white">Device</p>
+              <p class="font-medium text-slate-900 truncate ">Device</p>
             </div>
-            <div class="inline-flex items-center  font-semibold text-slate-900 dark:text-white">{{ user.device.name }}</div>
+            <div class="inline-flex items-center  font-semibold text-slate-900 ">{{ user.device.name }}</div>
           </div>
         </li>
         <li class="pt-3 pb-0 sm:pt-4">
