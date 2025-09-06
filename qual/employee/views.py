@@ -30,7 +30,7 @@ def employees(request):
     page = paginated.get_page(page_number)
     context = {
         "page": page,
-        "employee_filter": employee_filter,
+        "filter": employee_filter,
     }
     return render(
         request,

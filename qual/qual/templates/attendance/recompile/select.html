@@ -1,17 +1,17 @@
 {% extends "_base.html" %}
 {% block content %}
-    <div class="p-8 mx-4 bg-white rounded-lg w-fit shadow-sm">
+    <div class="p-8 mx-4 bg-white rounded-md w-fit shadow-sm">
         <div class=" mb-3 flex gap-4">
             {% include "attendance/recompile/filter.html" %}
             <form method="post" action="{% url 'attendance:recompile_view' %}">
                 {% csrf_token %}
                 <div class="flex gap-3">
                     <button type="submit"
-                            class="text-white bg-slate-700 hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-slate-300 font-medium rounded-lg text-sm px-4 py-2 text-center ">
+                            class="text-white bg-slate-700 hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-slate-300 font-medium rounded-md text-sm px-4 py-2 text-center ">
                         Done
                     </button>
                     <a href="{% url 'attendance:cancel_recompile' %}"
-                       class="px-4 py-2 text-sm text-center  bg-slate-200 rounded-lg hover:bg-slate-300 focus:ring-4 focus:outline-none focus:ring-slate-300 ">Cancel</a>
+                       class="px-4 py-2 text-sm text-center  bg-slate-200 rounded-md hover:bg-slate-300 focus:ring-4 focus:outline-none focus:ring-slate-300 ">Cancel</a>
                 </div>
             </div>
             <table class="overflow-x-auto text-sm text-left text-slate-900 ">

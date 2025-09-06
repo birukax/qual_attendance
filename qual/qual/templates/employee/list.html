@@ -1,20 +1,20 @@
 {% extends "_base.html" %}
 {% block content %}
-  <div class="px-8 py-4  bg-white rounded-lg w-full overflow-x-auto">
+  <div class="px-8 py-4  bg-white rounded-md w-full overflow-x-auto">
     <div class="flex items-center gap-6 mb-2">
       {% if request.user.profile.role == "ADMIN" or request.user.profile.role == "HR" %}
         <a href="{% url 'employee:sync_employee' %}"
-           class="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white rounded-lg bg-slate-700 hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-slate-300">
+           class="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white rounded-md bg-slate-700 hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-slate-300">
           Sync nav employees
         </a>
       {% else %}
         <a href="{% url 'shift:select_employees' %}"
-           class="px-4 py-2 text-sm font-medium text-center text-white rounded-lg bg-slate-700 hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-slate-300 ">Assign shift</a>
+           class="px-4 py-2 text-sm font-medium text-center text-white rounded-md bg-slate-700 hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-slate-300 ">Assign shift</a>
       {% endif %}
-      {% include "employee/filter.html" %}
+      {% include "partials/filter.html" %}
     </div>
     <table class=" text-sm text-left text-slate-900 w-full table-auto ">
-      <thead class="text-xs uppercase border-b border-black text-slate-900 bg-slate-50">
+      <thead class="text-xs uppercase border-slate-300 text-slate-800 bg-slate-50">
         <tr>
           <th scope="col" class="p-3">ID</th>
           <th scope="col" class="p-3">Full name</th>
@@ -31,17 +31,19 @@
       </thead>
       <tbody>
         {% for employee in page %}
-          <tr class="border-b hover:bg-slate-50">
-            <td class="p-3 font-semibold ">{{ employee.employee_id }}</td>
-            <th class="p-3 font-semibold  lowercase text-slate-900 first-letter:uppercase  ">{{ employee.name }}</th>
-            <td class="p-3">{{ employee.department }}</td>
-            <td class="p-3 ">{{ employee.employment_date }}</td>
-            <td class="p-3 ">{{ employee.status }}</td>
-            <td class="p-3">{{ employee.shift }}</td>
-            <td class="p-3 ">{{ employee.device.name }}</td>
-            <td class="p-3 text-right ">
+          <tr class="border-y border-slate-300 text-slate-700 hover:bg-slate-50">
+            <td class="p-2 leading-relaxed font-semibold ">{{ employee.employee_id }}</td>
+            <th class="p-2 leading-relaxed font-semibold  lowercase text-slate-800 first-letter:capitalize  ">
+              {{ employee.name }}
+            </th>
+            <td class="p-2 leading-relaxed">{{ employee.department }}</td>
+            <td class="p-2 leading-relaxed ">{{ employee.employment_date }}</td>
+            <td class="p-2 leading-relaxed ">{{ employee.status }}</td>
+            <td class="p-2 leading-relaxed">{{ employee.shift }}</td>
+            <td class="p-2 leading-relaxed ">{{ employee.device.name }}</td>
+            <td class="p-2 leading-relaxed text-right ">
               <a href="{{ employee.get_absolute_url }}"
-                 class="font-semibold text-slate-900 hover:underline ">Detail</a>
+                 class="font-semibold text-slate-700 hover:underline ">Detail</a>
             </td>
           </tr>
         {% endfor %}

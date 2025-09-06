@@ -1,8 +1,8 @@
 {% extends "_base.html" %}
 {% block content %}
-  <div class=" w-full shadow-md sm:rounded-lg bg-white py-4 px-8">
+  <div class=" w-full shadow-md sm:rounded-md bg-white py-4 px-8">
     <table class="text-left text-sm text-slate-800 divide-y w-full table-auto">
-      <thead class="text-slate-800 font-semibold uppercase bg-white text-xs border-b border-slate-800">
+      <thead class="text-xs uppercase border-slate-300 text-slate-800 bg-slate-50">
         <tr>
           <th scope="col" class="p-3">Department code</th>
           <th scope="col" class="p-3">Department name</th>
@@ -11,10 +11,10 @@
       </thead>
       <tbody>
         {% for department in page %}
-          <tr class="bg-white border-b">
-            <td class="p-4">{{ department.code }}</td>
-            <th class="p-4 font-semibold text-slate-800 whitespace-nowrap">{{ department.name }}</th>
-            <td class="p-4">{{ department.employees.count }}</td>
+          <tr class="border-y border-slate-300 text-slate-700 hover:bg-slate-50">
+            <td class="p-2">{{ department.code }}</td>
+            <th class="p-2 font-semibold text-slate-800 whitespace-nowrap">{{ department.name }}</th>
+            <td class="p-2">{{ department.employees.count }}</td>
           </tr>
         {% endfor %}
       </tbody>

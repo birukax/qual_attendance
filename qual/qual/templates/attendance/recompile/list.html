@@ -1,6 +1,6 @@
 {% extends "_base.html" %}
 {% block content %}
-    <div class="relative px-8 py-4 bg-white w-fit rounded-lg shadow-md">
+    <div class="relative px-8 py-4 bg-white w-fit rounded-md shadow-md">
         <form method="post" action="{% url 'attendance:recompile' %}">
             <div class="relative my-3">
                 {% csrf_token %}
@@ -14,11 +14,11 @@
                         <div class="flex justify-end gap-4">
                             <button type="submit"
                                     value='Change'
-                                    class="px-4 py-2 text-sm font-medium text-center text-white bg-slate-700 rounded-lg hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-slate-300 ">
+                                    class="px-4 py-2 text-sm font-medium text-center text-white bg-slate-700 rounded-md hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-slate-300 ">
                                 Recompile
                             </button>
                             <a href="{% url 'attendance:cancel_recompile' %}"
-                               class="px-4 py-2 text-sm text-center  bg-slate-200 rounded-lg hover:bg-slate-300 focus:ring-4 focus:outline-none focus:ring-slate-300 ">Cancel</a>
+                               class="px-4 py-2 text-sm text-center  bg-slate-200 rounded-md hover:bg-slate-300 focus:ring-4 focus:outline-none focus:ring-slate-300 ">Cancel</a>
                         </div>
                     </div>
                     {{ recompile_form.media }}
@@ -33,16 +33,16 @@
                 {% elif attendances %}
                     <button type="submit"
                             value='Change'
-                            class="px-4 py-2 text-sm font-medium text-center text-white bg-slate-700 rounded-lg hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-slate-300 ">
+                            class="px-4 py-2 text-sm font-medium text-center text-white bg-slate-700 rounded-md hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-slate-300 ">
                         Recompile
                     </button>
                     <a href="{% url 'attendance:save_recompile' %}"
-                       class="px-4 py-2 text-sm text-center  bg-slate-800 rounded-lg hover:bg-slate-700 focus:ring-4 focus:outline-none focus:ring-slate-300 ">Save</a>
+                       class="px-4 py-2 text-sm text-center  bg-slate-800 rounded-md hover:bg-slate-700 focus:ring-4 focus:outline-none focus:ring-slate-300 ">Save</a>
                     <a href="{% url 'attendance:cancel_recompile' %}"
-                       class="px-4 py-2 text-sm text-center  bg-slate-200 rounded-lg hover:bg-slate-300 focus:ring-4 focus:outline-none focus:ring-slate-300 ">Cancel</a>
+                       class="px-4 py-2 text-sm text-center  bg-slate-200 rounded-md hover:bg-slate-300 focus:ring-4 focus:outline-none focus:ring-slate-300 ">Cancel</a>
                 {% else %}
                     <a href="{% url 'attendance:select_for_recompile' %}"
-                       class="px-4 py-2 text-sm text-center text-white bg-slate-800 rounded-lg hover:bg-slate-600 focus:ring-4 focus:outline-none focus:ring-slate-300 ">Select Employees</a>
+                       class="px-4 py-2 text-sm text-center text-white bg-slate-800 rounded-md hover:bg-slate-600 focus:ring-4 focus:outline-none focus:ring-slate-300 ">Select Employees</a>
                 {% endif %}
             </div>
             {% if attendances %}

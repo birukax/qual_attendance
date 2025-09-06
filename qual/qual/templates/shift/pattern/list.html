@@ -1,6 +1,6 @@
 {% extends "_base.html" %}
 {% block content %}
-    <div class="py-4 px-6 shadow-md rounded-lg w-full bg-white overflow-x-auto">
+    <div class="py-4 px-6 shadow-md rounded-md w-full bg-white overflow-x-auto">
         <div class="gap-4 flex mb-2 items-center">
             {% if user_role == "ADMIN" or user_role == 'HR' %}
                 {% include "shift/pattern/create.html" %}

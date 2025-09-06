@@ -18,3 +18,13 @@ DATABASES = {
 }
 
 SECURE_SSL_REDIRECT = False
+
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.filebased.FileBasedCache",
+        "LOCATION": config("CACHE_LOCATION"),  # Path to the cache directory
+    }
+}
+
+SELECT2_CACHE_BACKEND = "default"

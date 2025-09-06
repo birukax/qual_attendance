@@ -1,8 +1,8 @@
 {% extends "_base.html" %}
 {% block content %}
-  <div class="py-4 px-6 bg-white rounded-lg shadow-md w-full overflow-x-auto">
+  <div class="py-4 px-6 bg-white rounded-md shadow-md w-full overflow-x-auto">
     <div class="flex items-center mb-2  gap-6">
-      <!-- <a href="{% url 'leave:calculate_leave_balance' %}" class="inline-flex items-center px-4 py-2 text-sm text-center text-white rounded-lg bg-slate-700 hover:bg-slate-600 focus:ring-4 focus:outline-none focus:ring-slate-300 ">
+      <!-- <a href="{% url 'leave:calculate_leave_balance' %}" class="inline-flex items-center px-4 py-2 text-sm text-center text-white rounded-md bg-slate-700 hover:bg-slate-600 focus:ring-4 focus:outline-none focus:ring-slate-300 ">
         Calculate
       </a> -->
       {% include 'leave/annual_leave/calculate.html' %}

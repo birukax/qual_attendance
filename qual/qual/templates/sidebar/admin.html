@@ -1,6 +1,6 @@
 <li>
     <a href=" {% url 'employee:employees' %}"
-       class="flex items-center p-2 rounded-lg hover:text-slate-100 hover:bg-slate-900 group">
+       class="flex items-center p-2 rounded-md hover:text-slate-100 hover:bg-slate-900 group">
         <svg class="flex-shrink-0 w-5 h-5 transition duration-75 group-hover:text-slate-100"
              aria-hidden="true"
              xmlns="http://www.w3.org/2000/svg"
@@ -13,7 +13,7 @@
 </li>
 <li>
     <a href="{% url 'attendance:raw_attendance' %}"
-       class="flex items-center p-2 rounded-lg hover:text-slate-100 hover:bg-slate-900 group">
+       class="flex items-center p-2 rounded-md hover:text-slate-100 hover:bg-slate-900 group">
         <svg class="flex-shrink-0 w-5 h-5 transition duration-75 group-hover:text-slate-100"
              aria-hidden="true"
              xmlns="http://www.w3.org/2000/svg"
@@ -24,11 +24,10 @@
         <span class="flex-1 ms-3 whitespace-nowrap">Attendance</span>
     </a>
 </li>
-
 {% if 'account.can_approve' in request.user.get_all_permissions %}
     <li>
         <a href="{% url 'approval:approval' %}"
-           class="flex items-center p-2 rounded-lg hover:text-slate-100 hover:bg-slate-900 group">
+           class="flex items-center p-2 rounded-md hover:text-slate-100 hover:bg-slate-900 group">
             <svg class="w-5 h-5 transition duration-75 group-hover:text-slate-100"
                  aria-hidden="true"
                  xmlns="http://www.w3.org/2000/svg"
@@ -45,7 +44,7 @@
 {% endif %}
 <li>
     <a href="{% url 'leave:leaves' %}"
-       class="flex items-center p-2 rounded-lg hover:bg-slate-900 hover:text-slate-100 group">
+       class="flex items-center p-2 rounded-md hover:bg-slate-900 hover:text-slate-100 group">
         <svg class="w-5 h-5 transition duration-75 group-hover:text-slate-100"
              aria-hidden="true"
              xmlns="http://www.w3.org/2000/svg"
@@ -58,7 +57,7 @@
 </li>
 <li>
     <a href="{% url 'overtime:overtimes' %}"
-       class="flex items-center p-2 rounded-lg hover:bg-slate-900 hover:text-slate-100 group">
+       class="flex items-center p-2 rounded-md hover:bg-slate-900 hover:text-slate-100 group">
         <svg class="w-5 h-5 transition duration-75 group-hover:text-slate-100"
              aria-hidden="true"
              xmlns="http://www.w3.org/2000/svg"
@@ -71,7 +70,7 @@
 </li>
 <li>
     <a href="{% url 'shift:shifts' %}"
-       class="flex items-center p-2 rounded-lg hover:text-slate-100 hover:bg-slate-900 group">
+       class="flex items-center p-2 rounded-md hover:text-slate-100 hover:bg-slate-900 group">
         <svg class="flex-shrink-0 w-5 h-5 transition duration-75 group-hover:text-slate-100"
              aria-hidden="true"
              xmlns="http://www.w3.org/2000/svg"
@@ -84,7 +83,7 @@
 </li>
 <li>
     <a href="{% url 'holiday:holidays' %}"
-       class="flex items-center p-2 rounded-lg hover:text-slate-100 hover:bg-slate-900 group">
+       class="flex items-center p-2 rounded-md hover:text-slate-100 hover:bg-slate-900 group">
         <svg class="flex-shrink-0 w-5 h-5 transition duration-75 group-hover:text-slate-100"
              aria-hidden="true"
              xmlns="http://www.w3.org/2000/svg"
@@ -97,7 +96,7 @@
 </li>
 <li>
     <a href="{% url 'device:devices' %}"
-       class="flex items-center p-2 rounded-lg hover:bg-slate-900 hover:text-slate-100 group">
+       class="flex items-center p-2 rounded-md hover:bg-slate-900 hover:text-slate-100 group">
         <svg class="flex-shrink-0 w-5 h-5 transition duration-75 group-hover:text-slate-100"
              aria-hidden="true"
              xmlns="http://www.w3.org/2000/svg"
@@ -110,7 +109,7 @@
 </li>
 <li>
     <a href=" {% url 'account:users' %}"
-       class="flex items-center p-2 rounded-lg hover:text-slate-100 hover:bg-slate-900 group">
+       class="flex items-center p-2 rounded-md hover:text-slate-100 hover:bg-slate-900 group">
         <svg class="flex-shrink-0 w-5 h-5 transition duration-75 group-hover:text-slate-100"
              aria-hidden="true"
              xmlns="http://www.w3.org/2000/svg"

@@ -3,57 +3,57 @@
 {% block content %}
   <div class="bg-white h-full mx-auto  ">
     <!-- <img src="{% static 'images/Logo1.png' %}" class="object-contain h-3/4 w-3/4 mx-auto " height="" width="" alt="logo"> -->
-    <dl class="grid max-w-screen-xl grid-cols-2 gap-4 p-2 mx-auto text-slate-900 sm:grid-cols-3 xl:grid-cols-6  sm:p-4">
+    <dl class="grid w-full grid-cols-2 gap-4 p-2 mx-auto text-slate-900 sm:grid-cols-3 xl:grid-cols-6  sm:p-4">
       {% if 'account.can_approve' in request.user.get_all_permissions %}
-        <div class="flex flex-col items-center py-4 justify-center rounded-lg bg-slate-100">
+        <div class="flex flex-col items-center py-4 justify-center rounded-md bg-slate-200">
           <dt class="mb-2 text-4xl font-bold text-slate-800">{{ approvals }}</dt>
-          <dd class="text-slate-500 ">
+          <dd class="text-slate-700 ">
             Approvals
           </dd>
         </div>
       {% endif %}
-      <div class="flex flex-col items-center py-4 justify-center rounded-lg bg-slate-100">
+      <div class="flex flex-col items-center py-4 justify-center rounded-md bg-slate-200">
         <dt class="mb-2 text-4xl font-bold text-slate-800">{{ shifts.count }}</dt>
-        <dd class="text-slate-500 ">
+        <dd class="text-slate-700 ">
           Shifts
         </dd>
       </div>
-      <div class="flex flex-col items-center py-4 justify-center rounded-lg bg-slate-100">
+      <div class="flex flex-col items-center py-4 justify-center rounded-md bg-slate-200">
         <dt class="mb-2 text-4xl font-bold text-slate-800">{{ devices.count }}</dt>
-        <dd class="text-slate-500 ">
+        <dd class="text-slate-700 ">
           Devices
         </dd>
       </div>
-      <div class="flex flex-col items-center py-4 justify-center rounded-lg bg-slate-100">
+      <div class="flex flex-col items-center py-4 justify-center rounded-md bg-slate-200">
         <dt class="mb-2 text-4xl font-bold text-slate-800">{{ attendances.count }}</dt>
-        <dd class="text-slate-500 ">
+        <dd class="text-slate-700 ">
           Attendances
         </dd>
       </div>
-      <div class="flex flex-col items-center py-4 justify-center rounded-lg bg-slate-100">
+      <div class="flex flex-col items-center py-4 justify-center rounded-md bg-slate-200">
         <dt class="mb-2 text-4xl font-bold text-slate-800">{{ leaves.count }}</dt>
-        <dd class="text-slate-500 ">
+        <dd class="text-slate-700 ">
           Leaves
         </dd>
       </div>
-      <div class="flex flex-col items-center py-4 justify-center rounded-lg bg-slate-100">
+      <div class="flex flex-col items-center py-4 justify-center rounded-md bg-slate-200">
         <dt class="mb-2 text-4xl font-bold text-slate-800">{{ overtimes.count }}</dt>
-        <dd class="text-slate-500 ">
+        <dd class="text-slate-700 ">
           Overtimes
         </dd>
       </div>
-      <div class="flex flex-col items-center py-4 justify-center rounded-lg bg-slate-100">
+      <div class="flex flex-col items-center py-4 justify-center rounded-md bg-slate-200">
         <dt class="mb-2 text-4xl font-bold text-slate-800">{{ holidays.count }}</dt>
-        <dd class="text-slate-500 ">
+        <dd class="text-slate-700 ">
           Holidays
         </dd>
       </div>
     </dl>
-    <div class="xl:flex gap-4 xl:justify-between  rounded-lg">
-      <div class="relative overflow-x-auto shadow sm:rounded-lg w-full  p-2 bg-white border border-slate-200 rounded-lg  sm:p-4">
-        <h5 class="text-base  leading-relaxed text-slate-900 mb-2">Top absents in the last 30 days.</h5>
+    <div class="xl:flex gap-4 xl:justify-between  rounded-md">
+      <div class="relative overflow-x-auto shadow h-fit sm:rounded-md w-full  p-2 bg-white border- border-slate-300 rounded-md  sm:p-4">
+        <h5 class="text-base  tracking-wide text-slate-800 mb-2">Top absents in the last 30 days.</h5>
         <table class="w-full text-sm text-left text-slate-900 overflow-x-auto table-auto">
-          <thead class="text-xs text-slate-800 uppercase bg-slate-100 rounded-lg border-t">
+          <thead class="text-xs text-slate-700 uppercase bg-slate-100 rounded-md border-t border-slate-200">
             <tr>
               <th scope="col" class="p-3">Name</th>
               <th scope="col" class="p-3">Department</th>
@@ -63,7 +63,7 @@
           </thead>
           <tbody>
             {% for most_absent in most_absents %}
-              <tr class="bg-white border-b  hover:bg-slate-50 text-sm ">
+              <tr class="bg-white border-t border-slate-300  hover:bg-slate-50 text-sm ">
                 <th class="p-3 font-medium text-slate-900 whitespace-nowrap ">{{ most_absent.name }}</th>
                 <td class="p-3">{{ most_absent.department }}</td>
                 <td class="p-3">{{ most_absent.shift }}</td>
@@ -73,14 +73,14 @@
           </tbody>
         </table>
       </div>
-      <div class="max-w-full w-full xl:max-w-md p-4 bg-white border border-slate-200 rounded-lg shadow sm:p-8 ">
-        <div class="flex items-center justify-between p-4 bg-slate-100 rounded-lg mt-2">
-          <h5 class="text-xl leading-none text-slate-900 ">Latest Employees</h5>
+      <div class="max-w-full w-full xl:max-w-md p-4 bg-white border border-slate-200 rounded-md shadow sm:p-8 ">
+        <div class="flex items-center justify-between p-4 bg-slate-100 rounded-md mt-2">
+          <h5 class="text-xl leading-none text-slate-800 ">Latest Employees</h5>
           <a href="{% url 'employee:employees' %}"
-             class="text-sm font-medium whitespace-nowrap text-slate-900 underline hover:bg-slate-100 ">View all</a>
+             class="text-sm font-medium  whitespace-nowrap text-slate-900 underline hover:bg-slate-100 ">All Employees</a>
         </div>
         <div class="flow-root ">
-          <ul role="list" class="divide-y divide-slate-400">
+          <ul role="list" class="divide-y divide-slate-300">
             {% for e in new_employees %}
               <li class=" hover:bg-slate-50 p-3">
                 <a href="{{ e.get_absolute_url }}">
@@ -89,7 +89,7 @@
                       <p class="text-sm font-semibold text-slate-900 truncate ">{{ e.name }}</p>
                       <p class="text-sm text-slate-800 truncate ">{{ e.department.name }}</p>
                     </div>
-                    <div class="inline-flex items-center text-base font-semibold text-slate-900 ">{{ e.employee_id }}</div>
+                    <div class="inline-flex items-center text-base font-semibold text-slate-700 ">{{ e.employee_id }}</div>
                   </div>
                 </a>
               </li>

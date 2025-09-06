@@ -9,18 +9,28 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Qualabels Attendance</title>
-        {% compress css %}
-            <link rel="stylesheet" href="{% static 'src/output.css' %}" />
-            <link rel="stylesheet"
-                  href="{% static 'django_select2/django_select2.css' %}" />
-        {% endcompress %}
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
-        {% compress js %}
-            <script src="{% static 'django_select2/django_select2.js' %}"></script>
+        {% compress css %}
+            <link rel="stylesheet" href="{% static 'src/output.css' %}" />
         {% endcompress %}
+        <!-- {% compress js %}
+{% endcompress %} -->
+        {{ filter.form.media.css }}
+        {{ form.media.css }}
+        {% block extra_css %}{% endblock %}
+        <style>
+            .select2-container .select2-selection--single {
+                height: 2.5rem !important; }
+            .select2-container--default .select2-selection--single .select2-selection__rendered {
+                line-height: 2.5rem !important;}
+            .select2-container--default .select2-selection--single .select2-selection__arrow {
+                height: 2.5rem !important; }
+        </style>
     </head>
     <body class="w-full bg-isabelline-500">
+        {{ filter.form.media }}
+        {{ form.media }}
         {% with request.user.profile.role as user_role %}
             <div>
                 {% include "session_security/all.html" %}
@@ -43,6 +53,8 @@
                 {% endif %}
             </div>
         {% endwith %}
-        {{ form.media }}
+        {{ filter.form.media.js }}
+        {{ form.media.js }}
+        {% block extra_js %}{% endblock %}
     </body>
 </html>

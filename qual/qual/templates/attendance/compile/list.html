@@ -1,9 +1,9 @@
 {% extends "_base.html" %}
 {% block content %}
-  <div class="relative p-4 overflow-x-auto bg-white rounded-lg shadow-md w-full">
+  <div class="relative p-4 overflow-x-auto bg-white rounded-md shadow-md w-full">
     <div class="flex items-center justify-between mx-2 mb-2 gap-4">
-      <div class="px-2 lg:flex gap-6 mb-4 space-y-2  lg:space-y-0 items-center justify-between  w-full">
-        <div class="font-serif">
+      <div class="flex flex-wrap px-2 gap-4 mb-4  items-center justify-between  w-full">
+        <div class="font-sans leading-relaxed text-slate-700">
           <div>
             <p class="flex items-center whitespace-nowrap">
               <svg class="w-3 h-3 me-2 text-green-500  flex-shrink-0"
@@ -26,21 +26,21 @@
                 <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
               </svg>
               Current date is
-              <span class="font-bold ml-1">{{ current_date }}</span>
+              <span class="font-semibold ml-1">{{ current_date }}</span>
             </p>
           </div>
         </div>
-        <div class="grid grid-cols-5 w-full gap-6  md:mb-1">
+        <div class="flex flex-wrap w-fit gap-6 md:mb-1">
           <div>
             <a href="{% url 'attendance:compile_attendance' %}"
-               class="inline-flex items-center px-4 py-2 text-sm text-center text-white rounded-lg bg-slate-700 hover:bg-slate-600 focus:ring-4 focus:outline-none focus:ring-slate-300 ">
+               class="inline-flex items-center px-4 py-2 text-sm text-center text-white rounded-md bg-slate-700 hover:bg-slate-600 focus:ring-4 focus:outline-none focus:ring-slate-300 ">
               Compile
             </a>
           </div>
           {% if page %}
             <div>
               <a href="{% url 'approval:approve_attendance' %}"
-                 class="inline-flex  items-center px-4 py-2 text-sm text-center text-white rounded-lg bg-slate-700 hover:bg-slate-600 focus:ring-4 focus:outline-none focus:ring-slate-300 ">
+                 class="inline-flex  items-center px-5 py-2 text-sm text-center text-white rounded-md bg-slate-700 hover:bg-slate-600 focus:ring-4 focus:outline-none focus:ring-slate-300 ">
                 Save
                 <svg class="w-4 h-4 ml-1 text-white"
                      aria-hidden="true"
@@ -55,9 +55,9 @@
             </div>
             <div>
               <a href="{% url 'attendance:delete_compiled_attendance' %}"
-                 class="inline-flex items-center px-4 py-2 text-sm text-center text-white rounded-lg bg-slate-700 hover:bg-slate-600 focus:ring-4 focus:outline-none focus:ring-slate-300  justify-around">
+                 class="inline-flex items-center px-5 py-2 text-sm text-center text-slate-700 rounded-md bg-slate-200 border border-slate-400 hover:bg-slate-100 focus:ring-4 focus:outline-none focus:ring-slate-300 ">
                 Delete
-                <svg class="w-4 h-4 ml-1 text-white"
+                <svg class="w-4 h-4 ml-1 text-slate-800"
                      aria-hidden="true"
                      xmlns="http://www.w3.org/2000/svg"
                      width="20"
@@ -69,44 +69,44 @@
               </a>
             </div>
           {% endif %}
-          <div>{% include "attendance/compile/filter.html" %}</div>
+          <div>{% include "partials/filter.html" %}</div>
           <div>{% include "attendance/compile/download.html" %}</div>
         </div>
       </div>
     </div>
-    <table class="text-sm text-left text-slate-900 w-full table-auto">
-      <thead class="text-xs uppercase text-slate-900 bg-slate-100">
+    <table class="text-sm text-left text-slate-700 w-full table-auto">
+      <thead class="text-xs uppercase text-slate-700 bg-slate-100">
         <tr>
-          <th scope="col" class="p-2">Employee</th>
-          <th scope="col" class="p-2">Status</th>
-          <th scope="col" class="p-2">In date</th>
-          <th scope="col" class="p-2">In time</th>
-          <th scope="col" class="p-2">Out date</th>
-          <th scope="col" class="p-2">Out time</th>
-          <th scope="col" class="p-2">Total</th>
-          <th scope="col" class="p-2 whitespace-nowrap">Type</th>
+          <th scope="col" class="p-3">Employee</th>
+          <th scope="col" class="p-3 whitespace-nowrap">Type</th>
+          <th scope="col" class="p-3">Status</th>
+          <th scope="col" class="p-3">In date</th>
+          <th scope="col" class="p-3">In time</th>
+          <th scope="col" class="p-3">Out date</th>
+          <th scope="col" class="p-3">Out time</th>
+          <th scope="col" class="p-3">Total</th>
         </tr>
       </thead>
       <tbody>
         {% for a in page %}
-          <tr class="bg-white border-b hover:bg-slate-50">
+          <tr class="bg-white border-b border-slate-300 hover:bg-slate-50">
             <th scope="row"
-                class="p-1 font-semibold text-slate-900 whitespace-nowrap lowercase first-letter:uppercase">
+                class="p-2 font-semibold text-slate-700 whitespace-nowrap lowercase first-letter:uppercase">
               {{ a.employee.name }}
               <br />
               <span class="font-normal ">{{ a.current_pattern }}</span>
             </th>
-            <td class="p-1 text-xs font-semibold uppercase whitespace-nowrap">{{ a.status }}</td>
-            <td class="p-2 text-xs font-semibold uppercase whitespace-nowrap">{{ a.check_in_date }}</td>
-            <td class="p-2 text-xs font-semibold uppercase whitespace-nowrap">{{ a.check_in_time }}</td>
-            <td class="p-2 text-xs font-semibold uppercase whitespace-nowrap">{{ a.check_out_date }}</td>
-            <td class="p-2 text-xs font-semibold uppercase whitespace-nowrap">{{ a.check_out_time }}</td>
-            <td class="p-1">{{ a.worked_hours }}</td>
-            <td class="p-1">
+            <td class="p-2">
               {{ a.check_in_type }}
               <br />
               {{ a.check_out_type }}
             </td>
+            <td class="p-2 text-xs font-semibold uppercase whitespace-nowrap">{{ a.status }}</td>
+            <td class="p-2 text-xs font-semibold uppercase whitespace-nowrap">{{ a.check_in_date }}</td>
+            <td class="p-2 text-xs font-semibold uppercase whitespace-nowrap">{{ a.check_in_time }}</td>
+            <td class="p-2 text-xs font-semibold uppercase whitespace-nowrap">{{ a.check_out_date }}</td>
+            <td class="p-2 text-xs font-semibold uppercase whitespace-nowrap">{{ a.check_out_time }}</td>
+            <td class="p-2">{{ a.worked_hours }}</td>
           </tr>
         {% endfor %}
       </tbody>

@@ -1,7 +1,7 @@
 <!-- Modal toggle -->
 <button data-modal-target="leave-detail-{{ l.id }}"
         data-modal-toggle="leave-detail-{{ l.id }}"
-        class="block px-3 py-1 text-sm text-center text-white rounded-lg bg-slate-700 hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-slate-300 "
+        class="block px-3 py-1 text-sm text-center text-white rounded-md bg-slate-700 hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-slate-300 "
         type="button">Detail</button>
 <!-- Main modal -->
 <div id="leave-detail-{{ l.id }}"
@@ -10,12 +10,12 @@
      class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
   <div class="relative w-full max-w-2xl max-h-full p-4">
     <!-- Modal content -->
-    <div class="relative bg-white rounded-lg shadow ">
+    <div class="relative bg-white rounded-md shadow ">
       <!-- Modal header -->
       <div class="flex items-center justify-between p-3 border-b rounded-t ">
         <h3 class="text-xl font-semibold text-slate-900 ">Leave detail</h3>
         <button type="button"
-                class="inline-flex items-center justify-center w-8 h-8 text-sm bg-transparent rounded-lg text-slate-400 hover:bg-slate-200 hover:text-slate-900 ms-auto  "
+                class="inline-flex items-center justify-center w-8 h-8 text-sm bg-transparent rounded-md text-slate-400 hover:bg-slate-200 hover:text-slate-900 ms-auto  "
                 data-modal-hide="leave-detail-{{ l.id }}">
           <svg class="w-3 h-3"
                aria-hidden="true"
@@ -28,13 +28,13 @@
         </button>
       </div>
       <!-- Modal body -->
-      <div class="w-full p-4 bg-white rounded-lg shadow ">
+      <div class="w-full p-4 bg-white rounded-md shadow ">
         {% if request.user.profile.employee == l.employee %}
           <p class=" text-red-900 text-base">You can not approve your own leave.</p>
         {% else %}
           <div class="flex gap-4">
             <a href="{% url 'approval:approve_leave' l.id %}"
-               class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-slate-700 hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-slate-300   ">
+               class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-md bg-slate-700 hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-slate-300   ">
               Approve
               <svg class="w-4 h-4 ml-1 text-white"
                    aria-hidden="true"
@@ -47,7 +47,7 @@
               </svg>
             </a>
             <a href="{% url 'approval:reject_leave' l.id %}"
-               class="inline-flex items-center px-3 py-2 text-sm font-medium text-center rounded-lg bg-slate-200 hover:bg-slate-300 focus:ring-4 focus:outline-none focus:ring-slate-300 ">
+               class="inline-flex items-center px-3 py-2 text-sm font-medium text-center rounded-md bg-slate-200 hover:bg-slate-300 focus:ring-4 focus:outline-none focus:ring-slate-300 ">
               Reject
               <svg class="w-4 h-4 ml-1"
                    aria-hidden="true"

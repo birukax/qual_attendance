@@ -99,7 +99,7 @@ def attendance_list(request):
     page = paginated.get_page(page_number)
     context = {
         "attendance_download_filter": attendance_download_filter,
-        "attendance_filter": attendance_filter,
+        "filter": attendance_filter,
         "attendances": attendances,
         "page": page,
     }
@@ -145,7 +145,7 @@ def compile_view(request):
         "last_date": last_date,
         "current_date": current_date,
         # "no_shift": no_shift,
-        "compile_filter": compile_filter,
+        "filter": compile_filter,
         "attendance_download_filter": attendance_download_filter,
     }
     return render(request, "attendance/compile/list.html", context)
@@ -353,15 +353,27 @@ def raw_attendance_list(request):
     # attendances = RawAttendance.objects.all().order_by("-date", "-time")[:1000]
     request_device = request.user.profile.device
 
-    attendances = RawAttendance.objects.filter(device=request_device).order_by(
-        "-date", "-time"
+    base_queryset = RawAttendance.objects.filter(device=request_device)
+    attendance_filter = RawAttendanceFilter(
+        request.GET, queryset=base_queryset, prefix="main"
     )
-    attendance_filter = RawAttendanceFilter(request.GET, queryset=attendances)
     attendances = attendance_filter.qs
+    download_get_data = request.GET.copy()
+    for key in list(download_get_data.keys()):
+        if key.startswith("main-"):
+            new_key = "download-" + key[len("main-") :]
+            download_get_data[new_key] = download_get_data.pop(key)[0]
+    download_filter = RawAttendanceFilter(
+        download_get_data, queryset=attendances, prefix="download"
+    )
     paginated = Paginator(attendances, 30)
     page_number = request.GET.get("page")
     page = paginated.get_page(page_number)
-    context = {"raw_attendance_filter": attendance_filter, "page": page}
+    context = {
+        "filter": attendance_filter,
+        "download_filter": download_filter,
+        "page": page,
+    }
     return render(request, "attendance/raw_attendance/list.html", context)
 
 
@@ -388,6 +400,7 @@ def download_raw_data(request):
     form = RawAttendanceFilter(
         data=request.POST,
         queryset=raw_datas,
+        prefix="download",
     )
     raw_datas = form.qs
     response = HttpResponse(content_type="application/ms-excel")
@@ -406,10 +419,15 @@ def download_raw_data(request):
     ws.append(headers)
 
     for raw_data in raw_datas.order_by("-date", "-employee__name"):
+        if raw_data.employee.department:
+            department_name = raw_data.employee.department.name
+        else:
+            department_name = None
+
         ws.append(
             [
                 raw_data.employee.name,
-                raw_data.employee.department.name,
+                department_name,
                 raw_data.device.name,
                 raw_data.date,
                 raw_data.time,

@@ -1,12 +1,12 @@
 {% extends "_base.html" %}
 {% block content %}
-  <div class="p-4 w-full shadow-md bg-white rounded-lg  overflow-x-auto">
+  <div class="p-4 w-full shadow-md bg-white rounded-md  overflow-x-auto">
     <div class="flex items-center gap-6 mx-4 ">
       <div>{% include "attendance/filter.html" %}</div>
       <div>{% include "attendance/download.html" %}</div>
     </div>
     <div>
-      <table class="p-2 m-2  text-sm text-left rounded-lg text-slate-900  w-full table-auto">
+      <table class="p-2 m-2  text-sm text-left rounded-md text-slate-900  w-full table-auto">
         <thead class="text-xs uppercase border-b border-black text-slate-900 bg-slate-100">
           <tr class="items-stretch justify-stretch">
             <th scope="col" class="p-2">Employee</th>

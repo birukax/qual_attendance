@@ -2,7 +2,7 @@
 {% block content %}
     <div class="relative mx-auto w-fit">
         <!-- Modal content -->
-        <div class="relative p-4 bg-white rounded-lg shadow sm:p-8 w-fit">
+        <div class="relative p-4 bg-white rounded-md shadow sm:p-8 w-fit">
             <h1 class="mx-auto mb-2 text-2xl font-semibold text-center first-letter:uppercase">Edit Leave</h1>
             <div class="ml-4 font-semibold text-red-700">
                 {% if messages %}
@@ -25,11 +25,11 @@
                 <div class="flex items-center gap-4 p-4 border-t border-gray-200 rounded-b md:p-5 ">
                     <button type="submit"
                             value='Submit'
-                            class="px-4 py-2 text-sm text-center text-white rounded-lg bg-slate-700 hover:bg-slate-600 focus:ring-4 focus:outline-none focus:ring-slate-300 ">
+                            class="px-4 py-2 text-sm text-center text-white rounded-md bg-slate-700 hover:bg-slate-600 focus:ring-4 focus:outline-none focus:ring-slate-300 ">
                         Edit
                     </button>
                     <a href="{% url 'leave:leave_detail' leave.id %}"
-                       class="px-4 py-2 text-sm text-center rounded-lg text-slate-950 bg-slate-200 hover:bg-slate-300 focus:ring-4 focus:outline-none focus:ring-slate-300 ">Cancel</a>
+                       class="px-4 py-2 text-sm text-center rounded-md text-slate-950 bg-slate-200 hover:bg-slate-300 focus:ring-4 focus:outline-none focus:ring-slate-300 ">Cancel</a>
                 </div>
             </form>
         </div>

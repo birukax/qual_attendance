@@ -1,28 +1,27 @@
-from django.forms import DateInput
 import django_filters
+from employee.models import Employee
+from device.models import Device
+from shift.models import Pattern, Shift
 from .models import Attendance, RawAttendance
 from django_select2 import forms as s2forms
-
-
-class EmployeeWidget(s2forms.ModelSelect2Widget):
-    search_fields = ["name__icontains", "employee_id__icontains"]
+from qual.custom_widgets import EmployeeWidget, DeviceWidget, PatternWidget, ShiftWidget
 
 
 class AttendanceDownloadFilter(django_filters.FilterSet):
     class Meta:
         model = Attendance
         fields = {
-            "employee__name": ["icontains"],
-            "device": ["exact"],
-            "current_pattern__shift": ["exact"],
-            "status": ["exact"],
-            "check_in_type": ["exact"],
-            "check_out_type": ["exact"],
-            "check_in_date": ["exact"],
+            "employee",
+            "device",
+            "current_pattern__shift",
+            "status",
+            "check_in_type",
+            "check_out_type",
+            "check_in_date",
         }
 
     check_in_date = django_filters.DateFromToRangeFilter(
-        widget=django_filters.widgets.RangeWidget(attrs={"type": "date"})
+        widget=django_filters.widgets.DateRangeWidget(attrs={"type": "date"})
     )
 
     # status = django_filters.ChoiceFilter(choices=Attendance.CHOICES)
@@ -32,12 +31,12 @@ class CompiledAttendanceDownloadFilter(django_filters.FilterSet):
     class Meta:
         model = Attendance
         fields = {
-            "employee__name": ["icontains"],
-            "device": ["exact"],
-            "current_pattern__shift": ["exact"],
-            "status": ["exact"],
-            "check_in_type": ["exact"],
-            "check_out_type": ["exact"],
+            "employee",
+            "device",
+            "current_pattern__shift",
+            "status",
+            "check_in_type",
+            "check_out_type",
         }
 
     # status = django_filters.ChoiceFilter(choices=Attendance.CHOICES)
@@ -47,12 +46,12 @@ class AttendanceFilter(django_filters.FilterSet):
     class Meta:
         model = Attendance
         fields = {
-            "employee__name": ["icontains"],
-            "device": ["exact"],
-            "current_pattern": ["exact"],
-            "status": ["exact"],
-            "check_in_type": ["exact"],
-            "check_out_type": ["exact"],
+            "employee",
+            "device",
+            "current_pattern",
+            "status",
+            "check_in_type",
+            "check_out_type",
         }
 
     check_in_date = django_filters.DateFromToRangeFilter(
@@ -63,24 +62,90 @@ class AttendanceFilter(django_filters.FilterSet):
 class CompileFilter(django_filters.FilterSet):
     class Meta:
         model = Attendance
-        fields = {
-            "employee__name": ["icontains"],
-            "device": ["exact"],
-            "current_pattern": ["exact"],
-            "status": ["exact"],
-            "check_in_type": ["exact"],
-            "check_out_type": ["exact"],
-        }
+        fields = (
+            "employee",
+            "current_pattern",
+            "status",
+            "check_in_type",
+            "check_out_type",
+        )
+
+    employee = django_filters.ModelChoiceFilter(
+        queryset=Employee.objects.all(),
+        label="Employee",
+        lookup_expr="exact",
+        widget=EmployeeWidget(),
+    )
+    current_pattern = django_filters.ModelChoiceFilter(
+        queryset=Pattern.objects.all(),
+        label="Current Pattern",
+        lookup_expr="exact",
+        widget=PatternWidget(),
+    )
+    status = django_filters.CharFilter(
+        label="Status",
+        lookup_expr="exact",
+        widget=s2forms.Select2Widget(
+            attrs={"class": "w-full"},
+            choices=(
+                ("", "-------"),
+                ("Checked", "Checked"),
+                ("No Data", "No Data"),
+                ("Absent", "Absent"),
+                ("Day Off", "Day Off"),
+                ("On Leave", "On Leave"),
+                ("On Field", "On Field"),
+                ("Holiday", "Holiday"),
+            ),
+        ),
+    )
+    check_in_type = django_filters.CharFilter(
+        label="Checkin Type",
+        lookup_expr="exact",
+        widget=s2forms.Select2Widget(
+            attrs={"class": "w-full"},
+            choices=(
+                ("", "-------"),
+                ("Late", "Late"),
+                ("Early", "Early"),
+                ("On Time", "On Time"),
+                ("No Data", "No Data"),
+            ),
+        ),
+    )
+
+    check_out_type = django_filters.CharFilter(
+        label="Checkout Type",
+        lookup_expr="exact",
+        widget=s2forms.Select2Widget(
+            attrs={"class": "w-full"},
+            choices=(
+                ("", "-------"),
+                ("Late", "Late"),
+                ("Early", "Early"),
+                ("On Time", "On Time"),
+                ("No Data", "No Data"),
+            ),
+        ),
+    )
 
 
 class RawAttendanceFilter(django_filters.FilterSet):
     class Meta:
         model = RawAttendance
-        fields = {
-            "employee__name": ["icontains"],
-            "date": ["exact"],
-        }
+        fields = (
+            "employee",
+            "date",
+        )
 
+    employee = django_filters.ModelChoiceFilter(
+        queryset=Employee.objects.all(),
+        label="Name",
+        lookup_expr="exact",
+        widget=EmployeeWidget(),
+    )
     date = django_filters.DateFromToRangeFilter(
-        widget=django_filters.widgets.RangeWidget(attrs={"type": "date"})
+        widget=django_filters.widgets.DateRangeWidget(
+            attrs={"type": "date", "class": "w-full h-10 rounded-sm"}
+        )
     )
