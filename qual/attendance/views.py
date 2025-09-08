@@ -13,8 +13,8 @@ from holiday.models import Holiday
 from django.core.paginator import Paginator
 from .filters import (
     CompileFilter,
-    AttendanceDownloadFilter,
-    CompiledAttendanceDownloadFilter,
+    # AttendanceDownloadFilter,
+    # CompiledAttendanceDownloadFilter,
     AttendanceFilter,
     RawAttendanceFilter,
 )
@@ -89,16 +89,25 @@ def attendance_list(request):
             approved=True, deleted=False, employee__department__in=user.manages.all()
         ).order_by("employee")
 
-    attendance_download_filter = AttendanceDownloadFilter(
-        request.GET, queryset=attendances
+    attendance_filter = AttendanceFilter(
+        request.GET, queryset=attendances, prefix="main"
     )
-    attendance_filter = AttendanceFilter(request.GET, queryset=attendances)
     attendances = attendance_filter.qs
+
+    download_get_data = request.GET.copy()
+    for key in list(download_get_data.keys()):
+        if key.startswith("main-"):
+            new_key = "download-" + key[len("main-") :]
+            download_get_data[new_key] = download_get_data.pop(key)[0]
+
+    download_filter = AttendanceFilter(
+        download_get_data, queryset=attendances, prefix="download"
+    )
     paginated = Paginator(attendances, 30)
     page_number = request.GET.get("page")
     page = paginated.get_page(page_number)
     context = {
-        "attendance_download_filter": attendance_download_filter,
+        "download_filter": download_filter,
         "filter": attendance_filter,
         "attendances": attendances,
         "page": page,
@@ -131,11 +140,16 @@ def compile_view(request):
     attendances = Attendance.objects.filter(
         approved=False, device=request_device
     ).order_by("check_in_time")
-    compile_filter = CompileFilter(request.GET, queryset=attendances)
-    attendance_download_filter = CompiledAttendanceDownloadFilter(
-        request.GET, queryset=attendances
-    )
+    compile_filter = CompileFilter(request.GET, queryset=attendances, prefix="main")
     attendances = compile_filter.qs
+    download_get_data = request.GET.copy()
+    for key in list(download_get_data.keys()):
+        if key.startswith("main-"):
+            new_key = "download-" + key[len("main-") :]
+            download_get_data[new_key] = download_get_data.pop(key)[0]
+    download_filter = CompileFilter(
+        download_get_data, queryset=attendances, prefix="download"
+    )
 
     paginated = Paginator(attendances, 30)
     page_number = request.GET.get("page")
@@ -146,7 +160,7 @@ def compile_view(request):
         "current_date": current_date,
         # "no_shift": no_shift,
         "filter": compile_filter,
-        "attendance_download_filter": attendance_download_filter,
+        "download_filter": download_filter,
     }
     return render(request, "attendance/compile/list.html", context)
 
@@ -183,9 +197,10 @@ def download_compiled_attendance(request):
     attendances = Attendance.objects.filter(
         approved=False, deleted=False, recompiled=False, device=user.device
     ).order_by("-check_in_time")
-    form = CompiledAttendanceDownloadFilter(
+    form = CompileFilter(
         data=request.POST,
         queryset=attendances,
+        prefix="download",
     )
     attendances = form.qs
     response = HttpResponse(content_type="application/ms-excel")
@@ -277,10 +292,7 @@ def download_attendance(request):
         attendances = Attendance.objects.filter(
             approved=True, deleted=False, employee__department__in=user.manages.all()
         ).order_by("-check_in_date", "-check_in_time")
-    form = AttendanceDownloadFilter(
-        data=request.POST,
-        queryset=attendances,
-    )
+    form = AttendanceFilter(data=request.POST, queryset=attendances, prefix="download")
     attendances = form.qs
     response = HttpResponse(content_type="application/ms-excel")
     response["Content-Disposition"] = 'attachment; filename="attendance.xlsx"'

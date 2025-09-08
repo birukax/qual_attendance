@@ -1,6 +1,7 @@
 from django import forms
 from .models import Device, DeviceUser
 from django.utils.text import slugify
+from qual.custom_widgets import DeviceWidget
 
 
 class CreateDeviceForm(forms.Form):
@@ -23,4 +24,10 @@ class CreateDeviceForm(forms.Form):
 class AddDeviceUserForm(forms.ModelForm):
     class Meta:
         model = DeviceUser
-        fields = ["device"]
+        fields = ("device",)
+
+    device = forms.ModelChoiceField(
+        queryset=Device.objects.all(),
+        label="Device",
+        widget=DeviceWidget(),
+    )

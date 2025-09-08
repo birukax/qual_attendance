@@ -17,6 +17,7 @@ class EmployeeFilter(django_filters.FilterSet):
     class Meta:
         model = Employee
         fields = (
+            "employee_id",
             "id",
             "shift",
             "department",
@@ -25,11 +26,21 @@ class EmployeeFilter(django_filters.FilterSet):
             "employment_date",
         )
 
-    id = django_filters.ModelChoiceFilter(
-        queryset=Employee.objects.all(),
+    employee_id = django_filters.CharFilter(
+        label="Employee ID",
+        lookup_expr="exact",
+        widget=s2forms.Select2Widget(
+            attrs={"class": "w-full"},
+            choices=Employee.objects.all().values_list("employee_id", "employee_id"),
+        ),
+    )
+    id = django_filters.CharFilter(
         label="Name",
         lookup_expr="exact",
-        widget=EmployeeWidget(),
+        widget=s2forms.Select2Widget(
+            attrs={"class": "w-full"},
+            choices=Employee.objects.all().values_list("id", "name"),
+        ),
     )
     shift = django_filters.ModelChoiceFilter(
         queryset=Shift.objects.all(),

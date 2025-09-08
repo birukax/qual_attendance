@@ -7,11 +7,11 @@
                 {% csrf_token %}
                 <div class="flex gap-3">
                     <button type="submit"
-                            class="text-white bg-slate-700 hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-slate-300 font-medium rounded-md text-sm px-4 py-2 text-center ">
+                            class="text-white bg-slate-700 hover:bg-slate-800 focus:ring-2 focus:outline-none focus:ring-slate-300 font-medium rounded-md text-sm px-4 py-2 text-center ">
                         Done
                     </button>
                     <a href="{% url 'attendance:cancel_recompile' %}"
-                       class="px-4 py-2 text-sm text-center  bg-slate-200 rounded-md hover:bg-slate-300 focus:ring-4 focus:outline-none focus:ring-slate-300 ">Cancel</a>
+                       class="px-4 py-2 text-sm text-center  bg-slate-200 rounded-md hover:bg-slate-300 focus:ring-2 focus:outline-none focus:ring-slate-300 ">Cancel</a>
                 </div>
             </div>
             <table class="overflow-x-auto text-sm text-left text-slate-900 ">

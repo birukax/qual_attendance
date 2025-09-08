@@ -1,15 +1,23 @@
 {% extends "_base.html" %}
+{% block extra_css %}
+    {{ change_shift_form.media.css }}
+    {{ add_device_user_form.media.css }}
+{% endblock %}
+{% block extra_js %}
+    {{ change_shift_form.media.js }}
+    {{ add_device_user_form.media.js }}
+{% endblock %}
 {% block content %}
-    <div class=" max-w-screen-md md:p-8 sm:p-4 p-4 shadow-md rounded-md bg-white mx-auto">
+    <div class=" max-w-screen-md md:p-8 sm:p-4 p-4 shadow-md rounded-md border border-slate-300  bg-white mx-auto">
         <div class="w-full p-4 bg-white ">
-            <div class="flex items-stretch justify-between gap-8">
+            <div class="flex items-stretch justify-between gap-4">
                 <div class="flex gap-2">
                     <!-- <a href="{% url 'employee:employees' %}" class="">
                         <svg class="w-6 h-6 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 19-7-7 7-7" />
                         </svg>
                     </a> -->
-                    <svg class="w-12 h-12 mb-3 text-slate-800"
+                    <svg class="w-12 h-12 mb-3 text-slate-600"
                          aria-hidden="true"
                          xmlns="http://www.w3.org/2000/svg"
                          fill="currentColor"
@@ -17,66 +25,66 @@
                         <path d="M7 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9Zm2 1H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Z" />
                     </svg>
                 </div>
-                <p class="mb-2 text-xl font-bold uppercase text-slate-900">{{ employee.name }}</p>
+                <p class="mb-2 text-2xl font-semibold uppercase text-slate-700">{{ employee.name }}</p>
             </div>
-            <div class="flex-row text-slate-900 ">
-                <div class="flex justify-between mb-2">
-                    <span class="mr-2 ">Employee Id:</span>
+            <div class="flex-row text-slate-700 divide-y-2 divide-slate-300">
+                <div class="flex justify-between my-2">
+                    <span class="mr-2 leading-relaxed ">Employee ID:</span>
                     <p class="font-semibold">{{ employee.employee_id }}</p>
                 </div>
-                <div class="flex justify-between mb-2">
-                    <span class="mr-2 ">Department:</span>
+                <div class="flex justify-between my-2">
+                    <span class="mr-2 leading-relaxed ">Department:</span>
                     <p class="font-semibold">{{ employee.department.name }}</p>
                 </div>
-                <div class="flex justify-between mb-2">
-                    <span class="mr-2 ">Shift:</span>
+                <div class="flex justify-between my-2">
+                    <span class="mr-2 leading-relaxed ">Shift:</span>
                     <p class="font-semibold">{{ employee.shift }}</p>
                 </div>
-                <div class="flex justify-between mb-2">
-                    <span class="mr-2 ">Status:</span>
+                <div class="flex justify-between my-2">
+                    <span class="mr-2 leading-relaxed ">Status:</span>
                     <p class="font-semibold">{{ employee.status }}</p>
                 </div>
-                <div class="flex justify-between mb-2">
-                    <span class="mr-2 ">Employment date:</span>
+                <div class="flex justify-between my-2">
+                    <span class="mr-2 leading-relaxed ">Employment date:</span>
                     <p class="font-semibold">{{ employee.employment_date }}</p>
                 </div>
                 {% if employee.termination_date > employee.employment_date %}
-                    <div class="flex justify-between mb-2">
-                        <span class="mr-2 ">Tremination date:</span>
+                    <div class="flex justify-between my-2">
+                        <span class="mr-2 leading-relaxed ">Tremination date:</span>
                         <p class="font-semibold">{{ employee.termination_date }}</p>
                     </div>
                 {% endif %}
-                <div class="flex justify-between mb-2">
-                    <span class="mr-2 ">Last calculated:</span>
+                <div class="flex justify-between my-2">
+                    <span class="mr-2 leading-relaxed ">Last calculated:</span>
                     <div class="font-semibold text-right uppercase grid grid-cols-1  ">
                         <p>{{ employee.calculate_date }}</p>
                     </div>
                 </div>
-                <div class="flex justify-between mb-2">
+                <div class="flex justify-between my-2">
                     <span class="mr-2 ">Leave balance:</span>
                     <p class="font-semibold">{{ employee.annual_leave_balance|floatformat:2 }}</p>
                 </div>
-                <div class="flex justify-between mb-2">
+                <div class="flex justify-between my-2">
                     <span class="mr-2 ">Leave taken:</span>
                     <p class="font-semibold">{{ employee.annual_leave_taken|floatformat:2 }}</p>
                 </div>
                 {% if request.user.profile.role == "ADMIN" %}
-                    <div class="flex justify-between mb-2">
+                    <div class="flex justify-between my-2">
                         <span class="mr-2 ">Leave difference:</span>
                         <p class="font-semibold">{{ employee.annual_leave_difference|floatformat:2 }}</p>
                     </div>
                 {% endif %}
-                <div class="flex justify-between mb-2">
+                <div class="flex justify-between my-2">
                     <span class="mr-2 ">Leave remaining:</span>
                     <p class="font-semibold">{{ employee.annual_leave_remaining|floatformat:2 }}</p>
                 </div>
-                <div class="flex justify-between mb-2">
+                <div class="flex justify-between my-2">
                     <span class="mr-2 ">Default device:</span>
                     <div class="font-semibold text-right uppercase grid grid-cols-1  ">
                         <p>{{ employee.device.name }}</p>
                     </div>
                 </div>
-                <div class="flex justify-between mb-2">
+                <div class="flex justify-between my-2">
                     <span class="mr-2 ">Devices:</span>
                     <div class="font-semibold text-right uppercase grid grid-cols-1  ">
                         {% for emp_device in employee_devices %}<p>{{ emp_device.device }}</p>{% endfor %}
@@ -93,21 +101,21 @@
             </div>
         </div>
         <div class="block p-2 bg-white ">
-            <dl class="grid max-w-screen-xl grid-cols-2 gap-8 p-4 mx-auto text-slate-900 sm:grid-cols-3 ">
-                <div class="flex flex-col items-center justify-center">
-                    <dt class="mb-2 text-3xl font-extrabold">{{ employee.attendances.count }}</dt>
+            <dl class="grid max-w-screen-xl grid-cols-2 gap-8 p-4 mx-auto text-slate-700 sm:grid-cols-3 ">
+                <div class="flex flex-col p-2 border rounded-md items-center justify-center">
+                    <dt class="my-1 text-3xl font-extrabold">{{ employee.attendances.count }}</dt>
                     <dd class="text-slate-600 ">
                         Attendances
                     </dd>
                 </div>
-                <div class="flex flex-col items-center justify-center">
-                    <dt class="mb-2 text-3xl font-extrabold">{{ employee.leaves.count }}</dt>
+                <div class="flex flex-col p-2 border rounded-md items-center justify-center">
+                    <dt class="my-1 text-3xl font-extrabold">{{ employee.leaves.count }}</dt>
                     <dd class="text-slate-600 ">
                         Leaves
                     </dd>
                 </div>
-                <div class="flex flex-col items-center justify-center">
-                    <dt class="mb-2 text-3xl font-extrabold">{{ employee.overtimes.count }}</dt>
+                <div class="flex flex-col p-2 border rounded-md items-center justify-center">
+                    <dt class="my-1 text-3xl font-extrabold">{{ employee.overtimes.count }}</dt>
                     <dd class="text-slate-600 ">
                         Overtimes
                     </dd>

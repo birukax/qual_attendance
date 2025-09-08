@@ -11,7 +11,7 @@ from attendance.tasks import save_data
 # import datetime
 # from overtime.tasks import create_ots
 from django.contrib.auth.decorators import user_passes_test
-from .filters import LeaveFilter, OvertimeFilter
+from .filters import LeaveFilter, OvertimeFilter, HolidayFilter
 from leave.tasks import calculate_total_leave_days
 
 
@@ -96,7 +96,7 @@ def leave_approval(request):
     page = paginated.get_page(page_number)
     context = {
         "page": page,
-        "leave_filter": leave_filter,
+        "filter": leave_filter,
     }
     return render(request, "approval/leave/list.html", context)
 
@@ -156,7 +156,7 @@ def overtime_approval(request):
     page = paginated.get_page(page_number)
     context = {
         "page": page,
-        "overtime_filter": overtime_filter,
+        "filter": overtime_filter,
     }
     return render(request, "approval/overtime/list.html", context)
 
@@ -188,10 +188,15 @@ def reject_overtime(request, id):
 @user_passes_test(lambda u: u.has_perm("account.can_approve"))
 def holiday_approval(request):
     holidays = Holiday.objects.filter(approved=False, rejected=False).order_by("date")
+    holiday_filter = HolidayFilter(request.GET, queryset=holidays)
+    holidays = holiday_filter.qs
     paginated = Paginator(holidays, 30)
     page_number = request.GET.get("page")
     page = paginated.get_page(page_number)
-    context = {"page": page}
+    context = {
+        "page": page,
+        "filter": holiday_filter,
+    }
     return render(request, "approval/holiday/list.html", context)
 
 

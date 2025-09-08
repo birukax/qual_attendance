@@ -4,12 +4,12 @@
     <div class="flex items-center gap-6 mb-2">
       {% if request.user.profile.role == "ADMIN" or request.user.profile.role == "HR" %}
         <a href="{% url 'employee:sync_employee' %}"
-           class="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white rounded-md bg-slate-700 hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-slate-300">
+           class="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white rounded-md bg-slate-700 hover:bg-slate-800 focus:ring-2 focus:outline-none focus:ring-slate-300">
           Sync nav employees
         </a>
       {% else %}
         <a href="{% url 'shift:select_employees' %}"
-           class="px-4 py-2 text-sm font-medium text-center text-white rounded-md bg-slate-700 hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-slate-300 ">Assign shift</a>
+           class="px-4 py-2 text-sm font-medium text-center text-white rounded-md bg-slate-700 hover:bg-slate-800 focus:ring-2 focus:outline-none focus:ring-slate-300 ">Assign shift</a>
       {% endif %}
       {% include "partials/filter.html" %}
     </div>

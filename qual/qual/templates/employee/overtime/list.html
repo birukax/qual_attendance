@@ -1,25 +1,25 @@
 {% extends "_base.html" %}
 {% block content %}
     <div class="p-4 shadow-md rounded-md w-full bg-white">
-        <div class="gap-4 flex">
-            <p class="text-xl font-semibold text-slate-800 ml-3 my-2">{{ employee.employee_id }}</p>
-            <p class="text-xl font-semibold text-slate-800 ml-3 my-2">{{ employee.name }}</p>
+        <div class="gap-4 flex my-2">
+            <p class="text-xl font-semibold text-slate-700 ml-3">{{ employee.employee_id }}</p>
+            <p class="text-2xl font-bold text-slate-700 ml-1">{{ employee.name }}</p>
         </div>
         <table class="overflow-x-auto text-sm table-fixed w-full text-left">
-            <thead class="text-xs uppercase border-b border-black bg-gray-50">
+            <thead class="text-xs uppercase text-slate-800 bg-gray-200">
                 <tr>
-                    <th scope="col" class="p-2">Status</th>
-                    <th scope="col" class="p-2">Start date</th>
-                    <th scope="col" class="p-2">End date</th>
-                    <th scope="col" class="p-2">Start time</th>
-                    <th scope="col" class="p-2">End time</th>
-                    <th scope="col" class="p-2">Paid</th>
-                    <th scope="col" class="p-2">Approved by</th>
+                    <th scope="col" class="p-3">Status</th>
+                    <th scope="col" class="p-3">Start date</th>
+                    <th scope="col" class="p-3">End date</th>
+                    <th scope="col" class="p-3">Start time</th>
+                    <th scope="col" class="p-3">End time</th>
+                    <th scope="col" class="p-3">Paid</th>
+                    <th scope="col" class="p-3">Approved by</th>
                 </tr>
             </thead>
             <tbody>
                 {% for overtime in page %}
-                    <tr class="bg-white border-b hover:bg-gray-50 ">
+                    <tr class="bg-white border-y border-slate-300 hover:bg-slate-50">
                         <td class="p-2">
                             {% if overtime.approved == True %}
                                 Approved

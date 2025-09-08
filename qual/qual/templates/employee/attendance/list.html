@@ -1,24 +1,24 @@
 {% extends "_base.html" %}
 {% block content %}
     <div class="p-4 shadow-md rounded-md w-full bg-white">
-        <div class="gap-4 flex">
-            <p class="text-xl font-semibold text-slate-800 ml-3 my-2">{{ employee.employee_id }}</p>
-            <p class="text-xl font-semibold text-slate-800 ml-3 my-2">{{ employee.name }}</p>
+        <div class="gap-4 flex my-2">
+            <p class="text-xl font-semibold text-slate-700 ml-3">{{ employee.employee_id }}</p>
+            <p class="text-2xl font-bold text-slate-700 ml-1">{{ employee.name }}</p>
         </div>
-        <table class="overflow-x-auto text-sm text-left table-auto w-full">
-            <thead class="text-xs uppercase border-b border-slate-800 bg-gray-50">
+        <table class="overflow-x-auto text-sm text-left text-slate-700 table-auto w-full">
+            <thead class="text-xs uppercase  text-slate-800 bg-slate-200">
                 <tr>
-                    <th class="p-2">Status</th>
-                    <th class="p-2">Current pattern</th>
-                    <th class="p-2">Check in date</th>
-                    <th class="p-2">check in time</th>
-                    <th class="p-2">Check out date</th>
-                    <th class="p-2">check out time</th>
+                    <th class="p-3">Status</th>
+                    <th class="p-3">Current pattern</th>
+                    <th class="p-3">Check-in date</th>
+                    <th class="p-3">check-in time</th>
+                    <th class="p-3">Check-out date</th>
+                    <th class="p-3">check-out time</th>
                 </tr>
             </thead>
             <tbody>
                 {% for attendance in page %}
-                    <tr class="bg-white border-b hover:bg-gray-50 ">
+                    <tr class="bg-white border-y border-slate-300 hover:bg-slate-50 ">
                         <td class="p-2">{{ attendance.status }}</td>
                         <td class="p-2">{{ attendance.current_pattern }}</td>
                         <td class="p-2">{{ attendance.check_in_date }}</td>

@@ -2,6 +2,7 @@ from django import forms
 from .models import Employee
 from shift.models import Shift
 from device.models import Device
+from qual.custom_widgets import ShiftWidget, DeviceWidget
 
 
 class ChangeEmployeeShiftForm(forms.ModelForm):
@@ -9,6 +10,15 @@ class ChangeEmployeeShiftForm(forms.ModelForm):
         model = Employee
         fields = ("device", "shift")
 
+    device = forms.ModelChoiceField(
+        queryset=Device.objects.all(),
+        widget=DeviceWidget(),
+    )
+
+    shift = forms.ModelChoiceField(
+        queryset=Shift.objects.all(),
+        widget=ShiftWidget(),
+    )
     # def __init__(self, *args, **kwargs):
     #     super(ChangeEmployeeShiftForm, self).__init__(*args, **kwargs)
     #     self.fields["shift"].queryset = Shift.objects.all()

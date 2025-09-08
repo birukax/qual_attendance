@@ -15,8 +15,6 @@ from .tasks import department_get, employee_get
 
 @login_required
 def employees(request):
-    if request.GET.get("employees"):
-        employees = request.GET.get("employees")
     if request.user.profile.role == "HR" or request.user.profile.role == "ADMIN":
         employees = Employee.objects.all().order_by("-employee_id")
     else:
@@ -54,9 +52,11 @@ def employee_detail(request, id):
     if not (request.user.profile.role == "HR" or request.user.profile.role == "ADMIN"):
         if employee.department not in request.user.profile.manages.all():
             return redirect("employee:employees")
-    change_shift_form = ChangeEmployeeShiftForm(instance=employee)
+    change_shift_form = ChangeEmployeeShiftForm(
+        instance=employee, prefix="change-shift"
+    )
     employee_devices = DeviceUser.objects.filter(employee=employee)
-    add_device_user_form = AddDeviceUserForm()
+    add_device_user_form = AddDeviceUserForm(prefix="add-to-device")
     attendances = Attendance.objects.filter(employee=employee, approved=True).order_by(
         "-check_in_date"
     )
