@@ -15,7 +15,7 @@ from django.contrib.auth.decorators import user_passes_test
 from employee.models import Employee
 from attendance.models import Attendance
 from employee.filters import EmployeeFilter
-from .filters import AnnualLeaveDownloadFilter, LeaveFilter
+from .filters import AnnualLeaveFilter, LeaveFilter
 from openpyxl import Workbook
 import datetime
 
@@ -24,27 +24,22 @@ import datetime
 def leaves(request):
     context = {}
     user = request.user.profile
-    # if user.role == "ADMIN" or user.role == "HR":
     leaves = Leave.objects.select_related("employee", "leave_type").all()
-    # else:
-    #     leaves = Leave.objects..select_related('employee', 'leave_type','approved_by','rejected_by').filter(
-    #         employee__department__in=user.manages.all()
-    #     ).order_by("-start_date")
-    # for l in leaves:
-    #     # if l.employee.shift:
-    #     # l.saturday_half = l.employee.shift.saturday_half
-    #     # l.save()
-    #     calculate_total_leave_days(l.id)
-    leave_filter = LeaveFilter(request.GET, queryset=leaves)
-    # download_filter = LeaveDownloadFilter(queryset=leaves)
+    leave_filter = LeaveFilter(request.GET, queryset=leaves, prefix="main")
     leaves = leave_filter.qs
 
+    download_get_data = request.GET.copy()
+    for key in list(download_get_data.keys()):
+        if key.startswith("main-"):
+            new_key = "download-" + key[len("main-") :]
+            download_get_data[new_key] = download_get_data.pop(key)[0]
+    download_filter = LeaveFilter(download_get_data, queryset=leaves, prefix="download")
     paginated = Paginator(leaves, 30)
     page_number = request.GET.get("page")
     page = paginated.get_page(page_number)
     context["page"] = page
-    context["leave_filter"] = leave_filter
-    # context["download_filter"] = download_filter
+    context["filter"] = leave_filter
+    context["download_filter"] = download_filter
     return render(request, "leave/list.html", context)
 
 
@@ -67,10 +62,7 @@ def download_leave(request):
         leaves = Leave.objects.filter(department__in=user.manages.all()).order_by(
             "start_date"
         )
-    form = LeaveFilter(
-        data=request.POST,
-        queryset=leaves,
-    )
+    form = LeaveFilter(data=request.POST, queryset=leaves, prefix="download")
     leaves = form.qs
     response = HttpResponse(content_type="application/ms-excel")
     response["Content-Disposition"] = 'attachment; filename="leave.xlsx"'
@@ -211,7 +203,7 @@ def edit_leave(request, id):
         if request.method == "POST":
             form = EditLeaveForm(data=request.POST, instance=leave)
             if form.is_valid():
-                employee = form.cleaned_data["employee"]
+                employee = form.instance.employee
                 leave.leave_type = form.cleaned_data["leave_type"]
                 leave.start_date = form.cleaned_data["start_date"]
                 leave.end_date = form.cleaned_data["end_date"]
@@ -241,16 +233,22 @@ def annual_leave_list(request):
     #     employees = Employee.objects.filter(device=request_device).order_by("name")
     # else:
     employees = Employee.objects.filter(status="Active").order_by("name")
-    download_filter = AnnualLeaveDownloadFilter(queryset=employees)
-    employee_filter = EmployeeFilter(request.GET, queryset=employees)
-    employees = employee_filter.qs
+    filter = AnnualLeaveFilter(request.GET, queryset=employees, prefix="main")
+    employees = filter.qs
+
+    download_get_data = request.GET.copy()
+    for key in list(download_get_data.keys()):
+        if key.startswith("main-"):
+            new_key = "download-" + key[len("main-") :]
+            download_get_data[new_key] = download_get_data.pop(key)[0]
+    download_filter = AnnualLeaveFilter(download_get_data, prefix="download")
     paginated = Paginator(employees, 30)
     page_number = request.GET.get("page")
     calculate_date_form = ALCalculateDateForm()
     page = paginated.get_page(page_number)
     context = {
         "page": page,
-        "employee_filter": employee_filter,
+        "filter": filter,
         "download_filter": download_filter,
         "form": calculate_date_form,
     }
@@ -280,10 +278,7 @@ def download_annual_leave(request):
         employees = Employee.objects.filter(department__in=user.manages.all()).order_by(
             "name"
         )
-    form = AnnualLeaveDownloadFilter(
-        data=request.POST,
-        queryset=employees,
-    )
+    form = AnnualLeaveFilter(data=request.POST, queryset=employees, prefix="download")
     employees = form.qs
     response = HttpResponse(content_type="application/ms-excel")
     response["Content-Disposition"] = 'attachment; filename="annual_leave.xlsx"'
@@ -334,7 +329,10 @@ def leave_type_list(request):
     return render(
         request,
         "leave/leave_type/list.html",
-        {"page": page, "create_leave_type_form": create_leave_type_form},
+        {
+            "page": page,
+            "form": create_leave_type_form,
+        },
     )
 
 

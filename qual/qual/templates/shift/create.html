@@ -8,12 +8,12 @@
      tabindex="-1"
      aria-hidden="true"
      class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-  <div class="relative w-fit  max-h-full p-4">
+  <div class="relative p-4 w-full max-w-lg max-h-full">
     <!-- Modal content -->
     <div class="relative bg-white rounded-md shadow ">
       <!-- Modal header -->
-      <div class="flex items-center justify-between p-4 border-b rounded-t ">
-        <h3 class="text-xl font-semibold text-slate-900 ">Enter shift detail</h3>
+      <div class="flex items-center justify-between p-2  border-b border-slate-300 rounded-t ">
+        <h3 class="text-lg font-semibold text-slate-700 ">Create Shift</h3>
         <button type="button"
                 class="inline-flex items-center justify-center w-8 h-8 text-sm text-slate-400 bg-transparent rounded-md hover:bg-slate-200 hover:text-slate-900 ms-auto  "
                 data-modal-hide="create-shift">
@@ -28,11 +28,13 @@
         </button>
       </div>
       <!-- Modal body -->
-      <form action="{% url 'shift:create_shift' %}" method="post">
+      <form class="py-3 px-5"
+            action="{% url 'shift:create_shift' %}"
+            method="post">
         {% csrf_token %}
-        <div class="gap-4 flex items-center p-4 mx-2">
-          {% for field in create_shift_form %}
-            <div class="flex gap-3 items-center ">
+        <div class="grid gap-4 mb-4 ">
+          {% for field in form %}
+            <div class="grid items-stretch grid-cols-1 gap-2">
               {{ field.label_tag }}
               {{ field }}
             </div>

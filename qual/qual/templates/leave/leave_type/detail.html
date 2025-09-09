@@ -2,49 +2,46 @@
 {% block content %}
   <div class=" max-w-2xl border rounded-t-lg shadow border-slate-200 py-4 px-8 bg-white mx-auto">
     <div class=" bg-white ">
-      <div class="flex items-center justify-end">
-        <h5 class="mb-2 text-xl font-semibold text-slate-700  leading-relaxed">Leave type detail</h5>
-      </div>
       <div class="flex items-center justify-between mb-2">
-        <svg class="w-16 h-16 text-slate-800 "
+        <svg class="w-16 h-16 text-slate-600 "
              aria-hidden="true"
              xmlns="http://www.w3.org/2000/svg"
              fill="currentColor"
              viewBox="0 0 24 24">
           <path fill-rule="evenodd" d="M5 5c.6 0 1-.4 1-1a1 1 0 1 1 2 0c0 .6.4 1 1 1h1c.6 0 1-.4 1-1a1 1 0 1 1 2 0c0 .6.4 1 1 1h1c.6 0 1-.4 1-1a1 1 0 1 1 2 0c0 .6.4 1 1 1a2 2 0 0 1 2 2v1c0 .6-.4 1-1 1H4a1 1 0 0 1-1-1V7c0-1.1.9-2 2-2ZM3 19v-7c0-.6.4-1 1-1h16c.6 0 1 .4 1 1v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Zm6-6c0-.6-.4-1-1-1a1 1 0 1 0 0 2c.6 0 1-.4 1-1Zm2 0a1 1 0 1 1 2 0c0 .6-.4 1-1 1a1 1 0 0 1-1-1Zm6 0c0-.6-.4-1-1-1a1 1 0 1 0 0 2c.6 0 1-.4 1-1ZM7 17a1 1 0 1 1 2 0c0 .6-.4 1-1 1a1 1 0 0 1-1-1Zm6 0c0-.6-.4-1-1-1a1 1 0 1 0 0 2c.6 0 1-.4 1-1Zm2 0a1 1 0 1 1 2 0c0 .6-.4 1-1 1a1 1 0 0 1-1-1Z" clip-rule="evenodd" />
         </svg>
-        <h5 class="mb-2 text-2xl font-semibold capitalize text-slate-800">{{ leave_type.name }}</h5>
+        <h5 class="mb-2 text-2xl font-semibold capitalize text-slate-700">{{ leave_type.name }}</h5>
       </div>
-      <div class="flex-col my-2 text-slate-900 mx-2">
-        <div class="flex justify-between mb-2">
+      <div class="flex-row text-slate-700 divide-y-2 divide-slate-300">
+        <div class="flex justify-between my-2">
           <span class="mr-2 text-sm uppercase">Maximum days:</span>
           <p class="font-semibold">{{ leave_type.maximum_days }}</p>
         </div>
-        <div class="flex justify-between mb-2">
+        <div class="flex justify-between my-2">
           <span class="mr-2 text-sm uppercase">Annual:</span>
           <p class="font-semibold">{{ leave_type.annual }}</p>
         </div>
-        <div class="flex justify-between mb-2">
+        <div class="flex justify-between my-2">
           <span class="mr-2 text-sm uppercase">Paid:</span>
           <p class="font-semibold">{{ leave_type.paid }}</p>
         </div>
-        <div class="flex justify-between mb-2">
+        <div class="flex justify-between my-2">
           <span class="mr-2 text-sm uppercase">Exclude rest days:</span>
           <p class="font-semibold">{{ leave_type.exclude_rest_days }}</p>
         </div>
-        <div class="flex justify-between mb-2">
+        <div class="flex justify-between my-2">
           <span class="mr-2 text-sm uppercase">Half day leave:</span>
           <p class="font-semibold">{{ leave_type.half_day_leave }}</p>
         </div>
-        <div class="flex justify-between mb-2">
+        <div class="flex justify-between my-2">
           <span class="mr-2 text-sm uppercase">Leaves:</span>
           <p class="font-semibold">{{ leave_type.leaves.count }}</p>
         </div>
-        <div class="flex justify-between mb-2">
+        <div class="flex justify-between my-2">
           <span class="mr-2 text-sm uppercase">Description:</span>
           <p class="font-semibold">{{ leave_type.description }}</p>
         </div>
-        {% include "leave/leave_type/edit.html" %}
+        <div>{% include "leave/leave_type/edit.html" %}</div>
       </div>
     </div>
     <!-- <div class="relative bg-white overflow-x-auto">

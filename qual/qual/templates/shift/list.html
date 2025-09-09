@@ -1,38 +1,51 @@
 {% extends "_base.html" %}
 {% block content %}
-  <div class="py-4 px-6  bg-white w-slate rounded-md overflow-x-auto">
-    <div class="flex gap-4 mb-1">
+  <div class="px-8 py-4  bg-white rounded-md w-full overflow-x-auto">
+    <div class="flex items-center gap-6 mb-2">
       {% if user_role == "ADMIN" or user_role == 'HR' %}
         <div>{% include "shift/create.html" %}</div>
       {% endif %}
-      <div>{% include "shift/filter.html" %}</div>
+      <div>{% include "partials/filter.html" %}</div>
     </div>
     <div>
-      <table class="text-sm text-left text-slate-900 w-full table-auto ">
-        <thead class="uppercase whitespace-nowrap bg-slate-100 text-xs">
+      <table class="text-sm text-left w-full table-auto ">
+        <thead class="uppercase whitespace-nowrap text-slate-800 bg-slate-200 text-xs">
           <tr>
-            <th scope="col" class="p-3">Shift name</th>
+            <th scope="col" class="p-3">Name</th>
             <th scope="col" class="p-3">Device</th>
-            <th scope="col" class="p-3">Current pattern</th>
-            <th scope="col" class="p-3">Continous</th>
-            <th scope="col" class="p-3">Saturday half</th>
+            <th scope="col" class="p-3">Employees</th>
             <th scope="col" class="p-3">Patterns</th>
+            <th scope="col" class="p-3">Current pattern</th>
+            <th scope="col" class="p-3">Continuous</th>
+            <th scope="col" class="p-3">Saturday half</th>
             <th scope="col" class="p-3 text-right">Actions</th>
           </tr>
         </thead>
         <tbody>
           {% for shift in page %}
-            <tr class="bg-white border-b hover:bg-slate-50 whitespace-nowrap">
-              <th scope="row"
-                  class="p-3 font-semibold text-slate-900 whitespace-nowrap">{{ shift.name }}</th>
-              <td class="p-3">{{ shift.device }}</td>
-              <td class="p-3">{{ shift.current_pattern }}</td>
-              <td class="p-3">{{ shift.continous }}</td>
-              <td class="p-3">{{ shift.saturday_half }}</td>
-              <td class="p-3">{{ shift.patterns.count }}</td>
-              <td class="p-3 text-right">
+            <tr class="bg-white border-y text-slate-700 border-slate-300 leading-relaxed hover:bg-slate-50 whitespace-nowrap">
+              <th scope="row" class="p-2 font-semibold  whitespace-nowrap">{{ shift.name }}</th>
+              <td class="p-2">{{ shift.device }}</td>
+              <td class="p-2">{{ shift.employees.count }}</td>
+              <td class="p-2">{{ shift.patterns.count }}</td>
+              <td class="p-2">{{ shift.current_pattern }}</td>
+              <td class="p-2">
+                {% if shift.continous %}
+                  Yes
+                {% else %}
+                  No
+                {% endif %}
+              </td>
+              <td class="p-2">
+                {% if shift.satirday_half %}
+                  Yes
+                {% else %}
+                  No
+                {% endif %}
+              </td>
+              <td class="p-2 text-right">
                 <a href="{{ shift.get_absolute_url }}"
-                   class="font-semibold text-slate-900  hover:underline">Detail</a>
+                   class="font-semibold   hover:underline">Detail</a>
               </td>
             </tr>
           {% endfor %}

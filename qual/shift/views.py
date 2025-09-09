@@ -20,18 +20,18 @@ from .filters import ShiftFilter
 @login_required
 @user_passes_test(lambda u: u.profile.role != "USER")
 def shifts(request):
-    create_shift_form = CreateShiftForm(data=request.GET)
+    create_shift_form = CreateShiftForm(data=request.GET, prefix="create")
     shifts = Shift.objects.all().order_by("-name")
-    shift_filter = ShiftFilter(request.GET, queryset=shifts)
+    shift_filter = ShiftFilter(request.GET, queryset=shifts, prefix="filter")
     shifts = shift_filter.qs
     paginated = Paginator(shifts, 30)
     page_number = request.GET.get("page")
 
     page = paginated.get_page(page_number)
     context = {
-        "create_shift_form": create_shift_form,
+        "form": create_shift_form,
         "page": page,
-        "shift_filter": shift_filter,
+        "filter": shift_filter,
     }
     return render(request, "shift/list.html", context)
 
@@ -49,7 +49,7 @@ def shift_detail(request, id):
     context = {
         "shift": shift,
         "page": page,
-        "edit_shift_form": edit_shift_form,
+        "form": edit_shift_form,
     }
     return render(request, "shift/detail.html", context)
 
@@ -58,7 +58,7 @@ def shift_detail(request, id):
 @user_passes_test(lambda u: u.profile.role == "ADMIN" or u.profile.role == "HR")
 def create_shift(request):
     if request.method == "POST":
-        form = CreateShiftForm(data=request.POST)
+        form = CreateShiftForm(data=request.POST, prefix="create")
         if form.is_valid():
             name = form.cleaned_data["name"]
             continous = form.cleaned_data["continous"]
@@ -140,7 +140,7 @@ def shift_patterns(request, id):
     context = {
         "page": page,
         "shift": shift,
-        "create_pattern_form": create_pattern_form,
+        "form": create_pattern_form,
     }
     return render(request, "shift/pattern/list.html", context)
 
@@ -154,9 +154,12 @@ def select_employees(request):
         employees = Employee.objects.filter(
             status="Active", department__in=request.user.profile.manages.all()
         ).order_by("name")
-    employee_filter = EmployeeFilter(request.GET, queryset=employees)
+    employee_filter = EmployeeFilter(request.GET, queryset=employees, prefix="main")
     employees = employee_filter.qs
-    context = {"employee_filter": employee_filter, "employees": employees}
+    context = {
+        "filter": employee_filter,
+        "employees": employees,
+    }
     return render(request, "shift/assign/select.html", context)
 
 
@@ -177,7 +180,7 @@ def set_employees(request):
         select_shift_form = SelectShiftForm()
         context = {
             "employees": employees,
-            "select_shift_form": select_shift_form,
+            "form": select_shift_form,
         }
         # shift = form.cleaned_data["shift"]
         # for employee in employees:

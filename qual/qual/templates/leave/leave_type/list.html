@@ -3,11 +3,11 @@
   <div class="py-4 px-6 bg-white  rounded-md shadow-md w-full ">
     <div class="ml-2 mb-2">{% include "leave/leave_type/create.html" %}</div>
     <div>
-      <table class="overflow-x-auto text-left text-slate-900 table-auto w-full text-sm">
-        <thead class="uppercase  bg-slate-100 text-xs">
+      <table class="overflow-x-auto text-left table-auto w-full text-sm">
+        <thead class="uppercase  bg-slate-200 text-slate-800 text-xs">
           <tr>
             <th scope="col" class="p-3">Name</th>
-            <th scope="col" class="p-3">Maximum days</th>
+            <th scope="col" class="p-3">Max days</th>
             <th scope="col" class="p-3">Annual</th>
             <th scope="col" class="p-3">Paid</th>
             <th scope="col" class="p-3">Exclude rest days</th>
@@ -18,17 +18,41 @@
         </thead>
         <tbody>
           {% for leave_type in page %}
-            <tr class="bg-white text-slate-900 hover:bg-slate-50 border-b">
-              <td class="p-3">{{ leave_type.name }}</td>
-              <td class="p-3">{{ leave_type.maximum_days }}</td>
-              <td class="p-3">{{ leave_type.annual }}</td>
-              <td class="p-3">{{ leave_type.paid }}</td>
-              <td class="p-3">{{ leave_type.exclude_rest_days }}</td>
-              <td class="p-3">{{ leave_type.half_day_leave }}</td>
-              <td class="p-3">{{ leave_type.leaves.count }}</td>
-              <td class="p-3 text-right">
+            <tr class="bg-white text-slate-700 leading-relaxed hover:bg-slate-50 border-y border-slate-300">
+              <td class="p-2">{{ leave_type.name }}</td>
+              <td class="p-2">{{ leave_type.maximum_days }}</td>
+              <td class="p-2">
+                {% if leave_type.annual %}
+                  Yes
+                {% else %}
+                  No
+                {% endif %}
+              </td>
+              <td class="p-2">
+                {% if leave_type.paid %}
+                  Yes
+                {% else %}
+                  No
+                {% endif %}
+              </td>
+              <td class="p-2">
+                {% if leave_type.exclude_rest_days %}
+                  Yes
+                {% else %}
+                  No
+                {% endif %}
+              </td>
+              <td class="p-2">
+                {% if leave_type.half_day_leave %}
+                  Yes
+                {% else %}
+                  No
+                {% endif %}
+              </td>
+              <td class="p-2">{{ leave_type.leaves.count }}</td>
+              <td class="p-2 text-right">
                 <a href="{{ leave_type.get_absolute_url }}"
-                   class="font-semibold text-slate-900 hover:underline">Detail</a>
+                   class="font-semibold hover:underline">Detail</a>
               </td>
             </tr>
           {% endfor %}

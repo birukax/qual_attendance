@@ -13,14 +13,20 @@ class CreateHolidayForm(forms.ModelForm):
     class Meta:
         model = Holiday
         fields = (
-            "date",
             "name",
+            "date",
             "description",
         )
 
         widgets = {
-            "date": DatePickerInput(options=FlatpickrOptions()),
-            "description": forms.Textarea(attrs={"rows": 3}),
+            "name": forms.TextInput(attrs={"class": "w-full rounded-sm"}),
+            "date": DatePickerInput(
+                attrs={"type": "date", "class": "w-full h-10 rounded-sm"},
+                options=FlatpickrOptions(),
+            ),
+            "description": forms.Textarea(
+                attrs={"rows": 3, "class": "w-full rounded-sm"}
+            ),
         }
 
     # date = forms.DateField(widget=forms.DateInput(attrs={"type": "date"}))

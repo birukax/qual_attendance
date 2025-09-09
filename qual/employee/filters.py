@@ -1,7 +1,7 @@
 import django_filters
+import django_filters.widgets
 from django_select2 import forms as s2forms
 from django import forms
-
 from device.models import Device
 from shift.models import Shift
 from .models import Department, Employee

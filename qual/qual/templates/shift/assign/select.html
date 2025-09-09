@@ -1,34 +1,39 @@
 {% extends "_base.html" %}
 {% block content %}
-    <div class="px-8 py-4  bg-white rounded-md w-full shadow-sm overflow-x-auto">
-        <div class=" mb-3">{% include "shift/assign/filter.html" %}</div>
+    <div class="px-8 py-2  bg-white rounded-md w-full shadow-sm overflow-x-auto">
+        <div class=" mb-2">{% include "partials/filter.html" %}</div>
         <form method="post" action="{% url 'shift:set_employees' %}">
-            <button type="submit"
-                    value='Submit'
-                    class="text-white bg-slate-700 hover:bg-slate-600 focus:ring-2 focus:outline-none focus:ring-slate-300 font-medium rounded-md text-sm px-5 py-2 text-center ">
-                Set selection
-            </button>
+            <div class="mb-2">
+                <button type="submit"
+                        value='Submit'
+                        class="text-white bg-slate-700 hover:bg-slate-600 focus:ring-2 focus:outline-none focus:ring-slate-300 font-medium rounded-md text-sm px-5 py-2 text-center ">
+                    Save selection
+                </button>
+            </div>
             <table class=" text-sm text-left text-slate-900 table-auto w-full">
                 <thead class="uppercase text-slate-900 bg-slate-100 text-xs">
                     <tr>
-                        <th scope="col" class="p-2 whitespace-nowrap">ID</th>
-                        <th scope="col" class="p-2">Full name</th>
-                        <th scope="col" class="p-2">Department</th>
-                        <th scope="col" class="p-2">Date</th>
-                        <th scope="col" class="p-2">Status</th>
-                        <th scope="col" class="p-2">Shift</th>
+                        <th scope="col" class="p-3 whitespace-nowrap text-center">ID</th>
+                        <th scope="col" class="p-3">Full name</th>
+                        <th scope="col" class="p-3">Department</th>
+                        <th scope="col" class="p-3">Date</th>
+                        <th scope="col" class="p-3">Status</th>
+                        <th scope="col" class="p-3">Shift</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% csrf_token %}
                     {% for employee in employees %}
-                        <tr class="border-b hover:bg-slate-50">
-                            <td class="p-2 font-semibold">
-                                <input type="checkbox" name="employees" value="{{ employee.id }}">
-                                {{ employee.employee_id }}
+                        <tr class="border-y border-slate-300 hover:bg-slate-50 text-slate-700">
+                            <td class="p-2 font-semibold flex gap-3 items-center">
+                                <input type="checkbox"
+                                       class="ring-slate-700  text-slate-700"
+                                       name="employees"
+                                       value="{{ employee.id }}">
+                                <p>{{ employee.employee_id }}</p>
                             </td>
                             <th scope="row"
-                                class="p-2 font-semibold lowercase text-slate-900 first-letter:uppercase whitespace-nowrap ">
+                                class="p-2 font-semibold lowercase first-letter:uppercase whitespace-nowrap ">
                                 {{ employee.name }}
                             </th>
                             <td class="p-2 ">{{ employee.department }}</td>

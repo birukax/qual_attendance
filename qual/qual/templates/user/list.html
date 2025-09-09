@@ -1,37 +1,42 @@
 {% extends "_base.html" %}
 {% block content %}
-  <div class="p-6 overflow-x-auto bg-white rounded-md shadow-md w-full">
-    <div class="mb-2 ml-2">
+  <div class="px-8 py-4  bg-white rounded-md w-full overflow-x-auto">
+    <div class="flex items-center gap-6 mb-2">
       <a href="{% url 'account:create_user' %}"
          class="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-slate-700 rounded-md hover:bg-slate-600 focus:ring-2 focus:outline-none focus:ring-slate-300 ">
         Create
       </a>
     </div>
-    <table class="text-left text-slate-900 table-auto w-full text-sm">
-      <thead class="font-semibold bg-slate-100 text-slate-900 uppercase bg-white text-xs">
+    <table class=" text-sm text-left  w-full table-auto ">
+      <thead class="text-xs uppercase border-slate-300 text-slate-800 bg-slate-200">
         <tr>
-          <th scope="col" class="p-2">Username</th>
-          <th scope="col" class="p-2">Email</th>
-          <th scope="col" class="p-2">Full name</th>
-          <th scope="col" class="p-2">Active</th>
-          <th scope="col" class="p-2">Role</th>
-          <th scope="col" class="p-2">Manages</th>
-          <th scope="col" class="p-2 text-right">Action</th>
+          <th scope="col" class="p-3">Username</th>
+          <th scope="col" class="p-3">Active</th>
+          <th scope="col" class="p-3">Role</th>
+          <th scope="col" class="p-3">Device</th>
+          <th scope="col" class="p-3">Full name</th>
+          <th scope="col" class="p-3">Email</th>
+          <th scope="col" class="p-3 text-right">Action</th>
         </tr>
       </thead>
       <tbody>
         {% for user in page %}
-          <tr class="bg-white border-b hover:bg-slate-50">
-            <th scope="row"
-                class="p-2 font-semibold text-slate-900 whitespace-nowrap ">{{ user.username }}</th>
-            <td class="p-2">{{ user.email }}</td>
+          <tr class="border-y leading-relaxed border-slate-300 text-slate-700 hover:bg-slate-50">
+            <th scope="row" class="p-2 font-semibold  whitespace-nowrap capitalize ">{{ user.username }}</th>
+            <td class="p-2">
+              {% if user.is_active %}
+                Yes
+              {% else %}
+                No
+              {% endif %}
+            </td>
+            <td class="p-2 text-xs">{{ user.profile.role }}</td>
+            <td class="p-2 text-xs">{{ user.profile.device.name }}</td>
             <td class="p-2 whitespace-nowrap">{{ user.first_name }} {{ user.last_name }}</td>
-            <td class="p-2">{{ user.is_active }}</td>
-            <td class="p-2">{{ user.profile.role }}</td>
-            <td class="p-2">{{ user.profile.manages.count }}</td>
+            <td class="p-2">{{ user.email }}</td>
             <td class="p-2 text-right">
               <a href="{{ user.profile.get_absolute_url }}"
-                 class="font-semibold text-slate-900  hover:underline ">Detail</a>
+                 class="font-semibold   hover:underline ">Detail</a>
             </td>
           </tr>
         {% endfor %}

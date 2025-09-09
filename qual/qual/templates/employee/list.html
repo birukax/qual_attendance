@@ -13,8 +13,8 @@
       {% endif %}
       {% include "partials/filter.html" %}
     </div>
-    <table class=" text-sm text-left text-slate-900 w-full table-auto ">
-      <thead class="text-xs uppercase border-slate-300 text-slate-800 bg-slate-50">
+    <table class=" text-sm text-left  w-full table-auto ">
+      <thead class="text-xs uppercase border-slate-300 text-slate-800 bg-slate-200">
         <tr>
           <th scope="col" class="p-3">ID</th>
           <th scope="col" class="p-3">Full name</th>
@@ -31,17 +31,15 @@
       </thead>
       <tbody>
         {% for employee in page %}
-          <tr class="border-y border-slate-300 text-slate-700 hover:bg-slate-50">
-            <td class="p-2 leading-relaxed font-semibold ">{{ employee.employee_id }}</td>
-            <th class="p-2 leading-relaxed font-semibold  lowercase text-slate-800 first-letter:capitalize  ">
-              {{ employee.name }}
-            </th>
-            <td class="p-2 leading-relaxed">{{ employee.department }}</td>
-            <td class="p-2 leading-relaxed ">{{ employee.employment_date }}</td>
-            <td class="p-2 leading-relaxed ">{{ employee.status }}</td>
-            <td class="p-2 leading-relaxed">{{ employee.shift }}</td>
-            <td class="p-2 leading-relaxed ">{{ employee.device.name }}</td>
-            <td class="p-2 leading-relaxed text-right ">
+          <tr class="border-y leading-relaxed border-slate-300 text-slate-700 hover:bg-slate-50">
+            <td class="p-2 font-semibold ">{{ employee.employee_id }}</td>
+            <th class="p-2 font-semibold  lowercase text-slate-800 first-letter:capitalize  ">{{ employee.name }}</th>
+            <td class="p-2">{{ employee.department }}</td>
+            <td class="p-2 ">{{ employee.employment_date }}</td>
+            <td class="p-2 ">{{ employee.status }}</td>
+            <td class="p-2">{{ employee.shift }}</td>
+            <td class="p-2 ">{{ employee.device.name }}</td>
+            <td class="p-2 text-right ">
               <a href="{{ employee.get_absolute_url }}"
                  class="font-semibold text-slate-700 hover:underline ">Detail</a>
             </td>

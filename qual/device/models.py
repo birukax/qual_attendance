@@ -33,7 +33,9 @@ class DeviceUser(models.Model):
     group_id = models.CharField(max_length=150)
     user_id = models.CharField(max_length=150)
     card = models.CharField(max_length=150)
-    device = models.ForeignKey(Device, on_delete=models.CASCADE)
+    device = models.ForeignKey(
+        Device, on_delete=models.CASCADE, related_name="device_users"
+    )
     employee = models.ForeignKey(
         "employee.Employee", on_delete=models.CASCADE, null=True, blank=True
     )

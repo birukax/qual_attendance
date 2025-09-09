@@ -17,7 +17,7 @@ def holidays(request):
 
     page = paginated.get_page(page_number)
     context = {
-        "create_holiday_form": create_holiday_form,
+        "form": create_holiday_form,
         "page": page,
     }
     return render(request, "holiday/list.html", context)

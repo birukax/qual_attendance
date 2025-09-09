@@ -1,22 +1,53 @@
+from random import choice
 import django_filters
 from django_select2 import forms as s2forms
 import django_filters.widgets
-from leave.models import Leave
+from employee.models import Employee
+from leave.models import Leave, LeaveType
 from overtime.models import Overtime
 from holiday.models import Holiday
+from qual.custom_widgets import EmployeeWidget, LeaveTypeWidget
 
 
 class LeaveFilter(django_filters.FilterSet):
     class Meta:
         model = Leave
-        fields = {
-            "employee__name": ["icontains"],
-            "leave_type": ["exact"],
-            "half_day": ["exact"],
-            "start_date": ["exact"],
-        }
+        fields = (
+            "employee",
+            "leave_type",
+            "half_day",
+            "start_date",
+        )
 
+    employee = django_filters.ModelChoiceFilter(
+        queryset=Employee.objects.all(),
+        label="Employee",
+        lookup_expr="exact",
+        widget=EmployeeWidget(),
+    )
+    leave_type = django_filters.ModelChoiceFilter(
+        queryset=LeaveType.objects.all(),
+        label="Leave Type",
+        lookup_expr="exact",
+        widget=s2forms.Select2Widget(
+            attrs={"class": "w-full"},
+            choices=LeaveType.objects.all().values_list("id", "name"),
+        ),
+    )
+    half_day = django_filters.BooleanFilter(
+        label="Half Day",
+        lookup_expr="exact",
+        widget=s2forms.Select2Widget(
+            attrs={"class": "w-full"},
+            choices=(
+                (None, ""),
+                (True, "Yes"),
+                (False, "No"),
+            ),
+        ),
+    )
     start_date = django_filters.DateFromToRangeFilter(
+        label="Start Date",
         widget=django_filters.widgets.DateRangeWidget(
             attrs={"type": "date", "class": "w-full h-10 rounded-sm"}
         ),
@@ -27,8 +58,15 @@ class OvertimeFilter(django_filters.FilterSet):
     class Meta:
         model = Overtime
         fields = {
-            "employee__name": ["icontains"],
+            "employee",
         }
+
+    employee = django_filters.ModelChoiceFilter(
+        queryset=Employee.objects.all(),
+        label="Employee",
+        lookup_expr="exact",
+        widget=EmployeeWidget(),
+    )
 
 
 class HolidayFilter(django_filters.FilterSet):

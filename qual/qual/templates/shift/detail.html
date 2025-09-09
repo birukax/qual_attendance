@@ -1,42 +1,54 @@
 {% extends "_base.html" %}
 {% block content %}
-  <div class=" max-w-screen-md mx-auto p-8 bg-white shadow-md rounded-md">
+  <div class="max-w-screen-sm md:p-8 sm:p-4 p-4 shadow-md rounded-md border border-slate-300  bg-white mx-auto">
     <div>
       <div class="flex items-center justify-between ">
-        <div class=" flex items-center">
-          <h5 class=" text-2xl font-semibold  text-slate-900 ">{{ shift.name }}</h5>
-        </div>
-        <svg class="w-12 h-12 text-slate-700"
+        <svg class="w-12 h-12 text-slate-600"
              aria-hidden="true"
              xmlns="http://www.w3.org/2000/svg"
              fill="currentColor"
              viewBox="0 0 24 24">
           <path fill-rule="evenodd" d="M2 6c0-1.1.9-2 2-2h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6Zm2 8v-2h7v2H4Zm0 2v2h7v-2H4Zm9 2h7v-2h-7v2Zm7-4v-2h-7v2h7Z" clip-rule="evenodd" />
         </svg>
-      </div>
-      <div class="flex-row mx-2 gap-4 font-normal text-slate-900 mb-4">
-        <div class="flex justify-between">
-          <span class="mr-2 ">Continous:</span>
-          <p class="font-semibold">{{ shift.continous }}</p>
+        <div class=" flex items-center">
+          <h5 class=" text-2xl font-semibold  text-slate-700 ">{{ shift.name }}</h5>
         </div>
-        <div class="flex justify-between">
+      </div>
+      <div class="flex-row text-slate-700 ">
+        <div class="flex my-2 border-b-2 border-slate-300 justify-between">
+          <span class="mr-2 ">Continuous:</span>
+          <p class="font-semibold">
+            {% if shift.continous %}
+              Yes
+            {% else %}
+              No
+            {% endif %}
+          </p>
+        </div>
+        <div class="flex my-2 border-b-2 border-slate-300 justify-between">
           <span class="mr-2 ">Saturday Half:</span>
-          <p class="font-semibold">{{ shift.saturday_half }}</p>
+          <p class="font-semibold">
+            {% if shift.saturday_half %}
+              Yes
+            {% else %}
+              No
+            {% endif %}
+          </p>
         </div>
       </div>
     </div>
-    <div class="justify-between grid w-full grid-cols-2 ">
+    <div class="justify-between grid w-full grid-cols-2 py-2 ">
       {% if user_role == "ADMIN" or user_role == 'HR' %}
         <div class="flex items-center">{% include "shift/edit.html" %}</div>
       {% endif %}
-      <div class="grid grid-cols-2 text-slate-900 ">
-        <div class="flex flex-col items-center justify-center">
+      <div class="grid grid-cols-2 gap-4 text-slate-700 ">
+        <div class="flex flex-col rounded-md p-2 border border-slate-300 items-center justify-center">
           <dt class="mb-2 text-3xl font-extrabold">{{ shift.patterns.count }}</dt>
           <dd class="text-slate-700">
             Patterns
           </dd>
         </div>
-        <div class="flex flex-col items-center justify-center">
+        <div class="flex flex-col rounded-md p-2 border border-slate-300 items-center justify-center">
           <dt class="mb-2 text-3xl font-extrabold">{{ shift.employees.count }}</dt>
           <dd class="text-slate-700">
             Employees

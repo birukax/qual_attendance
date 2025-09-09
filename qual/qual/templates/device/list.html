@@ -3,26 +3,28 @@
   <div class="bg-white overflow-x-auto shadow-md py-4 px-6  w-full rounded-md">
     <div class="ml-2 mb-2">{% include "device/create.html" %}</div>
     <div>
-      <table class="w-full  text-sm font-semibold text-left text-slate-900 table-auto ">
-        <thead class="text-xs uppercase text-slate-900 bg-slate-100 ">
+      <table class="w-full  text-sm font-semibold text-left  table-auto ">
+        <thead class="text-xs uppercase text-slate-800 bg-slate-200 ">
           <tr>
             <th scope="col" class="p-3">ID</th>
-            <th scope="col" class="p-3">Device name</th>
-            <th scope="col" class="p-3">Device IP</th>
-            <th scope="col" class="p-3">Device Port</th>
+            <th scope="col" class="p-3">Name</th>
+            <th scope="col" class="p-3">IP</th>
+            <th scope="col" class="p-3">Port</th>
+            <th scope="col" class="p-3">Users</th>
             <th scope="col" class="p-3">Attendances</th>
             <th scope="col" class="p-3 text-right">Action</th>
           </tr>
         </thead>
         <tbody>
           {% for d in devices %}
-            <tr class="bg-white border-b text-slate-900 hover:bg-slate-50">
-              <td class="p-3 whitespace-nowrap">{{ d.id }}</td>
-              <td class="p-3">{{ d.name }}</td>
-              <td class="p-3">{{ d.ip }}</td>
-              <td class="p-3">{{ d.port }}</td>
-              <td class="p-3">{{ d.raw_attendances.count }}</td>
-              <td class="p-3 text-right">
+            <tr class="bg-white border-y border-slate-300 text-slate-700 hover:bg-slate-50">
+              <td class="p-2 whitespace-nowrap">{{ d.id }}</td>
+              <td class="p-2">{{ d.name }}</td>
+              <td class="p-2">{{ d.ip }}</td>
+              <td class="p-2">{{ d.port }}</td>
+              <td class="p-2">{{ d.device_users.count }}</td>
+              <td class="p-2">{{ d.raw_attendances.count }}</td>
+              <td class="p-2 text-right">
                 <a href="{{ d.get_absolute_url }}"
                    class="font-semibold text-slate-800 hover:underline">Detail</a>
               </td>

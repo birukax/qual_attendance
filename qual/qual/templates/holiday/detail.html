@@ -1,21 +1,21 @@
 <!-- Modal toggle -->
 <button data-modal-target="holiday-detail-{{ holiday.id }}"
         data-modal-toggle="holiday-detail-{{ holiday.id }}"
-        class="block px-3 py-1 text-sm text-center items-end text-white bg-slate-600 rounded-md hover:bg-slate-700 focus:ring-2 focus:outline-none focus:ring-slate-300 "
+        class="block px-3 py-0.5 text-sm text-center  text-white bg-slate-600 rounded-sm hover:bg-slate-700 focus:ring-2 focus:outline-none focus:ring-slate-300 "
         type="button">Detail</button>
 <!-- Main modal -->
 <div id="holiday-detail-{{ holiday.id }}"
      tabindex="-1"
      aria-hidden="true"
      class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-  <div class="relative w-full max-w-2xl max-h-full p-4">
+  <div class="relative p-4 w-full max-w-lg max-h-full">
     <!-- Modal content -->
     <div class="relative bg-white rounded-md shadow ">
       <!-- Modal header -->
-      <div class="flex items-center justify-between p-4 border-b rounded-t md:p-5 ">
-        <h3 class="text-xl font-semibold text-slate-900 ">Holiday detail</h3>
+      <div class="flex items-center justify-between p-2  border-b border-slate-300 rounded-t ">
+        <h3 class="text-lg font-semibold text-slate-700 ">Detail</h3>
         <button type="button"
-                class="inline-flex items-center justify-center w-8 h-8 text-sm bg-transparent rounded-md text-slate-400 hover:bg-slate-200 hover:text-slate-900 ms-auto"
+                class="inline-flex items-center justify-center w-8 h-8 text-sm bg-transparent rounded-md text-slate-400 hover:bg-slate-200 hover:text-slate-700 ms-auto"
                 data-modal-hide="holiday-detail-{{ holiday.id }}">
           <svg class="w-3 h-3"
                aria-hidden="true"
@@ -31,40 +31,44 @@
       <div class="w-full px-8 py-4 bg-white rounded-md shadow gap-y-4">
         <div class="flex-col">
           <div class="flex items-center justify-between gap-8 mb-1">
-            <h5 class="text-2xl font-semibold leading-none text-slate-900">Holiday detail</h5>
-            <svg class="flex-shrink-0 w-16 h-16 transition duration-75 text-slate-800 group-hover:text-slate-100"
+            <svg class="flex-shrink-0 w-16 h-16 transition duration-75 text-slate-600 group-hover:text-slate-100"
                  aria-hidden="true"
                  xmlns="http://www.w3.org/2000/svg"
                  fill="currentColor"
                  viewBox="0 0 24 24">
               <path d="M20 7h-.7a3.4 3.4 0 0 0-.7-4c-.6-.6-1.5-1-2.4-1-1.8 0-3.3 1.2-4.4 2.5C10.4 2.8 9 2 7.5 2a3.5 3.5 0 0 0-3.1 5H4a2 2 0 0 0-2 2v2a1 1 0 0 0 1 1h18a1 1 0 0 0 1-1V9a2 2 0 0 0-2-2ZM10 7H7.6a1.5 1.5 0 0 1 0-3c.9 0 2 .8 3 2.1l-.4.9Zm6.2 0h-3.8c1-1.4 2.4-3 3.8-3a1.5 1.5 0 0 1 0 3ZM13 14h-2v8h2v-8Zm-4 0H4v6a2 2 0 0 0 2 2h3v-8Zm6 0v8h3a2 2 0 0 0 2-2v-6h-5Z" />
             </svg>
+            <h5 class="text-2xl font-semibold leading-none text-slate-700">Holiday</h5>
           </div>
         </div>
         <div class="flow-root mr-2">
+          <div class="flex-row text-slate-700 ">
+            <div class="flex justify-between my-2 border-b-2 border-slate-300">
+              <span class="mr-2 leading-relaxed ">Name:</span>
+              <p class="font-semibold">{{ holiday.name }}</p>
+            </div>
+            <div class="flex justify-between my-2 border-b-2 border-slate-300">
+              <span class="mr-2 leading-relaxed ">Date:</span>
+              <p class="font-semibold">{{ holiday.date }}</p>
+            </div>
+            <div class="flex justify-between my-2 border-b-2 border-slate-300">
+              <span class="mr-2 leading-relaxed ">Approved:</span>
+              <p class="font-semibold">
+                {% if holiday.approved %}
+                  Yes
+                {% else %}
+                  No
+                {% endif %}
+              </p>
+            </div>
+          </div>
           <ul role="list" class="flex-col w-full divide-y divide-slate-200">
-            <li class="py-3 ">
-              <div class="flex items-center justify-between ">
-                <div class="flex-1 min-w-0 text-left ms-4">
-                  <p class="text-base font-medium truncate text-slate-900 ">Name</p>
-                </div>
-                <div class="inline-flex items-center text-base font-semibold text-right text-slate-900 ">{{ holiday.name }}</div>
-              </div>
-            </li>
-            <li class="py-3 sm:py-4">
-              <div class="flex items-center">
-                <div class="flex-1 min-w-0 text-left ms-4">
-                  <p class="text-base font-medium truncate text-slate-900 ">Approved</p>
-                </div>
-                <div class="inline-flex items-center text-base font-semibold text-right text-slate-900 ">{{ holiday.approved }}</div>
-              </div>
-            </li>
             <li class="pt-3 pb-0 sm:pt-4">
               <div class="flex items-center justify-between">
                 <div class="flex-1 min-w-0 text-left ms-4">
-                  <p class="mb-2 text-base font-bold truncate text-slate-900 ">Description</p>
+                  <p class="mb-2 text-base  truncate text-slate-700 ">Description</p>
                 </div>
-                <div class="inline-flex items-center ml-4 text-base font-semibold text-right text-slate-900 ">
+                <div class="inline-flex items-center ml-4 text-base font-semibold text-right text-slate-700 ">
                   {{ holiday.description }}
                 </div>
               </div>

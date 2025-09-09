@@ -1,8 +1,8 @@
 {% extends "_base.html" %}
 {% block content %}
-    <div class="relative overflow-x-auto rounded-md shadow-md w-full  bg-white p-6">
-        <table class="w-full text-sm  text-left text-slate-800 table-auto">
-            <thead class=" uppercase text-slate-900 bg-slate-100 ">
+    <div class="px-8 py-4  bg-white rounded-md w-full overflow-x-auto">
+        <table class=" text-sm text-left  w-full table-auto ">
+            <thead class="text-xs uppercase border-slate-300 text-slate-800 bg-slate-200">
                 <tr>
                     <th scope="col" class="p-3">User ID</th>
                     <th scope="col" class="p-3">Name</th>
@@ -12,11 +12,11 @@
             </thead>
             <tbody>
                 {% for user in page %}
-                    <tr class="bg-white border-b text-slate-900 hover:bg-slate-50">
-                        <td class="p-3">{{ user.user_id }}</td>
-                        <td class="p-3 whitespace-nowrap">{{ user.name }}</td>
-                        <td class="p-3">{{ user.privilege }}</td>
-                        <td class="p-3">{{ user.uid }}</td>
+                    <tr class="border-y leading-relaxed border-slate-300 text-slate-700 hover:bg-slate-50">
+                        <td class="p-2">{{ user.user_id }}</td>
+                        <td class="p-2 whitespace-nowrap">{{ user.name }}</td>
+                        <td class="p-2">{{ user.privilege }}</td>
+                        <td class="p-2">{{ user.uid }}</td>
                     </tr>
                 {% endfor %}
             </tbody>

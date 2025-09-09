@@ -1,69 +1,71 @@
 {% extends "_base.html" %}
 {% block content %}
-  <div class="p-8 max-w-screen-md mx-auto  bg-white rounded-md shadow ">
+  <div class=" max-w-screen-md md:p-8 sm:p-4 p-4 shadow-md rounded-md border border-slate-300  bg-white mx-auto">
     <div class="flex items-center justify-between  mb-2">
-      <h5 class="mb-2 text-2xl font-semibold tracking-tight text-slate-900 ">{{ device.name }}</h5>
-      <svg class="w-12 h-12 text-slate-800"
+      <svg class="w-12 h-12 text-slate-600"
            aria-hidden="true"
            xmlns="http://www.w3.org/2000/svg"
            fill="currentColor"
            viewBox="0 0 20 20">
         <path d="M20 9V2a2 2 0 0 0-2-2H2a2 2 0 0 0-2 2v7h20ZM0 11v2a2 2 0 0 0 2 2h7v3H6a1 1 0 0 0 0 2h8a1 1 0 0 0 0-2h-3v-3h7a2 2 0 0 0 2-2v-2H0Z" />
       </svg>
+      <h5 class="mb-2 text-2xl font-semibold tracking-tight text-slate-700 ">{{ device.name }}</h5>
     </div>
-    <div class="flex-row space-y-2 font-normal text-slate-900 mb-2">
-      <div class="flex justify-between">
-        <span class="mr-2">IP:</span>
+    <div class="flex-row text-slate-700  mb-2">
+      <div class="flex justify-between my-2 border-b-2 border-slate-300">
+        <span class="mr-2 leading-relaxed">IP:</span>
         <p class="font-semibold text-right">{{ device.ip }}</p>
       </div>
-      <div class="flex justify-between">
-        <span class="mr-2">PORT:</span>
+      <div class="flex justify-between my-2 border-b-2 border-slate-300">
+        <span class="mr-2 leading-relaxed">PORT:</span>
         <p class="font-semibold text-right">{{ device.port }}</p>
       </div>
-      <div class="flex justify-between">
-        <span class="mr-2">Device time:</span>
+      <div class="flex justify-between my-2 border-b-2 border-slate-300">
+        <span class="mr-2 leading-relaxed">Device time:</span>
         <p class="font-semibold text-right">{{ device_time }}</p>
       </div>
-      <div class="flex justify-between">
-        <span class="mr-2">Version:</span>
+      <div class="flex justify-between my-2 border-b-2 border-slate-300">
+        <span class="mr-2 leading-relaxed">Version:</span>
         <p class="font-semibold text-right">{{ device_version }}</p>
       </div>
-      <div class="flex justify-between">
-        <span class="mr-2">Mac:</span>
+      <div class="flex justify-between my-2 border-b-2 border-slate-300">
+        <span class="mr-2 leading-relaxed">Mac:</span>
         <p class="font-semibold text-right">{{ device_mac }}</p>
       </div>
-      <div class="flex justify-between">
-        <span class="mr-2">Serial number:</span>
+      <div class="flex justify-between my-2 border-b-2 border-slate-300">
+        <span class="mr-2 leading-relaxed">Serial number:</span>
         <p class="font-semibold text-right">{{ device_serialnumber }}</p>
       </div>
-      <div class="flex justify-between mt-4">
+    </div>
+    <div class="w-full flex justify-between mt-4">
+      <div class="grid gap-y-4 ">
         <a href="{% url 'device:sync_users' device.id %}"
-           class="inline-flex items-center px-5 py-2 text-sm font-medium text-center text-white rounded-md bg-slate-700 hover:bg-slate-800 focus:ring-2 focus:outline-none focus:ring-slate-300">
+           class="inline-flex items-center px-5 py-2 text-sm font-medium text-center text-white rounded-md bg-slate-600 hover:bg-slate-700 focus:ring-2 focus:outline-none focus:ring-slate-300">
           Sync users
         </a>
         <a href="{% url 'device:restart_device' device.id %}"
-           class="inline-flex items-center px-5 py-2 text-sm font-medium text-center text-white rounded-md bg-slate-700 hover:bg-slate-800 focus:ring-2 focus:outline-none focus:ring-slate-300">
+           class="inline-flex items-center px-5 py-2 text-sm font-medium text-center text-white rounded-md bg-slate-600 hover:bg-slate-700 focus:ring-2 focus:outline-none focus:ring-slate-300">
           Restart device
         </a>
         <a href="{% url 'device:sync_time' device.id %}"
-           class="inline-flex items-center px-5 py-2 text-sm font-medium text-center text-white rounded-md bg-slate-700 hover:bg-slate-800 focus:ring-2 focus:outline-none focus:ring-slate-300">
+           class="inline-flex items-center px-5 py-2 text-sm font-medium text-center text-white rounded-md bg-slate-600 hover:bg-slate-700 focus:ring-2 focus:outline-none focus:ring-slate-300">
           Sync time
         </a>
       </div>
-    </div>
-    <div class="grid max-w-screen-xl grid-cols-2  gap-12 p-4 mx-auto text-slate-900 justify-between">
-      <div class="flex flex-col items-center justify-center">
-        <dt class="mb-2 text-3xl font-semibold">{{ users.count }}</dt>
-        <dd class="text-slate-700">
-          Users
-        </dd>
-      </div>
-      <div class="flex flex-col items-center justify-center">
-        <dt class="mb-2 text-3xl font-semibold">{{ attendances.count }}</dt>
-        <dd class="text-slate-700">
-          Attendances
-        </dd>
-      </div>
+      <dl class="grid justify-end grid-cols-2 gap-4 p-4  text-slate-700  ">
+        <div class="flex flex-col p-2 border rounded-md  items-center justify-center">
+          <dt class="my-1 text-3xl font-semibold">{{ users.count }}</dt>
+          <dd class="text-slate-600">
+            Users
+          </dd>
+        </div>
+        <div class="flex flex-col p-2 border rounded-md  items-center justify-center">
+          <dt class="my-1 text-3xl font-semibold">{{ attendances.count }}</dt>
+          <dd class="text-slate-600">
+            Attendances
+          </dd>
+        </div>
+      </dl>
     </div>
   </div>
 {% endblock content %}

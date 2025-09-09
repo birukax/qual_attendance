@@ -12,14 +12,17 @@ from django.core.exceptions import ValidationError
 from django.db.models import Q
 from .tasks import calculate_total_days
 from django.utils.translation import gettext_lazy as _
-
-
-class EmployeeWidget(s2forms.ModelSelect2Widget):
-    search_fields = ["name__icontains", "employee_id__icontains"]
+from qual.custom_widgets import EmployeeWidget
 
 
 class ALCalculateDateForm(forms.Form):
-    date = forms.DateField(initial=date.today())
+    date = forms.DateField(
+        initial=date.today(),
+        widget=DatePickerInput(
+            attrs={"type": "date", "class": "w-full h-10 rounded-sm text-center"},
+            options=FlatpickrOptions(),
+        ),
+    )
 
 
 class CreateLeaveForm(forms.ModelForm):
@@ -30,16 +33,32 @@ class CreateLeaveForm(forms.ModelForm):
             "leave_type",
             "start_date",
             "end_date",
-            "reason",
             "half_day",
+            "reason",
         )
         widgets = {
             "employee": EmployeeWidget,
-            "leave_type": forms.Select(attrs={"class": "search-select"}),
-            "start_date": DatePickerInput(options=FlatpickrOptions()),
-            "end_date": DatePickerInput(options=FlatpickrOptions()),
-            "reason": forms.Textarea(attrs={"rows": 3}),
-            "half_day": forms.CheckboxInput(),
+            "leave_type": s2forms.Select2Widget(
+                attrs={"class": "w-full"},
+                choices=LeaveType.objects.all().values_list("id", "name"),
+            ),
+            "start_date": DatePickerInput(
+                attrs={"type": "date", "class": "w-full h-10 rounded-sm"},
+                options=FlatpickrOptions(),
+            ),
+            "end_date": DatePickerInput(
+                attrs={"type": "date", "class": "w-full h-10 rounded-sm"},
+                options=FlatpickrOptions(),
+            ),
+            "half_day": s2forms.Select2Widget(
+                attrs={"class": "w-full"},
+                choices=(
+                    (None, ""),
+                    (True, "Yes"),
+                    (False, "No"),
+                ),
+            ),
+            "reason": forms.Textarea(attrs={"rows": 3, "class": "w-full rounded-sm"}),
         }
 
     def __init__(self, *args, **kwargs):
@@ -98,35 +117,46 @@ class EditLeaveForm(forms.ModelForm):
     class Meta:
         model = Leave
         fields = (
-            "employee",
             "leave_type",
             "start_date",
             "end_date",
-            "reason",
             "half_day",
+            "reason",
         )
 
         widgets = {
-            # "employee": forms.HiddenInput(),
-            "leave_type": forms.Select(attrs={"class": "search-select"}),
-            "start_date": DatePickerInput(options=FlatpickrOptions()),
-            "end_date": DatePickerInput(options=FlatpickrOptions()),
-            "reason": forms.Textarea(attrs={"rows": 3}),
-            "half_day": forms.CheckboxInput(),
+            "leave_type": s2forms.Select2Widget(
+                attrs={"class": "w-full"},
+                choices=LeaveType.objects.all().values_list("id", "name"),
+            ),
+            "start_date": DatePickerInput(
+                attrs={"type": "date", "class": "w-full h-10 rounded-sm"},
+                options=FlatpickrOptions(),
+            ),
+            "end_date": DatePickerInput(
+                attrs={"type": "date", "class": "w-full h-10 rounded-sm"},
+                options=FlatpickrOptions(),
+            ),
+            "half_day": s2forms.Select2Widget(
+                attrs={"class": "w-full"},
+                choices=(
+                    (None, ""),
+                    (True, "Yes"),
+                    (False, "No"),
+                ),
+            ),
+            "reason": forms.Textarea(attrs={"rows": 3, "class": "w-full  rounded-sm"}),
         }
-
-    def __init__(self, *args, **kwargs):
-        super(EditLeaveForm, self).__init__(*args, **kwargs)
-        self.fields["employee"].disabled = True
 
     def clean(self):
         cleaned_data = super().clean()
-        employee = cleaned_data.get("employee")
+        employee = self.instance.employee
         start_date = cleaned_data.get("start_date")
         end_date = cleaned_data.get("end_date")
         leave_type = cleaned_data.get("leave_type")
         half_day = cleaned_data.get("half_day")
-
+        if not leave_type:
+            raise ValidationError(_("Leave Type is required."))
         if employee:
             qs = (
                 Leave.objects.filter(employee=employee)
@@ -169,15 +199,51 @@ class CreateLeaveTypeForm(forms.ModelForm):
         fields = (
             "name",
             "maximum_days",
-            "description",
             "annual",
             "exclude_rest_days",
             "half_day_leave",
             "paid",
+            "description",
         )
         widgets = {
+            "name": forms.TextInput(attrs={"class": "w-full rounded-sm"}),
+            "maximum_days": forms.NumberInput(attrs={"class": "w-full rounded-sm"}),
             "paid": forms.CheckboxInput(),
-            "description": forms.Textarea(attrs={"rows": 3}),
+            "description": forms.Textarea(
+                attrs={"rows": 3, "class": "w-full rounded-sm"}
+            ),
+            "annual": s2forms.Select2Widget(
+                attrs={"class": "w-full rounded-sm"},
+                choices=(
+                    (None, ""),
+                    (True, "Yes"),
+                    (False, "No"),
+                ),
+            ),
+            "exclude_rest_days": s2forms.Select2Widget(
+                attrs={"class": "w-full rounded-sm"},
+                choices=(
+                    (None, ""),
+                    (True, "Yes"),
+                    (False, "No"),
+                ),
+            ),
+            "half_day_leave": s2forms.Select2Widget(
+                attrs={"class": "w-full rounded-sm"},
+                choices=(
+                    (None, ""),
+                    (True, "Yes"),
+                    (False, "No"),
+                ),
+            ),
+            "paid": s2forms.Select2Widget(
+                attrs={"class": "w-full rounded-sm"},
+                choices=(
+                    (None, ""),
+                    (True, "Yes"),
+                    (False, "No"),
+                ),
+            ),
         }
 
     def save(self, force_insert=False, force_update=False, commit=True):
@@ -195,15 +261,51 @@ class EditLeaveTypeForm(forms.ModelForm):
         fields = (
             "name",
             "maximum_days",
-            "description",
             "annual",
             "exclude_rest_days",
             "half_day_leave",
             "paid",
+            "description",
         )
         widgets = {
+            "name": forms.TextInput(attrs={"class": "w-full rounded-sm"}),
+            "maximum_days": forms.NumberInput(attrs={"class": "w-full rounded-sm"}),
             "paid": forms.CheckboxInput(),
-            "description": forms.Textarea(attrs={"rows": 3}),
+            "description": forms.Textarea(
+                attrs={"rows": 3, "class": "w-full rounded-sm"}
+            ),
+            "annual": s2forms.Select2Widget(
+                attrs={"class": "w-full rounded-sm"},
+                choices=(
+                    (None, ""),
+                    (True, "Yes"),
+                    (False, "No"),
+                ),
+            ),
+            "exclude_rest_days": s2forms.Select2Widget(
+                attrs={"class": "w-full rounded-sm"},
+                choices=(
+                    (None, ""),
+                    (True, "Yes"),
+                    (False, "No"),
+                ),
+            ),
+            "half_day_leave": s2forms.Select2Widget(
+                attrs={"class": "w-full rounded-sm"},
+                choices=(
+                    (None, ""),
+                    (True, "Yes"),
+                    (False, "No"),
+                ),
+            ),
+            "paid": s2forms.Select2Widget(
+                attrs={"class": "w-full rounded-sm"},
+                choices=(
+                    (None, ""),
+                    (True, "Yes"),
+                    (False, "No"),
+                ),
+            ),
         }
 
     def save(self, force_insert=False, force_update=False, commit=True):

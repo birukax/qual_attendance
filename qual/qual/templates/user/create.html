@@ -1,32 +1,37 @@
 {% extends "_base.html" %}
 {% block content %}
-    <div class=" w-fit">
-        <!-- Modal content -->
-        <div class=" bg-white rounded-md shadow mx-auto p-8">
-            <div class=" mb-4">
-                <h1 class="font-semibold text-xl">Create User</h1>
-            </div>
-            <form method="post" action="{% url 'account:create_user' %}">
-                {% csrf_token %}
-                <div class="gap-4 grid sm:grid-cols-2 ">
-                    {{ form.media }}
-                    {% for field in form %}
-                        <div class="grid grid-cols-1 justify-between gap-2">
-                            {{ field.label_tag }}
-                            {{ field }}
-                        </div>
-                    {% endfor %}
-                </div>
-                <div class="flex items-center  border-gray-200 rounded-b  gap-2 mt-4">
-                    <button type="submit"
-                            value='Create'
-                            class="text-white bg-slate-800 hover:bg-slate-700 focus:ring-2 focus:outline-none focus:ring-slate-300 rounded-md text-sm px-4 py-2 text-center ">
-                        Create
-                    </button>
-                    <a href="{% url 'account:users' %}"
-                       class="px-4 py-2 text-sm  text-center text-slate-950 bg-slate-200 rounded-md hover:bg-slate-300 focus:ring-2 focus:outline-none focus:ring-green-300 ">Cancel</a>
-                </div>
-            </form>
+    <div class="relative p-4 mx-auto bg-white rounded-md shadow-md w-fit">
+        <div class="mb-3 ">
+            <h1 class="mx-auto mb-2 text-2xl font-semibold text-center first-letter:uppercase">Create User</h1>
         </div>
+        <div class="ml-4 font-semibold text-red-700">
+            {% if messages %}
+                {% for message in messages %}<p>{{ message }}</p>{% endfor %}
+            {% endif %}
+            {% if form.errors %}
+                {% for error in form.non_field_errors %}<p>{{ error }}</p>{% endfor %}
+            {% endif %}
+        </div>
+        <form class="py-3 px-5" method="post">
+            {% csrf_token %}
+            <div class="gap-4 grid sm:grid-cols-2 ">
+                {{ form.media }}
+                {% for field in form %}
+                    <div class="grid grid-cols-1 justify-between gap-2">
+                        {{ field.label_tag }}
+                        {{ field }}
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="flex items-center  border-gray-200 rounded-b  gap-2 mt-4">
+                <button type="submit"
+                        value='Create'
+                        class="text-white bg-slate-800 hover:bg-slate-700 focus:ring-2 focus:outline-none focus:ring-slate-300 rounded-md text-sm px-4 py-2 text-center ">
+                    Create
+                </button>
+                <a href="{% url 'account:users' %}"
+                   class="px-4 py-2 text-sm  text-center text-slate-950 bg-slate-200 rounded-md hover:bg-slate-300 focus:ring-2 focus:outline-none focus:ring-green-300 ">Cancel</a>
+            </div>
+        </form>
     </div>
 {% endblock content %}

@@ -1,15 +1,15 @@
 from django import forms
-from .models import *
+from .models import Shift, Pattern
 from employee.models import Employee
 from django.utils.text import slugify
-
 from django_flatpickr.widgets import (
     DatePickerInput,
     TimePickerInput,
     DateTimePickerInput,
 )
+from django_select2 import forms as s2forms
 from django_flatpickr.schemas import FlatpickrOptions
-
+from qual.custom_widgets import DeviceWidget, ShiftWidget, PatternWidget
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
@@ -23,6 +23,29 @@ class CreateShiftForm(forms.ModelForm):
             "saturday_half",
             "continous",
         )
+        widgets = {
+            "name": forms.TextInput(attrs={"class": "w-full rounded-sm"}),
+            "device": DeviceWidget,
+            "saturday_half": s2forms.Select2Widget(
+                attrs={"class": "w-full"},
+                choices=(
+                    (None, ""),
+                    (True, "Yes"),
+                    (False, "No"),
+                ),
+            ),
+            "continous": s2forms.Select2Widget(
+                attrs={"class": "w-full"},
+                choices=(
+                    (None, ""),
+                    (True, "Yes"),
+                    (False, "No"),
+                ),
+            ),
+        }
+        labels = {
+            "continous": "Continuous",
+        }
 
     def save(self, force_insert=False, force_update=False, commit=True):
         shift = Shift
@@ -45,11 +68,13 @@ class SelectEmployeesForm(forms.ModelForm):
 
 
 class SelectShiftForm(forms.Form):
-    class Meta:
-        model = Shift
-        fields = ["name"]
+    # class Meta:
+    #     model = Shift
+    #     fields = ["id"]
 
-    shift = forms.ModelChoiceField(Shift.objects.all())
+    shift = forms.ModelChoiceField(
+        Shift.objects.all(), label="Shift", widget=ShiftWidget
+    )
 
 
 class EditShiftForm(forms.ModelForm):
@@ -58,10 +83,35 @@ class EditShiftForm(forms.ModelForm):
         fields = (
             "name",
             "device",
-            "continous",
             "current_pattern",
+            "continous",
             "saturday_half",
         )
+        widgets = {
+            "name": forms.TextInput(attrs={"class": "w-full rounded-sm"}),
+            "device": DeviceWidget,
+            "current_pattern": PatternWidget,
+            "continous": s2forms.Select2Widget(
+                attrs={"class": "w-full rounded-sm"},
+                choices=(
+                    (None, ""),
+                    (True, "Yes"),
+                    (False, "No"),
+                ),
+            ),
+            "saturday_half": s2forms.Select2Widget(
+                attrs={"class": "w-full rounded-sm"},
+                choices=(
+                    (None, ""),
+                    (True, "Yes"),
+                    (False, "No"),
+                ),
+            ),
+        }
+
+        labels = {
+            "continous": "Continuous",
+        }
 
     def save(self, force_insert=False, force_update=False, commit=True):
         shift = super(EditShiftForm, self).save(commit=False)
@@ -82,14 +132,24 @@ class CreatePatternForm(forms.ModelForm):
         fields = (
             "name",
             "next",
-            "start_time",
-            "end_time",
             "tolerance",
             "day_span",
+            "start_time",
+            "end_time",
         )
         widgets = {
-            "start_time": TimePickerInput(options=FlatpickrOptions()),
-            "end_time": TimePickerInput(options=FlatpickrOptions()),
+            "name": forms.TextInput(attrs={"class": "w-full rounded-sm"}),
+            "next": forms.Select(attrs={"class": "w-full h-10 rounded-sm"}),
+            "tolerance": forms.NumberInput(attrs={"class": "w-full rounded-sm"}),
+            "day_span": forms.NumberInput(attrs={"class": "w-full rounded-sm"}),
+            "start_time": TimePickerInput(
+                attrs={"type": "date", "class": "w-full h-10 rounded-sm"},
+                options=FlatpickrOptions(),
+            ),
+            "end_time": TimePickerInput(
+                attrs={"type": "date", "class": "w-full h-10 rounded-sm"},
+                options=FlatpickrOptions(),
+            ),
         }
 
     def __init__(self, shift, *args, **kwargs):
@@ -135,8 +195,18 @@ class EditPatternForm(forms.ModelForm):
             "end_time",
         )
         widgets = {
-            "start_time": TimePickerInput(options=FlatpickrOptions()),
-            "end_time": TimePickerInput(options=FlatpickrOptions()),
+            "name": forms.TextInput(attrs={"class": "w-full rounded-sm"}),
+            "next": forms.Select(attrs={"class": "w-full h-10 rounded-sm"}),
+            "day_span": forms.NumberInput(attrs={"class": "w-full rounded-sm"}),
+            "tolerance": forms.NumberInput(attrs={"class": "w-full rounded-sm"}),
+            "start_time": TimePickerInput(
+                attrs={"type": "date", "class": "w-full h-10 rounded-sm"},
+                options=FlatpickrOptions(),
+            ),
+            "end_time": TimePickerInput(
+                attrs={"type": "date", "class": "w-full h-10 rounded-sm"},
+                options=FlatpickrOptions(),
+            ),
         }
 
     def __init__(self, *args, **kwargs):

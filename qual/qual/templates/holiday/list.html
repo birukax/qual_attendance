@@ -1,10 +1,10 @@
 {% extends "_base.html" %}
 {% block content %}
   <div class="py-4 px-8 bg-white w-full overflow-x-auto rounded-md">
-    <div class="mb-2">{% include "holiday/create.html" %}</div>
+    <div class="mb-2 items-center">{% include "holiday/create.html" %}</div>
     <div>
-      <table class="text-sm text-left text-slate-800 w-full table-auto">
-        <thead class="uppercase whitespace-nowrap bg-slate-100">
+      <table class="text-sm text-left  w-full table-auto">
+        <thead class="text-xs uppercase border-slate-300 text-slate-800 bg-slate-200">
           <tr>
             <th scope="col" class="p-3">Name</th>
             <th scope="col" class="p-3">Date</th>
@@ -14,12 +14,12 @@
         </thead>
         <tbody>
           {% for holiday in page %}
-            <tr class="bg-white border-b hover:bg-slate-50 whitespace-nowrap">
+            <tr class="bg-white border-y border-slate-300 hover:bg-slate-50 whitespace-nowrap">
               <th scope="row"
-                  class="p-3 font-semibold text-slate-900 whitespace-nowrap">{{ holiday.name }}</th>
-              <td class="p-3">{{ holiday.date }}</td>
-              <td class="p-3">{{ holiday.approved }}</td>
-              <td class="p-3 ">{% include "holiday/detail.html" %}</td>
+                  class="p-2 font-semibold text-slate-700 whitespace-nowrap">{{ holiday.name }}</th>
+              <td class="p-2">{{ holiday.date }}</td>
+              <td class="p-2">{{ holiday.approved }}</td>
+              <td class="p-2 ">{% include "holiday/detail.html" %}</td>
             </tr>
           {% endfor %}
         </tbody>
