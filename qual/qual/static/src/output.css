@@ -5,16 +5,13 @@
   :root, :host {
     --font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
       "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-    --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
     --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
       "Courier New", monospace;
-    --color-red-50: #FEF2F2;
     --color-red-300: #FCA5A5;
     --color-red-500: #EF4444;
     --color-red-600: #DC2626;
     --color-red-700: #B91C1C;
     --color-red-800: #991B1B;
-    --color-red-900: #7F1D1D;
     --color-amber-300: oklch(87.9% 0.169 91.605);
     --color-green-300: #6EE7B7;
     --color-green-400: #34D399;
@@ -23,9 +20,6 @@
     --color-green-800: #065F46;
     --color-green-950: oklch(26.6% 0.065 152.934);
     --color-sky-500: oklch(68.5% 0.169 237.323);
-    --color-sky-600: oklch(58.8% 0.158 241.966);
-    --color-sky-700: oklch(50% 0.134 242.749);
-    --color-sky-900: oklch(39.1% 0.09 240.876);
     --color-blue-500: #3B82F6;
     --color-blue-600: #2563EB;
     --color-indigo-100: #E0E7FF;
@@ -72,7 +66,6 @@
     --breakpoint-xl: 80rem;
     --container-md: 28rem;
     --container-lg: 32rem;
-    --container-xl: 36rem;
     --container-2xl: 42rem;
     --text-xs: 0.75rem;
     --text-xs--line-height: calc(1 / 0.75);
@@ -101,7 +94,6 @@
     --tracking-tighter: -0.05em;
     --tracking-tight: -0.025em;
     --tracking-wide: 0.025em;
-    --tracking-wider: 0.05em;
     --tracking-widest: 0.1em;
     --leading-tight: 1.25;
     --leading-relaxed: 1.625;
@@ -1169,15 +1161,6 @@
       filter: none !important;
     }
   }
-  .apexcharts-legend-series {
-    .apexcharts-canvas & {
-      margin-left: 0.5rem !important;
-      margin-right: 0.5rem !important;
-      margin-bottom: 0.25rem !important;
-      display: flex !important;
-      align-items: center !important;
-    }
-  }
   .apexcharts-tooltip {
     .apexcharts-canvas & {
       background-color: white !important;
@@ -1261,12 +1244,6 @@
       background-color: var(--color-gray-800);
       border: 1px solid var(--color-gray-700);
       color: white;
-    }
-  }
-  .apexcharts-tooltip-marker {
-    :is([dir=rtl]) .apexcharts-tooltip & {
-      margin-right: 0px !important;
-      margin-left: e !important;
     }
   }
   .datatable-dropdown {
@@ -1459,14 +1436,6 @@
   }
   .box-border {
     box-sizing: border-box;
-  }
-  .datatable-pagination-list {
-    .datatable-wrapper .datatable-bottom .datatable-pagination & {
-      display: flex;
-      align-items: center;
-      height: 2rem;
-      font-size: 0.875rem;
-    }
   }
   .\!hidden {
     display: none !important;
@@ -1814,9 +1783,6 @@
   .flex-1 {
     flex: 1;
   }
-  .flex-shrink {
-    flex-shrink: 1;
-  }
   .flex-shrink-0 {
     flex-shrink: 0;
   }
@@ -1825,9 +1791,6 @@
   }
   .table-fixed {
     table-layout: fixed;
-  }
-  .border-collapse {
-    border-collapse: collapse;
   }
   .origin-bottom-left {
     transform-origin: bottom left;
@@ -2096,9 +2059,6 @@
       margin-inline-end: calc(calc(var(--spacing) * 3) * calc(1 - var(--tw-space-x-reverse)));
     }
   }
-  .gap-y-2 {
-    row-gap: calc(var(--spacing) * 2);
-  }
   .gap-y-4 {
     row-gap: calc(var(--spacing) * 4);
   }
@@ -2130,11 +2090,6 @@
       border-color: var(--color-slate-300);
     }
   }
-  .divide-slate-400 {
-    :where(& > :not(:last-child)) {
-      border-color: var(--color-slate-400);
-    }
-  }
   .self-center {
     align-self: center;
   }
@@ -2145,14 +2100,6 @@
   }
   .overflow-hidden {
     overflow: hidden;
-  }
-  .datatable-container {
-    .datatable-wrapper & thead tr.search-filtering-row th {
-      padding-top: 0;
-    }
-    .datatable-wrapper & {
-      overflow-x: auto;
-    }
   }
   .overflow-x-auto {
     overflow-x: auto;
@@ -2790,16 +2737,6 @@
   .object-cover {
     object-fit: cover;
   }
-  .apexcharts-legend {
-    .apexcharts-canvas & {
-      padding: 0 !important;
-    }
-  }
-  .apexcharts-tooltip-y-group {
-    .apexcharts-canvas .apexcharts-tooltip-series-group.apexcharts-active & {
-      padding: 0 !important;
-    }
-  }
   .p-0 {
     padding: calc(var(--spacing) * 0);
   }
@@ -2896,11 +2833,6 @@
   .pt-28 {
     padding-top: calc(var(--spacing) * 28);
   }
-  .search-filtering-row {
-    .datatable-wrapper .datatable-container thead tr& th {
-      padding-top: 0;
-    }
-  }
   .apexcharts-legend-text {
     .apexcharts-canvas & {
       font-size: 0.75rem !important;
@@ -2947,11 +2879,6 @@
   }
   .pl-4 {
     padding-left: calc(var(--spacing) * 4);
-  }
-  .datatable-empty {
-    .datatable-wrapper .datatable-table & {
-      text-align: center;
-    }
   }
   .text-center {
     text-align: center;
@@ -3006,28 +2933,6 @@
   .text-xs {
     font-size: var(--text-xs);
     line-height: var(--tw-leading, var(--text-xs--line-height));
-  }
-  .apexcharts-datalabels {
-    .apexcharts-canvas & .apexcharts-text.apexcharts-pie-label {
-      font-size: 0.75rem,[object Object] !important;
-      font-weight: 600 !important;
-      text-shadow: none !important;
-      filter: none !important;
-    }
-  }
-  .apexcharts-pie-label {
-    .apexcharts-canvas .apexcharts-datalabels .apexcharts-text& {
-      font-size: 0.75rem,[object Object] !important;
-      font-weight: 600 !important;
-      text-shadow: none !important;
-      filter: none !important;
-    }
-  }
-  .apexcharts-xaxistooltip-text {
-    .apexcharts-canvas & {
-      font-weight: 400 !important;
-      font-size: 0.875rem !important;
-    }
   }
   .apexcharts-tooltip-text-y-label {
     .apexcharts-canvas .apexcharts-tooltip & {
@@ -3206,12 +3111,6 @@
   .text-red-800 {
     color: var(--color-red-800);
   }
-  .text-sky-600 {
-    color: var(--color-sky-600);
-  }
-  .text-sky-900 {
-    color: var(--color-sky-900);
-  }
   .text-slate-50 {
     color: var(--color-slate-50);
   }
@@ -3334,10 +3233,6 @@
   }
   .ring-offset-indigo-200 {
     --tw-ring-offset-color: var(--color-indigo-200);
-  }
-  .outline {
-    outline-style: var(--tw-outline-style);
-    outline-width: 1px;
   }
   .blur {
     --tw-blur: blur(8px);
@@ -4062,13 +3957,6 @@
     &:hover {
       @media (hover: hover) {
         background-color: var(--color-slate-900);
-      }
-    }
-  }
-  .hover\:bg-slate-950 {
-    &:hover {
-      @media (hover: hover) {
-        background-color: var(--color-slate-950);
       }
     }
   }
@@ -5308,11 +5196,6 @@
   inherits: false;
   initial-value: 0 0 #0000;
 }
-@property --tw-outline-style {
-  syntax: "*";
-  inherits: false;
-  initial-value: solid;
-}
 @property --tw-blur {
   syntax: "*";
   inherits: false;
@@ -5420,7 +5303,6 @@
       --tw-ring-offset-width: 0px;
       --tw-ring-offset-color: #fff;
       --tw-ring-offset-shadow: 0 0 #0000;
-      --tw-outline-style: solid;
       --tw-blur: initial;
       --tw-brightness: initial;
       --tw-contrast: initial;
