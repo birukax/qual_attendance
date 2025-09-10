@@ -23,6 +23,7 @@
     --color-green-800: #065F46;
     --color-green-950: oklch(26.6% 0.065 152.934);
     --color-sky-500: oklch(68.5% 0.169 237.323);
+    --color-sky-600: oklch(58.8% 0.158 241.966);
     --color-sky-700: oklch(50% 0.134 242.749);
     --color-sky-900: oklch(39.1% 0.09 240.876);
     --color-blue-500: #3B82F6;
@@ -1813,6 +1814,9 @@
   .flex-1 {
     flex: 1;
   }
+  .flex-shrink {
+    flex-shrink: 1;
+  }
   .flex-shrink-0 {
     flex-shrink: 0;
   }
@@ -1821,6 +1825,9 @@
   }
   .table-fixed {
     table-layout: fixed;
+  }
+  .border-collapse {
+    border-collapse: collapse;
   }
   .origin-bottom-left {
     transform-origin: bottom left;
@@ -2089,6 +2096,9 @@
       margin-inline-end: calc(calc(var(--spacing) * 3) * calc(1 - var(--tw-space-x-reverse)));
     }
   }
+  .gap-y-2 {
+    row-gap: calc(var(--spacing) * 2);
+  }
   .gap-y-4 {
     row-gap: calc(var(--spacing) * 4);
   }
@@ -2118,6 +2128,11 @@
   .divide-slate-300 {
     :where(& > :not(:last-child)) {
       border-color: var(--color-slate-300);
+    }
+  }
+  .divide-slate-400 {
+    :where(& > :not(:last-child)) {
+      border-color: var(--color-slate-400);
     }
   }
   .self-center {
@@ -3191,6 +3206,9 @@
   .text-red-800 {
     color: var(--color-red-800);
   }
+  .text-sky-600 {
+    color: var(--color-sky-600);
+  }
   .text-sky-900 {
     color: var(--color-sky-900);
   }
@@ -3316,6 +3334,10 @@
   }
   .ring-offset-indigo-200 {
     --tw-ring-offset-color: var(--color-indigo-200);
+  }
+  .outline {
+    outline-style: var(--tw-outline-style);
+    outline-width: 1px;
   }
   .blur {
     --tw-blur: blur(8px);
@@ -4040,6 +4062,13 @@
     &:hover {
       @media (hover: hover) {
         background-color: var(--color-slate-900);
+      }
+    }
+  }
+  .hover\:bg-slate-950 {
+    &:hover {
+      @media (hover: hover) {
+        background-color: var(--color-slate-950);
       }
     }
   }
@@ -5279,6 +5308,11 @@
   inherits: false;
   initial-value: 0 0 #0000;
 }
+@property --tw-outline-style {
+  syntax: "*";
+  inherits: false;
+  initial-value: solid;
+}
 @property --tw-blur {
   syntax: "*";
   inherits: false;
@@ -5386,6 +5420,7 @@
       --tw-ring-offset-width: 0px;
       --tw-ring-offset-color: #fff;
       --tw-ring-offset-shadow: 0 0 #0000;
+      --tw-outline-style: solid;
       --tw-blur: initial;
       --tw-brightness: initial;
       --tw-contrast: initial;
