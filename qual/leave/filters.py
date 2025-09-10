@@ -140,7 +140,7 @@ class LeaveFilter(django_filters.FilterSet):
         label="Half Day",
         lookup_expr="exact",
         widget=s2forms.Select2Widget(
-            attrs={"class": "w-full"},
+            attrs={"class": "w-full rounded-sm"},
             choices=(
                 (None, ""),
                 (True, "Yes"),

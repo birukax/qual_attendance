@@ -6,7 +6,7 @@ from device.models import Device, DeviceUser
 
 
 class BaseSelectWidget(s2forms.ModelSelect2Widget):
-    attrs = {"class": "w-full"}
+    attrs = {"class": "w-full rounded-sm"}
 
 
 class DepartmentWidget(BaseSelectWidget):

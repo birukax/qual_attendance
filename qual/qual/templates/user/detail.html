@@ -4,7 +4,7 @@
     <div class="justify-between">
       <div class="flex items-center justify-between mb-4">
         <a href="{% url 'account:users' %}">
-          <svg class="w-6 h-6 text-slate-800 "
+          <svg class="w-6 h-6 text-slate-600 "
                aria-hidden="true"
                xmlns="http://www.w3.org/2000/svg"
                width="24"
@@ -14,81 +14,81 @@
             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 19-7-7 7-7" />
           </svg>
         </a>
-        <h5 class="text-2xl font-semibold leading-none text-slate-900 uppercase">User detail</h5>
+        <h5 class="text-2xl font-semibold leading-none text-slate-700 uppercase">User detail</h5>
       </div>
     </div>
     <div class="mb-2">{% include "user/edit.html" %}</div>
     <div class="flow-root">
-      <ul role="list" class="divide-y divide-slate-200 ">
+      <ul role="list" class="divide-y-2 divide-slate-300 ">
         <div class="flex-1 min-w-0 ms-4">
-          <p class="my-2 mb-2 text-xl font-semibold text-left text-slate-900">User info</p>
+          <p class="my-2 mb-2 text-xl font-semibold text-left text-slate-700">User info</p>
         </div>
         <li class="py-2">
-          <div class="flex text-sm items-center">
+          <div class="flex  items-center">
             <div class="flex-1 min-w-0 ms-4">
-              <p class="font-medium text-slate-900 truncate ">Username</p>
+              <p class="font-medium text-slate-700 truncate ">Username</p>
             </div>
-            <div class="inline-flex items-center  font-semibold text-slate-900 ">{{ user.user.username }}</div>
+            <div class="inline-flex items-center  font-semibold text-slate-700 ">{{ user.user.username }}</div>
           </div>
         </li>
         <li class="py-2">
-          <div class="flex text-sm items-center">
+          <div class="flex  items-center">
             <div class="flex-1 min-w-0 ms-4">
-              <p class="font-medium text-slate-900 truncate ">First name</p>
+              <p class="font-medium text-slate-700 truncate ">First name</p>
             </div>
-            <div class="inline-flex items-center  font-semibold text-slate-900 ">{{ user.user.first_name }}</div>
+            <div class="inline-flex items-center  font-semibold text-slate-700 ">{{ user.user.first_name }}</div>
           </div>
         </li>
         <li class="py-2">
-          <div class="flex text-sm items-center">
+          <div class="flex  items-center">
             <div class="flex-1 min-w-0 ms-4">
-              <p class="font-medium text-slate-900 truncate ">Last name</p>
+              <p class="font-medium text-slate-700 truncate ">Last name</p>
             </div>
-            <div class="inline-flex items-center  font-semibold text-slate-900 ">{{ user.user.last_name }}</div>
+            <div class="inline-flex items-center  font-semibold text-slate-700 ">{{ user.user.last_name }}</div>
           </div>
         </li>
         <li class="py-2">
-          <div class="flex text-sm items-center">
+          <div class="flex  items-center">
             <div class="flex-1 min-w-0 ms-4">
-              <p class="font-medium text-slate-900 truncate ">Employee</p>
+              <p class="font-medium text-slate-700 truncate ">Employee</p>
             </div>
-            <div class="inline-flex items-center  font-semibold text-slate-900 ">{{ user.employee.name }}</div>
+            <div class="inline-flex items-center  font-semibold text-slate-700 ">{{ user.employee.name }}</div>
           </div>
         </li>
         <li class="py-2">
-          <div class="flex text-sm items-center">
+          <div class="flex  items-center">
             <div class="flex-1 min-w-0 ms-4">
-              <p class="font-medium text-slate-900 truncate ">Email</p>
+              <p class="font-medium text-slate-700 truncate ">Email</p>
             </div>
-            <div class="inline-flex items-center  font-semibold text-slate-900 ">{{ user.user.email }}</div>
+            <div class="inline-flex items-center  font-semibold text-slate-700 ">{{ user.user.email }}</div>
           </div>
         </li>
         <div class="flex-1 min-w-0 ms-4">
-          <p class="my-2 mb-2 text-xl font-semibold text-left text-slate-900">Profile info</p>
+          <p class="my-2 mb-2 text-xl font-semibold text-left text-slate-700">Profile info</p>
         </div>
         <li class="py-2">
-          <div class="flex text-sm items-center">
+          <div class="flex  items-center">
             <div class="flex-1 min-w-0 ms-4">
-              <p class="font-medium text-slate-900 truncate ">Role</p>
+              <p class="font-medium text-slate-700 truncate ">Role</p>
             </div>
-            <div class="inline-flex items-center  font-semibold text-slate-900 ">{{ user.role }}</div>
+            <div class="inline-flex items-center  font-semibold text-slate-700 ">{{ user.role }}</div>
           </div>
         </li>
         <li class="py-2">
-          <div class="flex text-sm items-center">
+          <div class="flex  items-center">
             <div class="flex-1 min-w-0 ms-4">
-              <p class="font-medium text-slate-900 truncate ">Device</p>
+              <p class="font-medium text-slate-700 truncate ">Device</p>
             </div>
-            <div class="inline-flex items-center  font-semibold text-slate-900 ">{{ user.device.name }}</div>
+            <div class="inline-flex items-center  font-semibold text-slate-700 ">{{ user.device.name }}</div>
           </div>
         </li>
         <li class="pt-3 pb-0 sm:pt-4">
           <div class="flex ">
             <div class="flex-1 min-w-0 ms-4">
-              <p class="mb-2  font-semibold text-slate-900 truncate ">Manages</p>
+              <p class="mb-2  font-semibold text-slate-700 truncate ">Manages</p>
             </div>
-            <div class="flex-col items-stretch  font-semibold text-right text-slate-900 whitespace-nowrap">
-              {% for manage in manages %}<p class="text-sm">{{ manage.name }} --</p>{% endfor %}
+            <div class="flex-col items-stretch  font-semibold text-right text-slate-700 whitespace-nowrap">
+              {% for manage in manages %}<p>{{ manage.name }} --</p>{% endfor %}
             </div>
           </div>
         </li>
