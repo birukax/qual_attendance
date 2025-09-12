@@ -1,7 +1,7 @@
 from django import forms
 from .models import Device, DeviceUser
 from django.utils.text import slugify
-from qual.custom_widgets import DeviceWidget
+from account.custom_widgets import DeviceWidget
 
 
 class CreateDeviceForm(forms.ModelForm):

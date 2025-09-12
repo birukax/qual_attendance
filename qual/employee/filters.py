@@ -5,7 +5,7 @@ from django import forms
 from device.models import Device
 from shift.models import Shift
 from .models import Department, Employee
-from qual.custom_widgets import (
+from account.custom_widgets import (
     EmployeeWidget,
     ShiftWidget,
     DepartmentWidget,

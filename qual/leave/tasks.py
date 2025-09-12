@@ -148,3 +148,5 @@ def calculate_annual_leaves(end_date=date):
                 2,
             )
             e.save()
+        for l in leaves:
+            calculate_total_leave_days(l.id)

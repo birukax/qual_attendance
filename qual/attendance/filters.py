@@ -4,7 +4,12 @@ from device.models import Device
 from shift.models import Pattern, Shift
 from .models import Attendance, RawAttendance
 from django_select2 import forms as s2forms
-from qual.custom_widgets import EmployeeWidget, DeviceWidget, PatternWidget, ShiftWidget
+from account.custom_widgets import (
+    EmployeeWidget,
+    DeviceWidget,
+    PatternWidget,
+    ShiftWidget,
+)
 
 
 # class AttendanceDownloadFilter(django_filters.FilterSet):

@@ -6,7 +6,7 @@ from employee.models import Employee
 from leave.models import Leave, LeaveType
 from overtime.models import Overtime
 from holiday.models import Holiday
-from qual.custom_widgets import EmployeeWidget, LeaveTypeWidget
+from account.custom_widgets import EmployeeWidget, LeaveTypeWidget
 
 
 class LeaveFilter(django_filters.FilterSet):

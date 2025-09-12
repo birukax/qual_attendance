@@ -2,7 +2,7 @@ from django import forms
 from .models import Employee
 from shift.models import Shift
 from device.models import Device
-from qual.custom_widgets import ShiftWidget, DeviceWidget
+from account.custom_widgets import ShiftWidget, DeviceWidget
 
 
 class ChangeEmployeeShiftForm(forms.ModelForm):

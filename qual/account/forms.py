@@ -4,7 +4,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django_select2 import forms as s2forms
 from device.models import Device
-from qual.custom_widgets import DeviceWidget, EmployeeWidget
+from account.custom_widgets import DeviceWidget, EmployeeWidget
 
 widget_attr = {"class": "w-full rounded-sm"}
 

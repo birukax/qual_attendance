@@ -9,7 +9,7 @@ from django_flatpickr.widgets import (
 )
 from django_select2 import forms as s2forms
 from django_flatpickr.schemas import FlatpickrOptions
-from qual.custom_widgets import DeviceWidget, ShiftWidget, PatternWidget
+from account.custom_widgets import DeviceWidget, ShiftWidget, PatternWidget
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 

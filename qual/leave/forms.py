@@ -12,7 +12,7 @@ from django.core.exceptions import ValidationError
 from django.db.models import Q
 from .tasks import calculate_total_days
 from django.utils.translation import gettext_lazy as _
-from qual.custom_widgets import EmployeeWidget
+from account.custom_widgets import EmployeeWidget
 
 
 class ALCalculateDateForm(forms.Form):

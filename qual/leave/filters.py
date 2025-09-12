@@ -5,7 +5,7 @@ from .models import Leave, LeaveType
 from shift.models import Shift
 from device.models import Device
 from employee.models import Employee, Department
-from qual.custom_widgets import (
+from account.custom_widgets import (
     DepartmentWidget,
     EmployeeWidget,
     DeviceWidget,

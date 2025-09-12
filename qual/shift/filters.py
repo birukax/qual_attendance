@@ -2,7 +2,7 @@ import django_filters
 from .models import Shift
 from django_select2 import forms as s2forms
 from device.models import Device
-from qual.custom_widgets import DeviceWidget
+from account.custom_widgets import DeviceWidget
 
 
 class ShiftFilter(django_filters.FilterSet):
