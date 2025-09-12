@@ -55,7 +55,7 @@ def calculate_total_leave_days(id, end_date=None):
         leave.save()
     except Exception as e:
         print(e)
-    # return leave.total_days
+    return leave.total_days
 
 
 def calculate_total_days(start_date, end_date, exclude_rest_days=False):
@@ -84,69 +84,54 @@ def calculate_annual_leaves(end_date=date):
             leave_type__annual=True,
             start_date__lte=end_date,
         )
-        e.annual_leave_taken = 0
+        annual_leave_taken = 0
         for l in leaves:
             if l.end_date > end_date:
-                calculate_total_leave_days(l.id, end_date=end_date)
+                leave_days = calculate_total_leave_days(l.id, end_date=end_date)
             else:
-                calculate_total_leave_days(l.id)
-            # if l.end_date > end_date:
-            #     leave_days = end_date.day - l.start_date.day + 1
-            # else:
-            #     leave_days = l.end_date.day - l.start_date.day + 1
-            # print(f"{e.name}  {leave_days}")
-            # if l.end_date > end_date:
-            #     leave_days = calculate_total_days(
-            #         l.start_date,
-            #         end_date,
-            #         l.leave_type.annual,
-            #     )
-            # else:
-            leave_days = l.total_days
-            # if l.half_day:
-            #     leave_days = leave_days - 0.5
-            e.annual_leave_taken = e.annual_leave_taken + leave_days
-
-            e.save()
+                leave_days = calculate_total_leave_days(l.id)
+            annual_leave_taken = annual_leave_taken + leave_days
+        e.annual_leave_taken = annual_leave_taken
+        e.save()
         # print(leaves)
-        if employment_date < datetime(2016, 1, 1):
-            pass
+        # if employment_date < datetime(2016, 1, 1):
+        #     pass
+        # else:
+        total = 0
+        if e.status == "Terminated" and e.termination_date > datetime(2016, 1, 1):
+            end_date = e.termination_date
         else:
-            total = 0
-            # if e.status == "Terminated" and e.termination_date > datetime(2016, 1, 1):
-            #     end_date = e.termination_date
-            # else:
             end_date = end_date
-            total_years = relativedelta(end_date, employment_date)
-            years = total_years.years
-            decimal_years = pyasl.decimalYear(
-                datetime.combine(end_date, datetime.max.time())
-            ) - pyasl.decimalYear(employment_date)
-            # print(decimal_years)
-            years = years + 1
-            for year in range(years):
-                balance = 16
-                # add = int((year - 1) / 2)
-                add = int((year) / 2)
-                # print(total)
-                if add > 14:
-                    add = 14
-                total = total + balance + add
+        total_years = relativedelta(end_date, employment_date)
+        years = total_years.years
+        decimal_years = pyasl.decimalYear(
+            datetime.combine(end_date, datetime.max.time())
+        ) - pyasl.decimalYear(employment_date)
+        # print(decimal_years)
+        years = years + 1
+        for year in range(years):
+            balance = 16
+            # add = int((year - 1) / 2)
+            add = int((year) / 2)
             # print(total)
-            y = decimal_years
-            # print(y)
+            if add > 14:
+                add = 14
+            total = total + balance + add
+        # print(total)
+        y = decimal_years
+        # print(y)
 
-            t = total / years
+        t = total / years
 
-            # print(float(t * y))
-            e.calculate_date = end_date
-            e.annual_leave_taken = e.annual_leave_taken + e.annual_leave_difference
-            e.annual_leave_balance = round(float(t * y), 2)
-            e.annual_leave_balance = e.annual_leave_balance + e.old_rule_balance
-            e.annual_leave_remaining = round(
-                float(e.annual_leave_balance - e.annual_leave_taken),
-                2,
-            )
-            e.save()
-        for l in leaves:
-            calculate_total_leave_days(l.id)
+        # print(float(t * y))
+        e.calculate_date = end_date
+        e.annual_leave_taken = e.annual_leave_taken + e.annual_leave_difference
+        e.annual_leave_balance = round(float(t * y), 2)
+        e.annual_leave_balance = e.annual_leave_balance + e.old_rule_balance
+        e.annual_leave_remaining = round(
+            float(e.annual_leave_balance - e.annual_leave_taken),
+            2,
+        )
+        e.save()
+    for l in Leave.objects.filter(approved=True, leave_type__annual=True):
+        calculate_total_leave_days(l.id)

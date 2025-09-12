@@ -22,7 +22,7 @@ class RawAttendance(models.Model):
     punch = models.CharField(max_length=50)
 
     class Meta:
-        get_latest_by = ["-date", "-time"]
+        ordering = ["-date", "-time"]
 
 
 class Attendance(models.Model):
