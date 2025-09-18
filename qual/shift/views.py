@@ -94,7 +94,9 @@ def edit_shift(request, id):
 def change_shift(request, id):
     if request.method == "POST":
         employee = Employee.objects.get(id=id)
-        shift_form = ChangeEmployeeShiftForm(request.POST, instance=employee)
+        shift_form = ChangeEmployeeShiftForm(
+            request.POST, instance=employee, prefix="change-shift"
+        )
         if request.user.profile.role == "ADMIN" or request.user.profile.role == "HR":
             if shift_form.is_valid():
                 shift_form.save()
