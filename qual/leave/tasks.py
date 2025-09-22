@@ -44,7 +44,7 @@ def calculate_total_leave_days(id, end_date=None):
             leave.total_days = dates.count()
         if leave.half_day and not leave.leave_type.half_day_leave:
             leave.total_days = leave.total_days - 0.5
-        if leave.saturday_half:
+        if leave.saturday_half and leave.leave_type.exclude_rest_days:
             total_sats = total_saturdays * 0.5
             leave.total_days = leave.total_days - total_sats
         if leave.leave_type.half_day_leave:
