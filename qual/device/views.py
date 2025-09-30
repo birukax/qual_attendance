@@ -101,7 +101,7 @@ def device_users(request, id):
 @user_passes_test(lambda u: u.profile.role == "ADMIN" or u.profile.role == "HR")
 def add_employee(request, id):
     if request.method == "POST":
-        form = AddDeviceUserForm(data=request.POST)
+        form = AddDeviceUserForm(data=request.POST, prefix="add-to-device")
         if form.is_valid():
             device_id = form.cleaned_data["device"].id
 
