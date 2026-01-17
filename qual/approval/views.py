@@ -208,6 +208,14 @@ def approve_holiday(request, id):
     holiday.approved = True
     holiday.approved_by = request.user
     holiday.save()
+    attendances = Attendance.objects.filter(
+        check_in_date=holiday.date,
+        status__in=("Absent", "Day Off", "On Leave"),
+    )
+    if attendances:
+        for att in attendances:
+            att.status = "Holiday"
+            att.save()
     return redirect("approval:holiday_approval")
 
 

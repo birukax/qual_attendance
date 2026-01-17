@@ -3,6 +3,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from .models import *
+from attendance.models import Attendance
 from .forms import *
 from django.contrib.auth.decorators import user_passes_test
 
@@ -12,6 +13,15 @@ from django.contrib.auth.decorators import user_passes_test
 def holidays(request):
     create_holiday_form = CreateHolidayForm(data=request.GET)
     holidays = Holiday.objects.all().order_by("-date")
+    # for holiday in holidays.filter(approved=True):
+    #     holiday_attendances = Attendance.objects.filter(
+    #         check_in_date=holiday.date,
+    #         status__in=("Absent", "Day Off", "On Leave"),
+    #     )
+    #     if holiday_attendances:
+    #         for att in holiday_attendances:
+    #             att.status = "Holiday"
+    #             att.save()
     paginated = Paginator(holidays, 30)
     page_number = request.GET.get("page")
 
